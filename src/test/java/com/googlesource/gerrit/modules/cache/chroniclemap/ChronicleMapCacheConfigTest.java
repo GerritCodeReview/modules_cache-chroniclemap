@@ -16,6 +16,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_AVG_KEY_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_AVG_VALUE_SIZE;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_MAX_ENTRIES;
 
 import com.google.gerrit.server.config.SitePaths;
@@ -128,6 +129,21 @@ public class ChronicleMapCacheConfigTest {
   public void shouldProvideDefaultAverageValueSizeWhenNotConfigured() {
     assertThat(configUnderTest(gerritConfig).getAverageValueSize())
         .isEqualTo(DEFAULT_AVG_VALUE_SIZE);
+  }
+
+  @Test
+  public void shouldProvideMaxDefaultBloatFactorWhenNotConfigured() {
+    assertThat(configUnderTest(gerritConfig).getMaxBloatFactor())
+        .isEqualTo(DEFAULT_MAX_BLOAT_FACTOR);
+  }
+
+  @Test
+  public void shouldProvideMaxBloatFactorWhenConfigured() throws Exception {
+    int bloatFactor = 3;
+    gerritConfig.setInt("cache", cacheKey, "maxBloatFactor", bloatFactor);
+    gerritConfig.save();
+
+    assertThat(configUnderTest(gerritConfig).getMaxBloatFactor()).isEqualTo(bloatFactor);
   }
 
   @Test

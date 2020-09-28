@@ -45,3 +45,19 @@ https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle
 [Official docs](
 https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/map/ChronicleMapBuilder.html#entries-long-
 )
+
+```cache.<name>.maxBloatFactor```
+: the maximum number of times this cache is allowed to grow in size beyond the
+configured target number of entries.
+
+Chronicle Map will allocate memory until the actual number of entries inserted
+divided by the number configured through ChronicleMapBuilder.entries() is not
+higher than the configured `maxBloatFactor`.
+
+Chronicle Map works progressively slower when the actual size grows far beyond
+the configured size, so the maximum possible maxBloatFactor() is artificially
+limited to 1000. Default: *1*
+
+[Official docs](
+https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/hash/ChronicleHashBuilder.html#maxBloatFactor-double-
+)
