@@ -39,11 +39,14 @@ public class ChronicleMapCacheConfig {
   private final long averageValueSize;
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
+  private final int maxBloatFactor;
 
   public static final long DEFAULT_MAX_ENTRIES = 1000;
 
   public static final long DEFAULT_AVG_KEY_SIZE = 128;
   public static final long DEFAULT_AVG_VALUE_SIZE = 2048;
+
+  public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -84,6 +87,9 @@ public class ChronicleMapCacheConfig {
                 "refreshAfterWrite",
                 toSeconds(refreshAfterWrite),
                 SECONDS));
+
+    this.maxBloatFactor =
+        cfg.getInt("cache", configKey, "maxBloatFactor", DEFAULT_MAX_BLOAT_FACTOR);
   }
 
   public Duration getExpireAfterWrite() {
@@ -112,6 +118,10 @@ public class ChronicleMapCacheConfig {
 
   public long getDiskLimit() {
     return diskLimit;
+  }
+
+  public int getMaxBloatFactor() {
+    return maxBloatFactor;
   }
 
   private static Path getCacheDir(SitePaths site, String name) {

@@ -74,6 +74,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     // avgValueSize)
     mapBuilder.entries(config.getMaxEntries());
 
+    mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
+
     if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
       store = mapBuilder.create();
     } else {
