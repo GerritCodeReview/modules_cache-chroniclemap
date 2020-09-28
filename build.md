@@ -12,9 +12,9 @@ Example:
 
 ```sh
 git clone https://gerrit.googlesource.com/gerrit
-git clone https://github.com/GerritForge/modules_cache-chroniclemap.git
+git clone https://gerrit.googlesource.com/modules/cache-chroniclemap
 cd gerrit/plugins
-ln -s ../../modules_cache-chroniclemap cache-chroniclemap
+ln -s ../../cache-chroniclemap cache-chroniclemap
 ln -sf ../../external_plugin_deps.bzl .
 ```
 
