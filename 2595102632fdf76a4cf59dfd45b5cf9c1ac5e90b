@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac877b1f_d214a243",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-29T22:12:26Z",
+      "side": 1,
+      "message": "I still believe this isn\u0027t a good default. Having a bloat factor of 1 implies that the Gerrit admin has already performed a tune setting on the configuration.\n\nI would prefer the Gerrit admin to set this explicitly to 1 in the config, which implies he has read the documentation and has explicitly set all reasonable values in the cache sizes.\n\nThe default shouldn\u0027t be perfect, but at least should not blow up.",
+      "range": {
+        "startLine": 49,
+        "startChar": 53,
+        "endLine": 49,
+        "endChar": 54
+      },
+      "revId": "2595102632fdf76a4cf59dfd45b5cf9c1ac5e90b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

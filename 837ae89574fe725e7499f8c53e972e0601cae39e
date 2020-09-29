@@ -94,6 +94,30 @@
       "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2435d090_2b385f36",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-29T22:12:26Z",
+      "side": 1,
+      "message": "\u003e So to answer your question:\n\u003e \u003e  I\u0027ve raised the issue because I saw that the default was too strict and Gerrit caches were blowing up quickly.\n\u003e \n\u003e imho, the problem with the above was not the default bloat factor, but rather the number of entries you configured did not match the number of entries that were stored.\n\nI am talking about the \"out of the box\" configuration: I did not configure anything and Gerrit just blew up. I believe the configuration should be carefully set, however, from a user-experience perspective of the first-time user, we should have defaults that do not blow up.",
+      "parentUuid": "07886fac_db76b7de",
+      "range": {
+        "startLine": 49,
+        "startChar": 26,
+        "endLine": 49,
+        "endChar": 54
+      },
+      "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
