@@ -70,6 +70,30 @@
       "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07886fac_db76b7de",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-09-29T08:57:27Z",
+      "side": 1,
+      "message": "`maxBloatFactor` represents the maximum accepted ratio between the number of actual entries and the number of entries you configured via the `entries` parameter.\n\nChronicle-map performs better when the actual cache size match the configured size.\n\nSay, for example, you expect 1000 entries (cache.\u003cname\u003e.entries \u003d 1000): if you have 1000 entries on disk, your bloat factor is 1; if you have 2000, bloat factor is 2 and so on.\n\nBasically, `maxBloatFator\u003d1` means:\n\n\"I expect this cache to have at most the number of entries I configured\".\n\nSo to answer your question:\n\u003e  I\u0027ve raised the issue because I saw that the default was too strict and Gerrit caches were blowing up quickly.\n\nimho, the problem with the above was not the default bloat factor, but rather the number of entries you configured did not match the number of entries that were stored.\n\nIf the Gerrit admin is not sure about the number of entries that will be stored and she wants (perhaps momentarily) allow 3 times more, then she can raise the maxBloatFactor to 3 to capture this uncertainty in the configuration.\n\nWDYT?",
+      "parentUuid": "ebe33670_4b04f258",
+      "range": {
+        "startLine": 49,
+        "startChar": 26,
+        "endLine": 49,
+        "endChar": 54
+      },
+      "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
