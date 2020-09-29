@@ -15,10 +15,10 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_AVG_KEY_SIZE;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_AVG_VALUE_SIZE;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_MAX_BLOAT_FACTOR;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_MAX_ENTRIES;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_KEY_SIZE;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_VALUE_SIZE;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_BLOAT_FACTOR;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_ENTRIES;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.IOException;

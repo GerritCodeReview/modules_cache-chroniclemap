@@ -15,6 +15,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.config.ConfigUtil;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 
 public class ChronicleMapCacheConfig {
@@ -40,13 +42,6 @@ public class ChronicleMapCacheConfig {
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
-
-  public static final long DEFAULT_MAX_ENTRIES = 1000;
-
-  public static final long DEFAULT_AVG_KEY_SIZE = 128;
-  public static final long DEFAULT_AVG_VALUE_SIZE = 2048;
-
-  public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -72,9 +67,12 @@ public class ChronicleMapCacheConfig {
         cacheDir != null ? cacheDir.resolve(String.format("%s.dat", name)).toFile() : null;
     this.diskLimit = cfg.getLong("cache", configKey, "diskLimit", diskLimit);
 
-    this.maxEntries = cfg.getLong("cache", configKey, "maxEntries", DEFAULT_MAX_ENTRIES);
-    this.averageKeySize = cfg.getLong("cache", configKey, "avgKeySize", DEFAULT_AVG_KEY_SIZE);
-    this.averageValueSize = cfg.getLong("cache", configKey, "avgValueSize", DEFAULT_AVG_VALUE_SIZE);
+    this.maxEntries =
+        cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey));
+    this.averageKeySize =
+        cfg.getLong("cache", configKey, "avgKeySize", Defaults.averageKeySizeFor(configKey));
+    this.averageValueSize =
+        cfg.getLong("cache", configKey, "avgValueSize", Defaults.avgValueSizeFor(configKey));
     this.expireAfterWrite =
         Duration.ofSeconds(
             ConfigUtil.getTimeUnit(
@@ -90,7 +88,7 @@ public class ChronicleMapCacheConfig {
                 SECONDS));
 
     this.maxBloatFactor =
-        cfg.getInt("cache", configKey, "maxBloatFactor", DEFAULT_MAX_BLOAT_FACTOR);
+        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
   }
 
   public Duration getExpireAfterWrite() {
@@ -142,5 +140,56 @@ public class ChronicleMapCacheConfig {
 
   private static long toSeconds(@Nullable Duration duration) {
     return duration != null ? duration.getSeconds() : 0;
+  }
+
+  protected static class Defaults {
+
+    public static final long DEFAULT_MAX_ENTRIES = 1000;
+
+    public static final long DEFAULT_AVG_KEY_SIZE = 128;
+    public static final long DEFAULT_AVG_VALUE_SIZE = 2048;
+
+    public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
+
+    private static final ImmutableMap<String, DefaultConfig> defaultMap =
+        new ImmutableMap.Builder<String, DefaultConfig>()
+            .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
+            .put("change_notes", DefaultConfig.create(36, 10240, 1000, 3))
+            .put("accounts", DefaultConfig.create(30, 256, 1000, 1))
+            .put("diff", DefaultConfig.create(98, 10240, 1000, 2))
+            .put("diff_intraline", DefaultConfig.create(512, 2048, 1000, 2))
+            .put("diff_summary", DefaultConfig.create(128, 2048, 1000, 1))
+            .put("external_ids_map", DefaultConfig.create(128, 204800, 2, 1))
+            .put("oauth_tokens", DefaultConfig.create(8, 2048, 1000, 1))
+            .put("change_kind", DefaultConfig.create(59, 26, 1000, 1))
+            .put("mergeability", DefaultConfig.create(79, 16, 65000, 2))
+            .put("pure_revert", DefaultConfig.create(55, 16, 1000, 1))
+            .put("persisted_projects", DefaultConfig.create(128, 1024, 250, 2))
+            .put("conflicts", DefaultConfig.create(70, 16, 1000, 1))
+            .build();
+
+    public static long averageKeySizeFor(String configKey) {
+      return Optional.ofNullable(defaultMap.get(configKey))
+          .map(DefaultConfig::averageKey)
+          .orElse(DEFAULT_AVG_KEY_SIZE);
+    }
+
+    public static long avgValueSizeFor(String configKey) {
+      return Optional.ofNullable(defaultMap.get(configKey))
+          .map(DefaultConfig::averageValue)
+          .orElse(DEFAULT_AVG_VALUE_SIZE);
+    }
+
+    public static long maxEntriesFor(String configKey) {
+      return Optional.ofNullable(defaultMap.get(configKey))
+          .map(DefaultConfig::entries)
+          .orElse(DEFAULT_MAX_ENTRIES);
+    }
+
+    public static int maxBloatFactorFor(String configKey) {
+      return Optional.ofNullable(defaultMap.get(configKey))
+          .map(DefaultConfig::maxBloatFactor)
+          .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+    }
   }
 }
