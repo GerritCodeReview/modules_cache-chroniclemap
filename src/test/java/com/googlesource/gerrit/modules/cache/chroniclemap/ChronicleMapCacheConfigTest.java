@@ -14,12 +14,14 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_AVG_KEY_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_AVG_VALUE_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.DEFAULT_MAX_ENTRIES;
 
 import com.google.gerrit.server.config.SitePaths;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -70,7 +72,7 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldNotProvidePersistedFileWhenCacheDirIsNotConfigured() {
+  public void shouldNotProvidePersistedFileWhenCacheDirIsNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getPersistedFile()).isNull();
   }
 
@@ -84,7 +86,7 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvideDefinitionDiskLimitWhenNotConfigured() {
+  public void shouldProvideDefinitionDiskLimitWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(definitionDiskLimit);
   }
 
@@ -98,7 +100,7 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvideDefaultMaxEntriesWhenNotConfigured() {
+  public void shouldProvideDefaultMaxEntriesWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getMaxEntries()).isEqualTo(DEFAULT_MAX_ENTRIES);
   }
 
@@ -112,7 +114,7 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvideDefaultAverageKeySizeWhenNotConfigured() {
+  public void shouldProvideDefaultAverageKeySizeWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getAverageKeySize()).isEqualTo(DEFAULT_AVG_KEY_SIZE);
   }
 
@@ -126,13 +128,13 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvideDefaultAverageValueSizeWhenNotConfigured() {
+  public void shouldProvideDefaultAverageValueSizeWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getAverageValueSize())
         .isEqualTo(DEFAULT_AVG_VALUE_SIZE);
   }
 
   @Test
-  public void shouldProvideMaxDefaultBloatFactorWhenNotConfigured() {
+  public void shouldProvideMaxDefaultBloatFactorWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getMaxBloatFactor())
         .isEqualTo(DEFAULT_MAX_BLOAT_FACTOR);
   }
@@ -157,7 +159,7 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvideDefinitionExpireAfterWriteWhenNotConfigured() {
+  public void shouldProvideDefinitionExpireAfterWriteWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getExpireAfterWrite()).isEqualTo(expireAfterWrite);
   }
 
@@ -172,11 +174,29 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvideDefinitionRefreshAfterWriteWhenNotConfigured() {
+  public void shouldThrowExceptionWhenDirectoryDoesntExist() throws Exception {
+    gerritConfig.setString("cache", null, "directory", "/var/bar/foobar");
+    gerritConfig.save();
+
+    IOException thrown = assertThrows(IOException.class, () -> configUnderTest(gerritConfig));
+    assertThat(thrown).hasMessageThat().contains("Operation not permitted");
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenDirectoryIsNotWriteable() throws Exception {
+    gerritConfig.setString("cache", null, "directory", "/var");
+    gerritConfig.save();
+
+    IOException thrown = assertThrows(IOException.class, () -> configUnderTest(gerritConfig));
+    assertThat(thrown).hasMessageThat().contains("Can't write to disk cache");
+  }
+
+  @Test
+  public void shouldProvideDefinitionRefreshAfterWriteWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getRefreshAfterWrite()).isEqualTo(refreshAfterWrite);
   }
 
-  private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
+  private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) throws IOException {
     return new ChronicleMapCacheConfig(
         gerritConfig,
         sitePaths,
