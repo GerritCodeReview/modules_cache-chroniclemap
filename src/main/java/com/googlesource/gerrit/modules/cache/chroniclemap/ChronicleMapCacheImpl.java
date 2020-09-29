@@ -16,6 +16,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
@@ -30,6 +31,8 @@ import net.openhft.chronicle.map.ChronicleMapBuilder;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
+
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ChronicleMapCacheConfig config;
   private final CacheLoader<K, V> loader;
@@ -58,7 +61,6 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     // such as Boolean, Integer, for which size is statically determined.
     // This means that even though a custom serializer was provided for a primitive
     // it cannot be used.
-    // TODO: Should we log.warn when this is the case?
     if (!mapBuilder.constantlySizedKeys()) {
       mapBuilder.averageKeySize(config.getAverageKeySize());
       mapBuilder.keyMarshaller(new ChronicleMapMarshallerAdapter<>(def.keySerializer()));
@@ -79,8 +81,20 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
       store = mapBuilder.create();
     } else {
-      store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
+      store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile(), false);
     }
+
+    logger.atInfo().log(
+        "Initialized '%s'|avgKeySize: %s bytes|avgValueSize: %s bytes|"
+            + "entries: %s|maxBloatFactor: %s|remainingAutoResizes: %s|"
+            + "percentageFreeSpace: %s",
+        def.name(),
+        mapBuilder.constantlySizedKeys() ? "CONSTANT" : config.getAverageKeySize(),
+        config.getAverageValueSize(),
+        config.getMaxEntries(),
+        config.getMaxBloatFactor(),
+        store.remainingAutoResizes(),
+        store.percentageFreeSpace());
   }
 
   public ChronicleMapCacheConfig getConfig() {
