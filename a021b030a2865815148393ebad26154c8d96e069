@@ -1,12 +1,13 @@
 {
   "checks": {
     "zuul-check:modules_cache-chroniclemap": {
-      "state": "RUNNING",
-      "message": "Jobs have started running",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/282729,1",
+      "state": "FAILED",
+      "message": "Change failed",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/9a7984c01c6b4c39ba9b3d2184d6779b",
       "started": "2020-09-29T15:06:42Z",
+      "finished": "2020-09-29T15:11:41Z",
       "created": "2020-09-29T15:06:42Z",
-      "updated": "2020-09-29T15:06:45Z"
+      "updated": "2020-09-29T15:11:42Z"
     }
   }
 }
