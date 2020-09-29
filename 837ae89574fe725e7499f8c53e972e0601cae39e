@@ -22,6 +22,30 @@
       "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7844341_36b936d4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-09-29T07:38:16Z",
+      "side": 1,
+      "message": "Yep, this is the default. From [1]:\nThe default maximum bloat factor factor is 1.0 - i. e. \"no bloat is expected\".\n\n[1]https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/hash/ChronicleHashBuilder.html#maxBloatFactor-double-",
+      "parentUuid": "6f9e81c2_5ff18011",
+      "range": {
+        "startLine": 49,
+        "startChar": 26,
+        "endLine": 49,
+        "endChar": 54
+      },
+      "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
