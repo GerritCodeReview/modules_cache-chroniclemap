@@ -65,7 +65,8 @@ public class ChronicleMapCacheConfig {
       @Assisted("ConfigKey") String configKey,
       @Assisted("DiskLimit") long diskLimit,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
-      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite) {
+      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite)
+      throws IOException {
     final Path cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.persistedFile =
         cacheDir != null ? cacheDir.resolve(String.format("%s.dat", name)).toFile() : null;
@@ -124,22 +125,16 @@ public class ChronicleMapCacheConfig {
     return maxBloatFactor;
   }
 
-  private static Path getCacheDir(SitePaths site, String name) {
+  private static Path getCacheDir(SitePaths site, String name) throws IOException {
     if (name == null) {
       return null;
     }
     Path loc = site.resolve(name);
     if (!Files.exists(loc)) {
-      try {
-        Files.createDirectories(loc);
-      } catch (IOException e) {
-        logger.atWarning().log("Can't create disk cache: %s", loc.toAbsolutePath());
-        return null;
-      }
+      Files.createDirectories(loc);
     }
     if (!Files.isWritable(loc)) {
-      logger.atWarning().log("Can't write to disk cache: %s", loc.toAbsolutePath());
-      return null;
+      throw new IOException(String.format("Can't write to disk cache: %s", loc.toAbsolutePath()));
     }
     logger.atFine().log("Enabling disk cache %s", loc.toAbsolutePath());
     return loc;
