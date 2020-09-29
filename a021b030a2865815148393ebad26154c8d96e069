@@ -16,6 +16,29 @@
       "revId": "a021b030a2865815148393ebad26154c8d96e069",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9b4d3c7a_235c05c7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-29T22:41:01Z",
+      "side": 1,
+      "message": "All those numbers look identical to me: are you still thinking about how to tune them?\n\nCould you possibly calculate them? (e.g. web_sessions being 2x the number of accounts, and other similar correlations)\n\nHow do you calculate the size of the key and the value?\n\nShould the bloat factor be more relaxed for default values?\n(e.g. With accounts set to 1000 and bloat factor to 1, it would blow up with 1001 accounts)",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 71
+      },
+      "revId": "a021b030a2865815148393ebad26154c8d96e069",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
