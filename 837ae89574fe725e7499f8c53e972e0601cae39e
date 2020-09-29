@@ -46,6 +46,30 @@
       "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ebe33670_4b04f258",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-29T07:53:40Z",
+      "side": 1,
+      "message": "\u003e Have you checked if with this default Gerrit actually works normally or not?\n\nCan you answer ^^^^ ? I\u0027ve raised the issue because I saw that the default was too strict and Gerrit caches were blowing up quickly.",
+      "parentUuid": "f7844341_36b936d4",
+      "range": {
+        "startLine": 49,
+        "startChar": 26,
+        "endLine": 49,
+        "endChar": 54
+      },
+      "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
