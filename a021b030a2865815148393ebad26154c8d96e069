@@ -39,6 +39,30 @@
       "revId": "a021b030a2865815148393ebad26154c8d96e069",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7927d5f_18790787",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-09-30T07:57:26Z",
+      "side": 1,
+      "message": "\u003e are you still thinking about how to tune them?\n\nYes, this is a WIP because I still need to calculate their size.\nChronicle-map provide some utility functions that can be used to achieve that: I am going to try to tune good defaults and then we can review them together.",
+      "parentUuid": "9b4d3c7a_235c05c7",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 71
+      },
+      "revId": "a021b030a2865815148393ebad26154c8d96e069",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
