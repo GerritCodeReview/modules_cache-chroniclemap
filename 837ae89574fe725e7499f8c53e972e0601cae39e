@@ -118,6 +118,30 @@
       "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c82a4f00_4de5523a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-09-30T17:10:14Z",
+      "side": 1,
+      "message": "I see, perhaps gerrit blew up when you reached a certain amount of changes X. It\u0027d be good to know how many where there and how big.\n\nShould we move this conversation to the last change of this chain[1]?\nThe introduction of the per-cache defaults changes a bit the dynamics because now the maxBloatFactor is also configurable per-cache.\n\nWDYT?\n\n[1]https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/282729",
+      "parentUuid": "2435d090_2b385f36",
+      "range": {
+        "startLine": 49,
+        "startChar": 26,
+        "endLine": 49,
+        "endChar": 54
+      },
+      "revId": "837ae89574fe725e7499f8c53e972e0601cae39e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
