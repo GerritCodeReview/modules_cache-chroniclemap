@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "796c484e_d6800376",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-01T10:13:45Z",
+      "side": 1,
+      "message": "Mergeability cache is the cartesian product of all mergeability checks against each other open changes, so 1000 is not enough.",
+      "revId": "fa143bb085e35c6c43b3ed03939a154c6b0af8e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
