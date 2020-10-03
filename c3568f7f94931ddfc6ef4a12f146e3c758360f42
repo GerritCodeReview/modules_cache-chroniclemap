@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca0c5f84_935e8a83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-03T00:10:27Z",
+      "side": 1,
+      "message": "nit: wrap long line.",
+      "range": {
+        "startLine": 14,
+        "startChar": 64,
+        "endLine": 14,
+        "endChar": 73
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55cc9837_ba85d551",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-03T00:10:27Z",
+      "side": 1,
+      "message": "I believe this is a general comment on the chroniclemap: also changing the other parameters (e.g. average key size) would make the current cache invalid.\n\nCan we add a separate section for that?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 79
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "124e40d5_a1f19ce0",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-03T00:10:27Z",
+      "side": 1,
+      "message": "not necessarily suitable for a",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 80,
+        "endChar": 17
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56142d9e_017eda22",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-03T00:10:27Z",
+      "side": 1,
+      "message": "Configured accounts? Logged in at the same time? On a daily basis? Weekly basis?",
+      "range": {
+        "startLine": 91,
+        "startChar": 5,
+        "endLine": 91,
+        "endChar": 25
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73916710_a0956ed5",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-03T00:10:27Z",
+      "side": 1,
+      "message": "Overall? or per week? day? month?",
+      "range": {
+        "startLine": 91,
+        "startChar": 43,
+        "endLine": 91,
+        "endChar": 68
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d54e1b1a_ba1f2489",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-03T00:10:27Z",
+      "side": 1,
+      "message": "startup",
+      "range": {
+        "startLine": 94,
+        "startChar": 22,
+        "endLine": 94,
+        "endChar": 32
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
