@@ -19,15 +19,18 @@ public class TimedValue<V> {
 
   private final V value;
   private final long created;
+  private final int version;
 
-  TimedValue(V value) {
+  TimedValue(V value, int version) {
     this.created = System.currentTimeMillis();
     this.value = value;
+    this.version = version;
   }
 
-  protected TimedValue(V value, long created) {
+  protected TimedValue(V value, long created, int version) {
     this.created = created;
     this.value = value;
+    this.version = version;
   }
 
   public long getCreated() {
@@ -38,16 +41,20 @@ public class TimedValue<V> {
     return value;
   }
 
+  public int getVersion() {
+    return version;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof TimedValue)) return false;
     TimedValue<?> that = (TimedValue<?>) o;
-    return created == that.created && Objects.equal(value, that.value);
+    return created == that.created && version == that.version && Objects.equal(value, that.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(value, created);
+    return Objects.hashCode(value, version, created);
   }
 }
