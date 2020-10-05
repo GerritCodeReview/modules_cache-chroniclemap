@@ -40,26 +40,33 @@ public class TimedValueMarshaller<V>
   public TimedValue<V> read(Bytes in, TimedValue<V> using) {
     long initialPosition = in.readPosition();
 
-    // Deserialize the creation timestamp (first 8 bytes)
+    // Deserialize the version (4 bytes)
+    byte[] serializedVersion = new byte[Integer.BYTES];
+    in.read(serializedVersion, 0, Integer.BYTES);
+    ByteBuffer bufferVersion = ByteBuffer.wrap(serializedVersion);
+    int version = bufferVersion.getInt(0);
+    in.readPosition(initialPosition + Integer.BYTES);
+
+    // Deserialize the creation timestamp (8 bytes)
     byte[] serializedLong = new byte[Long.BYTES];
     in.read(serializedLong, 0, Long.BYTES);
     ByteBuffer buffer = ByteBuffer.wrap(serializedLong);
     long created = buffer.getLong(0);
-    in.readPosition(initialPosition + Long.BYTES);
+    in.readPosition(initialPosition + Integer.BYTES + Long.BYTES);
 
-    // Deserialize the length of the serialized value (second 8 bytes)
+    // Deserialize the length of the serialized value (4 bytes)
     byte[] serializedInt = new byte[Integer.BYTES];
     in.read(serializedInt, 0, Integer.BYTES);
     ByteBuffer buffer2 = ByteBuffer.wrap(serializedInt);
     int vLength = buffer2.getInt(0);
-    in.readPosition(initialPosition + Long.BYTES + Integer.BYTES);
+    in.readPosition(initialPosition + Integer.BYTES + Long.BYTES + Integer.BYTES);
 
     // Deserialize object V (remaining bytes)
     byte[] serializedV = new byte[vLength];
     in.read(serializedV, 0, vLength);
     V v = serializer.deserialize(serializedV);
 
-    using = new TimedValue<>(v, created);
+    using = new TimedValue<>(v, created, version);
 
     return using;
   }
@@ -69,19 +76,23 @@ public class TimedValueMarshaller<V>
     byte[] serialized = serializer.serialize(toWrite.getValue());
 
     // Serialize as follows:
-    // created | length of serialized V | serialized value V
-    // 8 bytes |       4 bytes          | serialized_length bytes
+    // version | created | length of serialized V | serialized value V
+    // 4 bytes | 8 bytes |       4 bytes          | serialized_length bytes
 
-    int capacity = Long.BYTES + Integer.BYTES + serialized.length;
+    int capacity = Integer.BYTES + Long.BYTES + Integer.BYTES + serialized.length;
     ByteBuffer buffer = ByteBuffer.allocate(capacity);
 
-    long timestamp = toWrite.getCreated();
-    buffer.putLong(0, timestamp);
+    int version = toWrite.getVersion();
+    buffer.putInt(0, version);
+    buffer.position(Integer.BYTES);
 
-    buffer.position(Long.BYTES);
-    buffer.putInt(serialized.length);
+    long timestamp = toWrite.getCreated();
+    buffer.putLong(timestamp);
 
     buffer.position(Long.BYTES + Integer.BYTES);
+    buffer.putInt(serialized.length);
+
+    buffer.position(Long.BYTES + Integer.BYTES + Integer.BYTES);
     buffer.put(serialized);
 
     out.write(buffer.array());

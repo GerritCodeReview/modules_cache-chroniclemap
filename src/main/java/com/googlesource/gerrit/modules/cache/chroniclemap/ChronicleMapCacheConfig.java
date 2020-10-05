@@ -42,6 +42,7 @@ public class ChronicleMapCacheConfig {
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
+  private final int version;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -49,7 +50,8 @@ public class ChronicleMapCacheConfig {
         @Assisted("ConfigKey") String configKey,
         @Assisted("DiskLimit") long diskLimit,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
-        @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite);
+        @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+        @Nullable int version);
   }
 
   @AssistedInject
@@ -60,8 +62,10 @@ public class ChronicleMapCacheConfig {
       @Assisted("ConfigKey") String configKey,
       @Assisted("DiskLimit") long diskLimit,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
-      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite)
+      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+      @Nullable @Assisted Integer version)
       throws IOException {
+    this.version = version != null ? version : 1;
     final Path cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.persistedFile =
         cacheDir != null ? cacheDir.resolve(String.format("%s.dat", name)).toFile() : null;
@@ -89,6 +93,10 @@ public class ChronicleMapCacheConfig {
 
     this.maxBloatFactor =
         cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
+  }
+
+  public int getVersion() {
+    return version;
   }
 
   public Duration getExpireAfterWrite() {
@@ -153,7 +161,7 @@ public class ChronicleMapCacheConfig {
 
     private static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
-            .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
+            .put("web_sessions", DefaultConfig.create(45, 225, 1000, 1))
             .put("change_notes", DefaultConfig.create(36, 10240, 1000, 3))
             .put("accounts", DefaultConfig.create(30, 256, 1000, 1))
             .put("diff", DefaultConfig.create(98, 10240, 1000, 2))
@@ -161,11 +169,11 @@ public class ChronicleMapCacheConfig {
             .put("diff_summary", DefaultConfig.create(128, 2048, 1000, 1))
             .put("external_ids_map", DefaultConfig.create(128, 204800, 2, 1))
             .put("oauth_tokens", DefaultConfig.create(8, 2048, 1000, 1))
-            .put("change_kind", DefaultConfig.create(59, 26, 1000, 1))
-            .put("mergeability", DefaultConfig.create(79, 16, 65000, 2))
-            .put("pure_revert", DefaultConfig.create(55, 16, 1000, 1))
+            .put("change_kind", DefaultConfig.create(59, 30, 1000, 1))
+            .put("mergeability", DefaultConfig.create(79, 20, 65000, 2))
+            .put("pure_revert", DefaultConfig.create(55, 20, 1000, 1))
             .put("persisted_projects", DefaultConfig.create(128, 1024, 250, 2))
-            .put("conflicts", DefaultConfig.create(70, 16, 1000, 1))
+            .put("conflicts", DefaultConfig.create(70, 20, 1000, 1))
             .build();
 
     public static long averageKeySizeFor(String configKey) {

@@ -70,7 +70,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             in.configKey(),
             in.diskLimit(),
             in.expireAfterWrite(),
-            in.refreshAfterWrite());
+            in.refreshAfterWrite(),
+            in.version());
     ChronicleMapCacheImpl<K, V> cache = null;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, null);
@@ -93,7 +94,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             in.configKey(),
             in.diskLimit(),
             in.expireAfterWrite(),
-            in.refreshAfterWrite());
+            in.refreshAfterWrite(),
+            in.version());
     ChronicleMapCacheImpl<K, V> cache = null;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, loader);
