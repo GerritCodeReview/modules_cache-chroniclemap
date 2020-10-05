@@ -359,6 +359,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4ec6028_965f00c4",
+        "filename": "config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T13:19:15Z",
+      "side": 1,
+      "message": "I have removed the change_kind from the documentation (as you mentioned we don\u0027t want the admin user to know about this), but left its defaults in the defaults map.",
+      "parentUuid": "99b3f769_c1b4c66a",
+      "range": {
+        "startLine": 162,
+        "startChar": 29,
+        "endLine": 163,
+        "endChar": 7
+      },
+      "revId": "d53b1ea4f18c5c3755a2f1be4517750e8f377e28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb3224a2_1e0acd0d",
         "filename": "config.md",
         "patchSetId": 3
