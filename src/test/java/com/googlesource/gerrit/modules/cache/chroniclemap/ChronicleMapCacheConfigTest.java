@@ -37,6 +37,7 @@ public class ChronicleMapCacheConfigTest {
   private final String cacheName = "foobar-cache";
   private final String cacheKey = "foobar-cache-key";
   private final long definitionDiskLimit = 100;
+  private final int version = 1;
   private final Duration expireAfterWrite = Duration.ofSeconds(10_000);
   private final Duration refreshAfterWrite = Duration.ofSeconds(20_000);
 
@@ -204,6 +205,7 @@ public class ChronicleMapCacheConfigTest {
         cacheKey,
         definitionDiskLimit,
         expireAfterWrite,
-        refreshAfterWrite);
+        refreshAfterWrite,
+        version);
   }
 }

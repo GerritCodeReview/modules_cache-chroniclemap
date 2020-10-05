@@ -60,6 +60,19 @@ public class ChronicleMapCacheTest {
   }
 
   @Test
+  public void getIfPresentShouldReturnNullWhenThereCacheHasADifferentVersion() throws Exception {
+    gerritConfig.setString("cache", null, "directory", "cache");
+    gerritConfig.save();
+    final ChronicleMapCacheImpl<String, String> cacheV1 = newCacheVersion(1);
+
+    cacheV1.put("foo", "value version 1");
+    cacheV1.close();
+
+    final ChronicleMapCacheImpl<String, String> cacheV2 = newCacheVersion(2);
+    assertThat(cacheV2.getIfPresent("foo")).isNull();
+  }
+
+  @Test
   public void getWithLoaderShouldPopulateTheCache() throws Exception {
     String cachedValue = UUID.randomUUID().toString();
     final ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader();
@@ -74,6 +87,38 @@ public class ChronicleMapCacheTest {
     final ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(cachedValue);
 
     assertThat(cache.get("foo")).isEqualTo(cachedValue);
+  }
+
+  @Test
+  public void getShouldRetrieveANewValueWhenCacheHasADifferentVersion() throws Exception {
+    gerritConfig.setString("cache", null, "directory", "cache");
+    gerritConfig.save();
+    final ChronicleMapCacheImpl<String, String> cacheV1 = newCacheVersion(1);
+
+    cacheV1.put("foo", "value version 1");
+    cacheV1.close();
+
+    final ChronicleMapCacheImpl<String, String> cacheV2 = newCacheVersion(2);
+
+    final String v2Value = "value version 2";
+    assertThat(cacheV2.get("foo", () -> v2Value)).isEqualTo(v2Value);
+  }
+
+  @Test
+  public void getShouldRetrieveCachedValueWhenCacheHasSameVersion() throws Exception {
+    int cacheVersion = 2;
+    gerritConfig.setString("cache", null, "directory", "cache");
+    gerritConfig.save();
+    final ChronicleMapCacheImpl<String, String> cache = newCacheVersion(cacheVersion);
+
+    final String originalValue = "value 1";
+    cache.put("foo", originalValue);
+    cache.close();
+
+    final ChronicleMapCacheImpl<String, String> newCache = newCacheVersion(cacheVersion);
+
+    final String newValue = "value 2";
+    assertThat(newCache.get("foo", () -> newValue)).isEqualTo(originalValue);
   }
 
   @Test
@@ -164,7 +209,8 @@ public class ChronicleMapCacheTest {
 
   @Test
   public void getIfPresentShouldReturnNullWhenValueIsExpired() throws Exception {
-    ChronicleMapCacheImpl<String, String> cache = newCache(true, null, Duration.ofSeconds(1), null);
+    ChronicleMapCacheImpl<String, String> cache =
+        newCache(true, null, Duration.ofSeconds(1), null, 1);
     cache.put("foo", "some-stale-value");
     Thread.sleep(1000); // Allow cache entry to expire
     assertThat(cache.getIfPresent("foo")).isNull();
@@ -174,7 +220,7 @@ public class ChronicleMapCacheTest {
   public void getShouldRefreshValueWhenExpired() throws Exception {
     String newCachedValue = UUID.randomUUID().toString();
     ChronicleMapCacheImpl<String, String> cache =
-        newCache(true, newCachedValue, null, Duration.ofSeconds(1));
+        newCache(true, newCachedValue, null, Duration.ofSeconds(1), 1);
     cache.put("foo", "some-stale-value");
     Thread.sleep(1000); // Allow cache to be flagged as needing refresh
     assertThat(cache.get("foo")).isEqualTo(newCachedValue);
@@ -182,7 +228,8 @@ public class ChronicleMapCacheTest {
 
   @Test
   public void shouldPruneExpiredValues() throws Exception {
-    ChronicleMapCacheImpl<String, String> cache = newCache(true, null, Duration.ofSeconds(1), null);
+    ChronicleMapCacheImpl<String, String> cache =
+        newCache(true, null, Duration.ofSeconds(1), null, 1);
     cache.put("foo1", "some-stale-value1");
     cache.put("foo2", "some-stale-value1");
     Thread.sleep(1000); // Allow cache entries to expire
@@ -219,7 +266,8 @@ public class ChronicleMapCacheTest {
       Boolean withLoader,
       @Nullable String cachedValue,
       @Nullable Duration expireAfterWrite,
-      @Nullable Duration refreshAfterWrite)
+      @Nullable Duration refreshAfterWrite,
+      Integer version)
       throws IOException {
     TestPersistentCacheDef cacheDef = new TestPersistentCacheDef(cachedValue);
 
@@ -231,22 +279,27 @@ public class ChronicleMapCacheTest {
             cacheDef.configKey(),
             cacheDef.diskLimit(),
             expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
-            refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO);
+            refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO,
+            version);
 
     return new ChronicleMapCacheImpl<>(cacheDef, config, withLoader ? cacheDef.loader() : null);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String cachedValue)
       throws IOException {
-    return newCache(true, cachedValue, null, null);
+    return newCache(true, cachedValue, null, null, 1);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader() throws IOException {
-    return newCache(true, null, null, null);
+    return newCache(true, null, null, null, 1);
+  }
+
+  private ChronicleMapCacheImpl<String, String> newCacheVersion(int version) throws IOException {
+    return newCache(true, null, null, null, version);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithoutLoader() throws IOException {
-    return newCache(false, null, null, null);
+    return newCache(false, null, null, null, 1);
   }
 
   public static class TestPersistentCacheDef implements PersistentCacheDef<String, String> {
