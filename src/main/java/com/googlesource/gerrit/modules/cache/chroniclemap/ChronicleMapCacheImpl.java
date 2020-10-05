@@ -85,10 +85,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
 
     logger.atInfo().log(
-        "Initialized '%s'|avgKeySize: %s bytes|avgValueSize: %s bytes|"
-            + "entries: %s|maxBloatFactor: %s|remainingAutoResizes: %s|"
-            + "percentageFreeSpace: %s",
+        "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
+            + " %s bytes|entries: %s|maxBloatFactor: %s|remainingAutoResizes:"
+            + " %s|percentageFreeSpace: %s",
         def.name(),
+        config.getVersion(),
         mapBuilder.constantlySizedKeys() ? "CONSTANT" : config.getAverageKeySize(),
         config.getAverageValueSize(),
         config.getMaxEntries(),
