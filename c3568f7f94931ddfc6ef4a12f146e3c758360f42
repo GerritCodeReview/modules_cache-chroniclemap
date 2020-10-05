@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "ca0c5f84_935e8a83",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,34 @@
         "endChar": 73
       },
       "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be460cb4_96a5a088",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T10:37:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca0c5f84_935e8a83",
+      "range": {
+        "startLine": 14,
+        "startChar": 64,
+        "endLine": 14,
+        "endChar": 73
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "55cc9837_ba85d551",
         "filename": "config.md",
@@ -43,10 +68,34 @@
         "endChar": 79
       },
       "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ec0c1e1_658d1dbe",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T10:37:28Z",
+      "side": 1,
+      "message": "The average key and value sizes _can_ be changed.\nThis would require to call createOrRecoverPersistedTo()[1] with a boolean flag explicitly saying to check stored values against configuration and (by running a checksum) and (should they differ) invalidate them.\n\nThis change was also adding a line change that would do the above (and set sameBuilderConfigAndLibraryVersion to false). But I have now removed that:\n\n- It is not recommended:\n\nIt is strongly recommended to configure this builder with the same configurations, as the builder, that created the given file for the first time, and pass true as the sameBuilderConfigAndLibraryVersion argument\n\n- Invalidating all changes would be the same as removing the persisted cache file manually, anyway.\n- If we decide to do it, it should be a separate change\n\n\nHope it makes sense.\n\nI have now created a section that explicitly states that any configuration change would immediately invalidate the persisted cache file.\n\n\n[1]https://www.javadoc.io/static/net.openhft/chronicle-map/3.14.0/net/openhft/chronicle/set/ChronicleSetBuilder.html#createOrRecoverPersistedTo-java.io.File-boolean-",
+      "parentUuid": "55cc9837_ba85d551",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 79
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "124e40d5_a1f19ce0",
         "filename": "config.md",
@@ -66,10 +115,34 @@
         "endChar": 17
       },
       "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe6a694_2b4a004a",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T10:37:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "124e40d5_a1f19ce0",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 80,
+        "endChar": 17
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "56142d9e_017eda22",
         "filename": "config.md",
@@ -89,10 +162,10 @@
         "endChar": 25
       },
       "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "73916710_a0956ed5",
         "filename": "config.md",
@@ -112,10 +185,58 @@
         "endChar": 68
       },
       "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cad3023_9e71093d",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T10:37:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56142d9e_017eda22",
+      "range": {
+        "startLine": 91,
+        "startChar": 5,
+        "endLine": 91,
+        "endChar": 25
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd882885_a04c3535",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T10:37:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73916710_a0956ed5",
+      "range": {
+        "startLine": 91,
+        "startChar": 43,
+        "endLine": 91,
+        "endChar": 68
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "d54e1b1a_ba1f2489",
         "filename": "config.md",
@@ -135,8 +256,31 @@
         "endChar": 32
       },
       "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f9cd5c_47856b72",
+        "filename": "config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T10:37:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d54e1b1a_ba1f2489",
+      "range": {
+        "startLine": 94,
+        "startChar": 22,
+        "endLine": 94,
+        "endChar": 32
+      },
+      "revId": "c3568f7f94931ddfc6ef4a12f146e3c758360f42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
