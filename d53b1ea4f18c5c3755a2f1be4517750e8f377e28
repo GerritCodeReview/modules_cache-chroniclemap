@@ -192,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef002555_e09c6f3e",
+        "filename": "config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-05T12:10:52Z",
+      "side": 1,
+      "message": "Ah, I know what that is: it is a *unique* entry that points to a map, which is updated. I\u0027m not sure if we support that use-case though.\n\nExample: the cache value gets loaded, then Gerrit updates the pointed map in memory. Do we persist the updated map?",
+      "parentUuid": "dc86125b_bb6d1ec8",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 67
+      },
+      "revId": "d53b1ea4f18c5c3755a2f1be4517750e8f377e28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b16f34a2_2483c43f",
         "filename": "config.md",
         "patchSetId": 3
@@ -251,6 +275,30 @@
       "side": 1,
       "message": "@luca, any suggestion?",
       "parentUuid": "3659cecc_11cd554f",
+      "range": {
+        "startLine": 162,
+        "startChar": 29,
+        "endLine": 163,
+        "endChar": 7
+      },
+      "revId": "d53b1ea4f18c5c3755a2f1be4517750e8f377e28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "988239b0_64c82827",
+        "filename": "config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-05T12:10:52Z",
+      "side": 1,
+      "message": "\u003e @luca, any suggestion?\n\nIf the cache isn\u0027t documented, it means a Gerrit admin isn\u0027t supposed to configure it. Is this cache persisted to disk by default? If not, then it isn\u0027t something we should be worried about, as it designed and intended to be used in memory only.",
+      "parentUuid": "13eabc22_afea9c9b",
       "range": {
         "startLine": 162,
         "startChar": 29,
