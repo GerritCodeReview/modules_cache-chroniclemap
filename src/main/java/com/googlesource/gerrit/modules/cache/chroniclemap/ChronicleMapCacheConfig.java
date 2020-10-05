@@ -42,6 +42,7 @@ public class ChronicleMapCacheConfig {
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
+  private final int version;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -49,7 +50,8 @@ public class ChronicleMapCacheConfig {
         @Assisted("ConfigKey") String configKey,
         @Assisted("DiskLimit") long diskLimit,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
-        @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite);
+        @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+        int version);
   }
 
   @AssistedInject
@@ -60,11 +62,15 @@ public class ChronicleMapCacheConfig {
       @Assisted("ConfigKey") String configKey,
       @Assisted("DiskLimit") long diskLimit,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
-      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite)
+      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+      @Assisted int version)
       throws IOException {
+    this.version = version;
     final Path cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.persistedFile =
-        cacheDir != null ? cacheDir.resolve(String.format("%s.dat", name)).toFile() : null;
+        cacheDir != null
+            ? cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile()
+            : null;
     this.diskLimit = cfg.getLong("cache", configKey, "diskLimit", diskLimit);
 
     this.maxEntries =
@@ -89,6 +95,10 @@ public class ChronicleMapCacheConfig {
 
     this.maxBloatFactor =
         cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
+  }
+
+  public int getVersion() {
+    return version;
   }
 
   public Duration getExpireAfterWrite() {
