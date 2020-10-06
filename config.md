@@ -15,6 +15,26 @@ Chronicle-map supports most of the cache configuration parameters, such as:
 * `refreshAfterWrite`: Duration after which we asynchronously refresh the cached value.
 [Gerrit docs](https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#cache.name.refreshAfterWrite)
 
+* `diskLimit`: Total size in bytes of the keys and values stored on disk.
+[Gerrit docs](https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#cache.name.diskLimit)
+
+  Chronicle-map's cache file doesn't necessarily increase its size as more and
+  more entries are added to it.
+
+  An initial pre-allocation size is computed by chronicle-map (a function of
+  `entries`, `avgKeySize` and `avgValueSize`), then the file size stays the same
+  until an expansion is needed (the number of expansions allowed is limited by
+  `maxBloatFactor`).
+
+  Upon Gerrit startup, the value allowed by `diskLimit` is checked against the
+  _actual_, _current_ cache file size and, should the latter be greater, Gerrit
+  will fail to start and the relevant error message will be written to
+  `error_log`.
+
+  If a chronicle-map expansion causes the cache file size to grow over the
+  `diskLimit` threshold _after_ Gerrit has already started, a warning will be
+  outputted to the `error_log`.
+
 Chronicle-map implementation however might require some additional configuration
 
 ## Configuration parameters

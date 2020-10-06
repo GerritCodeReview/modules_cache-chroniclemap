@@ -234,7 +234,7 @@ public class ChronicleMapCacheTest {
     cache.put("foo2", "some-stale-value1");
     Thread.sleep(1010); // Allow cache entries to expire
     cache.put("foo3", "some-fresh-value3");
-    cache.prune();
+    cache.maintain();
 
     assertThat(cache.size()).isEqualTo(1);
     assertThat(cache.get("foo3")).isEqualTo("some-fresh-value3");
