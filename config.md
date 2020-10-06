@@ -15,6 +15,16 @@ Chronicle-map supports most of the cache configuration parameters, such as:
 * `refreshAfterWrite`: Duration after which we asynchronously refresh the cached value.
 [Gerrit docs](https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#cache.name.refreshAfterWrite)
 
+* `diskLimit`: Total size in bytes of the keys and values stored on disk.
+Defaults are per-cache and can be found in the relevant documentation:
+[Gerrit docs](https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#cache.name.diskLimit)
+
+  *NOTE*: a per gerrit documentation, a positive value is required to enable disk
+  storage for the cache. However, the provided value cannot be used to limit the
+  size of the file, since that is the result of chronicle-map pre-allocation and
+  it is a function of the number of entries, average sizes and bloat factor,
+  rather than the number of values stored in it.
+
 Chronicle-map implementation however might require some additional configuration
 
 ## Configuration parameters
