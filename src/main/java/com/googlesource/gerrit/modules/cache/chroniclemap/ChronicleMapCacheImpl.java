@@ -21,6 +21,7 @@ import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
@@ -69,11 +70,6 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     mapBuilder.averageValueSize(config.getAverageValueSize());
     mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer()));
 
-    // TODO: ChronicleMap must have "entries" configured, however cache definition
-    //  has already the concept of diskLimit. How to reconcile the two when both
-    //  are defined?
-    //  Should we honour diskLimit, by computing entries as a function of (avgKeySize +
-    // avgValueSize)
     mapBuilder.entries(config.getMaxEntries());
 
     mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
@@ -81,7 +77,25 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
       store = mapBuilder.create();
     } else {
+      boolean alreadyExists =
+          config.getPersistedFile().isFile() && config.getPersistedFile().exists();
       store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
+      long sizeOnDisk = config.getPersistedFile().length();
+
+      if (config.getDiskLimit() > 0 && sizeOnDisk > config.getDiskLimit()) {
+        store.close();
+        if (!alreadyExists) {
+          Files.deleteIfExists(config.getPersistedFile().toPath());
+        }
+        throw new IllegalStateException(
+            String.format(
+                "[%s cache] - disk limit allows a maximum of %s bytes "
+                    + "however chronicle-map cannot honour this value because"
+                    + " it needs to pre-allocate %s bytes, given the current"
+                    + " configuration. Consider increasing the disk limit for"
+                    + " this cache.",
+                def.name(), config.getDiskLimit(), sizeOnDisk));
+      }
     }
 
     logger.atInfo().log(
