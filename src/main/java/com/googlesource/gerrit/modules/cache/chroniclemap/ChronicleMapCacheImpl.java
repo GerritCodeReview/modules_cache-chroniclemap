@@ -21,6 +21,7 @@ import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
@@ -69,19 +70,32 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     mapBuilder.averageValueSize(config.getAverageValueSize());
     mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer()));
 
-    // TODO: ChronicleMap must have "entries" configured, however cache definition
-    //  has already the concept of diskLimit. How to reconcile the two when both
-    //  are defined?
-    //  Should we honour diskLimit, by computing entries as a function of (avgKeySize +
-    // avgValueSize)
     mapBuilder.entries(config.getMaxEntries());
 
     mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
 
-    if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
+    if (inMemoryCache()) {
       store = mapBuilder.create();
     } else {
+      boolean alreadyExists =
+          config.getPersistedFile().isFile() && config.getPersistedFile().exists();
       store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
+
+      if (cacheFileExceededDiskLimit()) {
+        store.close();
+        if (!alreadyExists) {
+          Files.deleteIfExists(config.getPersistedFile().toPath());
+        }
+
+        throw new IllegalStateException(
+            String.format(
+                "[%s cache] - disk limit allows a maximum of %s bytes "
+                    + "however chronicle-map cannot honour this value because"
+                    + " it needs to pre-allocate %s bytes, given the current"
+                    + " configuration. Consider increasing the disk limit for"
+                    + " this cache.",
+                def.name(), config.getDiskLimit(), config.getPersistedFile().length()));
+      }
     }
 
     logger.atInfo().log(
@@ -177,7 +191,16 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     store.put(key, wrapped);
   }
 
-  public void prune() {
+  public void maintain() {
+
+    if (cacheFileExceededDiskLimit()) {
+      logger.atWarning().log(
+          "%s file expanded to exceed the configured diskLimit of %s. "
+              + "Consider increasing `diskLimit` for this cache to a "
+              + "value greater or equal than: %s bytes.",
+          config.getPersistedFile(), config.getDiskLimit(), config.getPersistedFile().length());
+    }
+
     store.forEachEntry(
         c -> {
           if (expired(c.value().get().getCreated())) {
@@ -196,6 +219,17 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     final Duration refreshAfterWrite = config.getRefreshAfterWrite();
     Duration age = Duration.between(Instant.ofEpochMilli(created), TimeUtil.now());
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
+  }
+
+  private boolean inMemoryCache() {
+    return config.getPersistedFile() == null || config.getDiskLimit() < 0;
+  }
+
+  private boolean cacheFileExceededDiskLimit() {
+    if (inMemoryCache()) {
+      return false;
+    }
+    return config.getDiskLimit() > 0 && config.getPersistedFile().length() > config.getDiskLimit();
   }
 
   @Override
