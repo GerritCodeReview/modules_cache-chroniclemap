@@ -69,11 +69,6 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     mapBuilder.averageValueSize(config.getAverageValueSize());
     mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer()));
 
-    // TODO: ChronicleMap must have "entries" configured, however cache definition
-    //  has already the concept of diskLimit. How to reconcile the two when both
-    //  are defined?
-    //  Should we honour diskLimit, by computing entries as a function of (avgKeySize +
-    // avgValueSize)
     mapBuilder.entries(config.getMaxEntries());
 
     mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
@@ -81,6 +76,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
       store = mapBuilder.create();
     } else {
+      logger.atWarning().log(
+          "disk storage is enabled for '%s', however chronicle-map "
+              + "cannot honour the wanted file size of %s bytes, since "
+              + "the latter is pre-allocated by chronicle-map and it "
+              + "is always fixed in size",
+          def.name(), def.diskLimit());
       store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
     }
 
