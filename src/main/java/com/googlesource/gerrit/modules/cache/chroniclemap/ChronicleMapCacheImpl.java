@@ -117,11 +117,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public V getIfPresent(Object objKey) {
     if (store.containsKey(objKey)) {
       TimedValue<V> vTimedValue = store.get(objKey);
       if (!expired(vTimedValue.getCreated())) {
         hitCount.increment();
+        store.put((K) objKey, vTimedValue.setAccessedNow());
         return vTimedValue.getValue();
       } else {
         invalidate(objKey);
@@ -137,6 +139,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        store.put(key, vTimedValue.setAccessedNow());
         return vTimedValue.getValue();
       }
     }
@@ -167,6 +170,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        store.put(key, vTimedValue.setAccessedNow());
         return vTimedValue.getValue();
       }
     }
@@ -210,6 +214,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     final Duration refreshAfterWrite = config.getRefreshAfterWrite();
     Duration age = Duration.between(Instant.ofEpochMilli(created), TimeUtil.now());
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
+  }
+
+  private boolean cannotExpandAnymore() {
+    return store.remainingAutoResizes() == 0 && store.percentageFreeSpace() == 10;
   }
 
   @Override
