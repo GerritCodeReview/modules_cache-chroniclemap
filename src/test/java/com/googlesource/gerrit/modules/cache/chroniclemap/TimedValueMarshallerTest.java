@@ -27,11 +27,12 @@ public class TimedValueMarshallerTest {
   public void shouldSerializeAndDeserializeBack() {
     ObjectId id = ObjectId.fromString("1234567890123456789012345678901234567890");
     long timestamp = 1600329018L;
+    long accessed = 1601996320L;
     int version = 2;
     TimedValueMarshaller<ObjectId> marshaller =
         new TimedValueMarshaller<>(ObjectIdCacheSerializer.INSTANCE);
 
-    final TimedValue<ObjectId> wrapped = new TimedValue<>(id, timestamp, version);
+    final TimedValue<ObjectId> wrapped = new TimedValue<>(id, timestamp, version, accessed);
 
     Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
     marshaller.write(out, wrapped);
@@ -39,3 +40,4 @@ public class TimedValueMarshallerTest {
     assertThat(actual).isEqualTo(wrapped);
   }
 }
+

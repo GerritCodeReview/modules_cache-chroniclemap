@@ -54,19 +54,26 @@ public class TimedValueMarshaller<V>
     long created = buffer.getLong(0);
     in.readPosition(initialPosition + Integer.BYTES + Long.BYTES);
 
+    // Deserialize the accessed timestamp (8 bytes)
+    byte[] serializedAccessed = new byte[Long.BYTES];
+    in.read(serializedAccessed, 0, Long.BYTES);
+    ByteBuffer bufferAccessed = ByteBuffer.wrap(serializedAccessed);
+    long accessed = bufferAccessed.getLong(0);
+    in.readPosition(initialPosition + Integer.BYTES + Long.BYTES + Long.BYTES);
+
     // Deserialize the length of the serialized value (4 bytes)
     byte[] serializedInt = new byte[Integer.BYTES];
     in.read(serializedInt, 0, Integer.BYTES);
     ByteBuffer buffer2 = ByteBuffer.wrap(serializedInt);
     int vLength = buffer2.getInt(0);
-    in.readPosition(initialPosition + Integer.BYTES + Long.BYTES + Integer.BYTES);
+    in.readPosition(initialPosition + Integer.BYTES + Long.BYTES + Integer.BYTES + Long.BYTES);
 
     // Deserialize object V (remaining bytes)
     byte[] serializedV = new byte[vLength];
     in.read(serializedV, 0, vLength);
     V v = serializer.deserialize(serializedV);
 
-    using = new TimedValue<>(v, created, version);
+    using = new TimedValue<>(v, created, version, accessed);
 
     return using;
   }
@@ -76,10 +83,10 @@ public class TimedValueMarshaller<V>
     byte[] serialized = serializer.serialize(toWrite.getValue());
 
     // Serialize as follows:
-    // version | created | length of serialized V | serialized value V
-    // 4 bytes | 8 bytes |       4 bytes          | serialized_length bytes
+    // version | created | accessed | length of serialized V | serialized value V
+    // 4 bytes | 8 bytes |  8 bytes |         4 bytes        | serialized_length bytes
 
-    int capacity = Integer.BYTES + Long.BYTES + Integer.BYTES + serialized.length;
+    int capacity = Integer.BYTES + Long.BYTES + Long.BYTES + Integer.BYTES + serialized.length;
     ByteBuffer buffer = ByteBuffer.allocate(capacity);
 
     int version = toWrite.getVersion();
@@ -88,11 +95,15 @@ public class TimedValueMarshaller<V>
 
     long timestamp = toWrite.getCreated();
     buffer.putLong(timestamp);
-
     buffer.position(Long.BYTES + Integer.BYTES);
+
+    long accessed = toWrite.getAccessed();
+    buffer.putLong(accessed);
+    buffer.position(Long.BYTES + Integer.BYTES + Long.BYTES);
+
     buffer.putInt(serialized.length);
 
-    buffer.position(Long.BYTES + Integer.BYTES + Integer.BYTES);
+    buffer.position(Long.BYTES + Integer.BYTES + Integer.BYTES + Long.BYTES);
     buffer.put(serialized);
 
     out.write(buffer.array());
