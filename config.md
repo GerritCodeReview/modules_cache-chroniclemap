@@ -227,3 +227,9 @@ brand new persistent cache (i.e. delete the old one).
 
 More information on recovery can be found in the
 [Official documentation](https://github.com/OpenHFT/Chronicle-Map/blob/master/docs/CM_Tutorial.adoc#recovery)
+
+### Tuning
+
+This module provides tooling to help understand how configuration should be
+optimized for chronicle-map.
+More information in the [tuning](tuning.md) documentation.
