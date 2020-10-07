@@ -61,3 +61,9 @@ limited to 1000. Default: *1*
 [Official docs](
 https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/hash/ChronicleHashBuilder.html#maxBloatFactor-double-
 )
+
+## Tuning utilities
+
+this module provide tooling to help you understand what configuration should be
+suitable for chronicle-map.
+More information in the [tuning](tuning.md) documentation.
