@@ -20,21 +20,33 @@ public class TimedValue<V> {
   private final V value;
   private final long created;
   private final int version;
+  private long accessed;
 
   TimedValue(V value, int version) {
     this.created = System.currentTimeMillis();
     this.value = value;
     this.version = version;
+    this.accessed = this.created;
   }
 
-  protected TimedValue(V value, long created, int version) {
+  protected TimedValue(V value, long created, int version, long accessed) {
     this.created = created;
     this.value = value;
     this.version = version;
+    this.accessed = accessed;
   }
 
   public long getCreated() {
     return created;
+  }
+
+  public long getAccessed() {
+    return accessed;
+  }
+
+  public TimedValue<V> setAccessedNow() {
+    this.accessed = System.currentTimeMillis();
+    return this;
   }
 
   public V getValue() {
@@ -50,11 +62,14 @@ public class TimedValue<V> {
     if (this == o) return true;
     if (!(o instanceof TimedValue)) return false;
     TimedValue<?> that = (TimedValue<?>) o;
-    return created == that.created && version == that.version && Objects.equal(value, that.value);
+    return created == that.created
+        && accessed == that.accessed
+        && version == that.version
+        && Objects.equal(value, that.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(value, version, created);
+    return Objects.hashCode(value, version, created, accessed);
   }
 }
