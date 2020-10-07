@@ -12,6 +12,9 @@ gerrit_plugin(
     name = "cache-chroniclemap",
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
+    manifest_entries = [
+        "Gerrit-SshModule: com.googlesource.gerrit.modules.cache.chroniclemap.command.SSHCommandModule",
+    ],
     deps = [
         "@chronicle-map//jar",
         "@chronicle-core//jar",
@@ -23,6 +26,8 @@ gerrit_plugin(
         "@javapoet//jar",
         "@jna-platform//jar",
         "@dev-jna//jar",
+        "//lib:h2",
+        "//lib/commons:io",
     ],
 )
 
