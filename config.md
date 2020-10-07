@@ -66,6 +66,7 @@ limited to 1000. Default: *1*
 https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/hash/ChronicleHashBuilder.html#maxBloatFactor-double-
 )
 
+<<<<<<< HEAD
 ### Defaults
 
 Unless overridden by configuration, sensible default values are be provided for
@@ -227,3 +228,9 @@ brand new persistent cache (i.e. delete the old one).
 
 More information on recovery can be found in the
 [Official documentation](https://github.com/OpenHFT/Chronicle-Map/blob/master/docs/CM_Tutorial.adoc#recovery)
+
+### Tuning
+
+this module provide tooling to help you understand what configuration should be
+suitable for chronicle-map.
+More information in the [tuning](tuning.md) documentation.
