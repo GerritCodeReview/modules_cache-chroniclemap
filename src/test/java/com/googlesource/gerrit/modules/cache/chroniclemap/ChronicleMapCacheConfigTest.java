@@ -19,6 +19,7 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_VALUE_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_ENTRIES;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.IOException;
@@ -173,6 +174,23 @@ public class ChronicleMapCacheConfigTest {
 
     assertThat(configUnderTest(gerritConfig).getRefreshAfterWrite())
         .isEqualTo(Duration.ofSeconds(360));
+  }
+
+  @Test
+  public void shouldProvidePercentageFreeSpaceEvictionThresholdWhenConfigured() throws Exception {
+    int percentageFreeThreshold = 70;
+    gerritConfig.setInt(
+        "cache", cacheKey, "percentageFreeSpaceEvictionThreshold", percentageFreeThreshold);
+    gerritConfig.save();
+
+    assertThat(configUnderTest(gerritConfig).getPercentageFreeSpaceEvictionThreshold())
+        .isEqualTo(percentageFreeThreshold);
+  }
+
+  @Test
+  public void shouldProvidePercentageFreeSpaceEvictionThresholdDefault() throws Exception {
+    assertThat(configUnderTest(gerritConfig).getPercentageFreeSpaceEvictionThreshold())
+        .isEqualTo(DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD);
   }
 
   @Test

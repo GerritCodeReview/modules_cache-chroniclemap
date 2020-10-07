@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
@@ -117,11 +120,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public V getIfPresent(Object objKey) {
     if (store.containsKey(objKey)) {
       TimedValue<V> vTimedValue = store.get(objKey);
       if (!expired(vTimedValue.getCreated())) {
         hitCount.increment();
+        store.put((K) objKey, vTimedValue.setAccessedNow());
         return vTimedValue.getValue();
       } else {
         invalidate(objKey);
@@ -137,6 +142,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        store.put(key, vTimedValue.setAccessedNow());
         return vTimedValue.getValue();
       }
     }
@@ -167,6 +173,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        store.put(key, vTimedValue.setAccessedNow());
         return vTimedValue.getValue();
       }
     }
@@ -207,6 +214,27 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             c.context().remove(c);
           }
         });
+
+    while (runningOutOfFreeSpace()) {
+      logger.atWarning().log("Evicting old entry");
+      evictLRU();
+    }
+  }
+
+  private void evictLRU() {
+
+    Optional<Map.Entry<K, TimedValue<V>>> oldest =
+        store
+            .entrySet()
+            .parallelStream()
+            .min(Comparator.comparingLong(o -> o.getValue().getAccessed()));
+
+    oldest.ifPresent(
+        o -> {
+          logger.atWarning().log(
+              "Removing oldest key %s, last accessed %s", o.getKey(), o.getValue().getAccessed());
+          store.remove(o.getKey());
+        });
   }
 
   private boolean expired(long created) {
@@ -230,6 +258,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       return false;
     }
     return config.getDiskLimit() > 0 && config.getPersistedFile().length() > config.getDiskLimit();
+}
+
+  private boolean runningOutOfFreeSpace() {
+    return store.remainingAutoResizes() == 0
+        && store.percentageFreeSpace() <= config.getPercentageFreeSpaceEvictionThreshold();
   }
 
   @Override
