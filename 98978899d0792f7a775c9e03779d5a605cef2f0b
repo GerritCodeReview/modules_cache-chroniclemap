@@ -238,6 +238,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc80ae25_1c705644",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T10:58:18Z",
+      "side": 1,
+      "message": "Understood, but look at the other comments: I don\u0027t believe version should be repeated *all the times* for each value.",
+      "parentUuid": "06f1d0c2_415cb9c6",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce805d9c_01246160",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
         "patchSetId": 2
@@ -320,6 +344,30 @@
       "side": 1,
       "message": "`version` is the version at the time the timedValue was created.\n- When stored for the first time: yes, it matches the global cache definition version.\n- When retrieved: it might be different *if* the cache definition version has changed.\n\nStoring `version` alongside the value is necessary in order to understand _which_ cache definition\nstored tihs value for the first time.\n\nH2Implementation also uses a similar approach and version is a column present in each stored field.[1]\n\nHope it makes sense.\n\nHowever you made me think about a flow on this approach:\nIf the version has changed, then the stored value might not be deserializable with the current deserializer anymore.\n\nThanks for your feedback, let me go back to the drawing board for this.\n\n\n[1]https://gerrit.googlesource.com/gerrit.git/+/refs/heads/master/java/com/google/gerrit/server/cache/h2/H2CacheImpl.java#484",
       "parentUuid": "258b3994_92cd6c1d",
+      "range": {
+        "startLine": 24,
+        "startChar": 20,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92cf02d8_eaf37df0",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T10:58:18Z",
+      "side": 1,
+      "message": "Yeah, don\u0027t necessarily consider H2 as a \"good example\" for everything :-)\nIf the version is different \u003d\u003e we should throw the *entire cache* altogether, and start from scratch.",
+      "parentUuid": "67ff8b6b_7f5f6e8f",
       "range": {
         "startLine": 24,
         "startChar": 20,
