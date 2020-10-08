@@ -166,7 +166,7 @@ public class ChronicleMapCacheTest {
   public void getIfPresentShouldReturnNullWhenValueIsExpired() throws Exception {
     ChronicleMapCacheImpl<String, String> cache = newCache(true, null, Duration.ofSeconds(1), null);
     cache.put("foo", "some-stale-value");
-    Thread.sleep(1000); // Allow cache entry to expire
+    Thread.sleep(1010); // Allow cache entry to expire
     assertThat(cache.getIfPresent("foo")).isNull();
   }
 
@@ -176,7 +176,7 @@ public class ChronicleMapCacheTest {
     ChronicleMapCacheImpl<String, String> cache =
         newCache(true, newCachedValue, null, Duration.ofSeconds(1));
     cache.put("foo", "some-stale-value");
-    Thread.sleep(1000); // Allow cache to be flagged as needing refresh
+    Thread.sleep(1010); // Allow cache to be flagged as needing refresh
     assertThat(cache.get("foo")).isEqualTo(newCachedValue);
   }
 
@@ -185,7 +185,7 @@ public class ChronicleMapCacheTest {
     ChronicleMapCacheImpl<String, String> cache = newCache(true, null, Duration.ofSeconds(1), null);
     cache.put("foo1", "some-stale-value1");
     cache.put("foo2", "some-stale-value1");
-    Thread.sleep(1000); // Allow cache entries to expire
+    Thread.sleep(1010); // Allow cache entries to expire
     cache.put("foo3", "some-fresh-value3");
     cache.prune();
 
