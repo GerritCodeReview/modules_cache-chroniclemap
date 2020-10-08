@@ -1,0 +1,389 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d9b3831_c637c20f",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "Leftover of a conflict?",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d48262_7f1a6aa8",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "provides",
+      "range": {
+        "startLine": 234,
+        "startChar": 12,
+        "endLine": 234,
+        "endChar": 19
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1de2ddf_3400e29f",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "how",
+      "range": {
+        "startLine": 234,
+        "startChar": 51,
+        "endLine": 234,
+        "endChar": 55
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d6622f3_2a5b22a3",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "You is redundant here.",
+      "range": {
+        "startLine": 234,
+        "startChar": 36,
+        "endLine": 234,
+        "endChar": 39
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d42b599_a18e831f",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "T",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 1
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f5fedd3_19b7b119",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "optimized",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 8
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "814994ff_a5c62fda",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "2020",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "331e44d9_f882aa10",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "This can go into the try() enclosure, so that is getting auto-closed.",
+      "range": {
+        "startLine": 74,
+        "startChar": 8,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c637ea_8c5b2315",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "What about the bloat factor?",
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "281ad765_0dd16036",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "Not needed when using the auto-closing enclosure.",
+      "range": {
+        "startLine": 101,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 7
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4399f64d_22b2f4ef",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "Why not storing it directly on gerrit.config?",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 36
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0d820be_deefac91",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/SSHCommandModule.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "autoconf? migrate-config?",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5b07c2_2709a77d",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "What is",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1e0e8fd_d9244fb6",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "a",
+      "range": {
+        "startLine": 8,
+        "startChar": 31,
+        "endLine": 8,
+        "endChar": 33
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed32737_069aa394",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "get",
+      "range": {
+        "startLine": 8,
+        "startChar": 54,
+        "endLine": 8,
+        "endChar": 61
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0591b6bd_64d06f07",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "open-source",
+      "range": {
+        "startLine": 11,
+        "startChar": 40,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564c2321_5e8b3f2c",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T22:46:51Z",
+      "side": 1,
+      "message": "not need downtime",
+      "range": {
+        "startLine": 19,
+        "startChar": 24,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
