@@ -46,6 +46,30 @@
       },
       "revId": "62662f875891c2abc979155863269bae84e059c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "696c7782_ff76a063",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T20:30:45Z",
+      "side": 1,
+      "message": "You are right. Let\u0027s do the speedup of the tests in a separate change.\nThis fix is good enough for now. Merging it.",
+      "parentUuid": "edea113b_6d5882cc",
+      "range": {
+        "startLine": 179,
+        "startChar": 17,
+        "endLine": 179,
+        "endChar": 21
+      },
+      "revId": "62662f875891c2abc979155863269bae84e059c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
