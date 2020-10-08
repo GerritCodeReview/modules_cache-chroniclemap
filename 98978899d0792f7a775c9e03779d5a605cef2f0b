@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04b10328_055e3b49",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "also be",
+      "range": {
+        "startLine": 16,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe97305_a5e4acfe",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "Why nullable? It looks like the version is mandatory in the persistent cache definition.",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 18
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67bb0a5_5e8a2941",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be nullable",
+      "range": {
+        "startLine": 66,
+        "startChar": 6,
+        "endLine": 66,
+        "endChar": 15
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7321b7_4f995f64",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "int",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "259649ba_b91ea8c8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "This change is about versioning: why the defaults are changing as well? Should you put this in a follow-up change?",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce805d9c_01246160",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "This returns an int (primitive type) and therefore can\u0027t be null.",
+      "range": {
+        "startLine": 74,
+        "startChar": 12,
+        "endLine": 74,
+        "endChar": 24
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "258b3994_92cd6c1d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "The version is a global number for the cache and NOT associated with the individual value.\nA cache with 1M element, would waste 4MBytes in storing the version with each value.",
+      "range": {
+        "startLine": 24,
+        "startChar": 20,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dc7dca5_90abd023",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:57:03Z",
+      "side": 1,
+      "message": "Same as above: the version is a global value for all elements in the cache. I wouldn\u0027t store it with each individual value.",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 70
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
