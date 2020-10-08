@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4475ad4c_30c69571",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T20:14:45Z",
+      "side": 1,
+      "message": "We should avoid magic values in tests. Also, why slowing down the tests so much? Would it be the same test logic by putting just a lower number? (e.g. 50ms)",
+      "range": {
+        "startLine": 179,
+        "startChar": 17,
+        "endLine": 179,
+        "endChar": 21
+      },
+      "revId": "62662f875891c2abc979155863269bae84e059c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
