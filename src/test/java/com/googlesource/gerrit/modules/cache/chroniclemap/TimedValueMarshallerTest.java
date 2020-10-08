@@ -17,6 +17,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.server.cache.serialize.ObjectIdCacheSerializer;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import net.openhft.chronicle.bytes.Bytes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Test;
@@ -24,17 +25,32 @@ import org.junit.Test;
 public class TimedValueMarshallerTest {
 
   @Test
-  public void shouldSerializeAndDeserializeBack() {
+  public void shouldSerializeAndDeserializeBackWhenValueHasNotExpired() {
     ObjectId id = ObjectId.fromString("1234567890123456789012345678901234567890");
     long timestamp = 1600329018L;
     TimedValueMarshaller<ObjectId> marshaller =
-        new TimedValueMarshaller<>(ObjectIdCacheSerializer.INSTANCE);
+        new TimedValueMarshaller<>(ObjectIdCacheSerializer.INSTANCE, Duration.ZERO);
 
     final TimedValue<ObjectId> wrapped = new TimedValue<>(id, timestamp);
 
     Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
     marshaller.write(out, wrapped);
-    final TimedValue<ObjectId> actual = marshaller.read(out, null);
+    final CachedValue<ObjectId> actual = marshaller.read(out, null);
     assertThat(actual).isEqualTo(wrapped);
+  }
+
+  @Test
+  public void shouldSerializeAndDeserializeBackWhenValueHasExpired() throws InterruptedException {
+    ObjectId id = ObjectId.fromString("1234567890123456789012345678901234567890");
+    TimedValueMarshaller<ObjectId> marshaller =
+        new TimedValueMarshaller<>(ObjectIdCacheSerializer.INSTANCE, Duration.ofSeconds(1));
+
+    final TimedValue<ObjectId> wrapped = new TimedValue<>(id);
+    Thread.sleep(1001); // Allow value to expire
+
+    Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
+    marshaller.write(out, wrapped);
+    final CachedValue<ObjectId> actual = marshaller.read(out, null);
+    assertThat(actual).isEqualTo(new Invalid<ObjectId>());
   }
 }
