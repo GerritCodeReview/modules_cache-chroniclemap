@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d79380_ab2f5c5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04b10328_055e3b49",
+      "range": {
+        "startLine": 16,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abe97305_a5e4acfe",
@@ -37,6 +61,30 @@
       "writtenOn": "2020-10-08T07:57:03Z",
       "side": 1,
       "message": "Why nullable? It looks like the version is mandatory in the persistent cache definition.",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 18
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c15bfd3b_001d8078",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "you\u0027re right, well spotted.",
+      "parentUuid": "abe97305_a5e4acfe",
       "range": {
         "startLine": 54,
         "startChar": 8,
@@ -93,6 +141,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cffd34b_55331092",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d67bb0a5_5e8a2941",
+      "range": {
+        "startLine": 66,
+        "startChar": 6,
+        "endLine": 66,
+        "endChar": 15
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1fa4bcd_95fd1a15",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d7321b7_4f995f64",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "259649ba_b91ea8c8",
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06f1d0c2_415cb9c6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "I think updating the defaults should be part of this change:\nThis change introduces an _additional_ 4 bytes that will be serialized and we should account for them by adjusting the defaults.\n\nIf we didn\u0027t, then this commit would generate an artifact in which defaults are off by 4 bytes.",
+      "parentUuid": "259649ba_b91ea8c8",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce805d9c_01246160",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
         "patchSetId": 2
@@ -129,6 +249,30 @@
       "writtenOn": "2020-10-08T07:57:03Z",
       "side": 1,
       "message": "This returns an int (primitive type) and therefore can\u0027t be null.",
+      "range": {
+        "startLine": 74,
+        "startChar": 12,
+        "endLine": 74,
+        "endChar": 24
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d0f1b2_9731bd53",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ce805d9c_01246160",
       "range": {
         "startLine": 74,
         "startChar": 12,
@@ -164,6 +308,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67ff8b6b_7f5f6e8f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "`version` is the version at the time the timedValue was created.\n- When stored for the first time: yes, it matches the global cache definition version.\n- When retrieved: it might be different *if* the cache definition version has changed.\n\nStoring `version` alongside the value is necessary in order to understand _which_ cache definition\nstored tihs value for the first time.\n\nH2Implementation also uses a similar approach and version is a column present in each stored field.[1]\n\nHope it makes sense.\n\nHowever you made me think about a flow on this approach:\nIf the version has changed, then the stored value might not be deserializable with the current deserializer anymore.\n\nThanks for your feedback, let me go back to the drawing board for this.\n\n\n[1]https://gerrit.googlesource.com/gerrit.git/+/refs/heads/master/java/com/google/gerrit/server/cache/h2/H2CacheImpl.java#484",
+      "parentUuid": "258b3994_92cd6c1d",
+      "range": {
+        "startLine": 24,
+        "startChar": 20,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6dc7dca5_90abd023",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 2
@@ -175,6 +343,30 @@
       "writtenOn": "2020-10-08T07:57:03Z",
       "side": 1,
       "message": "Same as above: the version is a global value for all elements in the cache. I wouldn\u0027t store it with each individual value.",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 70
+      },
+      "revId": "98978899d0792f7a775c9e03779d5a605cef2f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ceb943c_24396731",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-08T09:31:56Z",
+      "side": 1,
+      "message": "See my previous answer",
+      "parentUuid": "6dc7dca5_90abd023",
       "range": {
         "startLine": 79,
         "startChar": 4,
