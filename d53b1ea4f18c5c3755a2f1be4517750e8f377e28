@@ -238,6 +238,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e71775b_12bca692",
+        "filename": "config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:47:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f53655a4_cd5f59ec",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 67
+      },
+      "revId": "d53b1ea4f18c5c3755a2f1be4517750e8f377e28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b16f34a2_2483c43f",
@@ -395,6 +419,30 @@
       "side": 1,
       "message": "@luca, note that change_kind *is* a persisted cache:\nhttps://gerrit.googlesource.com/gerrit/+/refs/heads/master/java/com/google/gerrit/server/change/ChangeKindCacheImpl.java#72",
       "parentUuid": "e4ec6028_965f00c4",
+      "range": {
+        "startLine": 162,
+        "startChar": 29,
+        "endLine": 163,
+        "endChar": 7
+      },
+      "revId": "d53b1ea4f18c5c3755a2f1be4517750e8f377e28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c2ebaf9_5ed3ed35",
+        "filename": "config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-08T07:47:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "da9b0b87_4ddcd3ec",
       "range": {
         "startLine": 162,
         "startChar": 29,
