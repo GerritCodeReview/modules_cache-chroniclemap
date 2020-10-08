@@ -328,7 +328,7 @@ public class ChronicleMapCacheTest {
 
   private int valueSize(String value) {
     final TimedValueMarshaller<String> marshaller =
-        new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
+        new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE, Duration.ZERO);
 
     Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
     marshaller.write(out, new TimedValue<>(value));
