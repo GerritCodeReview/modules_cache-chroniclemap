@@ -6,9 +6,9 @@
       "updated": "2020-10-08T19:49:18Z"
     },
     "gerritforge:cache-chroniclemap-code-style": {
-      "state": "SCHEDULED",
+      "state": "NOT_STARTED",
       "created": "2020-10-08T16:51:04Z",
-      "updated": "2020-10-08T19:46:19Z"
+      "updated": "2020-10-08T19:49:19Z"
     }
   }
 }
