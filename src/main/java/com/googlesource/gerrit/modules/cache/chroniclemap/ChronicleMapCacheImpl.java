@@ -36,7 +36,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   private final ChronicleMapCacheConfig config;
   private final CacheLoader<K, V> loader;
-  private final ChronicleMap<K, TimedValue<V>> store;
+  private final ChronicleMap<K, CachedValue<V>> store;
   private final LongAdder hitCount = new LongAdder();
   private final LongAdder missCount = new LongAdder();
   private final LongAdder loadSuccessCount = new LongAdder();
@@ -52,9 +52,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.loader = loader;
 
     final Class<K> keyClass = (Class<K>) def.keyType().getRawType();
-    final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
+    final Class<CachedValue<V>> valueWrapperClass = (Class<CachedValue<V>>) (Class) CachedValue.class;
 
-    final ChronicleMapBuilder<K, TimedValue<V>> mapBuilder =
+    final ChronicleMapBuilder<K, CachedValue<V>> mapBuilder =
         ChronicleMap.of(keyClass, valueWrapperClass).name(def.name());
 
     // Chronicle-map does not allow to custom-serialize boxed primitives
@@ -62,12 +62,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     // This means that even though a custom serializer was provided for a primitive
     // it cannot be used.
     if (!mapBuilder.constantlySizedKeys()) {
+
       mapBuilder.averageKeySize(config.getAverageKeySize());
       mapBuilder.keyMarshaller(new ChronicleMapMarshallerAdapter<>(def.keySerializer()));
     }
 
     mapBuilder.averageValueSize(config.getAverageValueSize());
-    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer()));
+    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer(), config.getExpireAfterWrite()));
 
     // TODO: ChronicleMap must have "entries" configured, however cache definition
     //  has already the concept of diskLimit. How to reconcile the two when both
@@ -104,10 +105,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   @Override
   public V getIfPresent(Object objKey) {
     if (store.containsKey(objKey)) {
-      TimedValue<V> vTimedValue = store.get(objKey);
-      if (!expired(vTimedValue.getCreated())) {
+      CachedValue<V> vTimedValue = store.get(objKey);
+      if (vTimedValue.isValid()) {
         hitCount.increment();
-        return vTimedValue.getValue();
+        return ((TimedValue<V>) vTimedValue).getValue();
       } else {
         invalidate(objKey);
       }
@@ -119,10 +120,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   @Override
   public V get(K key) throws ExecutionException {
     if (store.containsKey(key)) {
-      TimedValue<V> vTimedValue = store.get(key);
-      if (!needsRefresh(vTimedValue.getCreated())) {
+      CachedValue<V> vTimedValue = store.get(key);
+      if (!needsRefresh(vTimedValue)) {
         hitCount.increment();
-        return vTimedValue.getValue();
+        return ((TimedValue<V>) vTimedValue).getValue();
       }
     }
     missCount.increment();
@@ -149,10 +150,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   @Override
   public V get(K key, Callable<? extends V> valueLoader) throws ExecutionException {
     if (store.containsKey(key)) {
-      TimedValue<V> vTimedValue = store.get(key);
-      if (!needsRefresh(vTimedValue.getCreated())) {
+      CachedValue<V> vTimedValue = store.get(key);
+      if (!needsRefresh(vTimedValue)) {
         hitCount.increment();
-        return vTimedValue.getValue();
+        return ((TimedValue<V>) vTimedValue).getValue();
       }
     }
     missCount.increment();
@@ -179,21 +180,18 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void prune() {
     store.forEachEntry(
         c -> {
-          if (expired(c.value().get().getCreated())) {
+          if (!c.value().get().isValid()) {
             c.context().remove(c);
           }
         });
   }
 
-  private boolean expired(long created) {
-    Duration expireAfterWrite = config.getExpireAfterWrite();
-    Duration age = Duration.between(Instant.ofEpochMilli(created), TimeUtil.now());
-    return !expireAfterWrite.isZero() && age.compareTo(expireAfterWrite) > 0;
-  }
-
-  private boolean needsRefresh(long created) {
+  private boolean needsRefresh(CachedValue<V> v ) {
+    if(!v.isValid()) {
+      return true;
+    }
     final Duration refreshAfterWrite = config.getRefreshAfterWrite();
-    Duration age = Duration.between(Instant.ofEpochMilli(created), TimeUtil.now());
+    Duration age = Duration.between(Instant.ofEpochMilli(((TimedValue<V>) v).getCreated()), TimeUtil.now());
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
   }
 

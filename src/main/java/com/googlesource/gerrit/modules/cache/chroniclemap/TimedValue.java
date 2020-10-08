@@ -15,7 +15,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.base.Objects;
 
-public class TimedValue<V> {
+class TimedValue<V> implements CachedValue<V> {
 
   private final V value;
   private final long created;
@@ -49,5 +49,10 @@ public class TimedValue<V> {
   @Override
   public int hashCode() {
     return Objects.hashCode(value, created);
+  }
+
+  @Override
+  public boolean isValid() {
+    return true;
   }
 }
