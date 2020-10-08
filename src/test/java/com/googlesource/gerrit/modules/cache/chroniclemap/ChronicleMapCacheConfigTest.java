@@ -22,6 +22,7 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.time.Duration;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -178,8 +179,8 @@ public class ChronicleMapCacheConfigTest {
     gerritConfig.setString("cache", null, "directory", "/var/bar/foobar");
     gerritConfig.save();
 
-    IOException thrown = assertThrows(IOException.class, () -> configUnderTest(gerritConfig));
-    assertThat(thrown).hasMessageThat().contains("Operation not permitted");
+    FileSystemException thrown = assertThrows(FileSystemException.class, () -> configUnderTest(gerritConfig));
+    assertThat(thrown).hasMessageThat().contains("/var/bar: Read-only file system");
   }
 
   @Test
