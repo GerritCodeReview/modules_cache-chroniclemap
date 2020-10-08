@@ -14,30 +14,36 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
+import com.google.gerrit.server.util.time.TimeUtil;
 import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.time.Instant;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.util.ReadResolvable;
 import net.openhft.chronicle.hash.serialization.BytesReader;
 import net.openhft.chronicle.hash.serialization.BytesWriter;
 
 public class TimedValueMarshaller<V>
-    implements BytesWriter<TimedValue<V>>,
-        BytesReader<TimedValue<V>>,
+    implements BytesWriter<CachedValue<V>>,
+        BytesReader<CachedValue<V>>,
         ReadResolvable<TimedValueMarshaller<V>> {
 
   private final CacheSerializer<V> serializer;
+  private final Duration expireAfterWrite;
+  private final CachedValue<V> INVALID = new Invalid<>();
 
-  TimedValueMarshaller(CacheSerializer<V> serializer) {
+  TimedValueMarshaller(CacheSerializer<V> serializer, Duration expireAfterWrite) {
     this.serializer = serializer;
+    this.expireAfterWrite = expireAfterWrite;
   }
 
   @Override
   public TimedValueMarshaller<V> readResolve() {
-    return new TimedValueMarshaller<>(serializer);
+    return new TimedValueMarshaller<>(serializer, expireAfterWrite);
   }
 
   @Override
-  public TimedValue<V> read(Bytes in, TimedValue<V> using) {
+  public CachedValue<V> read(Bytes in, CachedValue<V> using) {
     long initialPosition = in.readPosition();
 
     // Deserialize the creation timestamp (first 8 bytes)
@@ -46,6 +52,10 @@ public class TimedValueMarshaller<V>
     ByteBuffer buffer = ByteBuffer.wrap(serializedLong);
     long created = buffer.getLong(0);
     in.readPosition(initialPosition + Long.BYTES);
+
+    if (expired(created)) {
+      return INVALID;
+    }
 
     // Deserialize the length of the serialized value (second 8 bytes)
     byte[] serializedInt = new byte[Integer.BYTES];
@@ -65,25 +75,35 @@ public class TimedValueMarshaller<V>
   }
 
   @Override
-  public void write(Bytes out, TimedValue<V> toWrite) {
-    byte[] serialized = serializer.serialize(toWrite.getValue());
+  public void write(Bytes out, CachedValue<V> toWrite) {
 
-    // Serialize as follows:
-    // created | length of serialized V | serialized value V
-    // 8 bytes |       4 bytes          | serialized_length bytes
+    if (toWrite instanceof TimedValue) {
+      TimedValue<V> valid = (TimedValue<V>) toWrite;
 
-    int capacity = Long.BYTES + Integer.BYTES + serialized.length;
-    ByteBuffer buffer = ByteBuffer.allocate(capacity);
+      byte[] serialized = serializer.serialize(valid.getValue());
 
-    long timestamp = toWrite.getCreated();
-    buffer.putLong(0, timestamp);
+      // Serialize as follows:
+      // created | length of serialized V | serialized value V
+      // 8 bytes |       4 bytes          | serialized_length bytes
 
-    buffer.position(Long.BYTES);
-    buffer.putInt(serialized.length);
+      int capacity = Long.BYTES + Integer.BYTES + serialized.length;
+      ByteBuffer buffer = ByteBuffer.allocate(capacity);
 
-    buffer.position(Long.BYTES + Integer.BYTES);
-    buffer.put(serialized);
+      long timestamp = valid.getCreated();
+      buffer.putLong(0, timestamp);
 
-    out.write(buffer.array());
+      buffer.position(Long.BYTES);
+      buffer.putInt(serialized.length);
+
+      buffer.position(Long.BYTES + Integer.BYTES);
+      buffer.put(serialized);
+
+      out.write(buffer.array());
+    }
+  }
+
+  private boolean expired(long created) {
+    Duration age = Duration.between(Instant.ofEpochMilli(created), TimeUtil.now());
+    return !expireAfterWrite.isZero() && age.compareTo(expireAfterWrite) > 0;
   }
 }
