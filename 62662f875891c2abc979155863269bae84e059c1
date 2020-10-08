@@ -94,6 +94,30 @@
       },
       "revId": "62662f875891c2abc979155863269bae84e059c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f004bd_c1e53a90",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-10-08T20:36:05Z",
+      "side": 1,
+      "message": "Ok I know why. Because expiry is in seconds:com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig\n\n    this.expireAfterWrite \u003d\n        Duration.ofSeconds(\n            ConfigUtil.getTimeUnit(\n                cfg, \"cache\", configKey, \"maxAge\", toSeconds(expireAfterWrite), SECONDS));",
+      "parentUuid": "edea113b_6d5882cc",
+      "range": {
+        "startLine": 179,
+        "startChar": 17,
+        "endLine": 179,
+        "endChar": 21
+      },
+      "revId": "62662f875891c2abc979155863269bae84e059c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
