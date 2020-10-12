@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59265f35_9e2eec69",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1d9b3831_c637c20f",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38d48262_7f1a6aa8",
@@ -116,6 +140,102 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57389872_e4290ca3",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7d42b599_a18e831f",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 1
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c502e778_06c612e7",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f1de2ddf_3400e29f",
+      "range": {
+        "startLine": 234,
+        "startChar": 51,
+        "endLine": 234,
+        "endChar": 55
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a65fdeb_5b7c0c59",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "38d48262_7f1a6aa8",
+      "range": {
+        "startLine": 234,
+        "startChar": 12,
+        "endLine": 234,
+        "endChar": 19
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fae19db0_29c407cd",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9d6622f3_2a5b22a3",
+      "range": {
+        "startLine": 234,
+        "startChar": 36,
+        "endLine": 234,
+        "endChar": 39
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f5fedd3_19b7b119",
@@ -129,6 +249,30 @@
       "writtenOn": "2020-10-08T22:46:51Z",
       "side": 1,
       "message": "optimized",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 8
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c6debd1_85a976ca",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4f5fedd3_19b7b119",
       "range": {
         "startLine": 235,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44717f19_cc5c11ff",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "814994ff_a5c62fda",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "331e44d9_f882aa10",
@@ -175,6 +343,30 @@
       "writtenOn": "2020-10-08T22:46:51Z",
       "side": 1,
       "message": "This can go into the try() enclosure, so that is getting auto-closed.",
+      "range": {
+        "startLine": 74,
+        "startChar": 8,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2d987c_e2480a41",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "331e44d9_f882aa10",
       "range": {
         "startLine": 74,
         "startChar": 8,
@@ -204,6 +396,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "509ad2e1_5de8b880",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "The bloatFactor is not something that can be extrapolated by observing the current H2 caches. I think the only sensible default would be 1, which is the default.\n\nWere you thinking of a different way to come up with a different value?",
+      "parentUuid": "77c637ea_8c5b2315",
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "281ad765_0dd16036",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
         "patchSetId": 5
@@ -215,6 +425,30 @@
       "writtenOn": "2020-10-08T22:46:51Z",
       "side": 1,
       "message": "Not needed when using the auto-closing enclosure.",
+      "range": {
+        "startLine": 101,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 7
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e631a5d8_02d77811",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "281ad765_0dd16036",
       "range": {
         "startLine": 101,
         "startChar": 8,
@@ -250,6 +484,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b6b0a6e_7fd56955",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "I thought about it but I think that would be not ideal for different reasons:\n\n- I meant this command to help the admin decide _some_ values of chronicle-map configuration by looking at the existing caches, not to auto-configure it for the admins. I didn\u0027t have in mind to have a migration tool, but just a cache-analyzer (hence the name)\n\n- As I try to explain in the tuning.md the generated configuration is not necessarily final and it might still need adjustments (i.e. bloatFactor, more entries, etc): I\u0027d like the admin to make the _conscious choice_ to observe the result and modifying the value before committing them to gerrit.config\n\n- The gerrit.config might be the _result_ of some provisioning tool template (i.e. ansible), so making changes to the file directly in production might cause the deployed version to drift from the intended one.",
+      "parentUuid": "4399f64d_22b2f4ef",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 36
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0d820be_deefac91",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/SSHCommandModule.java",
         "patchSetId": 5
@@ -273,6 +531,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51d02141_9f36b822",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/SSHCommandModule.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "See above, I meant for this tool to be a cache-analyzer, a helper, not a migration tool.",
+      "parentUuid": "f0d820be_deefac91",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b5b07c2_2709a77d",
         "filename": "tuning.md",
         "patchSetId": 5
@@ -284,6 +566,30 @@
       "writtenOn": "2020-10-08T22:46:51Z",
       "side": 1,
       "message": "What is",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d08a80e0_b9fab95e",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6b5b07c2_2709a77d",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -340,6 +646,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e5177b8_709b80e6",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b1e0e8fd_d9244fb6",
+      "range": {
+        "startLine": 8,
+        "startChar": 31,
+        "endLine": 8,
+        "endChar": 33
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb519710_22ad0109",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8ed32737_069aa394",
+      "range": {
+        "startLine": 8,
+        "startChar": 54,
+        "endLine": 8,
+        "endChar": 61
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0591b6bd_64d06f07",
@@ -363,6 +717,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "257270eb_09f39763",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0591b6bd_64d06f07",
+      "range": {
+        "startLine": 11,
+        "startChar": 40,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "564c2321_5e8b3f2c",
@@ -376,6 +754,30 @@
       "writtenOn": "2020-10-08T22:46:51Z",
       "side": 1,
       "message": "not need downtime",
+      "range": {
+        "startLine": 19,
+        "startChar": 24,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1250a873_8b4b01b5",
+        "filename": "tuning.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-12T08:27:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "564c2321_5e8b3f2c",
       "range": {
         "startLine": 19,
         "startChar": 24,
