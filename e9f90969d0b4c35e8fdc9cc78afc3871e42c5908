@@ -412,6 +412,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb07ac8_2a73cf6d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-12T22:02:33Z",
+      "side": 1,
+      "message": "Not really, 1 looks good to me.",
+      "parentUuid": "509ad2e1_5de8b880",
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "281ad765_0dd16036",
@@ -506,6 +524,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a1c83eb_fa141812",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2Caches.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-12T22:02:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1b6b0a6e_7fd56955",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 36
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0d820be_deefac91",
@@ -543,6 +585,30 @@
       "side": 1,
       "message": "See above, I meant for this tool to be a cache-analyzer, a helper, not a migration tool.",
       "parentUuid": "f0d820be_deefac91",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "e9f90969d0b4c35e8fdc9cc78afc3871e42c5908",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0366fde3_a224c5a8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/SSHCommandModule.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-12T22:02:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "51d02141_9f36b822",
       "range": {
         "startLine": 21,
         "startChar": 13,
