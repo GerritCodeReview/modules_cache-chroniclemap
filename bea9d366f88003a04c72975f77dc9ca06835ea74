@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d85be49_dcdff52d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-12T22:03:36Z",
+      "side": 1,
+      "message": "Tests missing: they don\u0027t have to be fully covered, as this feature is a one-off. However, it would be best just to have a couple of tests that make sure that the command won\u0027t break.",
+      "revId": "bea9d366f88003a04c72975f77dc9ca06835ea74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
