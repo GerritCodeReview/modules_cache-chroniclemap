@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e9f116f_99e4c471",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-19T17:01:58Z",
+      "side": 1,
+      "message": "chronicle-map does not support LRU eviction (nor ordering), so LRU-based cache eviction requires a scan of the entire cache in order to find the minimum, which has a linear complexity for each invalidation. so m invalidations this goes to O(m*n), which is quite bad.\n\nPerhaps this is good enough as this is done on a best-effort approach, but perhaps we should be looking at optimizations.\n\nWDYT?",
+      "revId": "1655b97a8458bf969315da273746459c8a3a506d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
