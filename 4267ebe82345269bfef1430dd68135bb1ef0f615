@@ -22,6 +22,30 @@
       },
       "revId": "4267ebe82345269bfef1430dd68135bb1ef0f615",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f282fb_d6943076",
+        "filename": "config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-19T16:30:14Z",
+      "side": 1,
+      "message": "@luca I have implemented this, because I thought we could achieve it, however I have to change my mind on this approach.\n \nchronicle-map cache can expand on disk up to `maxBloatFactor` times, which in turns increases the file size on disk: this means the cache file can still overgrow the diskLimit configuration _after_ we checked during gerrit startup.\n\nThe alternative would be to consider the _worst_ case: as in, how much the map will occupy if it was fully blown. Unfortunately we do not know how much a fully blown cache will occupy on disk :/\n\nI am not sure if we can do better than warning the user that diskLimit cannot be honoured.\n\nWhat do you think?",
+      "parentUuid": "1ab3266a_cc2558a2",
+      "range": {
+        "startLine": 24,
+        "startChar": 28,
+        "endLine": 24,
+        "endChar": 74
+      },
+      "revId": "4267ebe82345269bfef1430dd68135bb1ef0f615",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
