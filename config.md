@@ -27,6 +27,11 @@ Chronicle-map supports most of the cache configuration parameters, such as:
   Gerrit will fail to start: the relevant error message will be written to
   `error_log`.
 
+* `percentageFreeSpaceEvictionThreshold`: The percentage of free space in the
+last available expansion of chronicle-map beyond which entries will start being
+evicted in LRU order.
+Default: *90*
+
 Chronicle-map implementation however might require some additional configuration
 
 ## Configuration parameters

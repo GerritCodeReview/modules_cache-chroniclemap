@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
@@ -202,6 +205,27 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             c.context().remove(c);
           }
         });
+
+    while (runningOutOfFreeSpace()) {
+      logger.atWarning().log("Evicting old entry");
+      evictLRU();
+    }
+  }
+
+  private void evictLRU() {
+
+    Optional<Map.Entry<K, TimedValue<V>>> oldest =
+        store
+            .entrySet()
+            .parallelStream()
+            .min(Comparator.comparingLong(o -> o.getValue().getAccessed()));
+
+    oldest.ifPresent(
+        o -> {
+          logger.atWarning().log(
+              "Removing oldest key %s, last accessed %s", o.getKey(), o.getValue().getAccessed());
+          store.remove(o.getKey());
+        });
   }
 
   private boolean expired(long created) {
@@ -216,8 +240,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
   }
 
-  private boolean cannotExpandAnymore() {
-    return store.remainingAutoResizes() == 0 && store.percentageFreeSpace() == 10;
+  private boolean runningOutOfFreeSpace() {
+    return store.remainingAutoResizes() == 0
+        && store.percentageFreeSpace() <= config.getPercentageFreeSpaceEvictionThreshold();
   }
 
   @Override
