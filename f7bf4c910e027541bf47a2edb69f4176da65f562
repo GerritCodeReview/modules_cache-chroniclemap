@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec6811d8_7dee9e3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-10-19T08:20:54Z",
+      "side": 1,
+      "message": "Yes the avg key size is different I thought that it will be always the same. Probably some rounding. Fixing now",
+      "parentUuid": "fc6b046b_c54d1a68",
+      "revId": "f7bf4c910e027541bf47a2edb69f4176da65f562",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b9dc11c_f3ab0528",
