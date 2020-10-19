@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39000e97_8c8f9df6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/SSHCommandModule.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-10-19T18:08:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b9dc11c_f3ab0528",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "f7bf4c910e027541bf47a2edb69f4176da65f562",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feca11ff_aa097533",
@@ -72,6 +96,30 @@
       "writtenOn": "2020-10-19T07:47:39Z",
       "side": 1,
       "message": "This is the same for every test and could be factored out",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 80
+      },
+      "revId": "f7bf4c910e027541bf47a2edb69f4176da65f562",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5935d066_a6f8f7cf",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/AnalyzeH2CachesIT.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-10-19T18:08:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feca11ff_aa097533",
       "range": {
         "startLine": 123,
         "startChar": 4,
