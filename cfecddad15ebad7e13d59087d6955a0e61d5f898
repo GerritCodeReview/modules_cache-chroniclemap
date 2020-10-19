@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58b9e6f6_4d5427ef",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-19T07:33:53Z",
+      "side": 1,
+      "message": "As we discussed, this approach looks fine, but I think it opens up two concerns:\n\n- Should the admin be informed that the previous cache was made obsolete by a version upgrade and that gerrit is starting with an empty cache? This could help to debug slowness that otherwise would be difficult to get to the bottom to.\n\n- The obsolete caches are never removed from disk. Should we add removing them as par of the pruning process?",
+      "range": {
+        "startLine": 72,
+        "startChar": 1,
+        "endLine": 73,
+        "endChar": 19
+      },
+      "revId": "cfecddad15ebad7e13d59087d6955a0e61d5f898",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
