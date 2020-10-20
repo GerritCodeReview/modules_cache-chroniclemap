@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcfc4a7d_dbbea45d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "I do see a lot of performance issues with this implementation.\nAlso, the cleanup policy doesn\u0027t look right, as it doesn\u0027t use the standard Gerrit\u0027s cache configuration for it.",
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46fe451f_f0bc6d92",
+        "filename": "config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the cache cleanup happen also when:\n- repositoryCacheCleanupDelay is triggered\n- repositoryCacheExpireAfter is the threshold for removing all the entries older than that",
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cdb0966_3f287db6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we just evict all entries that have expired?",
+      "range": {
+        "startLine": 220,
+        "startChar": 11,
+        "endLine": 220,
+        "endChar": 14
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23db05ee_2b7ce41c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "This is going to be *veeery* CPU intensive: do we really need it?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 76
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aef6f12_60e2c8ca",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "I believe removing the expired entries should be enough, isn\u0027t it?",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 11
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba22cf8_099e9203",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "Are we really going to update the value every time we get an entry in the cache?\nThat would create a huge overhead, isn\u0027t it?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f005fa87_517ff214",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T23:42:28Z",
+      "side": 1,
+      "message": "This isn\u0027t going to be good: we can\u0027t afford updating the value every single time we have a cache hit.\n\nWe need to keep that information somewhere else, possibly even just in memory and not persisted.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 45
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
