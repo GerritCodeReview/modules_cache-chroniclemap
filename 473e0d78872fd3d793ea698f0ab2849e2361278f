@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba511168_b67ac7d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-20T14:20:46Z",
+      "side": 1,
+      "message": "@luca, @marcin: this has been merged and it is fine, however I think we might be missing some important information.\n\nNot all persisted caches are on necessarily disk (if diskLimit is set to -1) they fallback to in-memory caches.\nThis is the default for change_notes for example[1].\n\nthis means that this ssh command will not find any file on disk to extract information from, however tuning change_notes is crucial.\n\nHow about a follow up change where the SSH command also retrieves information from the in-memory caches?\n\nShould I create an issue for this? WDYT?\n\n\n[1]https://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.3/java/com/google/gerrit/server/notedb/ChangeNotesCache.java#63\n",
+      "revId": "473e0d78872fd3d793ea698f0ab2849e2361278f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
