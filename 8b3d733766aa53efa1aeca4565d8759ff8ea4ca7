@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "420a3a08_620fefe6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:23:06Z",
+      "side": 1,
+      "message": "Limiting the cache growth is the target of the next change in this chain.\nThis change is about honouring the diskLimit, which only applies to persisted caches.",
+      "parentUuid": "733bc77e_94346850",
+      "range": {
+        "startLine": 229,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 5
+      },
+      "revId": "8b3d733766aa53efa1aeca4565d8759ff8ea4ca7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "157fcdde_1548a361",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheIT.java",
         "patchSetId": 8
@@ -37,6 +61,30 @@
       "writtenOn": "2020-10-20T23:29:16Z",
       "side": 1,
       "message": "Can this be put into a method with a @Before annotation?",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 38
+      },
+      "revId": "8b3d733766aa53efa1aeca4565d8759ff8ea4ca7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea7929de_b628dd59",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheIT.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:23:06Z",
+      "side": 1,
+      "message": "Unfortunately not, because we want to test that Gerrit fails to start when the diskLimit cannot be honoured.\n\nIf we were to put the super.beforeTest() in a @Before, the failure would happen _before_ we manage to run the test at all, and we wouldn\u0027t be able to capture the exception thrown by it (L80)",
+      "parentUuid": "157fcdde_1548a361",
       "range": {
         "startLine": 55,
         "startChar": 4,
