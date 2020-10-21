@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb9aa429_e7231ba7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:51:08Z",
+      "side": 1,
+      "message": "Eviction of entries that expired happens at L213-L214, but it might still not be enough.\nIf, after evicting all expired entries (if any), we are still \"runningOutOfFreeSpace\", then the evictLRU() routine will kick off.\n\nAlso bear in mind that not every cache might be set for expiration (maxAge is an optional parameter).",
+      "parentUuid": "3cdb0966_3f287db6",
+      "range": {
+        "startLine": 220,
+        "startChar": 11,
+        "endLine": 220,
+        "endChar": 14
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "23db05ee_2b7ce41c",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 5
@@ -71,6 +95,30 @@
       "writtenOn": "2020-10-20T23:42:28Z",
       "side": 1,
       "message": "This is going to be *veeery* CPU intensive: do we really need it?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 76
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5edfda89_bb0403f1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:51:08Z",
+      "side": 1,
+      "message": "yeah, this is what I was referring to in my comments about chroniclemap not supporting ordering and LRU.\n\nWe do need it, in the sense that we need _some_ way to do eviction.\nBu absolutely we need to find a more performant way to do it.",
+      "parentUuid": "23db05ee_2b7ce41c",
       "range": {
         "startLine": 226,
         "startChar": 0,
@@ -106,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ccc8afea_54134ab0",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:51:08Z",
+      "side": 1,
+      "message": "as I mentioned above: entries do not necessarily expire and removing expired entries might not be enough to get back under threshold (imagine only 1 entry expired, for example).",
+      "parentUuid": "8aef6f12_60e2c8ca",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 11
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3ba22cf8_099e9203",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
         "patchSetId": 5
@@ -129,6 +201,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2bf34b78_d4f49e1c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:51:08Z",
+      "side": 1,
+      "message": "We could update the value every time is _loaded_ from disk, in a similar way to what H2 does.\nBut perhaps we should change approach completely and only keeping this value in memory.",
+      "parentUuid": "3ba22cf8_099e9203",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f005fa87_517ff214",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 5
@@ -140,6 +236,30 @@
       "writtenOn": "2020-10-20T23:42:28Z",
       "side": 1,
       "message": "This isn\u0027t going to be good: we can\u0027t afford updating the value every single time we have a cache hit.\n\nWe need to keep that information somewhere else, possibly even just in memory and not persisted.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 45
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15839823_3300717e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-21T14:51:08Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f005fa87_517ff214",
       "range": {
         "startLine": 88,
         "startChar": 0,
