@@ -93,6 +93,30 @@
       },
       "revId": "8b3d733766aa53efa1aeca4565d8759ff8ea4ca7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "363f91e1_9e4080f6",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheIT.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-22T23:49:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ea7929de_b628dd59",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 38
+      },
+      "revId": "8b3d733766aa53efa1aeca4565d8759ff8ea4ca7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

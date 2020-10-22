@@ -81,6 +81,24 @@
       "parentUuid": "165527df_a0a8c7c6",
       "revId": "b5e2681a46172328d78708ade51a95fe492d96b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8758ca3f_1fc76e72",
+        "filename": "config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-22T23:49:44Z",
+      "side": 1,
+      "message": "Can we at least state where the default can be found?",
+      "parentUuid": "85bc92b8_2a4eda65",
+      "revId": "b5e2681a46172328d78708ade51a95fe492d96b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
