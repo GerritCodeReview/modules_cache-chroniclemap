@@ -82,6 +82,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b50819b_0fc560fc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-23T22:29:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cb9aa429_e7231ba7",
+      "range": {
+        "startLine": 220,
+        "startChar": 11,
+        "endLine": 220,
+        "endChar": 14
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23db05ee_2b7ce41c",
@@ -213,6 +237,30 @@
       "side": 1,
       "message": "We could update the value every time is _loaded_ from disk, in a similar way to what H2 does.\nBut perhaps we should change approach completely and only keeping this value in memory.",
       "parentUuid": "3ba22cf8_099e9203",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37f2f1ec_823cda49",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-23T22:29:54Z",
+      "side": 1,
+      "message": "I believe we should store it as well, otherwise when you restart Gerrit you don\u0027t have a clue of what are the most accessed values in the persisted cache.",
+      "parentUuid": "2bf34b78_d4f49e1c",
       "range": {
         "startLine": 43,
         "startChar": 0,
