@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "492b901d_e85d7fbe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-23T22:23:52Z",
+      "side": 1,
+      "message": "Actually, the H2 implementation doesn\u0027t guarantee that the size of the H2 file would always be below the diskLimit at all and would not prevent Gerrit to start.\n\nI believe we need to back off and just leave Gerrit to start, possibly just by emitting a warning.",
+      "parentUuid": "04d99a9b_5fcebe47",
+      "revId": "488b4800804b8dfddd1a020bcaeae7bc2c98df46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70be0b97_9d6e7555",
         "filename": "config.md",
         "patchSetId": 9
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "This behaviour is in response to your comments:\n\u003e Can we possibly just check if the diskLimit is less than the size of the cache file and stop the startup of Gerrit in that case?\n\nDid you mean to suggest a different behaviour?",
       "parentUuid": "70be0b97_9d6e7555",
+      "revId": "488b4800804b8dfddd1a020bcaeae7bc2c98df46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91d4be0a_19856bab",
+        "filename": "config.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-23T22:23:52Z",
+      "side": 1,
+      "message": "Yes, I know, and I believe I was wrong 👎\nThe H2 implementation won\u0027t stop Gerrit from starting up.",
+      "parentUuid": "0da355e0_990f3235",
       "revId": "488b4800804b8dfddd1a020bcaeae7bc2c98df46",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
