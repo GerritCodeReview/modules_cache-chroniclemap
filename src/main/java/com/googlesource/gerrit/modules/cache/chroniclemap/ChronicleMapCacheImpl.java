@@ -43,6 +43,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder loadExceptionCount = new LongAdder();
   private final LongAdder totalLoadTime = new LongAdder();
   private final LongAdder evictionCount = new LongAdder();
+  private final InMemoryLRUSet<Object> hotEntries;
 
   @SuppressWarnings("unchecked")
   ChronicleMapCacheImpl(
@@ -50,9 +51,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       throws IOException {
     this.config = config;
     this.loader = loader;
+    this.hotEntries = new InMemoryLRUSet<>(Math.max(config.getMaxEntries()*config.getpercentageHotKeys()/100, 1));
 
     final Class<K> keyClass = (Class<K>) def.keyType().getRawType();
     final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
+
+
 
     final ChronicleMapBuilder<K, TimedValue<V>> mapBuilder =
         ChronicleMap.of(keyClass, valueWrapperClass).name(def.name());
@@ -109,6 +113,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(objKey);
       if (!expired(vTimedValue.getCreated())) {
         hitCount.increment();
+        hotEntries.add(objKey);
         return vTimedValue.getValue();
       } else {
         invalidate(objKey);
@@ -124,6 +129,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        hotEntries.add(key);
         return vTimedValue.getValue();
       }
     }
@@ -176,15 +182,23 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void put(K key, V val) {
     TimedValue<V> wrapped = new TimedValue<>(val);
     store.put(key, wrapped);
+    hotEntries.add(key);
   }
 
   public void prune() {
-    store.forEachEntry(
-        c -> {
-          if (expired(c.value().get().getCreated())) {
-            c.context().remove(c);
-          }
-        });
+    if (!config.getExpireAfterWrite().isZero()) {
+      store.forEachEntry(
+          c -> {
+            if (expired(c.value().get().getCreated())) {
+              hotEntries.remove(c.key().get());
+              c.context().remove(c);
+            }
+          });
+    }
+
+    if (runningOutOfFreeSpace()) {
+      evictColdEntries();
+    }
   }
 
   private boolean expired(long created) {
@@ -199,14 +213,31 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
   }
 
+  protected boolean runningOutOfFreeSpace() {
+    return store.remainingAutoResizes() == 0
+        && store.percentageFreeSpace() <= config.getPercentageFreeSpaceEvictionThreshold();
+  }
+
+  private void evictColdEntries() {
+    store.forEachEntryWhile(
+        e -> {
+          if (!hotEntries.contains(e.key().get())) {
+            e.doRemove();
+          }
+          return runningOutOfFreeSpace();
+        });
+  }
+
   @Override
   public void invalidate(Object key) {
     store.remove(key);
+    hotEntries.remove(key);
   }
 
   @Override
   public void invalidateAll() {
     store.clear();
+    hotEntries.invalidateAll();
   }
 
   @Override
