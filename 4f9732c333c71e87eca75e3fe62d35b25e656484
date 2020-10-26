@@ -321,6 +321,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0556e123_3ff4bd1f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-26T16:40:47Z",
+      "side": 1,
+      "message": "\u003e The approach sounds interesting. However, I do not see in the above approach how we can prevent the eviction of hot entries after a restart.\n\nThis is the catch: after a restart, the in-memory \"hotCaches\" map will be empty and no entries will be hot.\nBut the point I was trying to make earlier is that perhaps we can live with it.\n\n- If Gerrit was shut down when chronicle-map was NOT running out of space[1], then it doesn\u0027t matter the hot-cache is empty, because we don\u0027t have to do space triggered evictions yet and the hot-cache will have time to populate itself.\n\n- If Gerrit was shut down when chronicle-map was running out of space[1], then *any* entry would be subject to eviction (only until we are not running out of space). The very first eviction might be sub-optimal because it *might* remove *some* entries that would have been potentially been hot, when Gerrit was running.\n\nAny eviction after that however will get incrementally more and more precise as the cache gets hot again.\n\nWDYT?\n\n[1] No more expansions are available (we reached max bloat factor) and the last expansion is already used over \"percentageFreeSpaceEvictionThreshold\". This has nothing to do with diskLimit, diskLimit is ignored, as per previous change in the chain.",
+      "parentUuid": "e1b6f052_b0cab414",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f005fa87_517ff214",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 5
