@@ -345,6 +345,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "02d00a2b_f2d34eb6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-26T16:47:27Z",
+      "side": 1,
+      "message": "@luca this is what I was thinking, please take a look at this alternative implementation:\nhttps://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/285734",
+      "parentUuid": "0556e123_3ff4bd1f",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f005fa87_517ff214",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 5
