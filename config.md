@@ -76,6 +76,20 @@ limited to 1000. Default: *1*
 https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/hash/ChronicleHashBuilder.html#maxBloatFactor-double-
 )
 
+* `cache.<name>.percentageFreeSpaceEvictionThreshold`
+: The percentage of free space in the last available expansion of chronicle-map
+beyond which cold cache entries will start being evicted.
+
+Since the eviction routine is scheduled as background task every 30 seconds,
+this value should always be < 100. This is to allow for additional entries to be
+inserted into the cache between the execution of two eviction runs.
+
+How much that margin is, depends on how fast the cache can increase between two
+eviction runs: caches that populate more quickly might need a lower value, and
+vice-versa.
+
+Default: *90*
+
 ### Defaults
 
 Unless overridden by configuration, sensible default values are be provided for
@@ -106,11 +120,34 @@ gather important statistics about the current file cache status:
 The limit to the number of times the map can expand is set via the `maxBloatFactor`.
 if `remainingAutoResizes` drops to zero,this cache is no longer able to expand
 and it will not be able to take more entries, failing with a `IllegalStateException`
+[official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#remainingAutoResizes--)
 
 * `percentageFreeSpace`
 : the amount of free space in the cache as a percentage. When the free space gets
  low ( around 5% ) the cache will automatically expand (see `remainingAutoResizes`).
  If the cache expands you will see an increase in the available free space.
+[official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#percentageFreeSpace--)
+
+* `percentageHotKeys`
+: The percentage of _hot_ keys that can be kept in-memory.
+When performing evictions, _hot_ keys will be preserved and only _cold_ keys
+will be evicted from chronicle-map, in random order.
+
+This value implies a trade-off between eviction speed and eviction accuracy.
+
+The smaller the number of hotKeys allocated, the quicker the eviction phase
+will be. However, this will increase the chance of evicting entries that were
+recently accessed.
+
+Conversely, the higher the number of hotKeys allocated, the higher will be the
+accuracy in evicting only recently accessed keys, at the price of a longer
+time spent doing evictions.
+
+In order to ensure there is always a cold entry to be evicted, the number of
+`percentageHotKeys` always needs to be less than `maxEntries`.
+
+*Constraints*: [1-99]
+*Default*: 50
 
 These are the provided default values:
 
