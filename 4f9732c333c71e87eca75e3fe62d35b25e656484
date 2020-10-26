@@ -273,6 +273,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0cf4818_5890af95",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-26T10:25:59Z",
+      "side": 1,
+      "message": "Actually, I don\u0027t think storing accessed timestamp is going to help.\n\nBecause chronicle-map cannot support LRU, having a very granular lastAccessedTime is not much of a use: we cannot use it for sorting and find the oldest element of the cache to remove.\nDoing so would require an entire scan of the cache and also to keep updating the value on disk, when each element is accessed.\n\nI would like to suggest an alternative approach:\n\nTo separate \"hot\" entries from \"non-hot\" entries and, when required, delete from the \"non-hot\" entries bucket, randomly.\n\nThe pseudo-algorithm would be like:\n\n- For each cache, allocate a sorted map \"hotEntries\" (10% of cache size, perhaps configurable?)\n- Each time a cache element is accessed:\n   * Add/Update \"hotEntries\", if there\u0027s space (time for this will cost O(1))\n   * Remove the oldest \"hotEntry\" and add the new one (time for this will cost O(logn))\n\n- When cache file free space falls under \"percentageFreeSpaceEvictionThreshold\":\n  * loop through elements in the cache, in random order\n  * if element is not in hotEntries, remove it.\n  * Repeat until free space goes over \"percentageFreeSpaceEvictionThreshold\" again.\n\nBasically the idea is: If computationally, we cannot afford to do LRU, we can at least categorize into recent and non-recent buckets.\n\nSure, when gerrit is restarted, we\u0027ll loose the most accessed values in the persisted cache, but the values are still going to be *in-cache* so performance is not impacted by this immediately and the \"hotEntries\" will be populated quickly as Gerrit gets used.\n\nWDTY? Worth giving it a try?",
+      "parentUuid": "37f2f1ec_823cda49",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f005fa87_517ff214",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 5
