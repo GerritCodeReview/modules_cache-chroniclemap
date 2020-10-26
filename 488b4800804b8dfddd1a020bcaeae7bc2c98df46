@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aeb18ab_a61e3378",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-26T09:59:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "492b901d_e85d7fbe",
+      "revId": "488b4800804b8dfddd1a020bcaeae7bc2c98df46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70be0b97_9d6e7555",
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "Yes, I know, and I believe I was wrong 👎\nThe H2 implementation won\u0027t stop Gerrit from starting up.",
       "parentUuid": "0da355e0_990f3235",
+      "revId": "488b4800804b8dfddd1a020bcaeae7bc2c98df46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c373565e_b58d5c5a",
+        "filename": "config.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-26T09:59:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91d4be0a_19856bab",
       "revId": "488b4800804b8dfddd1a020bcaeae7bc2c98df46",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
