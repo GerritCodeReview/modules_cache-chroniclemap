@@ -43,6 +43,8 @@ public class ChronicleMapCacheConfig {
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
   private final int version;
+  private final int percentageFreeSpaceEvictionThreshold;
+  private final int percentageHotKeys;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -95,6 +97,24 @@ public class ChronicleMapCacheConfig {
 
     this.maxBloatFactor =
         cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
+
+    this.percentageFreeSpaceEvictionThreshold =
+        cfg.getInt(
+            "cache",
+            configKey,
+            "percentageFreeSpaceEvictionThreshold",
+            Defaults.percentageFreeSpaceEvictionThreshold());
+
+    this.percentageHotKeys =
+        cfg.getInt("cache", configKey, "percentageHotKeys", Defaults.percentageHotKeys());
+  }
+
+  public int getPercentageFreeSpaceEvictionThreshold() {
+    return percentageFreeSpaceEvictionThreshold;
+  }
+
+  public int getpercentageHotKeys() {
+    return percentageHotKeys;
   }
 
   public int getVersion() {
@@ -161,6 +181,9 @@ public class ChronicleMapCacheConfig {
 
     public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
 
+    public static final int DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD = 90;
+    public static final int DEFAULT_PERCENTAGE_HOT_ENTRIES = 100;
+
     private static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
             .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
@@ -200,6 +223,14 @@ public class ChronicleMapCacheConfig {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::maxBloatFactor)
           .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+    }
+
+    public static int percentageFreeSpaceEvictionThreshold() {
+      return DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
+    }
+
+    public static int percentageHotKeys() {
+      return DEFAULT_PERCENTAGE_HOT_ENTRIES;
     }
   }
 }
