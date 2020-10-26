@@ -25,10 +25,12 @@ import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.TypeLiteral;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import net.openhft.chronicle.bytes.Bytes;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
@@ -262,6 +264,77 @@ public class ChronicleMapCacheTest {
     assertThat(cache.size()).isEqualTo(0);
   }
 
+  @Test
+  public void shouldEvictOldestElementInCacheWhenIsNeverAccessed() throws Exception {
+    final String fooValue = "foo";
+
+    gerritConfig.setInt("cache", "foo", "maxEntries", 2);
+    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
+    gerritConfig.setInt("cache", "foo", "avgKeySize", "foo1".getBytes().length);
+    gerritConfig.setInt("cache", "foo", "avgValueSize", valueSize(fooValue));
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(fooValue);
+    cache.put("foo1", fooValue);
+    cache.put("foo2", fooValue);
+
+    cache.prune();
+
+    assertThat(cache.size()).isEqualTo(1);
+    assertThat(cache.get("foo2")).isNotNull();
+  }
+
+  @Test
+  public void shouldEvictRecentlyInsertedElementInCacheWhenOldestElementIsAccessed()
+      throws Exception {
+    final String fooValue = "foo";
+    gerritConfig.setInt("cache", "foo", "maxEntries", 2);
+    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
+    gerritConfig.setInt("cache", "foo", "avgKeySize", "foo1".getBytes().length);
+    gerritConfig.setInt("cache", "foo", "avgValueSize", valueSize(fooValue));
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(fooValue);
+    cache.put("foo1", fooValue);
+    cache.put("foo2", fooValue);
+
+    cache.get("foo1");
+
+    cache.prune();
+
+    assertThat(cache.size()).isEqualTo(1);
+    assertThat(cache.get("foo1")).isEqualTo(fooValue);
+  }
+
+  @Test
+  public void shouldEvictEntriesUntilFreeSpaceIsRecovered() throws Exception {
+    final int uuidSize = valueSize(UUID.randomUUID().toString());
+    gerritConfig.setInt("cache", "foo", "maxEntries", 50);
+    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
+    gerritConfig.setInt("cache", "foo", "avgKeySize", uuidSize);
+    gerritConfig.setInt("cache", "foo", "avgValueSize", uuidSize);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader();
+    while (!cache.runningOutOfFreeSpace()) {
+      cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    }
+    assertThat(cache.runningOutOfFreeSpace()).isTrue();
+
+    cache.prune();
+
+    assertThat(cache.runningOutOfFreeSpace()).isFalse();
+  }
+
+  private int valueSize(String value) {
+    final TimedValueMarshaller<String> marshaller =
+        new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
+
+    Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
+    marshaller.write(out, new TimedValue<>(value));
+    return out.toByteArray().length;
+  }
+
   private ChronicleMapCacheImpl<String, String> newCache(
       Boolean withLoader,
       @Nullable String cachedValue,
@@ -333,7 +406,7 @@ public class ChronicleMapCacheTest {
 
     @Override
     public String name() {
-      return "chronicle-map-test-cache";
+      return "foo";
     }
 
     @Override
