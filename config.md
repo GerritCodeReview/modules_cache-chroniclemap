@@ -76,6 +76,12 @@ limited to 1000. Default: *1*
 https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/hash/ChronicleHashBuilder.html#maxBloatFactor-double-
 )
 
+* `cache.<name>.percentageFreeSpaceEvictionThreshold`
+: The percentage of free space in the last available expansion of chronicle-map
+beyond which cold cache entries will start being evicted.
+
+Default: *90*
+
 ### Defaults
 
 Unless overridden by configuration, sensible default values are be provided for

@@ -123,9 +123,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   @Override
   public void start() {
     for (ChronicleMapCacheImpl<?, ?> cache : caches) {
-      if (!cache.getConfig().getExpireAfterWrite().isZero()) {
         cleanup.scheduleWithFixedDelay(cache::prune, 30, 30, TimeUnit.SECONDS);
-      }
     }
   }
 

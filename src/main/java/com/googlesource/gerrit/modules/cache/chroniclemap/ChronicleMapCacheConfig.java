@@ -43,6 +43,8 @@ public class ChronicleMapCacheConfig {
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
   private final int version;
+  private final int percentageFreeSpaceEvictionThreshold;
+
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -95,6 +97,17 @@ public class ChronicleMapCacheConfig {
 
     this.maxBloatFactor =
         cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
+
+    this.percentageFreeSpaceEvictionThreshold =
+            cfg.getInt(
+                    "cache",
+                    configKey,
+                    "percentageFreeSpaceEvictionThreshold",
+                    Defaults.percentageFreeSpaceEvictionThreshold());
+  }
+
+  public int getPercentageFreeSpaceEvictionThreshold() {
+    return percentageFreeSpaceEvictionThreshold;
   }
 
   public int getVersion() {
@@ -161,6 +174,8 @@ public class ChronicleMapCacheConfig {
 
     public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
 
+    public static final int DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD = 90;
+
     private static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
             .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
@@ -200,6 +215,10 @@ public class ChronicleMapCacheConfig {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::maxBloatFactor)
           .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+    }
+
+    public static int percentageFreeSpaceEvictionThreshold() {
+      return DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
     }
   }
 }

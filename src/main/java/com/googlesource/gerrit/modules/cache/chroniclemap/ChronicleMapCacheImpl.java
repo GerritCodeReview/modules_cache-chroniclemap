@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
@@ -20,14 +21,15 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
+import net.openhft.chronicle.map.ChronicleMap;
+import net.openhft.chronicle.map.ChronicleMapBuilder;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
-import net.openhft.chronicle.map.ChronicleMap;
-import net.openhft.chronicle.map.ChronicleMapBuilder;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -43,6 +45,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder loadExceptionCount = new LongAdder();
   private final LongAdder totalLoadTime = new LongAdder();
   private final LongAdder evictionCount = new LongAdder();
+  private final InMemoryLRUSet<Object> hotEntries;
 
   @SuppressWarnings("unchecked")
   ChronicleMapCacheImpl(
@@ -50,6 +53,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       throws IOException {
     this.config = config;
     this.loader = loader;
+    // TODO: make this a configurable percentage of the entries.
+    this.hotEntries = new InMemoryLRUSet<>(Math.max(config.getMaxEntries()/10, 1));
 
     final Class<K> keyClass = (Class<K>) def.keyType().getRawType();
     final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
@@ -109,6 +114,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(objKey);
       if (!expired(vTimedValue.getCreated())) {
         hitCount.increment();
+        hotEntries.add(objKey);
         return vTimedValue.getValue();
       } else {
         invalidate(objKey);
@@ -124,6 +130,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        hotEntries.add(key);
         return vTimedValue.getValue();
       }
     }
@@ -176,15 +183,22 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void put(K key, V val) {
     TimedValue<V> wrapped = new TimedValue<>(val);
     store.put(key, wrapped);
+    hotEntries.add(key);
   }
 
   public void prune() {
-    store.forEachEntry(
-        c -> {
-          if (expired(c.value().get().getCreated())) {
-            c.context().remove(c);
-          }
-        });
+    if (!config.getExpireAfterWrite().isZero()) {
+      store.forEachEntry(
+          c -> {
+            if (expired(c.value().get().getCreated())) {
+              c.context().remove(c);
+            }
+          });
+    }
+
+    if(runningOutOfFreeSpace()) {
+      evictColdEntries();
+    }
   }
 
   private boolean expired(long created) {
@@ -199,14 +213,31 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
   }
 
+  protected boolean runningOutOfFreeSpace() {
+    return store.remainingAutoResizes() == 0
+                   && store.percentageFreeSpace() <= config.getPercentageFreeSpaceEvictionThreshold();
+  }
+
+  private void evictColdEntries() {
+    store.forEachEntryWhile(
+        e -> {
+          if (!hotEntries.contains(e.key().get())) {
+            e.doRemove();
+          }
+          return runningOutOfFreeSpace();
+        });
+  }
+
   @Override
   public void invalidate(Object key) {
     store.remove(key);
+    hotEntries.remove(key);
   }
 
   @Override
   public void invalidateAll() {
     store.clear();
+    hotEntries.invalidateAll();
   }
 
   @Override
