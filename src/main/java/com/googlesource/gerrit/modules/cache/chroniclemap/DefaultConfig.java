@@ -22,6 +22,7 @@ abstract class DefaultConfig {
     return new AutoValue_DefaultConfig(averageKey, averageValue, entries, maxBloatFactor);
   }
 
+
   abstract long averageKey();
 
   abstract long averageValue();
