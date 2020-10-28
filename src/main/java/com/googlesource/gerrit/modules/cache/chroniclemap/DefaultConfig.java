@@ -19,6 +19,7 @@ import com.google.auto.value.AutoValue;
 abstract class DefaultConfig {
   public static DefaultConfig create(
       long averageKey, long averageValue, long entries, int maxBloatFactor) {
+    "foo".isBlank();
     return new AutoValue_DefaultConfig(averageKey, averageValue, entries, maxBloatFactor);
   }
 
