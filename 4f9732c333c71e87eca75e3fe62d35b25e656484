@@ -369,6 +369,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "797e660d_36acd8d5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValue.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-29T21:03:42Z",
+      "side": 1,
+      "message": "Yeah, I believe ^^^^^^^^^^^^^^^^^^^^ is a very promising approach. I would suggest to move to that one.",
+      "parentUuid": "02d00a2b_f2d34eb6",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "4f9732c333c71e87eca75e3fe62d35b25e656484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f005fa87_517ff214",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 5
