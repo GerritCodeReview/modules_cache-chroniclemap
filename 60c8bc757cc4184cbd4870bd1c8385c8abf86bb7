@@ -16,6 +16,23 @@
       "message": "Thanks for your feedback all,\nas discussed I have opted for the least invasive approach: a simple warning to the admins.",
       "revId": "60c8bc757cc4184cbd4870bd1c8385c8abf86bb7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "769efd66_13d8db34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-29T21:21:16Z",
+      "side": 1,
+      "message": "Yeah, I believe this is the best outcome we can have from this change.",
+      "revId": "60c8bc757cc4184cbd4870bd1c8385c8abf86bb7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
