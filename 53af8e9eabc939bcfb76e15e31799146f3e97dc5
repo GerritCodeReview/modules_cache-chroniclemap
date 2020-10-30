@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "285f93d6_b9e837b6",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-30T23:32:44Z",
+      "side": 1,
+      "message": "I don\u0027t follow: why would it throw an IllegalStateException? Does that mean that if I allocate a cache of 100 entries, I cannot have more than 90? Why should we leave the last 10 empty?",
+      "parentUuid": "65b255e0_2171d9e7",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 13
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85cd385e_307f9d57",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Ideally yes, but I didn\u0027t like the idea to have another copy of all cache keys in memory, which might consume a sizeable amount of memory.\n\nThis could be a problem for some Gerrit installations.\n\nI thought it was a trade-off that the Gerrit admin might want to consider:\nIf they don\u0027t care about the additional memory burden, they could always set this value to maxEntries.\n\nWDYT?",
       "parentUuid": "85cd385e_307f9d57",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da08cc72_302b5431",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-30T23:32:44Z",
+      "side": 1,
+      "message": "The key shouldn\u0027t that big after all, and we won\u0027t cache the value anyway.",
+      "parentUuid": "d83adb1a_0d4f8ad5",
       "range": {
         "startLine": 55,
         "startChar": 74,
