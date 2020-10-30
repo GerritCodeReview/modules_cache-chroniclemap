@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65b255e0_2171d9e7",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-30T16:43:36Z",
+      "side": 1,
+      "message": "When we reach 100% is too late, chronicle-map would have started throwing IllegalStateExceptions already.\n\nWe need go through evictions _before_ we hit that point, and because the pruning happens in a background routine task that runs every 30 seconds, this value needs to be configured \"early enough\" so that cache will not reach 100% in those 30 secs.\n\nDoes it make sense?",
+      "parentUuid": "8b2bad50_5b30b13e",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 13
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85cd385e_307f9d57",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -54,6 +78,30 @@
       "writtenOn": "2020-10-29T21:03:05Z",
       "side": 1,
       "message": "Why should this be a fraction of the cache size? Do we consider \"hot\" only the 10% of the cache?\n\nYou could have a large section of the cache that is *really* cold because is never read from disk and, by limiting the hot entries to just 10%, you would risk to rather evict \"potentially hot\" entries rather than \"certainly cold\" ones.\n\nI would allocate to config.getMaxEntries(), full stop.\n\nWDYT?",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d83adb1a_0d4f8ad5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-30T16:43:36Z",
+      "side": 1,
+      "message": "Ideally yes, but I didn\u0027t like the idea to have another copy of all cache keys in memory, which might consume a sizeable amount of memory.\n\nThis could be a problem for some Gerrit installations.\n\nI thought it was a trade-off that the Gerrit admin might want to consider:\nIf they don\u0027t care about the additional memory burden, they could always set this value to maxEntries.\n\nWDYT?",
+      "parentUuid": "85cd385e_307f9d57",
       "range": {
         "startLine": 55,
         "startChar": 74,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e726f4c2_2ee47709",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-30T16:43:36Z",
+      "side": 1,
+      "message": "You\u0027re right about concurrency, but KeySetView does not provide an ordered data structure though, right?\n\nWe need that if we want to perform LRU on it.",
+      "parentUuid": "2b73f4c1_797ff418",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 33
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d8899c8_10ebc087",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
@@ -100,6 +172,30 @@
       "writtenOn": "2020-10-29T21:03:05Z",
       "side": 1,
       "message": "Apologies, I don\u0027t get this. Can you explain again why you need to remove and add again?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 20
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ade646de_bfe84d34",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-30T16:43:36Z",
+      "side": 1,
+      "message": "It is because of this[1] behavior:\n\nNote that insertion order is not affected if a key is re-inserted into the map. (A key k is reinserted into a map m if m.put(k, v) is invoked when m.containsKey(k) would return true immediately prior to the invocation.)\n\nIf a key is already in the map, but it gets accessed again we want to update its its position in the ordered set.\n\n\n[1]https://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html#LinkedHashMap(int,%20float,%20boolean)",
+      "parentUuid": "4d8899c8_10ebc087",
       "range": {
         "startLine": 38,
         "startChar": 0,
