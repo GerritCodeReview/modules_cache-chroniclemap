@@ -210,6 +210,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4cf84e5_40ab47f1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-02T14:41:44Z",
+      "side": 1,
+      "message": "I implemented this, let me know what you think.\n\nOne thing to notice though\n\n\nif chronicle-map was running out of space, the number of hot instance is likely going to be maxEntries (unless a restart just happened).\n\nThis means, that it will take O(maxEntries) time to evict one entry from chronicle-map, because the likelihood to find an entry that is not hot diminishes drastically.\n\nFor n entries, this goes back to quadratic complexity.\n\nI think it makes sense for the hotEntries to be just a small percentage of the total number of entries, so that eviction time is quicker.\n\nWDYT?",
+      "parentUuid": "2949ecd4_87f54f81",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b73f4c1_797ff418",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
