@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3db773ea_8ac95106",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-02T10:57:23Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t follow: why would it throw an IllegalStateException? \n\nFrom the documentation[1]\n\n```\nthe number of times in the future the map can expand its capacity of each segment (by expending its capacity we mean expending the maximum number of possible entries that can be stored into the map), the map will expand automatically.\n\nHowever, there is an upper limit to the number of times the map can expand. This limit is set via the net.openhft.chronicle.map.ChronicleMapBuilder#maxBloatFactor if the remainingAutoResizes drops to zero, then the map is no longer able to expand, if subsequently, the free space ( see percentageFreeSpace()) in the map becomes low ( around 5% ), the map will not be able to take more entries and will fail with an java.lang.IllegalStateException for production systems it is recommended you periodically monitor the remainingAutoResizes and percentageFreeSpace().\n```\n\n\u003e Does that mean that if I allocate a cache of 100 entries, I cannot have more than 90? Why should we leave the last 10 empty?\n\nYou can have more than 90 entries in the map, but (because the eviction routine gets triggered every 30 seconds) we want to leave a margin (between 90 and 100) to allow for additional entries to be inserted into the map between the execution of two eviction runs.\n\nImagine we left the threshold at 100:\nWe have 90 entries in the cache, eviction routine does not evict anything.\nIn the next 30 seconds, if just few entries get added to the cache, Gerrit would throw exceptions.\n\nLeaving (enough) margin ensures that scenario doesn\u0027t happen: how much that margin is, depend on how fast the cache can increase between eviction runs, and that\u0027s why I think it should be configurable.\n\nDoes it make any more sense?\n\n[1]https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#remainingAutoResizes--",
+      "parentUuid": "285f93d6_b9e837b6",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 13
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85cd385e_307f9d57",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "The key shouldn\u0027t that big after all, and we won\u0027t cache the value anyway.",
       "parentUuid": "d83adb1a_0d4f8ad5",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2949ecd4_87f54f81",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-02T10:57:23Z",
+      "side": 1,
+      "message": "How much memory it will occupy, really depends on the specific cache though, right?\n\nNew caches can be created by plugins (potentially with big keys for what we know) and, even if their key size is small, their _number_ can be high.\nAnd there can be _many_ caches, that will contribute to the overall memory fingerprint.\n\nHow about we set a default to config.getMaxEntries() and still allow the admins to change it, should they wish to?",
+      "parentUuid": "da08cc72_302b5431",
       "range": {
         "startLine": 55,
         "startChar": 74,
