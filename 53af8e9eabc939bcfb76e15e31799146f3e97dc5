@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dfc53e6_f7f2782a",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-11-03T20:58:59Z",
+      "side": 1,
+      "message": "Yes, it does make sense. Thanks for explaining it.\nIs it worth to include a link to that behaviour from the documentation? So that if people would ask the same question, they can have a valid reference?\n\nThanks for clarifying it.",
+      "parentUuid": "3db773ea_8ac95106",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 13
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85cd385e_307f9d57",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -234,6 +258,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1dbbe99_eb61ae25",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-11-03T20:58:59Z",
+      "side": 1,
+      "message": "If the InMemoryLRU is optimised, it should be pretty quick to identify the oldest entries, isn\u0027t it? How do you estimate O(maxEntries)?",
+      "parentUuid": "d4cf84e5_40ab47f1",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b73f4c1_797ff418",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
@@ -281,6 +329,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5fd2eb73_57727f92",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-11-03T20:58:59Z",
+      "side": 1,
+      "message": "Point taken, but you should at least create a synchronised map out of it:\n   Collections.synchronizedMap(new LinkedHashMap(...))\n\nAlso, you can keep it as LinkedHashMap so that you can use the useful methods for the LRU cache, like putIfAbsent(). As values, you can use a static dummy object, so that you won\u0027t use any extra heap memory for it.",
+      "parentUuid": "e726f4c2_2ee47709",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 33
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d8899c8_10ebc087",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
@@ -316,6 +388,30 @@
       "side": 1,
       "message": "It is because of this[1] behavior:\n\nNote that insertion order is not affected if a key is re-inserted into the map. (A key k is reinserted into a map m if m.put(k, v) is invoked when m.containsKey(k) would return true immediately prior to the invocation.)\n\nIf a key is already in the map, but it gets accessed again we want to update its its position in the ordered set.\n\n\n[1]https://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html#LinkedHashMap(int,%20float,%20boolean)",
       "parentUuid": "4d8899c8_10ebc087",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 20
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a1c57f2_30448e2a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-11-03T20:58:59Z",
+      "side": 1,
+      "message": "According to the documentation, if you use get() or getOrDefault() you would generate an access to the entry:\n\"This kind of map is well-suited to building LRU caches. Invoking the put, putIfAbsent, get, getOrDefault, compute, computeIfAbsent, computeIfPresent, or merge methods results in an access to the corresponding entry (assuming it exists after the invocation completes).\"\n\nI would then change the code to simply:\n  set.putIfAbsent(objKey)",
+      "parentUuid": "ade646de_bfe84d34",
       "range": {
         "startLine": 38,
         "startChar": 0,
