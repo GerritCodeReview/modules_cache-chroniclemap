@@ -378,6 +378,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2fe22c1_04ba9d75",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T14:38:23Z",
+      "side": 1,
+      "message": "\u003e \u003e I don\u0027t think so, because the eviction process requires looping through the _persisted entries_, not the InMemoryLRU.\n\u003e \u003e \n\u003e \u003e This is the meta code for the evicting cold entries:\n\u003e \u003e \n\u003e \u003e // 1. loop through chronicle-map entries until we recovered enough space.\n\u003e \u003e // 2.    if entry is not in hotCache\n\u003e \u003e // 3.       remove entry.\n\u003e \u003e \n\u003e \u003e The worst case of this algorithm is when all entries that are in chronicle-map are also in hotCache: this would cause that loop to go through *all* chronicle-map entries, which are `maxEntries`.\n\u003e \u003e That\u0027s why I estimate a time complexity of O(maxEntries).\n\u003e \n\u003e Gotcha. We should also do eviction on the hotCaches if there are no elements in the cold cache.\n\u003e \n\u003e Also, we could easily detect the worst case scenario by getting the number of entries occupied in the hotlist compared to the total number of entries in the cache.\n\nWe could implement that check (as a safety net), but I think the underlying problem of performance remains.\n\nThe hotCache is not used to retrieve elements more quickly, but basically just to flag them as \"do not remove\". The more \"do not remove\" entries we have, the longer it would take to do evictions.\n\nHo about enforcing that the number of hotEntries is always *less* than the allowed maxEntries and document the following trade-off:\n\n* fewer hotCache entries -\u003e quicker evictions, higher probability of removing a recently access cache key.\n\n* more hotCache entries -\u003e slower evictions, lower probability of removing a recently accessed cache key.\n\nWDYT?",
+      "parentUuid": "f0fa6752_294b25e0",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b73f4c1_797ff418",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
