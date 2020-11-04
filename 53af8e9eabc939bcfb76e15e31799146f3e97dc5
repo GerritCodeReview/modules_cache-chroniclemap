@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcdd38e7_e38410b0",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T11:41:55Z",
+      "side": 1,
+      "message": "Yes, I will update the documentation to reflect this conversation.",
+      "parentUuid": "0dfc53e6_f7f2782a",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 13
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85cd385e_307f9d57",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -282,6 +306,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6134af46_56a2b806",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T11:41:55Z",
+      "side": 1,
+      "message": "I don\u0027t think so, because the eviction process requires looping through the _persisted entries_, not the InMemoryLRU.\n\nThis is the meta code for the evicting cold entries:\n\n// 1. loop through chronicle-map entries until we recovered enough space.\n// 2.    if entry is not in hotCache\n// 3.       remove entry.\n\nThe worst case of this algorithm is when all entries that are in chronicle-map are also in hotCache: this would cause that loop to go through *all* chronicle-map entries, which are `maxEntries`.\nThat\u0027s why I estimate a time complexity of O(maxEntries).\n\nIn fact, I believe the hotCaches *needs* to be lower than chronicle-map size because otherwise we won\u0027t be able to evict any entry:\nif everything is \"hot\" nothing can be flagged as \"cold\" and thus evicted. \n\nWDYT?",
+      "parentUuid": "b1dbbe99_eb61ae25",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b73f4c1_797ff418",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
@@ -353,6 +401,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "704d555b_6d9c5157",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T11:41:55Z",
+      "side": 1,
+      "message": "Makes sense, I will do, thanks Luca.",
+      "parentUuid": "5fd2eb73_57727f92",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 33
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d8899c8_10ebc087",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
@@ -412,6 +484,30 @@
       "side": 1,
       "message": "According to the documentation, if you use get() or getOrDefault() you would generate an access to the entry:\n\"This kind of map is well-suited to building LRU caches. Invoking the put, putIfAbsent, get, getOrDefault, compute, computeIfAbsent, computeIfPresent, or merge methods results in an access to the corresponding entry (assuming it exists after the invocation completes).\"\n\nI would then change the code to simply:\n  set.putIfAbsent(objKey)",
       "parentUuid": "ade646de_bfe84d34",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 20
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e97b51f_967518a7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T11:41:55Z",
+      "side": 1,
+      "message": "Thanks luca,\nI have also constructed the LinkedHashMap with the accessOrder flag now, to leverage this behaviour.\n\nhttps://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html#LinkedHashMap(int,%20float,%20boolean)",
+      "parentUuid": "6a1c57f2_30448e2a",
       "range": {
         "startLine": 38,
         "startChar": 0,
