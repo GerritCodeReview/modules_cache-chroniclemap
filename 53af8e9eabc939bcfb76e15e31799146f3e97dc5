@@ -161,6 +161,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b89dff52_f913ae47",
+        "filename": "config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T11:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcdd38e7_e38410b0",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 13
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85cd385e_307f9d57",
@@ -413,6 +437,30 @@
       "side": 1,
       "message": "Makes sense, I will do, thanks Luca.",
       "parentUuid": "5fd2eb73_57727f92",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 33
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16f53b2c_72f234a2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-04T11:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "704d555b_6d9c5157",
       "range": {
         "startLine": 28,
         "startChar": 8,
