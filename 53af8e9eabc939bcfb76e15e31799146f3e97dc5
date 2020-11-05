@@ -402,6 +402,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "470a012d_d31d87a3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-11-05T08:46:15Z",
+      "side": 1,
+      "message": "That sounds a good tradeoff for now, +1",
+      "parentUuid": "b2fe22c1_04ba9d75",
+      "range": {
+        "startLine": 55,
+        "startChar": 74,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "53af8e9eabc939bcfb76e15e31799146f3e97dc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b73f4c1_797ff418",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRUSet.java",
         "patchSetId": 2
