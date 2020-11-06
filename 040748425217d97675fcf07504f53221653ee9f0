@@ -45,6 +45,54 @@
       },
       "revId": "040748425217d97675fcf07504f53221653ee9f0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6addd657_07f81d7f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-06T08:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0f0f510_5f4313e9",
+      "range": {
+        "startLine": 111,
+        "startChar": 52,
+        "endLine": 111,
+        "endChar": 54
+      },
+      "revId": "040748425217d97675fcf07504f53221653ee9f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5d4a3e5_d96f6d73",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-11-06T08:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7297e7e9_2f6fbc6a",
+      "range": {
+        "startLine": 111,
+        "startChar": 26,
+        "endLine": 111,
+        "endChar": 28
+      },
+      "revId": "040748425217d97675fcf07504f53221653ee9f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
