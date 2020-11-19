@@ -49,7 +49,7 @@ In this case, this value will be ignored.
 https://www.javadoc.io/doc/net.openhft/chronicle-map/3.8.0/net/openhft/chronicle/map/ChronicleMapBuilder.html#averageValueSize-double-
 )
 
-```cache.<name>.entries```
+```cache.<name>.maxEntries```
 : The number of entries that this cache is going to hold, _at most_.
 The actual number of entries needs to be less or equal to this value.
 
@@ -65,7 +65,7 @@ Set this value to the theoretical maximum of stored entries, divided by the
 configured entries.
 
 Chronicle Map will allocate memory until the actual number of entries inserted
-divided by the number configured through `entries` is not
+divided by the number configured through `maxEntries` is not
 higher than the configured `maxBloatFactor`.
 
 Chronicle Map works progressively slower when the actual size grows far beyond
@@ -154,7 +154,7 @@ These are the provided default values:
 * `web_sessions`:
     * `avgKeySize`: 45 bytes
     * `avgValueSize`: 221 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 1
 
 Allows up to 1000 users to be logged in.
@@ -162,7 +162,7 @@ Allows up to 1000 users to be logged in.
 * `change_notes`:
     * `avgKeySize`: 36 bytes
     * `avgValueSize`: 10240 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 2
 
 Allow for a dozen review activities (votes, comments of medium length) to up to
@@ -171,7 +171,7 @@ Allow for a dozen review activities (votes, comments of medium length) to up to
 * `accounts`:
     * `avgKeySize`: 30 bytes
     * `avgValueSize`: 256 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 1
 
 Allows to cache up to 1000 details of active users, including their display name,
@@ -180,7 +180,7 @@ preferences, mail, etc.
 * `diff`:
     * `avgKeySize`: 98 bytes
     * `avgValueSize`: 10240 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 3
 
 Allow for up to 1000 medium sized diffs between two commits to be cached.
@@ -189,7 +189,7 @@ maxBloatFactor allows to go three times over this threshold.
 * `diff_intraline`:
     * `avgKeySize`: 512 bytes
     * `avgValueSize`: 2048 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 2
 
 Allow for up to 1000 medium sized diffs between two files to be cached.
@@ -198,7 +198,7 @@ maxBloatFactor allows to go twice over this threshold.
 * `external_ids_map`:
     * `avgKeySize`: 24 bytes
     * `avgValueSize`: 204800 bytes
-    * `entries`: 2
+    * `maxEntries`: 2
     * `maxBloatFactor`: 1
 
 This cache holds a map of the parsed representation of all current external IDs.
@@ -208,7 +208,7 @@ This defaults allow to contain up to 1000 entries per map, roughly.
 * `oauth_tokens`:
     * `avgKeySize`: 8 bytes
     * `avgValueSize`: 2048 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 1
 
 caches information about the operation performed by a change relative to its
@@ -217,7 +217,7 @@ parent. Allow to cache up to 1000 entries.
 * `mergeability`:
     * `avgKeySize`: 79 bytes
     * `avgValueSize`: 16 bytes
-    * `entries`: 65000
+    * `maxEntries`: 65000
     * `maxBloatFactor`: 2
 
 Caches information about the mergeability status of up to 1000 open changes.
@@ -225,7 +225,7 @@ Caches information about the mergeability status of up to 1000 open changes.
 * `pure_revert`:
     * `avgKeySize`: 55 bytes
     * `avgValueSize`: 16 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 1
 
 Caches the result of checking if one change or commit is a pure/clean revert of
@@ -234,7 +234,7 @@ another, for up to 1000 entries.
 * `persisted_projects`:
     * `avgKeySize`: 128 bytes
     * `avgValueSize`: 1024 bytes
-    * `entries`: 250
+    * `maxEntries`: 250
     * `maxBloatFactor`: 2
 
 Caches the project description records from the refs/meta/config branch of each
@@ -244,7 +244,7 @@ maxBloatFactor allows to go twice over this threshold.
 * `conflicts`:
     * `avgKeySize`: 70 bytes
     * `avgValueSize`: 16 bytes
-    * `entries`: 1000
+    * `maxEntries`: 1000
     * `maxBloatFactor`: 1
 
 Caches whether two commits are in conflict with each other.
@@ -257,7 +257,7 @@ stanza and are not listed above, will fallback to use generic defaults:
 
 * `avgKeySize`: 128 bytes
 * `avgValueSize`: 2048 bytes
-* `entries`: 1000
+* `maxEntries`: 1000
 * `maxBloatFactor`: 1
 
 ### Gotchas

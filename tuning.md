@@ -41,31 +41,31 @@ This is an example (the values are made up):
 ****************************
 
 [cache "diff_summary"]
-	entries = 101
+	maxEntries = 101
 	avgKeySize = 192
 	avgValueSize = 1350
 [cache "web_sessions"]
-	entries = 1
+	maxEntries = 1
 	avgKeySize = 68
 	avgValueSize = 332
 [cache "pure_revert"]
-	entries = 1
+	maxEntries = 1
 	avgKeySize = 112
 	avgValueSize = 8
 [cache "mergeability"]
-	entries = 101
+	maxEntries = 101
 	avgKeySize = 150
 	avgValueSize = 8
 [cache "diff"]
-	entries = 101
+	maxEntries = 101
 	avgKeySize = 188
 	avgValueSize = 5035
 [cache "persisted_projects"]
-	entries = 2
+	maxEntries = 2
 	avgKeySize = 88
 	avgValueSize = 4489
 [cache "accounts"]
-	entries = 5
+	maxEntries = 5
 	avgKeySize = 52
 	avgValueSize = 505
 ```

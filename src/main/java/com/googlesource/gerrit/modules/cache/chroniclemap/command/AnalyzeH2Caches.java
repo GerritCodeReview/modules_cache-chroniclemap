@@ -72,7 +72,7 @@ public class AnalyzeH2Caches extends SshCommand {
               continue;
             }
 
-            config.setLong("cache", baseName, "entries", size);
+            config.setLong("cache", baseName, "maxEntries", size);
             config.setLong("cache", baseName, "avgKeySize", avgKeySize);
 
             // Account for extra serialization bytes of TimedValue entries.
