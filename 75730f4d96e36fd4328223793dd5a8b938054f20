@@ -1,7 +1,8 @@
 {
   "checks": {
     "gerritforge:cache-chroniclemap-build-test": {
-      "state": "RUNNING",
+      "state": "FAILED",
+      "message": "uuid \"gerritforge:cache-chroniclemap-build-test\" has unknown language",
       "started": "2021-01-08T20:47:23Z",
       "created": "2021-01-08T20:47:23Z",
       "updated": "2021-01-08T20:47:23Z"
