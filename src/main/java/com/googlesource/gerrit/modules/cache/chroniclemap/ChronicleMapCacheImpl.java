@@ -17,6 +17,8 @@ import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
@@ -44,16 +46,21 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder totalLoadTime = new LongAdder();
   private final LongAdder evictionCount = new LongAdder();
   private final InMemoryLRU<K> hotEntries;
+  private final ChronicleMapStorageMetrics metrics;
 
   @SuppressWarnings("unchecked")
   ChronicleMapCacheImpl(
-      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, CacheLoader<K, V> loader)
+      PersistentCacheDef<K, V> def,
+      ChronicleMapCacheConfig config,
+      CacheLoader<K, V> loader,
+      MetricMaker metricMaker)
       throws IOException {
     this.config = config;
     this.loader = loader;
     this.hotEntries =
         new InMemoryLRU<>(
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
+    this.metrics = new ChronicleMapStorageMetrics(metricMaker);
 
     final Class<K> keyClass = (Class<K>) def.keyType().getRawType();
     final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
@@ -101,6 +108,28 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         config.getMaxBloatFactor(),
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
+
+    metrics.registerCallBackMetrics(def.name(), store);
+  }
+
+  private static class ChronicleMapStorageMetrics {
+
+    private final MetricMaker metricMaker;
+
+    ChronicleMapStorageMetrics(MetricMaker metricMaker) {
+      this.metricMaker = metricMaker;
+    }
+
+    <K, V> void registerCallBackMetrics(String name, ChronicleMap<K, TimedValue<V>> store) {
+      String PERCENTAGE_FREE_SPACE_METRIC = "cache/chroniclemap/percentage_free_space_" + name;
+
+      metricMaker.newCallbackMetric(
+          PERCENTAGE_FREE_SPACE_METRIC,
+          Long.class,
+          new Description(
+              String.format("the amount of free space in the %s cache as a percentage", name)),
+          () -> (long) store.percentageFreeSpace());
+    }
   }
 
   public ChronicleMapCacheConfig getConfig() {
