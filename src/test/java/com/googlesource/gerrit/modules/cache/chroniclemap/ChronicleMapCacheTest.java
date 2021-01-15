@@ -14,15 +14,26 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.MetricRegistry;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.Weigher;
+import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.common.Nullable;
+import com.google.gerrit.lifecycle.LifecycleManager;
+import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.metrics.dropwizard.DropWizardMetricMaker;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -40,6 +51,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 public class ChronicleMapCacheTest {
+  @Inject MetricMaker metricMaker;
+  @Inject MetricRegistry metricRegistry;
 
   @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
   private SitePaths sitePaths;
@@ -54,6 +67,18 @@ public class ChronicleMapCacheTest {
         new FileBasedConfig(
             sitePaths.resolve("etc").resolve("gerrit.config").toFile(), FS.DETECTED);
     gerritConfig.load();
+
+    setupMetrics();
+  }
+
+  public void setupMetrics() {
+    Injector injector = Guice.createInjector(new DropWizardMetricMaker.ApiModule());
+
+    LifecycleManager mgr = new LifecycleManager();
+    mgr.add(injector);
+    mgr.start();
+
+    injector.injectMembers(this);
   }
 
   @Test
@@ -326,6 +351,25 @@ public class ChronicleMapCacheTest {
     assertThat(cache.runningOutOfFreeSpace()).isFalse();
   }
 
+  @Test
+  public void shouldTriggerPercentageFreeMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    String freeSpaceMetricName = "cache/chroniclemap/percentage_free_space_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", 2);
+    gerritConfig.setInt("cache", cachedValue, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", cachedValue, "avgValueSize", valueSize(cachedValue));
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    assertThat(getMetric(freeSpaceMetricName).getValue()).isEqualTo(100);
+
+    cache.put(cachedValue, cachedValue);
+
+    WaitUtil.waitUntil(
+        () -> (long) getMetric(freeSpaceMetricName).getValue() < 100, Duration.ofSeconds(2));
+  }
+
   private int valueSize(String value) {
     final TimedValueMarshaller<String> marshaller =
         new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
@@ -335,12 +379,34 @@ public class ChronicleMapCacheTest {
     return out.toByteArray().length;
   }
 
+  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(String cachedValue)
+      throws IOException {
+    return newCache(true, cachedValue, null, null, 1, metricMaker);
+  }
+
   private ChronicleMapCacheImpl<String, String> newCache(
       Boolean withLoader,
       @Nullable String cachedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
       Integer version)
+      throws IOException {
+    return newCache(
+        withLoader,
+        cachedValue,
+        expireAfterWrite,
+        refreshAfterWrite,
+        version,
+        new DisabledMetricMaker());
+  }
+
+  private ChronicleMapCacheImpl<String, String> newCache(
+      Boolean withLoader,
+      @Nullable String cachedValue,
+      @Nullable Duration expireAfterWrite,
+      @Nullable Duration refreshAfterWrite,
+      Integer version,
+      MetricMaker metricMaker)
       throws IOException {
     TestPersistentCacheDef cacheDef = new TestPersistentCacheDef(cachedValue);
 
@@ -355,7 +421,8 @@ public class ChronicleMapCacheTest {
             refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO,
             version);
 
-    return new ChronicleMapCacheImpl<>(cacheDef, config, withLoader ? cacheDef.loader() : null);
+    return new ChronicleMapCacheImpl<>(
+        cacheDef, config, withLoader ? cacheDef.loader() : null, metricMaker);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String cachedValue)
@@ -375,11 +442,18 @@ public class ChronicleMapCacheTest {
     return newCache(false, null, null, null, 1);
   }
 
+  private <V> Gauge<V> getMetric(String name) {
+    @SuppressWarnings("unchecked")
+    Gauge<V> gauge = (Gauge<V>) metricRegistry.getMetrics().get(name);
+    assertWithMessage(name).that(gauge).isNotNull();
+    return gauge;
+  }
+
   public static class TestPersistentCacheDef implements PersistentCacheDef<String, String> {
 
     private final String loadedValue;
 
-    TestPersistentCacheDef(@Nullable String loadedValue) {
+    TestPersistentCacheDef(String loadedValue) {
 
       this.loadedValue = loadedValue;
     }
@@ -406,7 +480,7 @@ public class ChronicleMapCacheTest {
 
     @Override
     public String name() {
-      return "foo";
+      return loadedValue;
     }
 
     @Override
