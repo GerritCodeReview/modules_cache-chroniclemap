@@ -20,6 +20,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicMap;
+import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
@@ -41,14 +42,18 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ChronicleMapCacheConfig.Factory configFactory;
+  private final MetricMaker metricMaker;
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final List<ChronicleMapCacheImpl<?, ?>> caches;
   private final ScheduledExecutorService cleanup;
 
   @Inject
   ChronicleMapCacheFactory(
-      ChronicleMapCacheConfig.Factory configFactory, DynamicMap<Cache<?, ?>> cacheMap) {
+      ChronicleMapCacheConfig.Factory configFactory,
+      DynamicMap<Cache<?, ?>> cacheMap,
+      MetricMaker metricMaker) {
     this.configFactory = configFactory;
+    this.metricMaker = metricMaker;
     this.caches = new LinkedList<>();
     this.cacheMap = cacheMap;
     this.cleanup =
@@ -74,7 +79,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             in.version());
     ChronicleMapCacheImpl<K, V> cache = null;
     try {
-      cache = new ChronicleMapCacheImpl<>(in, config, null);
+      cache = new ChronicleMapCacheImpl<>(in, config, null, metricMaker);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -98,7 +103,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             in.version());
     ChronicleMapCacheImpl<K, V> cache = null;
     try {
-      cache = new ChronicleMapCacheImpl<>(in, config, loader);
+      cache = new ChronicleMapCacheImpl<>(in, config, loader, metricMaker);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
