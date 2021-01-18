@@ -6,11 +6,12 @@
       "updated": "2021-01-18T15:03:04Z"
     },
     "gerritforge:cache-chroniclemap-code-style": {
-      "state": "RUNNING",
+      "state": "FAILED",
       "url": "https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/87%252F293987%252F7/1/console",
       "started": "2021-01-18T15:03:39Z",
+      "finished": "2021-01-18T15:03:52Z",
       "created": "2021-01-18T15:03:03Z",
-      "updated": "2021-01-18T15:03:40Z"
+      "updated": "2021-01-18T15:03:52Z"
     }
   }
 }
