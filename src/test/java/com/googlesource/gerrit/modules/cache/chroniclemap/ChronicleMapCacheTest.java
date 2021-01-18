@@ -371,6 +371,105 @@ public class ChronicleMapCacheTest {
         () -> (long) getMetric(freeSpaceMetricName).getValue() < 100, Duration.ofSeconds(2));
   }
 
+  @Test
+  public void shouldTriggerRemainingAutoResizeMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", 2);
+    gerritConfig.setInt("cache", cachedValue, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", cachedValue, "avgValueSize", valueSize(cachedValue));
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    assertThat(getMetric(autoResizeMetricName).getValue()).isEqualTo(1);
+
+    cache.put(cachedValue + "1", cachedValue);
+    cache.put(cachedValue + "2", cachedValue);
+    cache.put(cachedValue + "3", cachedValue);
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(autoResizeMetricName).getValue() == 0, Duration.ofSeconds(2));
+  }
+
+  @Test
+  public void shouldTriggerHotKeysCapacityCacheMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    int percentageHotKeys = 60;
+    int maxEntries = 10;
+    int expectedCapacity = 6;
+    String hotKeysCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", maxEntries);
+    gerritConfig.setInt("cache", cachedValue, "percentageHotKeys", percentageHotKeys);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    assertThat(getMetric(hotKeysCapacityMetricName).getValue()).isEqualTo(expectedCapacity);
+  }
+
+  @Test
+  public void shouldTriggerHotKeysSizeCacheMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    int percentageHotKeys = 30;
+    int maxEntries = 10;
+    int maxHotKeyCapacity = 3;
+    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
+    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", maxEntries);
+    gerritConfig.setInt("cache", cachedValue, "percentageHotKeys", percentageHotKeys);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    assertThat(getMetric(hotKeysSizeMetricName).getValue()).isEqualTo(0);
+
+    for (int i = 0; i < maxHotKeyCapacity; i++) {
+      cache.put(cachedValue + i, cachedValue);
+    }
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(hotKeysSizeMetricName).getValue() == maxHotKeyCapacity,
+        METRIC_TRIGGER_TIMEOUT);
+
+    cache.put(cachedValue + maxHotKeyCapacity + 1, cachedValue);
+
+    assertThrows(
+        InterruptedException.class,
+        () ->
+            WaitUtil.waitUntil(
+                () -> (int) getMetric(hotKeysSizeMetricName).getValue() > maxHotKeyCapacity,
+                METRIC_TRIGGER_TIMEOUT));
+  }
+
+  @Test
+  public void shouldResetHotKeysWhenInvalidateAll() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    int percentageHotKeys = 30;
+    int maxEntries = 10;
+    int maxHotKeyCapacity = 3;
+    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
+    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", maxEntries);
+    gerritConfig.setInt("cache", cachedValue, "percentageHotKeys", percentageHotKeys);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    for (int i = 0; i < maxHotKeyCapacity; i++) {
+      cache.put(cachedValue + i, cachedValue);
+    }
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(hotKeysSizeMetricName).getValue() == maxHotKeyCapacity,
+        METRIC_TRIGGER_TIMEOUT);
+
+    cache.invalidateAll();
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(hotKeysSizeMetricName).getValue() == 0, METRIC_TRIGGER_TIMEOUT);
+  }
+
   private int valueSize(String value) {
     final TimedValueMarshaller<String> marshaller =
         new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
