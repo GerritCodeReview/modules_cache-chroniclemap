@@ -16,3 +16,9 @@ to monitor the state of the cache:
 
   See the [official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#remainingAutoResizes--)
   for more information.
+
+* cache/chroniclemap/hot_keys_capacity_<cache-name>
+  : Constant number of hot keys for the cache that can be kept in memory.
+
+* cache/chroniclemap/hot_keys_size_<cache-name>
+  : The number of hot keys for the cache that are currently in memory.
