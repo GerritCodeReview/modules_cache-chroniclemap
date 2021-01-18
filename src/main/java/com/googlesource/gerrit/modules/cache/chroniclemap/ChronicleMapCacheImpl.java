@@ -122,6 +122,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     <K, V> void registerCallBackMetrics(String name, ChronicleMap<K, TimedValue<V>> store) {
       String PERCENTAGE_FREE_SPACE_METRIC = "cache/chroniclemap/percentage_free_space_" + name;
+      String REMAINING_AUTORESIZES_METRIC = "cache/chroniclemap/remaining_autoresizes_" + name;
 
       metricMaker.newCallbackMetric(
           PERCENTAGE_FREE_SPACE_METRIC,
@@ -129,6 +130,14 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
           new Description(
               String.format("The amount of free space in the %s cache as a percentage", name)),
           () -> (long) store.percentageFreeSpace());
+
+      metricMaker.newCallbackMetric(
+          REMAINING_AUTORESIZES_METRIC,
+          Integer.class,
+          new Description(
+              String.format(
+                  "The number of times the %s cache can automatically expand its capacity", name)),
+          store::remainingAutoResizes);
     }
   }
 

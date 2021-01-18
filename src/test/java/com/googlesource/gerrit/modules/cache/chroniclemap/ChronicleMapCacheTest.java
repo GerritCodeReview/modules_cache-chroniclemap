@@ -370,6 +370,27 @@ public class ChronicleMapCacheTest {
         () -> (long) getMetric(freeSpaceMetricName).getValue() < 100, Duration.ofSeconds(2));
   }
 
+  @Test
+  public void shouldTriggerRemainingAutoResizeMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", 2);
+    gerritConfig.setInt("cache", cachedValue, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", cachedValue, "avgValueSize", valueSize(cachedValue));
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    assertThat(getMetric(autoResizeMetricName).getValue()).isEqualTo(1);
+
+    cache.put(cachedValue + "1", cachedValue);
+    cache.put(cachedValue + "2", cachedValue);
+    cache.put(cachedValue + "3", cachedValue);
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(autoResizeMetricName).getValue() == 0, Duration.ofSeconds(2));
+  }
+
   private int valueSize(String value) {
     final TimedValueMarshaller<String> marshaller =
         new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
