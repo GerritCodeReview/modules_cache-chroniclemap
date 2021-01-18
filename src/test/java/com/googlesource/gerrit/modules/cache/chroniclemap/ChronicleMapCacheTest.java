@@ -13,10 +13,6 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static com.google.gerrit.testing.GerritJUnit.assertThrows;
-
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;
@@ -36,12 +32,6 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.time.Duration;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import net.openhft.chronicle.bytes.Bytes;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -50,6 +40,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
 public class ChronicleMapCacheTest {
   @Inject MetricMaker metricMaker;
@@ -369,6 +370,27 @@ public class ChronicleMapCacheTest {
 
     WaitUtil.waitUntil(
         () -> (long) getMetric(freeSpaceMetricName).getValue() < 100, Duration.ofSeconds(2));
+  }
+
+  @Test
+  public void shouldTriggerRemainingAutoResizeMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + cachedValue;
+    gerritConfig.setInt("cache", cachedValue, "maxEntries", 2);
+    gerritConfig.setInt("cache", cachedValue, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", cachedValue, "avgValueSize", valueSize(cachedValue));
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+
+    assertThat(getMetric(autoResizeMetricName).getValue()).isEqualTo(1);
+
+    cache.put(cachedValue + "1", cachedValue);
+    cache.put(cachedValue + "2", cachedValue);
+    cache.put(cachedValue + "3", cachedValue);
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(autoResizeMetricName).getValue() == 0, Duration.ofSeconds(2));
   }
 
   private int valueSize(String value) {
