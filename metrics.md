@@ -10,3 +10,9 @@ to monitor the state of the cache:
 
   See the [official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#percentageFreeSpace--)
   for more information.
+
+* cache/chroniclemap/remaining_autoresizes_<cache-name>
+  : the number of times the cache can automatically expand its capacity.
+
+  See the [official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#remainingAutoResizes--)
+  for more information.
