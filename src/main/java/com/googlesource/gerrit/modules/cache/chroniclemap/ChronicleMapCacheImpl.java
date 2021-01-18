@@ -22,14 +22,15 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
+import net.openhft.chronicle.map.ChronicleMap;
+import net.openhft.chronicle.map.ChronicleMapBuilder;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
-import net.openhft.chronicle.map.ChronicleMap;
-import net.openhft.chronicle.map.ChronicleMapBuilder;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -118,6 +119,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     ChronicleMapStorageMetrics() {
       String PERCENTAGE_FREE_SPACE_METRIC = "cache/chroniclemap/percentage_free_space_" + name;
+      String REMAINING_AUTORESIZES_METRIC = "cache/chroniclemap/remaining_autoresizes_" + name;
 
       metricMaker.newCallbackMetric(
           PERCENTAGE_FREE_SPACE_METRIC,
@@ -125,6 +127,14 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
           new Description(
               String.format("the amount of free space in the %s cache as a percentage", name)),
           () -> (long) store.percentageFreeSpace());
+
+      metricMaker.newCallbackMetric(
+          REMAINING_AUTORESIZES_METRIC,
+          Integer.class,
+          new Description(
+              String.format(
+                  "the number of times the %s cache can automatically expand its capacity", name)),
+          store::remainingAutoResizes);
     }
   }
 
