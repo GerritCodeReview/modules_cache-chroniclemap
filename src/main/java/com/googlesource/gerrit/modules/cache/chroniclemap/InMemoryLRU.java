@@ -23,8 +23,10 @@ public class InMemoryLRU<K> {
   private final Map<K, Boolean> LRUMap;
 
   private static final Boolean dummyValue = Boolean.TRUE;
+  private final int capacity;
 
   public InMemoryLRU(int capacity) {
+    this.capacity = capacity;
 
     LRUMap =
         Collections.synchronizedMap(
@@ -52,8 +54,14 @@ public class InMemoryLRU<K> {
     LRUMap.clear();
   }
 
+  public int size() {return LRUMap.size(); }
+
   @VisibleForTesting
   protected Object[] toArray() {
     return LRUMap.keySet().toArray();
+  }
+
+  public int getCapacity() {
+    return capacity;
   }
 }
