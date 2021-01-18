@@ -109,7 +109,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    metrics.registerCallBackMetrics(def.name(), store);
+    metrics.registerCallBackMetrics(def.name(), store, hotEntries);
   }
 
   private static class ChronicleMapStorageMetrics {
@@ -120,9 +120,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       this.metricMaker = metricMaker;
     }
 
-    <K, V> void registerCallBackMetrics(String name, ChronicleMap<K, TimedValue<V>> store) {
+    <K, V> void registerCallBackMetrics(
+        String name, ChronicleMap<K, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
       String PERCENTAGE_FREE_SPACE_METRIC = "cache/chroniclemap/percentage_free_space_" + name;
       String REMAINING_AUTORESIZES_METRIC = "cache/chroniclemap/remaining_autoresizes_" + name;
+      String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + name;
+      String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + name;
 
       metricMaker.newCallbackMetric(
           PERCENTAGE_FREE_SPACE_METRIC,
@@ -138,6 +141,21 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
               String.format(
                   "the number of times the %s cache can automatically expand its capacity", name)),
           store::remainingAutoResizes);
+
+      metricMaker.newConstantMetric(
+          HOT_KEYS_CAPACITY_METRIC,
+          hotEntries.getCapacity(),
+          new Description(
+              String.format(
+                  "Number of hot cache keys for %s cache that can be kept in memory", name)));
+
+      metricMaker.newCallbackMetric(
+          HOT_KEYS_SIZE_METRIC,
+          Integer.class,
+          new Description(
+              String.format(
+                  "The number of hot cache keys for %s cache that are currently in memory", name)),
+          hotEntries::size);
     }
   }
 
