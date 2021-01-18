@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "321dcf78_10421e01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-01-18T21:18:24Z",
+      "side": 1,
+      "message": "remove \"of the\" \u003d\u003e Expose number of times the cache can automatically expand its\ncapacity",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 9
+      },
+      "revId": "ab1b997c0cc1d35f88838a29e2119427115e90ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f8cbd1d_86abe65b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-01-18T21:18:24Z",
+      "side": 1,
+      "message": "not: \"The\" , capital for consistency with the other metrics",
+      "range": {
+        "startLine": 139,
+        "startChar": 19,
+        "endLine": 139,
+        "endChar": 22
+      },
+      "revId": "ab1b997c0cc1d35f88838a29e2119427115e90ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
