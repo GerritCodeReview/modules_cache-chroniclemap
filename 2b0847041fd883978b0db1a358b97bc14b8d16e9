@@ -22,6 +22,30 @@
       },
       "revId": "2b0847041fd883978b0db1a358b97bc14b8d16e9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d699a69_cbbc99dc",
+        "filename": "metrics.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-19T09:43:38Z",
+      "side": 1,
+      "message": "Nope, this is not part of chronicle-map itself, but something we added on top of it to deal with evictions.",
+      "parentUuid": "7ed052fd_aa57abc3",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 70
+      },
+      "revId": "2b0847041fd883978b0db1a358b97bc14b8d16e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
