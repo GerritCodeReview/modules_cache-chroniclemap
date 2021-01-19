@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0679c1b8_34f607a7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-19T09:38:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6444f1f1_e087e40b",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 30
+      },
+      "revId": "43e226f891e871971207afbd409f34d452ee4f1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60befd89_9b85345a",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca7388ee_ba5f754c",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-19T09:38:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60befd89_9b85345a",
+      "range": {
+        "startLine": 447,
+        "startChar": 4,
+        "endLine": 447,
+        "endChar": 10
+      },
+      "revId": "43e226f891e871971207afbd409f34d452ee4f1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8110d645_6166dd2f",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-01-18T21:15:26Z",
       "side": 1,
       "message": "Can we make loadedValue non nullable in the constructor instead of doing this defaulting dynamically?",
+      "range": {
+        "startLine": 486,
+        "startChar": 28,
+        "endLine": 486,
+        "endChar": 32
+      },
+      "revId": "43e226f891e871971207afbd409f34d452ee4f1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c3ef5da_35b9360b",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-19T09:38:35Z",
+      "side": 1,
+      "message": "Well spotted, loadedValue does not need to be nullable, as it is always set.",
+      "parentUuid": "8110d645_6166dd2f",
       "range": {
         "startLine": 486,
         "startChar": 28,
