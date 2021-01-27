@@ -16,15 +16,20 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 
+import com.google.common.cache.Cache;
 import com.google.common.truth.Truth8;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.RestResponse;
+import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.accounts.AccountInput;
+import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.modules.cache.chroniclemap.lib.TestPersistentCacheDef;
 import org.junit.Test;
 
+@UseLocalDisk
 public class ChronicleMapCacheIT extends AbstractDaemonTest {
 
   @Inject PersistentCacheFactory persistentCacheFactory;
@@ -37,6 +42,25 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
   @Test
   public void shouldBeAbleToInstallChronicleMapCacheFactory() {
     assertThat(persistentCacheFactory).isInstanceOf(ChronicleMapCacheFactory.class);
+  }
+
+  @Test
+  public void shouldBuildInMemoryCacheWhenDiskLimitIsNegative() {
+    final int negativeDiskLimit = -1;
+    final Cache<String, String> cache =
+        persistentCacheFactory.build(
+            new TestPersistentCacheDef("foo", negativeDiskLimit), CacheBackend.CAFFEINE);
+
+    assertThat(cache.getClass().getSimpleName()).isEqualTo("CaffeinatedGuavaCache");
+  }
+
+  @Test
+  public void shouldBuildInMemoryCacheWhenDiskLimitIsPositive() {
+    final int positiveDiskLimit = 1024;
+    assertThat(
+            persistentCacheFactory.build(
+                new TestPersistentCacheDef("foo", positiveDiskLimit), CacheBackend.CAFFEINE))
+        .isInstanceOf(ChronicleMapCacheImpl.class);
   }
 
   @Test

@@ -35,7 +35,6 @@ public class ChronicleMapCacheConfig {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final File persistedFile;
-  private final long diskLimit;
   private final long maxEntries;
   private final long averageKeySize;
   private final long averageValueSize;
@@ -50,7 +49,6 @@ public class ChronicleMapCacheConfig {
     ChronicleMapCacheConfig create(
         @Assisted("Name") String name,
         @Assisted("ConfigKey") String configKey,
-        @Assisted("DiskLimit") long diskLimit,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
         @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
         int version);
@@ -62,18 +60,13 @@ public class ChronicleMapCacheConfig {
       SitePaths site,
       @Assisted("Name") String name,
       @Assisted("ConfigKey") String configKey,
-      @Assisted("DiskLimit") long diskLimit,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
       @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
       @Assisted int version)
       throws IOException {
     this.version = version;
     final Path cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
-    this.persistedFile =
-        cacheDir != null
-            ? cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile()
-            : null;
-    this.diskLimit = cfg.getLong("cache", configKey, "diskLimit", diskLimit);
+    this.persistedFile = cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile();
 
     this.maxEntries =
         cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey));
@@ -147,10 +140,6 @@ public class ChronicleMapCacheConfig {
 
   public long getAverageValueSize() {
     return averageValueSize;
-  }
-
-  public long getDiskLimit() {
-    return diskLimit;
   }
 
   public int getMaxBloatFactor() {

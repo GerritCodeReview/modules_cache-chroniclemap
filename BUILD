@@ -40,6 +40,7 @@ junit_tests(
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":cache-chroniclemap__plugin",
         "@chronicle-bytes//jar",
+        "//plugins/cache-chroniclemap/src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib:chroniclemap-test-lib",
     ],
 )
 
@@ -49,5 +50,6 @@ acceptance_tests(
     labels = ["server"],
     deps = [
         ":cache-chroniclemap__plugin",
+        "//plugins/cache-chroniclemap/src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib:chroniclemap-test-lib",
     ],
 )

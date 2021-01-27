@@ -22,39 +22,54 @@ import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.CacheBackend;
+import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
+import com.google.gerrit.server.config.GerritServerConfig;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorService;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import org.eclipse.jgit.lib.Config;
 
 @Singleton
 class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+  private final MemoryCacheFactory memCacheFactory;
+  private final Config config;
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final MetricMaker metricMaker;
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final List<ChronicleMapCacheImpl<?, ?>> caches;
   private final ScheduledExecutorService cleanup;
+  private final Path cacheDir;
 
   @Inject
   ChronicleMapCacheFactory(
+      MemoryCacheFactory memCacheFactory,
+      @GerritServerConfig Config cfg,
+      SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
       DynamicMap<Cache<?, ?>> cacheMap,
       MetricMaker metricMaker) {
+    this.memCacheFactory = memCacheFactory;
+    this.config = cfg;
     this.configFactory = configFactory;
     this.metricMaker = metricMaker;
     this.caches = new LinkedList<>();
+    this.cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.cacheMap = cacheMap;
     this.cleanup =
         new LoggingContextAwareScheduledExecutorService(
@@ -66,18 +81,15 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
                     .build()));
   }
 
-  @SuppressWarnings({"unchecked"})
   @Override
   public <K, V> Cache<K, V> build(PersistentCacheDef<K, V> in, CacheBackend backend) {
+    if (isInMemoryCache(in)) {
+      return memCacheFactory.build(in, backend);
+    }
     ChronicleMapCacheConfig config =
         configFactory.create(
-            in.name(),
-            in.configKey(),
-            in.diskLimit(),
-            in.expireAfterWrite(),
-            in.refreshAfterWrite(),
-            in.version());
-    ChronicleMapCacheImpl<K, V> cache = null;
+            in.name(), in.configKey(), in.expireAfterWrite(), in.refreshAfterWrite(), in.version());
+    ChronicleMapCacheImpl<K, V> cache;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, null, metricMaker);
     } catch (IOException e) {
@@ -89,19 +101,16 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     return cache;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <K, V> LoadingCache<K, V> build(
       PersistentCacheDef<K, V> in, CacheLoader<K, V> loader, CacheBackend backend) {
+    if (isInMemoryCache(in)) {
+      return memCacheFactory.build(in, loader, backend);
+    }
     ChronicleMapCacheConfig config =
         configFactory.create(
-            in.name(),
-            in.configKey(),
-            in.diskLimit(),
-            in.expireAfterWrite(),
-            in.refreshAfterWrite(),
-            in.version());
-    ChronicleMapCacheImpl<K, V> cache = null;
+            in.name(), in.configKey(), in.expireAfterWrite(), in.refreshAfterWrite(), in.version());
+    ChronicleMapCacheImpl<K, V> cache;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, loader, metricMaker);
     } catch (IOException e) {
@@ -125,6 +134,11 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     }
   }
 
+  private <K, V> boolean isInMemoryCache(PersistentCacheDef<K, V> in) {
+    return cacheDir == null
+        || config.getLong("cache", in.configKey(), "diskLimit", in.diskLimit()) <= 0;
+  }
+
   @Override
   public void start() {
     for (ChronicleMapCacheImpl<?, ?> cache : caches) {
@@ -135,5 +149,26 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   @Override
   public void stop() {
     cleanup.shutdownNow();
+  }
+
+  private static Path getCacheDir(SitePaths site, String name) {
+    if (name == null) {
+      return null;
+    }
+    Path loc = site.resolve(name);
+    if (!Files.exists(loc)) {
+      try {
+        Files.createDirectories(loc);
+      } catch (IOException e) {
+        logger.atWarning().log("Can't create disk cache: %s", loc.toAbsolutePath());
+        return null;
+      }
+    }
+    if (!Files.isWritable(loc)) {
+      logger.atWarning().log("Can't write to disk cache: %s", loc.toAbsolutePath());
+      return null;
+    }
+    logger.atInfo().log("Enabling disk cache %s", loc.toAbsolutePath());
+    return loc;
   }
 }
