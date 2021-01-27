@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a18f1b6_8f413de7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-27T14:24:55Z",
+      "side": 1,
+      "message": "Two points on this:\n\n1 - Is it documented somewhere that persistent caches should fallback to the inMemory cache factory rather than use any other in-memory solution?\n\n2 - If we go with this solution, then we should also fix this[1], since chronicle-map should be used for persistent-caches only. do we agree?\n\n[1] https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/heads/master/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java#81",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "a65c3f4f0a9625765be3c2340d09a75840150707",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
