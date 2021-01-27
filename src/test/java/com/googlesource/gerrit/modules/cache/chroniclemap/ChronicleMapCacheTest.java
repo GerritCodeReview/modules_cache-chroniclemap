@@ -19,22 +19,17 @@ import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.Weigher;
 import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.lifecycle.LifecycleManager;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.metrics.dropwizard.DropWizardMetricMaker;
-import com.google.gerrit.server.cache.PersistentCacheDef;
-import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.TypeLiteral;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -67,6 +62,9 @@ public class ChronicleMapCacheTest {
         new FileBasedConfig(
             sitePaths.resolve("etc").resolve("gerrit.config").toFile(), FS.DETECTED);
     gerritConfig.load();
+    String cacheDirectory = "cache-dir";
+    gerritConfig.setString("cache", null, "directory", cacheDirectory);
+    gerritConfig.save();
 
     setupMetrics();
   }
@@ -546,90 +544,5 @@ public class ChronicleMapCacheTest {
     Gauge<V> gauge = (Gauge<V>) metricRegistry.getMetrics().get(name);
     assertWithMessage(name).that(gauge).isNotNull();
     return gauge;
-  }
-
-  public static class TestPersistentCacheDef implements PersistentCacheDef<String, String> {
-
-    private final String loadedValue;
-
-    TestPersistentCacheDef(String loadedValue) {
-
-      this.loadedValue = loadedValue;
-    }
-
-    @Override
-    public long diskLimit() {
-      return 0;
-    }
-
-    @Override
-    public int version() {
-      return 0;
-    }
-
-    @Override
-    public CacheSerializer<String> keySerializer() {
-      return StringCacheSerializer.INSTANCE;
-    }
-
-    @Override
-    public CacheSerializer<String> valueSerializer() {
-      return StringCacheSerializer.INSTANCE;
-    }
-
-    @Override
-    public String name() {
-      return loadedValue;
-    }
-
-    @Override
-    public String configKey() {
-      return name();
-    }
-
-    @Override
-    public TypeLiteral<String> keyType() {
-      return new TypeLiteral<String>() {};
-    }
-
-    @Override
-    public TypeLiteral<String> valueType() {
-      return new TypeLiteral<String>() {};
-    }
-
-    @Override
-    public long maximumWeight() {
-      return 0;
-    }
-
-    @Override
-    public Duration expireAfterWrite() {
-      return Duration.ZERO;
-    }
-
-    @Override
-    public Duration expireFromMemoryAfterAccess() {
-      return Duration.ZERO;
-    }
-
-    @Override
-    public Duration refreshAfterWrite() {
-      return Duration.ZERO;
-    }
-
-    @Override
-    public Weigher<String, String> weigher() {
-      return (s, s2) -> 0;
-    }
-
-    @Override
-    public CacheLoader<String, String> loader() {
-      return new CacheLoader<String, String>() {
-        @Override
-        public String load(String s) {
-          return loadedValue != null ? loadedValue : UUID.randomUUID().toString();
-        }
-      };
-    }
   }
 }
