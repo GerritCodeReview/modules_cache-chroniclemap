@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
@@ -54,6 +55,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       CacheLoader<K, V> loader,
       MetricMaker metricMaker)
       throws IOException {
+    Preconditions.checkState(def.diskLimit() > 0);
+
     this.config = config;
     this.loader = loader;
     this.hotEntries =
@@ -84,17 +87,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
 
-    if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
-      store = mapBuilder.create();
-    } else {
-      logger.atWarning().log(
-          "disk storage is enabled for '%s', however chronicle-map "
-              + "cannot honour the diskLimit of %s bytes, since the file size "
-              + "is pre-allocated rather than being a function of the number"
-              + "of entries in the cache",
-          def.name(), def.diskLimit());
-      store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
-    }
+    logger.atWarning().log(
+        "chronicle-map cannot honour the diskLimit of %s bytes for the %s "
+            + "cache, since the file size is pre-allocated rather than being "
+            + "a function of the number of entries in the cache",
+        def.diskLimit(), def.name());
+    store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
 
     logger.atInfo().log(
         "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
