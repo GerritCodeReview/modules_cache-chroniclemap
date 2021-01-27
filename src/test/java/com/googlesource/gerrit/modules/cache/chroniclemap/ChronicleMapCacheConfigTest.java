@@ -37,9 +37,9 @@ import org.junit.rules.TemporaryFolder;
 
 public class ChronicleMapCacheConfigTest {
 
+  private final String cacheDirectory = "cache-dir";
   private final String cacheName = "foobar-cache";
   private final String cacheKey = "foobar-cache-key";
-  private final long definitionDiskLimit = 100;
   private final int version = 1;
   private final Duration expireAfterWrite = Duration.ofSeconds(10_000);
   private final Duration refreshAfterWrite = Duration.ofSeconds(20_000);
@@ -57,14 +57,12 @@ public class ChronicleMapCacheConfigTest {
         new FileBasedConfig(
             sitePaths.resolve("etc").resolve("gerrit.config").toFile(), FS.DETECTED);
     gerritConfig.load();
+    gerritConfig.setString("cache", null, "directory", cacheDirectory);
+    gerritConfig.save();
   }
 
   @Test
-  public void shouldProvidePersistedFileWhenCacheDirIsConfigured() throws Exception {
-    final String directory = "cache-dir";
-    gerritConfig.setString("cache", null, "directory", directory);
-    gerritConfig.save();
-
+  public void shouldProvidePersistedFile() throws Exception {
     assertThat(
             configUnderTest(gerritConfig)
                 .getPersistedFile()
@@ -72,26 +70,7 @@ public class ChronicleMapCacheConfigTest {
                 .getParent()
                 .toRealPath()
                 .toString())
-        .isEqualTo(sitePaths.resolve(directory).toRealPath().toString());
-  }
-
-  @Test
-  public void shouldNotProvidePersistedFileWhenCacheDirIsNotConfigured() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getPersistedFile()).isNull();
-  }
-
-  @Test
-  public void shouldProvideConfiguredDiskLimitWhenDefined() throws Exception {
-    long configuredDiskLimit = 50;
-    gerritConfig.setLong("cache", cacheKey, "diskLimit", configuredDiskLimit);
-    gerritConfig.save();
-
-    assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(configuredDiskLimit);
-  }
-
-  @Test
-  public void shouldProvideDefinitionDiskLimitWhenNotConfigured() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(definitionDiskLimit);
+        .isEqualTo(sitePaths.resolve(cacheDirectory).toRealPath().toString());
   }
 
   @Test
@@ -249,13 +228,6 @@ public class ChronicleMapCacheConfigTest {
 
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) throws IOException {
     return new ChronicleMapCacheConfig(
-        gerritConfig,
-        sitePaths,
-        cacheName,
-        cacheKey,
-        definitionDiskLimit,
-        expireAfterWrite,
-        refreshAfterWrite,
-        version);
+        gerritConfig, sitePaths, cacheName, cacheKey, expireAfterWrite, refreshAfterWrite, version);
   }
 }
