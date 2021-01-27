@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b806074a_0f9bc580",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-27T20:08:30Z",
+      "side": 1,
+      "message": "Real site is working with this change, but the tests are failing on this condition, because both getPersistedFile \u003d\u003d null and diskLimit \u003d\u003d 0. So that many tests are only considering memory caches and should be adjusted to only consider persistent caches:\n\n  FAILURES!!!\n  Tests run: 37,  Failures: 16",
+      "range": {
+        "startLine": 52,
+        "startChar": 29,
+        "endLine": 52,
+        "endChar": 91
+      },
+      "revId": "a95b72c1c850125feafd0b8a5133715e81f0dada",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
