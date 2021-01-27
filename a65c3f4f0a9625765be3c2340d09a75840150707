@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c28b5b_3c436b83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-27T14:48:03Z",
+      "side": 1,
+      "message": "I agree with the approach, but the fix should be in Gerrit, even if it is just 3 lines of code.",
+      "revId": "a65c3f4f0a9625765be3c2340d09a75840150707",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a18f1b6_8f413de7",
