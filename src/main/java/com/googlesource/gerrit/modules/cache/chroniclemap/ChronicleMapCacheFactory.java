@@ -21,8 +21,10 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.server.cache.CacheBackend;
+import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorService;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -35,11 +37,14 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import org.eclipse.jgit.lib.Config;
 
 @Singleton
 class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+  private final MemoryCacheFactory memCacheFactory;
+  private final Config config;
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final List<ChronicleMapCacheImpl<?, ?>> caches;
@@ -47,7 +52,12 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
 
   @Inject
   ChronicleMapCacheFactory(
-      ChronicleMapCacheConfig.Factory configFactory, DynamicMap<Cache<?, ?>> cacheMap) {
+      MemoryCacheFactory memCacheFactory,
+      @GerritServerConfig Config cfg,
+      ChronicleMapCacheConfig.Factory configFactory,
+      DynamicMap<Cache<?, ?>> cacheMap) {
+    this.memCacheFactory = memCacheFactory;
+    this.config = cfg;
     this.configFactory = configFactory;
     this.caches = new LinkedList<>();
     this.cacheMap = cacheMap;
@@ -64,6 +74,9 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   @SuppressWarnings({"unchecked"})
   @Override
   public <K, V> Cache<K, V> build(PersistentCacheDef<K, V> in, CacheBackend backend) {
+    if (config.getLong("cache", in.configKey(), "diskLimit", in.diskLimit()) <= 0) {
+      return memCacheFactory.build(in, backend);
+    }
     ChronicleMapCacheConfig config =
         configFactory.create(
             in.name(),
