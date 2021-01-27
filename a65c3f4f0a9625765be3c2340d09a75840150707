@@ -63,6 +63,30 @@
       },
       "revId": "a65c3f4f0a9625765be3c2340d09a75840150707",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b89bbc25_f2aaa127",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-27T19:55:49Z",
+      "side": 1,
+      "message": "\u003e If we go with this solution, then we should also fix this[1].\n\nDone.\n\n\u003e since chronicle-map should be used for persistent-caches only. do we agree?\n\nNot necessary. It could also swap the backend for memory caches using dedicated another libModule. I uploaded a follow-up change: [2] to demonstrate how to replace the backend for memory caches from Caffeine to Guava.\n\n\u003e Currently also the intent of that logic is \"hidden\" in the H2 persistent cache implementation and it wasn\u0027t obvious as both Tony and I missed it.\n\nThe issue here is to access gerrit configuration:\n\n  config.getLong(\"cache\", in.configKey(), \"diskLimit\", in.diskLimit());\n\nFor that @GerritServerConfig Config instance should be injected at some place and accessed. As you know, Guice binding shim for caches is somehow convoluted and the memory and persistent caches can also be declared by plugins. There is also a compromise to put that logic in one single place: PersistentCacheFactory that is aware of optionally persisted caches (as Tony pointed out there are currently only 3 such caches), and delegate memory cache creation to currently installed MemoryCacheFactory. Also see follow-up change, where I also replaced MemoryCacheFactory using another libModule, and now optionally persistent caches also created using custom MemoryCacheFactory, and all this from cache-chroniclemap module.\n\nI would consider this change as using the current contract and would move forward with this approach.\n\n[2] https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/294843",
+      "parentUuid": "0e4b9c3d_32f8047d",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "a65c3f4f0a9625765be3c2340d09a75840150707",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
