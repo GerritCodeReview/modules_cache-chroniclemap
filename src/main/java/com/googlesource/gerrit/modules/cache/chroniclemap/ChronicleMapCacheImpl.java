@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
@@ -48,6 +49,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   ChronicleMapCacheImpl(
       PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, CacheLoader<K, V> loader)
       throws IOException {
+    Preconditions.checkState(config.getPersistedFile() != null && config.getDiskLimit() > 0);
+
     this.config = config;
     this.loader = loader;
 
@@ -78,11 +81,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
 
-    if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
-      store = mapBuilder.create();
-    } else {
-      store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
-    }
+    store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
 
     logger.atInfo().log(
         "Initialized '%s'|avgKeySize: %s bytes|avgValueSize: %s bytes|"
