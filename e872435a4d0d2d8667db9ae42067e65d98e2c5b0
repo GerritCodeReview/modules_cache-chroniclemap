@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2c3991_e0ef64ae",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T16:50:23Z",
+      "side": 1,
+      "message": "@davido: Is there a shorter form to add this new test dependency?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 130
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
