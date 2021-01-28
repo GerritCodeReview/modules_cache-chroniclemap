@@ -87,6 +87,30 @@
       },
       "revId": "a65c3f4f0a9625765be3c2340d09a75840150707",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b516d4cb_099c5711",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T08:57:01Z",
+      "side": 1,
+      "message": "Thanks @David for the explanation.\nI don\u0027t think at this stage there is any real need for chronicle-map to be used for memory only cache.\n\nOne of the reasons to use chronicle-map was to alleviate the locking burden imposed by the H2 implementation, not to improve caffeine or guava performance.\n\nI suggest that we make things simple and we only use chronicle-map for persistent caches and fall back to  caffeine for in-memory.\n\nI can help moving this test forward by fixing the tests",
+      "parentUuid": "b89bbc25_f2aaa127",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "a65c3f4f0a9625765be3c2340d09a75840150707",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
