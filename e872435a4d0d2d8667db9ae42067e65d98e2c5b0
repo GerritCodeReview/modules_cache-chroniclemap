@@ -308,6 +308,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65f56d8c_f5872954",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T18:25:07Z",
+      "side": 1,
+      "message": "It was a public static class anyway, you can instantiate it from the IT test without having to create a library anyway. Or also you can just use a mock in the IT in the new place, up to you.\n\nYou could also just create a hierarchy of tests with a base class and have it there, it\u0027s up to you. Just defining a library with another BUILD file is way too much IMHO.",
+      "parentUuid": "f5505203_ae8b1c81",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1bdf2924_0035dc7d",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
         "patchSetId": 4
