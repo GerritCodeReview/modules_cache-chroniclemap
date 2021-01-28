@@ -366,6 +366,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98ae4d1b_bf9ff42c",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T21:04:54Z",
+      "side": 1,
+      "message": "I moved the java_library definition in root BUILD file, so it\u0027s eliminated now.",
+      "parentUuid": "65f56d8c_f5872954",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bdf2924_0035dc7d",
