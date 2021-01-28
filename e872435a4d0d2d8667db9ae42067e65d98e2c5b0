@@ -72,6 +72,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "860bec0f_e25331a7",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T19:26:29Z",
+      "side": 1,
+      "message": "There is one known issue with Bazel java_test rule: it should separated utility classes in a different library, see: [1].\n\n[1] https://github.com/bazelbuild/bazel/issues/2539",
+      "parentUuid": "efe852df_7bb58521",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 130
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8edb8e00_e0223724",
@@ -271,6 +295,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a36ae2a_388ec29a",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T19:26:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c07dd66_d12be837",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "230a4461_f8a0aafb",
@@ -361,6 +403,30 @@
       "side": 1,
       "message": "If I take one of your examples, \"java/com/google/gerrit/testing/\" does the same thing no?\n\nThe \"com.google.gerrit.testing\" package has been introduced to host all test utils, in a single target.\n\nMy intention was the same, to have a \"com.googlesource.gerrit.modules.cache.chroniclemap.lib\" to host all test dependencies, in one target.\n\nIf I had done this in the main package, I would have needed to address one by one the libraries I want, or explicitly exclude any *IT or *Test classes right?\n\nHaving this in a sub package allows to just use *.java as source, because everything in that package will be a library.\n\nWDYT?",
       "parentUuid": "1bdf2924_0035dc7d",
+      "range": {
+        "startLine": 14,
+        "startChar": 59,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c09b770_f7ffb04c",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T19:26:29Z",
+      "side": 1,
+      "message": "\u003e Having this in a sub package allows to just use *.java as source, because everything in that package will be a library.\n\nI see, but it\u0027s only one single source, so why don\u0027t just specify it as such? And if it start growing, we could still exclude non wanted dependencies. That\u0027s what replication plugin is doing for its test_util library:\n\n  java_library(\n    name \u003d \"replication_util\",\n    testonly \u003d True,\n    srcs \u003d glob(\n        [\"src/test/java/**/*.java\"],\n        exclude \u003d [\"src/test/java/**/*Test.java\"],\n    ),\n    deps \u003d PLUGIN_TEST_DEPS + PLUGIN_DEPS + [\n        \":replication__plugin\",\n    ],\n  )\n\nI went ahead and moved the java_library rule into main BUILD file.",
+      "parentUuid": "4519ccc0_1f290816",
       "range": {
         "startLine": 14,
         "startChar": 59,
