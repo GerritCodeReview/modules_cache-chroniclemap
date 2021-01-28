@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0df6c974_9d44d205",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T18:17:57Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8edb8e00_e0223724",
+      "range": {
+        "startLine": 129,
+        "startChar": 25,
+        "endLine": 129,
+        "endChar": 38
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee1369c1_17777693",
@@ -118,6 +142,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b5549c7_9bf789f1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T18:17:57Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ee1369c1_17777693",
+      "range": {
+        "startLine": 130,
+        "startChar": 11,
+        "endLine": 130,
+        "endChar": 78
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83d2cbd3_2c2177e6",
@@ -131,6 +179,24 @@
       "writtenOn": "2021-01-28T17:55:29Z",
       "side": 1,
       "message": "nit: unrelated change?",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d6074ed_cfa55b45",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T18:17:57Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "83d2cbd3_2c2177e6",
       "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -189,6 +255,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5061c94f_98c1cba2",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T18:17:57Z",
+      "side": 1,
+      "message": "If we keep the TestPersistentCacheDef approach, this BUILD file is needed to allow both unit and acceptance test to use it as a dependency",
+      "parentUuid": "0a098570_5d525ccb",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "230a4461_f8a0aafb",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
         "patchSetId": 4
@@ -200,6 +284,24 @@
       "writtenOn": "2021-01-28T17:55:29Z",
       "side": 1,
       "message": "This looks a bit overkill IMHO: we just need to get a fake implementation of a PersistentCacheDef that responds to name() and configKey() methods: why don\u0027t we just use a mock for it?\n\nWe would avoid:\n- brand-new class\n- BUILD file to create a library",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5505203_ae8b1c81",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T18:17:57Z",
+      "side": 1,
+      "message": "\u003e This looks a bit overkill IMHO: we just need to get a fake implementation of a PersistentCacheDef that responds to name() and configKey() methods: why don\u0027t we just use a mock for it?\n\u003e \n\u003e We would avoid:\n\u003e - brand-new class\n\nI would have not created this class just for this change.\nBut this class already existed, used by unit tests.\nThis change only moves it to a common package where it can be used by both. \n\n\u003e - BUILD file to create a library",
+      "parentUuid": "230a4461_f8a0aafb",
       "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
