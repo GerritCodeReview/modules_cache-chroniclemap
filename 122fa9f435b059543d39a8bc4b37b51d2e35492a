@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac324dd2_568cc4f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-28T10:33:19Z",
+      "side": 1,
+      "message": "@Davido, thanks for this POC, I didn\u0027t know one could swap the memory cache implementation as well.\n\nAs we discussed, this is not really needed at this stage, since chronicle-map best serves its purpose when replacing H2 for persistent caches, because it avoids H2 locking problems when dealing with highly concurrent access to the cache.\n\nShall we close this ticket for the time being?",
+      "revId": "122fa9f435b059543d39a8bc4b37b51d2e35492a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
