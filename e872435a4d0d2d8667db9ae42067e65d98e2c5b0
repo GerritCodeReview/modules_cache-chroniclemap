@@ -22,6 +22,70 @@
       },
       "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc260a0_f86eb8d8",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T17:16:49Z",
+      "side": 1,
+      "message": "I added comment on this BUILD file you added. Another option would be to add this new rule here, in this root file:\n\n  java_library(\n    name \u003d \"chroniclemap-test-lib\",\n    testonly \u003d True,\n    srcs \u003d [\"src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java\"],\n    visibility \u003d [\"//visibility:public\"],\n    deps \u003d PLUGIN_DEPS + PLUGIN_TEST_DEPS,\n  )\n\nand use it like this: \":chroniclemap-test-lib\".",
+      "parentUuid": "eb2c3991_e0ef64ae",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 130
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fb65ce3_3450a51c",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T17:16:49Z",
+      "side": 1,
+      "message": "Why you added this new BUILD file only for this one package? and not just add this rule in the main BUILD file in root directory of this plugin?",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bdf2924_0035dc7d",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T17:16:49Z",
+      "side": 1,
+      "message": "Why add yet another lib package?  Can\u0027t it just be: com.googlesource.gerrit.modules.cache.chroniclemap ?\n\nIn code-owners plugin we have:\n\n javatests/com/google/gerrit/plugins/codeowners/acceptance/\n\nor in gerrit itself we have:\n\n  java/com/google/gerrit/testing/\n\nor even:\n\n  java/com/google/gerrit/acceptance/",
+      "range": {
+        "startLine": 14,
+        "startChar": 59,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
