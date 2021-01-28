@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97e80975_760cddc6",
+        "filename": "BUILD",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-28T19:26:29Z",
+      "side": 1,
+      "message": "If more test utility classes are added to this package, the new class could be added, or glob can be used combined with excludes, e.g.:\n\n  java_library(\n    name \u003d \"chroniclemap-test-lib\",\n    testonly \u003d True,\n    srcs \u003d glob(\n        [\"src/test/java/**/*.java\"],\n        exclude \u003d [\n            \"src/test/java/**/*Test.java\",\n            \"src/test/java/**/*IT.java\",\n        ],\n    ),",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 108
+      },
+      "revId": "a797b886ba500496d09b75a0066dc53a76336bc2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
