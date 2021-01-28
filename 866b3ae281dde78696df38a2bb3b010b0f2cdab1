@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c47ed68_8ed1e7a6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T17:55:29Z",
+      "side": 0,
+      "message": "I can understand why diskLimit was unused and therefore should be removed. Would this perhaps make sense as a separate cleanup change and limit this to just the delegation part?",
+      "revId": "866b3ae281dde78696df38a2bb3b010b0f2cdab1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

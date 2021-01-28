@@ -50,6 +50,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8edb8e00_e0223724",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T17:55:29Z",
+      "side": 1,
+      "message": "isInMemoryCache? The methods that return a boolean are typically more readable if they have a \"to be\" verb in the method name.",
+      "range": {
+        "startLine": 129,
+        "startChar": 25,
+        "endLine": 129,
+        "endChar": 38
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee1369c1_17777693",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T17:55:29Z",
+      "side": 1,
+      "message": "This is not going to change for every cache: can we use the same pattern used in H2CacheFactory?\n\nP.S. You see my point about doing that in Gerrit, isn\u0027t it? We have to basically copy\u0026paste H2CacheFactory code here, and we should do it consistently IMHO.",
+      "range": {
+        "startLine": 130,
+        "startChar": 11,
+        "endLine": 130,
+        "endChar": 78
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d2cbd3_2c2177e6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T17:55:29Z",
+      "side": 1,
+      "message": "nit: unrelated change?",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fb65ce3_3450a51c",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/BUILD",
         "patchSetId": 4
@@ -61,6 +124,40 @@
       "writtenOn": "2021-01-28T17:16:49Z",
       "side": 1,
       "message": "Why you added this new BUILD file only for this one package? and not just add this rule in the main BUILD file in root directory of this plugin?",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a098570_5d525ccb",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T17:55:29Z",
+      "side": 1,
+      "message": "nit: unrelated change. Can you extract into its own change?",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "230a4461_f8a0aafb",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-28T17:55:29Z",
+      "side": 1,
+      "message": "This looks a bit overkill IMHO: we just need to get a fake implementation of a PersistentCacheDef that responds to name() and configKey() methods: why don\u0027t we just use a mock for it?\n\nWe would avoid:\n- brand-new class\n- BUILD file to create a library",
       "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
