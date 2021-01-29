@@ -31,6 +31,7 @@ import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorServ
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -88,12 +89,10 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     }
     ChronicleMapCacheConfig config =
         configFactory.create(
-            in.name(),
             in.configKey(),
-            in.diskLimit(),
+            fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
-            in.refreshAfterWrite(),
-            in.version());
+            in.refreshAfterWrite());
     ChronicleMapCacheImpl<K, V> cache;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, null, metricMaker);
@@ -114,12 +113,10 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     }
     ChronicleMapCacheConfig config =
         configFactory.create(
-            in.name(),
             in.configKey(),
-            in.diskLimit(),
+            fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
-            in.refreshAfterWrite(),
-            in.version());
+            in.refreshAfterWrite());
     ChronicleMapCacheImpl<K, V> cache;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, loader, metricMaker);
@@ -159,6 +156,10 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   @Override
   public void stop() {
     cleanup.shutdownNow();
+  }
+
+  public static File fileName(Path cacheDir, String name, Integer version) {
+    return cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile();
   }
 
   private static Path getCacheDir(SitePaths site, String name) {
