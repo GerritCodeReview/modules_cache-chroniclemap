@@ -96,7 +96,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             + " %s bytes|entries: %s|maxBloatFactor: %s|remainingAutoResizes:"
             + " %s|percentageFreeSpace: %s",
         def.name(),
-        config.getVersion(),
+        def.version(),
         mapBuilder.constantlySizedKeys() ? "CONSTANT" : config.getAverageKeySize(),
         config.getAverageValueSize(),
         config.getMaxEntries(),
