@@ -313,6 +313,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "468eb9f1_8a01a814",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-29T18:29:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5061c94f_98c1cba2",
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "230a4461_f8a0aafb",
