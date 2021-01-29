@@ -23,8 +23,7 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_HOT_KEYS;
 
 import com.google.gerrit.server.config.SitePaths;
-import java.io.IOException;
-import java.nio.file.FileSystemException;
+import java.io.File;
 import java.nio.file.Files;
 import java.time.Duration;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -37,9 +36,9 @@ import org.junit.rules.TemporaryFolder;
 
 public class ChronicleMapCacheConfigTest {
 
+  private final String cacheDirectory = ".";
   private final String cacheName = "foobar-cache";
   private final String cacheKey = "foobar-cache-key";
-  private final long definitionDiskLimit = 100;
   private final int version = 1;
   private final Duration expireAfterWrite = Duration.ofSeconds(10_000);
   private final Duration refreshAfterWrite = Duration.ofSeconds(20_000);
@@ -57,14 +56,12 @@ public class ChronicleMapCacheConfigTest {
         new FileBasedConfig(
             sitePaths.resolve("etc").resolve("gerrit.config").toFile(), FS.DETECTED);
     gerritConfig.load();
+    gerritConfig.setString("cache", null, "directory", cacheDirectory);
+    gerritConfig.save();
   }
 
   @Test
-  public void shouldProvidePersistedFileWhenCacheDirIsConfigured() throws Exception {
-    final String directory = "cache-dir";
-    gerritConfig.setString("cache", null, "directory", directory);
-    gerritConfig.save();
-
+  public void shouldProvidePersistedFile() throws Exception {
     assertThat(
             configUnderTest(gerritConfig)
                 .getPersistedFile()
@@ -72,26 +69,7 @@ public class ChronicleMapCacheConfigTest {
                 .getParent()
                 .toRealPath()
                 .toString())
-        .isEqualTo(sitePaths.resolve(directory).toRealPath().toString());
-  }
-
-  @Test
-  public void shouldNotProvidePersistedFileWhenCacheDirIsNotConfigured() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getPersistedFile()).isNull();
-  }
-
-  @Test
-  public void shouldProvideConfiguredDiskLimitWhenDefined() throws Exception {
-    long configuredDiskLimit = 50;
-    gerritConfig.setLong("cache", cacheKey, "diskLimit", configuredDiskLimit);
-    gerritConfig.save();
-
-    assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(configuredDiskLimit);
-  }
-
-  @Test
-  public void shouldProvideDefinitionDiskLimitWhenNotConfigured() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(definitionDiskLimit);
+        .isEqualTo(sitePaths.resolve(cacheDirectory).toRealPath().toString());
   }
 
   @Test
@@ -178,23 +156,6 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenDirectoryDoesntExist() throws Exception {
-    gerritConfig.setString("cache", null, "directory", "/var/bar/foobar");
-    gerritConfig.save();
-
-    assertThrows(FileSystemException.class, () -> configUnderTest(gerritConfig));
-  }
-
-  @Test
-  public void shouldThrowExceptionWhenDirectoryIsNotWriteable() throws Exception {
-    gerritConfig.setString("cache", null, "directory", "/var");
-    gerritConfig.save();
-
-    IOException thrown = assertThrows(IOException.class, () -> configUnderTest(gerritConfig));
-    assertThat(thrown).hasMessageThat().contains("Can't write to disk cache");
-  }
-
-  @Test
   public void shouldProvideDefinitionRefreshAfterWriteWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getRefreshAfterWrite()).isEqualTo(refreshAfterWrite);
   }
@@ -247,15 +208,16 @@ public class ChronicleMapCacheConfigTest {
     assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
   }
 
-  private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) throws IOException {
+  private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
+    File persistentFile =
+        ChronicleMapCacheFactory.fileName(
+            sitePaths.site_path.resolve(cacheDirectory), cacheName, version);
+    sitePaths
+        .resolve(cacheDirectory)
+        .resolve(String.format("%s_%s.dat", cacheName, version))
+        .toFile();
+
     return new ChronicleMapCacheConfig(
-        gerritConfig,
-        sitePaths,
-        cacheName,
-        cacheKey,
-        definitionDiskLimit,
-        expireAfterWrite,
-        refreshAfterWrite,
-        version);
+        gerritConfig, cacheKey, persistentFile, expireAfterWrite, refreshAfterWrite);
   }
 }

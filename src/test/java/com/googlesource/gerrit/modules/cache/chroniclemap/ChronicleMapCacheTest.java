@@ -30,6 +30,7 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -53,6 +54,8 @@ public class ChronicleMapCacheTest {
   private SitePaths sitePaths;
   private StoredConfig gerritConfig;
 
+  private final String cacheDirectory = ".";
+
   @Before
   public void setUp() throws Exception {
     sitePaths = new SitePaths(temporaryFolder.newFolder().toPath());
@@ -62,7 +65,6 @@ public class ChronicleMapCacheTest {
         new FileBasedConfig(
             sitePaths.resolve("etc").resolve("gerrit.config").toFile(), FS.DETECTED);
     gerritConfig.load();
-    String cacheDirectory = "cache-dir";
     gerritConfig.setString("cache", null, "directory", cacheDirectory);
     gerritConfig.save();
 
@@ -507,16 +509,17 @@ public class ChronicleMapCacheTest {
       throws IOException {
     TestPersistentCacheDef cacheDef = new TestPersistentCacheDef(cachedValue);
 
+    File persistentFile =
+        ChronicleMapCacheFactory.fileName(
+            sitePaths.site_path.resolve(cacheDirectory), cacheDef.name(), version);
+
     ChronicleMapCacheConfig config =
         new ChronicleMapCacheConfig(
             gerritConfig,
-            sitePaths,
-            cacheDef.name(),
             cacheDef.configKey(),
-            cacheDef.diskLimit(),
+            persistentFile,
             expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
-            refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO,
-            version);
+            refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO);
 
     return new ChronicleMapCacheImpl<>(
         cacheDef, config, withLoader ? cacheDef.loader() : null, metricMaker);
