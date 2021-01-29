@@ -513,7 +513,6 @@ public class ChronicleMapCacheTest {
             sitePaths,
             cacheDef.name(),
             cacheDef.configKey(),
-            cacheDef.diskLimit(),
             expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
             refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO,
             version);

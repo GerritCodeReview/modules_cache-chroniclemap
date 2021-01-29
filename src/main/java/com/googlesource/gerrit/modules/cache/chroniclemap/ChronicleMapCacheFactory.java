@@ -88,12 +88,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     }
     ChronicleMapCacheConfig config =
         configFactory.create(
-            in.name(),
-            in.configKey(),
-            in.diskLimit(),
-            in.expireAfterWrite(),
-            in.refreshAfterWrite(),
-            in.version());
+            in.name(), in.configKey(), in.expireAfterWrite(), in.refreshAfterWrite(), in.version());
     ChronicleMapCacheImpl<K, V> cache;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, null, metricMaker);
@@ -114,12 +109,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     }
     ChronicleMapCacheConfig config =
         configFactory.create(
-            in.name(),
-            in.configKey(),
-            in.diskLimit(),
-            in.expireAfterWrite(),
-            in.refreshAfterWrite(),
-            in.version());
+            in.name(), in.configKey(), in.expireAfterWrite(), in.refreshAfterWrite(), in.version());
     ChronicleMapCacheImpl<K, V> cache;
     try {
       cache = new ChronicleMapCacheImpl<>(in, config, loader, metricMaker);
