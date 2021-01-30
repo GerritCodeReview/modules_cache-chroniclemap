@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "661da999_fde32fa5",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-30T16:12:30Z",
+      "side": 1,
+      "message": "I see format issues with this file if I run buildifier, that should be fixed in a separate change.",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 6
+      },
+      "revId": "52e9edda30c4937830712ea0879c08f69562d37d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38e1e9c8_6e0dba13",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-30T16:12:30Z",
+      "side": 1,
+      "message": "Shouldn\u0027t be needed.",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 41
+      },
+      "revId": "52e9edda30c4937830712ea0879c08f69562d37d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e82306_2d901ba5",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-30T16:12:30Z",
+      "side": 1,
+      "message": "Nit: should be sorted lexicographically:\n\n  \"@chronicle-bytes//jar\",\n  \":cache-chroniclemap__plugin\",\n  \":chroniclemap-test-lib\",",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 33
+      },
+      "revId": "52e9edda30c4937830712ea0879c08f69562d37d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dbca5bd_bfb80fec",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-30T16:12:30Z",
+      "side": 1,
+      "message": "Nit: Should be needed.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 41
+      },
+      "revId": "52e9edda30c4937830712ea0879c08f69562d37d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
