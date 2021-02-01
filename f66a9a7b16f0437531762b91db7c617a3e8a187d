@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be2c9a65_9db71dfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-01T14:40:34Z",
+      "side": 1,
+      "message": "@davido, @luca, I think this is good to go, what do you think?",
+      "revId": "f66a9a7b16f0437531762b91db7c617a3e8a187d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
