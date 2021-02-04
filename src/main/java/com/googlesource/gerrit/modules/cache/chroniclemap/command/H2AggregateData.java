@@ -1,4 +1,4 @@
-// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,14 +13,25 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap.command;
 
-import com.google.gerrit.sshd.PluginCommandModule;
-import com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig;
+import com.google.auto.value.AutoValue;
 
-public class SSHCommandModule extends PluginCommandModule {
-  @Override
-  protected void configureCommands() {
-    factory(ChronicleMapCacheConfig.Factory.class);
-    command("analyze-h2-caches").to(AnalyzeH2Caches.class);
-    command("migrate-h2-caches").to(MigrateH2Caches.class);
+@AutoValue
+public abstract class H2AggregateData {
+  public abstract long size();
+
+  public abstract long avgKeySize();
+
+  public abstract long avgValueSize();
+
+  public static H2AggregateData create(long size, long avgKeySize, long avgValueSize) {
+    return new AutoValue_H2AggregateData(size, avgKeySize, avgValueSize);
+  }
+
+  public static H2AggregateData empty() {
+    return new AutoValue_H2AggregateData(0L, 0L, 0L);
+  }
+
+  public boolean isEmpty() {
+    return size() == 0L;
   }
 }
