@@ -1,5 +1,10 @@
 {
   "checks": {
+    "gerritforge:cache-chroniclemap-build-test": {
+      "state": "SCHEDULED",
+      "created": "2021-02-04T19:03:07Z",
+      "updated": "2021-02-04T19:03:07Z"
+    },
     "gerritforge:cache-chroniclemap-code-style": {
       "state": "SCHEDULED",
       "created": "2021-02-04T19:03:06Z",
