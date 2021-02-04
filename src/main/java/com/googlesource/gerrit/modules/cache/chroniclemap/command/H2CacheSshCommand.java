@@ -1,0 +1,91 @@
+// Copyright (C) 2021 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+package com.googlesource.gerrit.modules.cache.chroniclemap.command;
+
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.sshd.SshCommand;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Optional;
+import org.apache.commons.io.FilenameUtils;
+import org.eclipse.jgit.lib.Config;
+import org.h2.Driver;
+
+public abstract class H2CacheSshCommand extends SshCommand {
+  protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  protected static final String H2_SUFFIX = "h2.db";
+
+  protected Config gerritConfig;
+  protected SitePaths site;
+
+  protected String baseName(Path h2File) {
+    return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
+  }
+
+  protected H2AggregateData getStats(Path h2File) throws UnloggedFailure {
+    String url = jdbcUrl(h2File);
+    try {
+
+      try (Connection conn = Driver.load().connect(url, null);
+          Statement s = conn.createStatement();
+          ResultSet r =
+              s.executeQuery(
+                  "SELECT COUNT(*), AVG(OCTET_LENGTH(k)), AVG(OCTET_LENGTH(v)) FROM data")) {
+        if (r.next()) {
+          long size = r.getLong(1);
+          long avgKeySize = r.getLong(2);
+          long avgValueSize = r.getLong(3);
+
+          // Account for extra serialization bytes of TimedValue entries.
+          short TIMED_VALUE_WRAPPER_OVERHEAD = Long.BYTES + Integer.BYTES;
+          return H2AggregateData.create(
+              size, avgKeySize, avgValueSize + TIMED_VALUE_WRAPPER_OVERHEAD);
+        }
+        return H2AggregateData.empty();
+      }
+    } catch (SQLException e) {
+      stderr.println(String.format("Could not get information from %s", baseName(h2File)));
+      throw die(e);
+    }
+  }
+
+  protected String jdbcUrl(Path h2FilePath) {
+    final String normalized =
+        FilenameUtils.removeExtension(FilenameUtils.removeExtension(h2FilePath.toString()));
+    return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE";
+  }
+
+  public Optional<Path> getCacheDir() throws IOException {
+    String name = gerritConfig.getString("cache", null, "directory");
+    if (name == null) {
+      return Optional.empty();
+    }
+    Path loc = site.resolve(name);
+    if (!Files.exists(loc)) {
+      throw new IOException(
+          String.format("disk cache is configured but doesn't exist: %s", loc.toAbsolutePath()));
+    }
+    if (!Files.isReadable(loc)) {
+      throw new IOException(String.format("Can't read from disk cache: %s", loc.toAbsolutePath()));
+    }
+    logger.atFine().log("Enabling disk cache %s", loc.toAbsolutePath());
+    return Optional.of(loc);
+  }
+}
