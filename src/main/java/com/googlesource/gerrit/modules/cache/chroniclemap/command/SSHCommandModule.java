@@ -14,10 +14,13 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap.command;
 
 import com.google.gerrit.sshd.PluginCommandModule;
+import com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig;
 
 public class SSHCommandModule extends PluginCommandModule {
   @Override
   protected void configureCommands() {
+    factory(ChronicleMapCacheConfig.Factory.class);
     command("analyze-h2-caches").to(AnalyzeH2Caches.class);
+    command("migrate-h2-caches").to(MigrateH2Caches.class);
   }
 }
