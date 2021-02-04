@@ -27,6 +27,7 @@ gerrit_plugin(
         "@dev-jna//jar",
         "@javapoet//jar",
         "@jna-platform//jar",
+        "//java/com/google/gerrit/server/cache/h2",
     ],
 )
 
