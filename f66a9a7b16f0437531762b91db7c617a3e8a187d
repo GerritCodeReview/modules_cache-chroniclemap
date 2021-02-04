@@ -16,6 +16,24 @@
       "message": "@davido, @luca, I think this is good to go, what do you think?",
       "revId": "f66a9a7b16f0437531762b91db7c617a3e8a187d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d2225a_d563b811",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-02-04T05:00:38Z",
+      "side": 1,
+      "message": "Can we verify first, if this change can be reworked after merging to master with this refactoring in gerrit core: change 295126? I tried to add that refactoring to stable-3.3 first, but reviewers suggested to move it rather to master.",
+      "parentUuid": "be2c9a65_9db71dfc",
+      "revId": "f66a9a7b16f0437531762b91db7c617a3e8a187d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
