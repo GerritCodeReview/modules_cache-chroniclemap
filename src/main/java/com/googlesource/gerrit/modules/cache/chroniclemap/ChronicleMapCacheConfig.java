@@ -13,8 +13,6 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
@@ -23,13 +21,16 @@ import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import org.eclipse.jgit.lib.Config;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Optional;
-import org.eclipse.jgit.lib.Config;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ChronicleMapCacheConfig {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -54,6 +55,73 @@ public class ChronicleMapCacheConfig {
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
         @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
         int version);
+
+    ChronicleMapCacheConfig createWithValues(
+        @Assisted("Name") String name,
+        @Assisted("ConfigKey") String configKey,
+        @Assisted("DiskLimit") long diskLimit,
+        @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
+        @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+        @Assisted("maxEntries") long maxEntries,
+        @Assisted("avgKeySize") long avgKeySize,
+        @Assisted("avgValueSize") long avgValueSize,
+        @Assisted("maxBloatFactor") int maxBloatFactor,
+        int version);
+  }
+
+  @AssistedInject
+  ChronicleMapCacheConfig(
+      @GerritServerConfig Config cfg,
+      SitePaths site,
+      @Assisted("Name") String name,
+      @Assisted("ConfigKey") String configKey,
+      @Assisted("DiskLimit") long diskLimit,
+      @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
+      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+      @Assisted("maxEntries") long maxEntries,
+      @Assisted("avgKeySize") long avgKeySize,
+      @Assisted("avgValueSize") long avgValueSize,
+      @Assisted("maxBloatFactor") int maxBloatFactor,
+      @Assisted int version)
+      throws IOException {
+
+    this.version = version;
+    final Path cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
+    this.persistedFile =
+        cacheDir != null
+            ? cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile()
+            : null;
+    this.diskLimit = cfg.getLong("cache", configKey, "diskLimit", diskLimit);
+    this.maxEntries = maxEntries;
+    this.averageKeySize = avgKeySize;
+    this.averageValueSize = avgValueSize;
+    this.maxBloatFactor = maxBloatFactor;
+    this.expireAfterWrite =
+        Duration.ofSeconds(
+            ConfigUtil.getTimeUnit(
+                cfg, "cache", configKey, "maxAge", toSeconds(expireAfterWrite), SECONDS));
+    this.refreshAfterWrite =
+        Duration.ofSeconds(
+            ConfigUtil.getTimeUnit(
+                cfg,
+                "cache",
+                configKey,
+                "refreshAfterWrite",
+                toSeconds(refreshAfterWrite),
+                SECONDS));
+    this.percentageFreeSpaceEvictionThreshold =
+        cfg.getInt(
+            "cache",
+            configKey,
+            "percentageFreeSpaceEvictionThreshold",
+            Defaults.percentageFreeSpaceEvictionThreshold());
+
+    this.percentageHotKeys =
+        cfg.getInt("cache", configKey, "percentageHotKeys", Defaults.percentageHotKeys());
+
+    if (percentageHotKeys <= 0 || percentageHotKeys >= 100) {
+      throw new IllegalArgumentException("Invalid 'percentageHotKeys': should be in range [1-99]");
+    }
   }
 
   @AssistedInject

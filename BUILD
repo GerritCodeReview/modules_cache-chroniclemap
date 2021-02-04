@@ -28,6 +28,7 @@ gerrit_plugin(
         "@dev-jna//jar",
         "//lib:h2",
         "//lib/commons:io",
+        "//java/com/google/gerrit/server/cache/h2",
     ],
 )
 

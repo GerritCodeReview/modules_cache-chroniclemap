@@ -38,6 +38,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
+public
 class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -48,10 +49,10 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   private final ScheduledExecutorService cleanup;
 
   @Inject
-  ChronicleMapCacheFactory(
-      ChronicleMapCacheConfig.Factory configFactory,
-      DynamicMap<Cache<?, ?>> cacheMap,
-      MetricMaker metricMaker) {
+  public ChronicleMapCacheFactory(
+          ChronicleMapCacheConfig.Factory configFactory,
+          DynamicMap<Cache<?, ?>> cacheMap,
+          MetricMaker metricMaker) {
     this.configFactory = configFactory;
     this.metricMaker = metricMaker;
     this.caches = new LinkedList<>();
