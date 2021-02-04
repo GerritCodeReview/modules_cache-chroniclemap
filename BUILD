@@ -50,6 +50,9 @@ acceptance_tests(
     deps = [
         ":cache-chroniclemap__plugin",
         ":chroniclemap-test-lib",
+        "//proto:cache_java_proto",
+        "//java/com/google/gerrit/server/cache/h2",
+        "//java/com/google/gerrit/server/cache/serialize",
     ],
 )
 
