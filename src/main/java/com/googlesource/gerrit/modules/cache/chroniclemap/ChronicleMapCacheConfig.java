@@ -43,6 +43,16 @@ public class ChronicleMapCacheConfig {
         @Assisted File persistedFile,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
         @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite);
+
+    ChronicleMapCacheConfig createWithValues(
+        @Assisted("ConfigKey") String configKey,
+        @Assisted File persistedFile,
+        @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
+        @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+        @Assisted("maxEntries") long maxEntries,
+        @Assisted("avgKeySize") long avgKeySize,
+        @Assisted("avgValueSize") long avgValueSize,
+        @Assisted("maxBloatFactor") int maxBloatFactor);
   }
 
   @AssistedInject
@@ -52,14 +62,37 @@ public class ChronicleMapCacheConfig {
       @Assisted File persistedFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
       @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite) {
+
+    this(
+        cfg,
+        configKey,
+        persistedFile,
+        expireAfterWrite,
+        refreshAfterWrite,
+        cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey)),
+        cfg.getLong("cache", configKey, "avgKeySize", Defaults.averageKeySizeFor(configKey)),
+        cfg.getLong("cache", configKey, "avgValueSize", Defaults.avgValueSizeFor(configKey)),
+        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey)));
+  }
+
+  @AssistedInject
+  ChronicleMapCacheConfig(
+      @GerritServerConfig Config cfg,
+      @Assisted("ConfigKey") String configKey,
+      @Assisted File persistedFile,
+      @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
+      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
+      @Assisted("maxEntries") long maxEntries,
+      @Assisted("avgKeySize") long avgKeySize,
+      @Assisted("avgValueSize") long avgValueSize,
+      @Assisted("maxBloatFactor") int maxBloatFactor) {
     this.persistedFile = persistedFile;
 
-    this.maxEntries =
-        cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey));
-    this.averageKeySize =
-        cfg.getLong("cache", configKey, "avgKeySize", Defaults.averageKeySizeFor(configKey));
-    this.averageValueSize =
-        cfg.getLong("cache", configKey, "avgValueSize", Defaults.avgValueSizeFor(configKey));
+    this.maxEntries = maxEntries;
+    this.averageKeySize = avgKeySize;
+    this.averageValueSize = avgValueSize;
+    this.maxBloatFactor = maxBloatFactor;
+
     this.expireAfterWrite =
         Duration.ofSeconds(
             ConfigUtil.getTimeUnit(
@@ -73,9 +106,6 @@ public class ChronicleMapCacheConfig {
                 "refreshAfterWrite",
                 toSeconds(refreshAfterWrite),
                 SECONDS));
-
-    this.maxBloatFactor =
-        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
 
     this.percentageFreeSpaceEvictionThreshold =
         cfg.getInt(
