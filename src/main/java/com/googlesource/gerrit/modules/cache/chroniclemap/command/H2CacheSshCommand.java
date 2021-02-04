@@ -30,7 +30,7 @@ import org.h2.Driver;
 
 public abstract class H2CacheSshCommand extends SshCommand {
   protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  protected static final String H2_SUFFIX = "h2.db";
+  public static final String H2_SUFFIX = "h2.db";
 
   protected Config gerritConfig;
   protected SitePaths site;
@@ -39,7 +39,7 @@ public abstract class H2CacheSshCommand extends SshCommand {
     return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
   }
 
-  protected static H2AggregateData getStats(Path h2File) throws UnloggedFailure {
+  public static H2AggregateData getStats(Path h2File) throws UnloggedFailure {
     String url = jdbcUrl(h2File);
     String baseName = baseName(h2File);
     try {
