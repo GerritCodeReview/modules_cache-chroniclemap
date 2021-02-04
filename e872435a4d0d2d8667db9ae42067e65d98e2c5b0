@@ -471,6 +471,30 @@
       },
       "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e21965ea_3742e6e2",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/lib/TestPersistentCacheDef.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-04T07:31:32Z",
+      "side": 1,
+      "message": "SGTM for now, we can get rid of the library in a follow-up change. I don\u0027t think we needed that at all, but it\u0027s fine for now and can be addressed later.",
+      "parentUuid": "7c09b770_f7ffb04c",
+      "range": {
+        "startLine": 14,
+        "startChar": 59,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "e872435a4d0d2d8667db9ae42067e65d98e2c5b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
