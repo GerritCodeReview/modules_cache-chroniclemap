@@ -24,3 +24,7 @@ Add the cache-chroniclemap module to `$GERRIT_SITE/etc/gerrit.config` as follows
 
 For further information and supported options, refer to [config](config.md)
 documentation.
+
+## Migration
+
+You can check how to migrate from H2 to chronicle-map [here](./migration.md).

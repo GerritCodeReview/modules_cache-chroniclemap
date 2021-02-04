@@ -23,6 +23,7 @@ import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
@@ -31,8 +32,7 @@ import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 
-public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
-    implements PersistentCache {
+class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V> implements PersistentCache {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -48,7 +48,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final InMemoryLRU<K> hotEntries;
 
   @SuppressWarnings("unchecked")
-  ChronicleMapCacheImpl(
+  public ChronicleMapCacheImpl(
       PersistentCacheDef<K, V> def,
       ChronicleMapCacheConfig config,
       CacheLoader<K, V> loader,
@@ -227,6 +227,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
     put(key, v);
     return v;
+  }
+
+  @SuppressWarnings("unchecked")
+  public void putUnchecked(Object key, Object value, Timestamp created) {
+    TimedValue<?> wrapped = new TimedValue<>(value, created.toInstant().toEpochMilli());
+    store.put((K) key, (TimedValue<V>) wrapped);
   }
 
   @Override
