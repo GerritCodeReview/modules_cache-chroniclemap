@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.lib.Config;
 
 @Singleton
-class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListener {
+public class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final MemoryCacheFactory memCacheFactory;
@@ -58,7 +58,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   private final Path cacheDir;
 
   @Inject
-  ChronicleMapCacheFactory(
+  public ChronicleMapCacheFactory(
       MemoryCacheFactory memCacheFactory,
       @GerritServerConfig Config cfg,
       SitePaths site,

@@ -35,11 +35,11 @@ public abstract class H2CacheSshCommand extends SshCommand {
   protected Config gerritConfig;
   protected SitePaths site;
 
-  protected String baseName(Path h2File) {
+  protected static String baseName(Path h2File) {
     return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
   }
 
-  protected H2AggregateData getStats(Path h2File) throws UnloggedFailure {
+  protected static H2AggregateData getStats(Path h2File) throws UnloggedFailure {
     String url = jdbcUrl(h2File);
     String baseName = baseName(h2File);
     try {
@@ -62,12 +62,11 @@ public abstract class H2CacheSshCommand extends SshCommand {
         return H2AggregateData.empty(baseName);
       }
     } catch (SQLException e) {
-      stderr.println(String.format("Could not get information from %s", baseName));
-      throw die(e);
+      throw new UnloggedFailure(1, "fatal: " + e.getMessage(), e);
     }
   }
 
-  protected String jdbcUrl(Path h2FilePath) {
+  protected static String jdbcUrl(Path h2FilePath) {
     final String normalized =
         FilenameUtils.removeExtension(FilenameUtils.removeExtension(h2FilePath.toString()));
     return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE";
