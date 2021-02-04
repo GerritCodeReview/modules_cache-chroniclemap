@@ -13,35 +13,22 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap.command;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.gerrit.sshd.SshCommand;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jgit.lib.Config;
-import org.h2.Driver;
 
-public class AnalyzeH2Caches extends SshCommand {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
-  private String cacheDirectory;
-  private SitePaths site;
+public class AnalyzeH2Caches extends H2CacheSshCommand {
 
   @Inject
   AnalyzeH2Caches(@GerritServerConfig Config cfg, SitePaths site) {
-    this.cacheDirectory = cfg.getString("cache", null, "directory");
+    this.gerritConfig = cfg;
     this.site = site;
   }
 
@@ -52,39 +39,14 @@ public class AnalyzeH2Caches extends SshCommand {
 
     Config config = new Config();
     for (Path h2 : h2Files) {
-      final String url = jdbcUrl(h2);
-      final String baseName =
-          FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2.toString()));
-      try {
+      H2AggregateData stats = getStats(h2);
+      String baseName = baseName(h2);
 
-        try (Connection conn = Driver.load().connect(url, null);
-            Statement s = conn.createStatement();
-            ResultSet r =
-                s.executeQuery(
-                    "SELECT COUNT(*), AVG(OCTET_LENGTH(k)), AVG(OCTET_LENGTH(v)) FROM data")) {
-          if (r.next()) {
-            long size = r.getLong(1);
-            long avgKeySize = r.getLong(2);
-            long avgValueSize = r.getLong(3);
-
-            if (size == 0) {
-              stdout.println(String.format("WARN: Cache %s is empty, skipping.", baseName));
-              continue;
-            }
-
-            config.setLong("cache", baseName, "maxEntries", size);
-            config.setLong("cache", baseName, "avgKeySize", avgKeySize);
-
-            // Account for extra serialization bytes of TimedValue entries.
-            short TIMED_VALUE_WRAPPER_OVERHEAD = Long.BYTES + Integer.BYTES;
-            config.setLong(
-                "cache", baseName, "avgValueSize", avgValueSize + TIMED_VALUE_WRAPPER_OVERHEAD);
-          }
-        }
-      } catch (SQLException e) {
-        stderr.println(String.format("Could not get information from %s", baseName));
-        throw die(e);
+      if (stats.isEmpty()) {
+        stdout.println(String.format("WARN: Cache %s is empty, skipping.", baseName));
+        continue;
       }
+      appendToConfig(config, stats);
     }
     stdout.println();
     stdout.println("****************************");
@@ -97,14 +59,12 @@ public class AnalyzeH2Caches extends SshCommand {
   private Set<Path> getH2CacheFiles() throws UnloggedFailure {
 
     try {
-      final Optional<Path> maybeCacheDir = getCacheDir(site, cacheDirectory);
-
-      return maybeCacheDir
+      return getCacheDir()
           .map(
               cacheDir -> {
                 try {
                   return Files.walk(cacheDir)
-                      .filter(path -> path.toString().endsWith("h2.db"))
+                      .filter(path -> path.toString().endsWith(H2_SUFFIX))
                       .collect(Collectors.toSet());
                 } catch (IOException e) {
                   logger.atSevere().withCause(e).log("Could not read H2 files");
@@ -115,27 +75,5 @@ public class AnalyzeH2Caches extends SshCommand {
     } catch (IOException e) {
       throw die(e);
     }
-  }
-
-  private String jdbcUrl(Path h2FilePath) {
-    final String normalized =
-        FilenameUtils.removeExtension(FilenameUtils.removeExtension(h2FilePath.toString()));
-    return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE";
-  }
-
-  private static Optional<Path> getCacheDir(SitePaths site, String name) throws IOException {
-    if (name == null) {
-      return Optional.empty();
-    }
-    Path loc = site.resolve(name);
-    if (!Files.exists(loc)) {
-      throw new IOException(
-          String.format("disk cache is configured but doesn't exist: %s", loc.toAbsolutePath()));
-    }
-    if (!Files.isReadable(loc)) {
-      throw new IOException(String.format("Can't read from disk cache: %s", loc.toAbsolutePath()));
-    }
-    logger.atFine().log("Enabling disk cache %s", loc.toAbsolutePath());
-    return Optional.of(loc);
   }
 }
