@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59d526e1_4f3492ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-05T14:29:17Z",
+      "side": 1,
+      "message": "I would like to add some more tests and some documentation, but other than that, this works.\n\nExample output:\n\nMigrating H2 caches to Chronicle-Map...\n* Size multiplier: 1\n* Max Bloat Factor: 1\n\n[diff_summary]:         100% (216/216)\n[accounts]:             100% (2/2)\n[mergeability]:         100% (2444/2444)\n[persisted_projects]:   100% (3/3)\n[diff]:                 100% (216/216)\nComplete!\n\n****************************\n** Chronicle-map template **\n****************************\n\n[cache \"diff_summary\"]\n\tmaxEntries \u003d 216\n\tavgKeySize \u003d 192\n\tavgValueSize \u003d 254\n\tmaxBloatFactor \u003d 1\n[cache \"accounts\"]\n\tmaxEntries \u003d 2\n\tavgKeySize \u003d 52\n\tavgValueSize \u003d 194\n\tmaxBloatFactor \u003d 1\n[cache \"mergeability\"]\n\tmaxEntries \u003d 2444\n\tavgKeySize \u003d 150\n\tavgValueSize \u003d 20\n\tmaxBloatFactor \u003d 1\n[cache \"persisted_projects\"]\n\tmaxEntries \u003d 3\n\tavgKeySize \u003d 80\n\tavgValueSize \u003d 4087\n\tmaxBloatFactor \u003d 1\n[cache \"diff\"]\n\tmaxEntries \u003d 216\n\tavgKeySize \u003d 188\n\tavgValueSize \u003d 796\n\tmaxBloatFactor \u003d 1",
+      "revId": "bd9d5c5495c5e02cbd38889046f87caa2063ad47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
