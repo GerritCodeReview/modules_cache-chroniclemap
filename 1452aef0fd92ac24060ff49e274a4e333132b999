@@ -16,6 +16,41 @@
       "message": "This change depend on this refactoring change 295126 in gerrit core.",
       "revId": "1452aef0fd92ac24060ff49e274a4e333132b999",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00e62a3_4d00693c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-05T14:22:15Z",
+      "side": 1,
+      "message": "Shall we add them to the same topic?",
+      "parentUuid": "e7a52d2b_ff157787",
+      "revId": "1452aef0fd92ac24060ff49e274a4e333132b999",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9af6c73_7fb2054f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-05T14:22:15Z",
+      "side": 1,
+      "message": "Any reason to remove the public modifier?\n\nI am actually already leveraging this in a WIP change I am working on so that I can delegate the computation of the fileName without having to guess it or rewrite it.\n\nIs this related to switching to PersistentCacheBaseFactory?",
+      "revId": "1452aef0fd92ac24060ff49e274a4e333132b999",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
