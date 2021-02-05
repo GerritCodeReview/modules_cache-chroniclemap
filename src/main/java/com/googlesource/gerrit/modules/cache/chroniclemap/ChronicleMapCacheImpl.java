@@ -17,6 +17,8 @@ import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
@@ -43,13 +45,22 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder loadExceptionCount = new LongAdder();
   private final LongAdder totalLoadTime = new LongAdder();
   private final LongAdder evictionCount = new LongAdder();
+  private final InMemoryLRU<K> hotEntries;
 
   @SuppressWarnings("unchecked")
   ChronicleMapCacheImpl(
-      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, CacheLoader<K, V> loader)
+      PersistentCacheDef<K, V> def,
+      ChronicleMapCacheConfig config,
+      CacheLoader<K, V> loader,
+      MetricMaker metricMaker)
       throws IOException {
     this.config = config;
     this.loader = loader;
+    this.hotEntries =
+        new InMemoryLRU<>(
+            (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
+
+    ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
 
     final Class<K> keyClass = (Class<K>) def.keyType().getRawType();
     final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
@@ -69,32 +80,78 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     mapBuilder.averageValueSize(config.getAverageValueSize());
     mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer()));
 
-    // TODO: ChronicleMap must have "entries" configured, however cache definition
-    //  has already the concept of diskLimit. How to reconcile the two when both
-    //  are defined?
-    //  Should we honour diskLimit, by computing entries as a function of (avgKeySize +
-    // avgValueSize)
     mapBuilder.entries(config.getMaxEntries());
 
     mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
 
-    if (config.getPersistedFile() == null || config.getDiskLimit() < 0) {
-      store = mapBuilder.create();
-    } else {
-      store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
-    }
+    logger.atWarning().log(
+        "chronicle-map cannot honour the diskLimit of %s bytes for the %s "
+            + "cache, since the file size is pre-allocated rather than being "
+            + "a function of the number of entries in the cache",
+        def.diskLimit(), def.name());
+    store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
 
     logger.atInfo().log(
-        "Initialized '%s'|avgKeySize: %s bytes|avgValueSize: %s bytes|"
-            + "entries: %s|maxBloatFactor: %s|remainingAutoResizes: %s|"
-            + "percentageFreeSpace: %s",
+        "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
+            + " %s bytes|entries: %s|maxBloatFactor: %s|remainingAutoResizes:"
+            + " %s|percentageFreeSpace: %s",
         def.name(),
+        def.version(),
         mapBuilder.constantlySizedKeys() ? "CONSTANT" : config.getAverageKeySize(),
         config.getAverageValueSize(),
         config.getMaxEntries(),
         config.getMaxBloatFactor(),
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
+
+    metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+  }
+
+  private static class ChronicleMapStorageMetrics {
+
+    private final MetricMaker metricMaker;
+
+    ChronicleMapStorageMetrics(MetricMaker metricMaker) {
+      this.metricMaker = metricMaker;
+    }
+
+    <K, V> void registerCallBackMetrics(
+        String name, ChronicleMap<K, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
+      String PERCENTAGE_FREE_SPACE_METRIC = "cache/chroniclemap/percentage_free_space_" + name;
+      String REMAINING_AUTORESIZES_METRIC = "cache/chroniclemap/remaining_autoresizes_" + name;
+      String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + name;
+      String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + name;
+
+      metricMaker.newCallbackMetric(
+          PERCENTAGE_FREE_SPACE_METRIC,
+          Long.class,
+          new Description(
+              String.format("The amount of free space in the %s cache as a percentage", name)),
+          () -> (long) store.percentageFreeSpace());
+
+      metricMaker.newCallbackMetric(
+          REMAINING_AUTORESIZES_METRIC,
+          Integer.class,
+          new Description(
+              String.format(
+                  "The number of times the %s cache can automatically expand its capacity", name)),
+          store::remainingAutoResizes);
+
+      metricMaker.newConstantMetric(
+          HOT_KEYS_CAPACITY_METRIC,
+          hotEntries.getCapacity(),
+          new Description(
+              String.format(
+                  "The number of hot cache keys for %s cache that can be kept in memory", name)));
+
+      metricMaker.newCallbackMetric(
+          HOT_KEYS_SIZE_METRIC,
+          Integer.class,
+          new Description(
+              String.format(
+                  "The number of hot cache keys for %s cache that are currently in memory", name)),
+          hotEntries::size);
+    }
   }
 
   public ChronicleMapCacheConfig getConfig() {
@@ -107,6 +164,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(objKey);
       if (!expired(vTimedValue.getCreated())) {
         hitCount.increment();
+        hotEntries.add((K) objKey);
         return vTimedValue.getValue();
       } else {
         invalidate(objKey);
@@ -122,6 +180,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       TimedValue<V> vTimedValue = store.get(key);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
+        hotEntries.add(key);
         return vTimedValue.getValue();
       }
     }
@@ -174,15 +233,23 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void put(K key, V val) {
     TimedValue<V> wrapped = new TimedValue<>(val);
     store.put(key, wrapped);
+    hotEntries.add(key);
   }
 
   public void prune() {
-    store.forEachEntry(
-        c -> {
-          if (expired(c.value().get().getCreated())) {
-            c.context().remove(c);
-          }
-        });
+    if (!config.getExpireAfterWrite().isZero()) {
+      store.forEachEntry(
+          c -> {
+            if (expired(c.value().get().getCreated())) {
+              hotEntries.remove(c.key().get());
+              c.context().remove(c);
+            }
+          });
+    }
+
+    if (runningOutOfFreeSpace()) {
+      evictColdEntries();
+    }
   }
 
   private boolean expired(long created) {
@@ -197,14 +264,31 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return !refreshAfterWrite.isZero() && age.compareTo(refreshAfterWrite) > 0;
   }
 
+  protected boolean runningOutOfFreeSpace() {
+    return store.remainingAutoResizes() == 0
+        && store.percentageFreeSpace() <= config.getPercentageFreeSpaceEvictionThreshold();
+  }
+
+  private void evictColdEntries() {
+    store.forEachEntryWhile(
+        e -> {
+          if (!hotEntries.contains(e.key().get())) {
+            e.doRemove();
+          }
+          return runningOutOfFreeSpace();
+        });
+  }
+
   @Override
   public void invalidate(Object key) {
     store.remove(key);
+    hotEntries.remove((K) key);
   }
 
   @Override
   public void invalidateAll() {
     store.clear();
+    hotEntries.invalidateAll();
   }
 
   @Override

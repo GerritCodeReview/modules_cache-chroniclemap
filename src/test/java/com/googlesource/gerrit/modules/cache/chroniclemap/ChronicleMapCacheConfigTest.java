@@ -19,10 +19,11 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_VALUE_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_ENTRIES;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_HOT_KEYS;
 
 import com.google.gerrit.server.config.SitePaths;
-import java.io.IOException;
-import java.nio.file.FileSystemException;
+import java.io.File;
 import java.nio.file.Files;
 import java.time.Duration;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -35,9 +36,10 @@ import org.junit.rules.TemporaryFolder;
 
 public class ChronicleMapCacheConfigTest {
 
+  private final String cacheDirectory = ".";
   private final String cacheName = "foobar-cache";
   private final String cacheKey = "foobar-cache-key";
-  private final long definitionDiskLimit = 100;
+  private final int version = 1;
   private final Duration expireAfterWrite = Duration.ofSeconds(10_000);
   private final Duration refreshAfterWrite = Duration.ofSeconds(20_000);
 
@@ -54,14 +56,12 @@ public class ChronicleMapCacheConfigTest {
         new FileBasedConfig(
             sitePaths.resolve("etc").resolve("gerrit.config").toFile(), FS.DETECTED);
     gerritConfig.load();
+    gerritConfig.setString("cache", null, "directory", cacheDirectory);
+    gerritConfig.save();
   }
 
   @Test
-  public void shouldProvidePersistedFileWhenCacheDirIsConfigured() throws Exception {
-    final String directory = "cache-dir";
-    gerritConfig.setString("cache", null, "directory", directory);
-    gerritConfig.save();
-
+  public void shouldProvidePersistedFile() throws Exception {
     assertThat(
             configUnderTest(gerritConfig)
                 .getPersistedFile()
@@ -69,26 +69,7 @@ public class ChronicleMapCacheConfigTest {
                 .getParent()
                 .toRealPath()
                 .toString())
-        .isEqualTo(sitePaths.resolve(directory).toRealPath().toString());
-  }
-
-  @Test
-  public void shouldNotProvidePersistedFileWhenCacheDirIsNotConfigured() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getPersistedFile()).isNull();
-  }
-
-  @Test
-  public void shouldProvideConfiguredDiskLimitWhenDefined() throws Exception {
-    long configuredDiskLimit = 50;
-    gerritConfig.setLong("cache", cacheKey, "diskLimit", configuredDiskLimit);
-    gerritConfig.save();
-
-    assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(configuredDiskLimit);
-  }
-
-  @Test
-  public void shouldProvideDefinitionDiskLimitWhenNotConfigured() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getDiskLimit()).isEqualTo(definitionDiskLimit);
+        .isEqualTo(sitePaths.resolve(cacheDirectory).toRealPath().toString());
   }
 
   @Test
@@ -175,35 +156,68 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenDirectoryDoesntExist() throws Exception {
-    gerritConfig.setString("cache", null, "directory", "/var/bar/foobar");
-    gerritConfig.save();
-
-    assertThrows(FileSystemException.class, () -> configUnderTest(gerritConfig));
-  }
-
-  @Test
-  public void shouldThrowExceptionWhenDirectoryIsNotWriteable() throws Exception {
-    gerritConfig.setString("cache", null, "directory", "/var");
-    gerritConfig.save();
-
-    IOException thrown = assertThrows(IOException.class, () -> configUnderTest(gerritConfig));
-    assertThat(thrown).hasMessageThat().contains("Can't write to disk cache");
-  }
-
-  @Test
   public void shouldProvideDefinitionRefreshAfterWriteWhenNotConfigured() throws Exception {
     assertThat(configUnderTest(gerritConfig).getRefreshAfterWrite()).isEqualTo(refreshAfterWrite);
   }
 
-  private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) throws IOException {
+  @Test
+  public void shouldProvidePercentageFreeSpaceEvictionThresholdWhenConfigured() throws Exception {
+    int percentageFreeThreshold = 70;
+    gerritConfig.setInt(
+        "cache", cacheKey, "percentageFreeSpaceEvictionThreshold", percentageFreeThreshold);
+    gerritConfig.save();
+
+    assertThat(configUnderTest(gerritConfig).getPercentageFreeSpaceEvictionThreshold())
+        .isEqualTo(percentageFreeThreshold);
+  }
+
+  @Test
+  public void shouldProvidePercentageFreeSpaceEvictionThresholdDefault() throws Exception {
+    assertThat(configUnderTest(gerritConfig).getPercentageFreeSpaceEvictionThreshold())
+        .isEqualTo(DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD);
+  }
+
+  @Test
+  public void shouldProvidePercentageHotKeysDefault() throws Exception {
+    assertThat(configUnderTest(gerritConfig).getpercentageHotKeys())
+        .isEqualTo(DEFAULT_PERCENTAGE_HOT_KEYS);
+  }
+
+  @Test
+  public void shouldProvidePercentageHotKeysWhenConfigured() throws Exception {
+    int percentageHotKeys = 20;
+    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", percentageHotKeys);
+    gerritConfig.save();
+
+    assertThat(configUnderTest(gerritConfig).getpercentageHotKeys()).isEqualTo(percentageHotKeys);
+  }
+
+  @Test
+  public void shouldThrowWhenPercentageHotKeysIs100() throws Exception {
+    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", 100);
+    gerritConfig.save();
+
+    assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
+  }
+
+  @Test
+  public void shouldThrowWhenPercentageHotKeysIs0() throws Exception {
+    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", 0);
+    gerritConfig.save();
+
+    assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
+  }
+
+  private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
+    File persistentFile =
+        ChronicleMapCacheFactory.fileName(
+            sitePaths.site_path.resolve(cacheDirectory), cacheName, version);
+    sitePaths
+        .resolve(cacheDirectory)
+        .resolve(String.format("%s_%s.dat", cacheName, version))
+        .toFile();
+
     return new ChronicleMapCacheConfig(
-        gerritConfig,
-        sitePaths,
-        cacheName,
-        cacheKey,
-        definitionDiskLimit,
-        expireAfterWrite,
-        refreshAfterWrite);
+        gerritConfig, cacheKey, persistentFile, expireAfterWrite, refreshAfterWrite);
   }
 }

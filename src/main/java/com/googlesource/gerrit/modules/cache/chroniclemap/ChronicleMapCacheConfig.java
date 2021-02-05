@@ -16,38 +16,31 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.GerritServerConfig;
-import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 
 public class ChronicleMapCacheConfig {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
   private final File persistedFile;
-  private final long diskLimit;
   private final long maxEntries;
   private final long averageKeySize;
   private final long averageValueSize;
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
+  private final int percentageFreeSpaceEvictionThreshold;
+  private final int percentageHotKeys;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
-        @Assisted("Name") String name,
         @Assisted("ConfigKey") String configKey,
-        @Assisted("DiskLimit") long diskLimit,
+        @Assisted File persistedFile,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
         @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite);
   }
@@ -55,17 +48,11 @@ public class ChronicleMapCacheConfig {
   @AssistedInject
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
-      SitePaths site,
-      @Assisted("Name") String name,
       @Assisted("ConfigKey") String configKey,
-      @Assisted("DiskLimit") long diskLimit,
+      @Assisted File persistedFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
-      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite)
-      throws IOException {
-    final Path cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
-    this.persistedFile =
-        cacheDir != null ? cacheDir.resolve(String.format("%s.dat", name)).toFile() : null;
-    this.diskLimit = cfg.getLong("cache", configKey, "diskLimit", diskLimit);
+      @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite) {
+    this.persistedFile = persistedFile;
 
     this.maxEntries =
         cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey));
@@ -89,6 +76,28 @@ public class ChronicleMapCacheConfig {
 
     this.maxBloatFactor =
         cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey));
+
+    this.percentageFreeSpaceEvictionThreshold =
+        cfg.getInt(
+            "cache",
+            configKey,
+            "percentageFreeSpaceEvictionThreshold",
+            Defaults.percentageFreeSpaceEvictionThreshold());
+
+    this.percentageHotKeys =
+        cfg.getInt("cache", configKey, "percentageHotKeys", Defaults.percentageHotKeys());
+
+    if (percentageHotKeys <= 0 || percentageHotKeys >= 100) {
+      throw new IllegalArgumentException("Invalid 'percentageHotKeys': should be in range [1-99]");
+    }
+  }
+
+  public int getPercentageFreeSpaceEvictionThreshold() {
+    return percentageFreeSpaceEvictionThreshold;
+  }
+
+  public int getpercentageHotKeys() {
+    return percentageHotKeys;
   }
 
   public Duration getExpireAfterWrite() {
@@ -115,27 +124,8 @@ public class ChronicleMapCacheConfig {
     return averageValueSize;
   }
 
-  public long getDiskLimit() {
-    return diskLimit;
-  }
-
   public int getMaxBloatFactor() {
     return maxBloatFactor;
-  }
-
-  private static Path getCacheDir(SitePaths site, String name) throws IOException {
-    if (name == null) {
-      return null;
-    }
-    Path loc = site.resolve(name);
-    if (!Files.exists(loc)) {
-      Files.createDirectories(loc);
-    }
-    if (!Files.isWritable(loc)) {
-      throw new IOException(String.format("Can't write to disk cache: %s", loc.toAbsolutePath()));
-    }
-    logger.atFine().log("Enabling disk cache %s", loc.toAbsolutePath());
-    return loc;
   }
 
   private static long toSeconds(@Nullable Duration duration) {
@@ -150,6 +140,9 @@ public class ChronicleMapCacheConfig {
     public static final long DEFAULT_AVG_VALUE_SIZE = 2048;
 
     public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
+
+    public static final int DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD = 90;
+    public static final int DEFAULT_PERCENTAGE_HOT_KEYS = 50;
 
     private static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
@@ -190,6 +183,14 @@ public class ChronicleMapCacheConfig {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::maxBloatFactor)
           .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+    }
+
+    public static int percentageFreeSpaceEvictionThreshold() {
+      return DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
+    }
+
+    public static int percentageHotKeys() {
+      return DEFAULT_PERCENTAGE_HOT_KEYS;
     }
   }
 }
