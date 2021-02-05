@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "051c06c2_69b042f2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/H2CacheSshCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-05T23:56:02Z",
+      "side": 1,
+      "message": "This should be part of the AnalyzeH2Cache IMHO, as it is the business logic of the analysis, isn\u0027t it?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 3
+      },
+      "revId": "f118d32488dc37db71e4882718541091eca89d43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
