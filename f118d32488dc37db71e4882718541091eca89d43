@@ -22,6 +22,30 @@
       },
       "revId": "f118d32488dc37db71e4882718541091eca89d43",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5886987_590cdaef",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/H2CacheSshCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-09T16:23:54Z",
+      "side": 1,
+      "message": "This is actually needed also by the MigrateH2Caches command (see next change in the chain).\nThey both need to retrieve H2 aggregate data, the former to analyze and build a configuration, the latter to instantiate chronicle-map caches for the migration.\n\nDoes it make sense?",
+      "parentUuid": "051c06c2_69b042f2",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 3
+      },
+      "revId": "f118d32488dc37db71e4882718541091eca89d43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
