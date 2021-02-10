@@ -15,9 +15,9 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheSshCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.command.H2CacheSshCommand.H2_SUFFIX;
 
 import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
@@ -43,7 +43,6 @@ import com.google.gerrit.sshd.BaseCommand;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Key;
-import com.googlesource.gerrit.modules.cache.chroniclemap.command.H2CacheSshCommand;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
@@ -57,7 +56,7 @@ import org.junit.Test;
 @UseSsh
 @TestPlugin(
     name = "cache-chroniclemap",
-    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.command.SSHCommandModule")
+    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
 public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   private final Duration LOAD_CACHE_WAIT_TIMEOUT = Duration.ofSeconds(4);
   private String ACCOUNTS_CACHE_NAME = "accounts";
