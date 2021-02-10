@@ -11,7 +11,7 @@ gerrit_plugin(
     name = "cache-chroniclemap",
     srcs = glob(["src/main/java/**/*.java"]),
     manifest_entries = [
-        "Gerrit-SshModule: com.googlesource.gerrit.modules.cache.chroniclemap.command.SSHCommandModule",
+        "Gerrit-SshModule: com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule",
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
