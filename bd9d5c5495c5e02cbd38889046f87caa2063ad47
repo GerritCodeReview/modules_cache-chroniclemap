@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32a033df_9b106cb2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-10T19:14:26Z",
+      "side": 1,
+      "message": "I liked the idea to have commands under the .command. sub-package, but that means we will have to make those classes public.\n\nI will take your advise onboard, I will move this command to the same sub-package, so we can avoid that.\n\nFor consistency though, we should move the AnlyzeH2Cache command as well, so that all commands are in the same package.\n\nI will do this in a follow up change.",
+      "parentUuid": "f3d9514b_e7da930b",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 7
+      },
+      "revId": "bd9d5c5495c5e02cbd38889046f87caa2063ad47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71dce013_31a857f3",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/MigrateH2Caches.java",
         "patchSetId": 9
@@ -54,6 +78,24 @@
       "writtenOn": "2021-02-06T00:02:35Z",
       "side": 1,
       "message": "I would move this to the chroniclemap package, so that we don\u0027t have to increase the visibility of the ChronicleMap persistent cache classes.",
+      "revId": "bd9d5c5495c5e02cbd38889046f87caa2063ad47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b9e2701_4a52269a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/MigrateH2Caches.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-10T19:14:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "71dce013_31a857f3",
       "revId": "bd9d5c5495c5e02cbd38889046f87caa2063ad47",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -81,6 +123,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01919658_ee7dc27f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/MigrateH2CachesIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-10T19:14:26Z",
+      "side": 1,
+      "message": "Written tests for Accounts and Project cache",
+      "parentUuid": "2fff33b7_cba4249f",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 40
+      },
+      "revId": "bd9d5c5495c5e02cbd38889046f87caa2063ad47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e97dc20c_9434ef75",
@@ -94,6 +160,30 @@
       "writtenOn": "2021-02-06T00:02:35Z",
       "side": 1,
       "message": "Is this enough to check that the migration was successful? Can we do some more assertions?",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 73,
+        "endChar": 54
+      },
+      "revId": "bd9d5c5495c5e02cbd38889046f87caa2063ad47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95c043d8_96a09792",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/MigrateH2CachesIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-10T19:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e97dc20c_9434ef75",
       "range": {
         "startLine": 73,
         "startChar": 4,
