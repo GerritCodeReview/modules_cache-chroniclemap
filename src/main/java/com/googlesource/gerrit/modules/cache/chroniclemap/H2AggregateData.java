@@ -11,30 +11,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.googlesource.gerrit.modules.cache.chroniclemap.command;
+package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class H2AggregateData {
-  public abstract String cacheName();
+  protected abstract String cacheName();
 
-  public abstract long size();
+  protected abstract long size();
 
-  public abstract long avgKeySize();
+  protected abstract long avgKeySize();
 
-  public abstract long avgValueSize();
+  protected abstract long avgValueSize();
 
-  public static H2AggregateData create(
+  protected static H2AggregateData create(
       String cacheName, long size, long avgKeySize, long avgValueSize) {
     return new AutoValue_H2AggregateData(cacheName, size, avgKeySize, avgValueSize);
   }
 
-  public static H2AggregateData empty(String cacheName) {
+  protected static H2AggregateData empty(String cacheName) {
     return new AutoValue_H2AggregateData(cacheName, 0L, 0L, 0L);
   }
 
-  public boolean isEmpty() {
+  protected boolean isEmpty() {
     return size() == 0L;
   }
 }

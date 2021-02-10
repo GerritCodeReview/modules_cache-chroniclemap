@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.googlesource.gerrit.modules.cache.chroniclemap.command;
+package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.config.SitePaths;
@@ -30,7 +30,7 @@ import org.h2.Driver;
 
 public abstract class H2CacheSshCommand extends SshCommand {
   protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  public static final String H2_SUFFIX = "h2.db";
+  protected static final String H2_SUFFIX = "h2.db";
 
   protected Config gerritConfig;
   protected SitePaths site;
@@ -39,7 +39,7 @@ public abstract class H2CacheSshCommand extends SshCommand {
     return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
   }
 
-  public static H2AggregateData getStats(Path h2File) throws UnloggedFailure {
+  protected static H2AggregateData getStats(Path h2File) throws UnloggedFailure {
     String url = jdbcUrl(h2File);
     String baseName = baseName(h2File);
     try {
