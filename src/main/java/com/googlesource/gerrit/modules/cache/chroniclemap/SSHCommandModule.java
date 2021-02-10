@@ -11,11 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.googlesource.gerrit.modules.cache.chroniclemap.command;
+package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.sshd.PluginCommandModule;
-import com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig;
-import com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches;
 
 public class SSHCommandModule extends PluginCommandModule {
   @Override
