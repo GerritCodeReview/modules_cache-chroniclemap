@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7ec0a4d_62bbd785",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "The e",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9f61cf1_cf12da5d",
@@ -83,6 +100,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de62c081_3471a954",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "There is no resources directory in this module, all the docs are in the root.\nI will move them all in a follow up change, is that OK?",
+      "parentUuid": "20ec80f7_ff7f57d2",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4957a96c_c5925722",
         "filename": "migration.md",
         "patchSetId": 16
@@ -94,6 +129,30 @@
       "writtenOn": "2021-02-11T00:58:47Z",
       "side": 1,
       "message": "converting existing cache from",
+      "range": {
+        "startLine": 3,
+        "startChar": 44,
+        "endLine": 3,
+        "endChar": 58
+      },
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e36e079_4fdd479a",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4957a96c_c5925722",
       "range": {
         "startLine": 3,
         "startChar": 44,
@@ -127,6 +186,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b28d14e_6a5ca85e",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "354de03e_5d638baf",
+      "range": {
+        "startLine": 6,
+        "startChar": 14,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e8997d4_7c5cee44",
@@ -140,6 +223,24 @@
       "writtenOn": "2021-02-11T00:58:47Z",
       "side": 1,
       "message": "You should also specify that for migrating to chronicle-map, the libModule needs to be installed as a plugin, isn\u0027t it?",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b23dcedf_a93414c9",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "I say this at L16, when I describe step by step how to perform the migration.\nIf you think is not clear I will highlight it here as well.",
+      "parentUuid": "6e8997d4_7c5cee44",
       "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -167,6 +268,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78154159_1950968b",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "080f4361_13899610",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 6
+      },
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a5b5ebb_64b637a1",
@@ -180,6 +305,30 @@
       "writtenOn": "2021-02-11T00:58:47Z",
       "side": 1,
       "message": "to load",
+      "range": {
+        "startLine": 17,
+        "startChar": 28,
+        "endLine": 17,
+        "endChar": 51
+      },
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b72c8dd1_06c59efe",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:40:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a5b5ebb_64b637a1",
       "range": {
         "startLine": 17,
         "startChar": 28,
