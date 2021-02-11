@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20ea0bf7_fb1661b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T15:31:25Z",
+      "side": 1,
+      "message": "Update: The entire migration takes around 2 minutes on my Mac[1] (with no traffic to gerrit).\n\n[1]\nOS: MacOS Big Sur Version 11.2\nProcessor: 2.6 GHz 6-Core Intel Core i7\nMemory:16 GB 2400 MHz DDR4",
+      "revId": "768338e8a89c604b101c7cbbe6cee8262dd2e295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
