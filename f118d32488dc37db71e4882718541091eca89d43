@@ -46,6 +46,30 @@
       },
       "revId": "f118d32488dc37db71e4882718541091eca89d43",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "639dfeb6_c3fea2af",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/command/H2CacheSshCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-11T00:44:52Z",
+      "side": 1,
+      "message": "Understood, so you\u0027ve put it here even if it doesn\u0027t technically belong to it, but just for reusing it.\n\nI believe it is fine for now, we can always create another utility class later on, if needed.",
+      "parentUuid": "e5886987_590cdaef",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 3
+      },
+      "revId": "f118d32488dc37db71e4882718541091eca89d43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
