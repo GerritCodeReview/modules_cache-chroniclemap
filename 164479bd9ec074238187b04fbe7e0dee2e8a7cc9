@@ -16,6 +16,24 @@
       "message": "Just rebase the series and make this the first change: \n- git rebase -i HEAD^^^\n- move this change to the beginning\n\n... and there you go :-)",
       "revId": "164479bd9ec074238187b04fbe7e0dee2e8a7cc9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b924dd3_73993406",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:25:51Z",
+      "side": 1,
+      "message": "The reason of this change is to have the analyze-h2-caches and the migrate-h2-caches under the same package, for consistency.\n\nIf we moved this to the base of this chain, there wouldn\u0027t be any other package to be consistent with.\n\nMoving this command away from the command subpackage would not be needed, per-se because analyze-h2-caches does not access any package-scoped method.",
+      "parentUuid": "e96dd796_8c774d8e",
+      "revId": "164479bd9ec074238187b04fbe7e0dee2e8a7cc9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
