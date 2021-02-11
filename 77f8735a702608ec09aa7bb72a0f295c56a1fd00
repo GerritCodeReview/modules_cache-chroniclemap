@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d21b355_c4a4a4bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T14:13:19Z",
+      "side": 1,
+      "message": "Tested this against gerrithub caches and it breaks for two caches:\n\n1)\n```\nMigrating H2 caches to Chronicle-Map...\n* Size multiplier: 3\n* Max Bloat Factor: 3\nFATAL: error migrating git_tags H2 cache\nfatal: Hexadecimal string with odd number of characters: \"SpaceKnow/backend\" [90003-176]\n```\n\nThis is to do with deserialization of string keys. I have already a fix for it and I am going to push it soon.\n\n2)\n```\nMigrating H2 caches to Chronicle-Map...\n* Size multiplier: 3\n* Max Bloat Factor: 3\n[accounts]:             100% (1/1)\n[diff]:                  19% ( 9536/50189)FATAL: error migrating diff H2 cache\nfatal: ChronicleMap{name\u003ddiff, file\u003d/Users/syntonyze/ginstall/gerrit-3.3/cache/diff_0.dat, identityHashCode\u003d1677415237}: Entry is too large: requires 9534 chunks, 8313 is maximum.\n```\n\nThis is caused by this change[1] which is really big and an outlier compared to the average keys/values for this cache, which is computed as follows:\n\navgKeySize \u003d 188\navgValueSize \u003d 2511\n\nThis entry value size is: 9762544 bytes (9.76 Mb), which is 3800 times the average value of 2511.\n\nChanging the size multiplier from 3 to 4, to allow a greater chunk allocation allows the migration to run successfully.\n\nSome caches have a predictable size (because their object serialization length is always the same, see for example \"mergeability\" or \"accounts\"), but others are more variable (such as \"diff\"). For those caches we should allocate more size.\n\nWDYT?\n\n[1]https://review.gerrithub.io/c/SRiderEv/Xemelgo/+/491004",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9f61cf1_cf12da5d",
