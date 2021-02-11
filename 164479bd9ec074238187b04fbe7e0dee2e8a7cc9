@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e96dd796_8c774d8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-11T01:01:00Z",
+      "side": 1,
+      "message": "Just rebase the series and make this the first change: \n- git rebase -i HEAD^^^\n- move this change to the beginning\n\n... and there you go :-)",
+      "revId": "164479bd9ec074238187b04fbe7e0dee2e8a7cc9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
