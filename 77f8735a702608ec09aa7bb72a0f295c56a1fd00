@@ -81,6 +81,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2505abd2_e9c55e76",
+        "filename": "README.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T15:47:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ae41035_ded59afd",
+      "range": {
+        "startLine": 30,
+        "startChar": 61,
+        "endLine": 30,
+        "endChar": 75
+      },
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20ec80f7_ff7f57d2",
@@ -112,6 +136,24 @@
       "side": 1,
       "message": "There is no resources directory in this module, all the docs are in the root.\nI will move them all in a follow up change, is that OK?",
       "parentUuid": "20ec80f7_ff7f57d2",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f903215_536746bc",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-11T15:47:12Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "de62c081_3471a954",
       "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
