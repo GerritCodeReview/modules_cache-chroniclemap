@@ -182,6 +182,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bf9241d_3ba4cd74",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-13T00:24:10Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "5f903215_536746bc",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4957a96c_c5925722",
@@ -307,6 +325,24 @@
       "side": 1,
       "message": "I say this at L16, when I describe step by step how to perform the migration.\nIf you think is not clear I will highlight it here as well.",
       "parentUuid": "6e8997d4_7c5cee44",
+      "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a1372b_0bc2f606",
+        "filename": "migration.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-13T00:24:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b23dcedf_a93414c9",
       "revId": "77f8735a702608ec09aa7bb72a0f295c56a1fd00",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
