@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "634123a8_b91118eb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2AggregateData.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-13T00:41:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e0b3472_e6f10b8e",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 6
+      },
+      "revId": "41cef064e6bc3d2b797431fa170fb2422bfd67c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "447084ac_2abc68d1",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-13T00:26:26Z",
       "side": 1,
       "message": "Can this be made package-private?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 6
+      },
+      "revId": "41cef064e6bc3d2b797431fa170fb2422bfd67c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb64e0db_f30b5a27",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheSshCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-13T00:41:08Z",
+      "side": 1,
+      "message": "Possibly not, as this is going to be an externally accessible command.",
+      "parentUuid": "447084ac_2abc68d1",
       "range": {
         "startLine": 31,
         "startChar": 0,
