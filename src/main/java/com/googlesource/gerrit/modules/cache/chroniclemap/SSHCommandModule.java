@@ -11,13 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.googlesource.gerrit.modules.cache.chroniclemap.command;
+package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.sshd.PluginCommandModule;
 
 public class SSHCommandModule extends PluginCommandModule {
   @Override
   protected void configureCommands() {
+    factory(ChronicleMapCacheConfig.Factory.class);
     command("analyze-h2-caches").to(AnalyzeH2Caches.class);
+    command("migrate-h2-caches").to(MigrateH2Caches.class);
   }
 }

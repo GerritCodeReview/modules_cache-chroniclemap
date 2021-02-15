@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.modules.cache.chroniclemap.command;
+package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -32,7 +32,7 @@ import org.junit.Test;
 @UseSsh
 @TestPlugin(
     name = "cache-chroniclemap",
-    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.command.SSHCommandModule")
+    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
 public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
 
   @Inject private SitePaths sitePaths;

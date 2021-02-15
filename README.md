@@ -6,7 +6,7 @@ based on [ChronicleMap on-disk implementation](https://github.com/OpenHFT/Chroni
 ## How to build
 
 This libModule is built like a Gerrit in-tree plugin, using Bazelisk. See the
-[build instructions](build.md) for more details.
+[build instructions](src/main/resources/Documentation/build.md) for more details.
 
 
 ## Setup
@@ -22,5 +22,9 @@ Add the cache-chroniclemap module to `$GERRIT_SITE/etc/gerrit.config` as follows
   installModule = com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheModule
 ```
 
-For further information and supported options, refer to [config](config.md)
+For further information and supported options, refer to [config](src/main/resources/Documentation/config.md)
 documentation.
+
+## Migration from H2 caches
+
+You can check how to migrate from H2 to chronicle-map [here](src/main/resources/Documentation/migration.md).
