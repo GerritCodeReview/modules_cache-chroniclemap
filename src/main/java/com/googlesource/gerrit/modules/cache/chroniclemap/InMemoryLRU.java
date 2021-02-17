@@ -46,7 +46,13 @@ public class InMemoryLRU<K> {
     return LRUMap.containsKey(key);
   }
 
-  public boolean remove(K key) {
+  /**
+   * Remove a key from the host keys map
+   *
+   * @param key element to remove from the hot keys map
+   * @return true when key was in the hot keys map, null otherwise
+   */
+  public Boolean remove(K key) {
     return LRUMap.remove(key);
   }
 
