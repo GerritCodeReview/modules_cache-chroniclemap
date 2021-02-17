@@ -118,10 +118,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     <K, V> void registerCallBackMetrics(
         String name, ChronicleMap<K, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
-      String PERCENTAGE_FREE_SPACE_METRIC = "cache/chroniclemap/percentage_free_space_" + name;
-      String REMAINING_AUTORESIZES_METRIC = "cache/chroniclemap/remaining_autoresizes_" + name;
-      String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + name;
-      String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + name;
+      String sanitizedName = metricMaker.sanitizeMetricName(name);
+      String PERCENTAGE_FREE_SPACE_METRIC =
+          "cache/chroniclemap/percentage_free_space_" + sanitizedName;
+      String REMAINING_AUTORESIZES_METRIC =
+          "cache/chroniclemap/remaining_autoresizes_" + sanitizedName;
+      String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + sanitizedName;
+      String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + sanitizedName;
 
       metricMaker.newCallbackMetric(
           PERCENTAGE_FREE_SPACE_METRIC,
