@@ -17,6 +17,7 @@ import com.google.common.annotations.VisibleForTesting;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class InMemoryLRU<K> {
 
@@ -47,7 +48,7 @@ public class InMemoryLRU<K> {
   }
 
   public boolean remove(K key) {
-    return LRUMap.remove(key);
+    return Optional.ofNullable(LRUMap.remove(key)).orElse(false);
   }
 
   public void invalidateAll() {
