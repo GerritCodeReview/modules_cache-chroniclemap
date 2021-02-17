@@ -22,6 +22,30 @@
       },
       "revId": "db8349dea967e17000900ac63bffc1d494829e8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616a6b92_797b193a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRU.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-17T19:06:18Z",
+      "side": 1,
+      "message": "Yes, good point, I also considered it.\nBut I don\u0027t like the fact that\n\n```\ncache.remove(key)\n```\n\nCan return null.\n\nI thought it is cleaner to use primitives and always return false.\n\nHaving said that, there\u0027s nothing at the moment that is relying on the return value, so I am tempted to use Boolean instead.",
+      "parentUuid": "bb1d46a8_4c299af6",
+      "range": {
+        "startLine": 50,
+        "startChar": 9,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "db8349dea967e17000900ac63bffc1d494829e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
