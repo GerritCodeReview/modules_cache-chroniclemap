@@ -469,6 +469,23 @@ public class ChronicleMapCacheTest {
         () -> (int) getMetric(hotKeysSizeMetricName).getValue() == 0, METRIC_TRIGGER_TIMEOUT);
   }
 
+  @Test
+  public void shouldSanitizeUnwantedCharsInMetricNames() throws Exception {
+    String cacheName = "very+confusing.cache#name";
+    String sanitized = "very_confusing_cache_name";
+    String hotKeySizeMetricName = "cache/chroniclemap/hot_keys_size_" + sanitized;
+    String percentageFreeMetricName = "cache/chroniclemap/percentage_free_space_" + sanitized;
+    String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
+    String hotKeyCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + sanitized;
+
+    newCacheWithMetrics(cacheName);
+
+    getMetric(hotKeySizeMetricName);
+    getMetric(percentageFreeMetricName);
+    getMetric(autoResizeMetricName);
+    getMetric(hotKeyCapacityMetricName);
+  }
+
   private int valueSize(String value) {
     final TimedValueMarshaller<String> marshaller =
         new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
