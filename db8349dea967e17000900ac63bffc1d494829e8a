@@ -46,6 +46,30 @@
       },
       "revId": "db8349dea967e17000900ac63bffc1d494829e8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92f28cd6_c043c1b7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRU.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-17T19:15:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "616a6b92_797b193a",
+      "range": {
+        "startLine": 50,
+        "startChar": 9,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "db8349dea967e17000900ac63bffc1d494829e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
