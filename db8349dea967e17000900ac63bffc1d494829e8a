@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb1d46a8_4c299af6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/InMemoryLRU.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-02-17T18:44:41Z",
+      "side": 1,
+      "message": "Alternatively this could be changed to return Boolean? Original Map interface defines: [1]:\n\n  public V remove(Object key)\n\nwith this explanation:\n\n  Returns:\n  the previous value associated with key, or null if there was no mapping for key.\n  (A null return can also indicate that the map previously associated null with key.)\n\nIn this case you would have to change the caller sites to handle null values as well.\n\n[1] https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html#remove-java.lang.Object-",
+      "range": {
+        "startLine": 50,
+        "startChar": 9,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "db8349dea967e17000900ac63bffc1d494829e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
