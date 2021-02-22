@@ -15,17 +15,19 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.common.data.GlobalCapability;
 import com.google.gerrit.extensions.annotations.RequiresCapability;
-import com.google.gerrit.metrics.DisabledMetricMaker;
-import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.sshd.CommandMetaData;
-import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Key;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.TextProgressMonitor;
+import org.h2.Driver;
+import org.kohsuke.args4j.Option;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -33,14 +35,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
-import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.lib.TextProgressMonitor;
-import org.h2.Driver;
-import org.kohsuke.args4j.Option;
+import java.util.stream.Collectors;
 
 @RequiresCapability(GlobalCapability.ADMINISTRATE_SERVER)
 @CommandMetaData(name = "migrate-h2-caches", description = "Migrate H2 caches to Chronicle-Map")
@@ -89,29 +87,27 @@ public class MigrateH2Caches extends H2CacheSshCommand {
     stdout.println("Migrating H2 caches to Chronicle-Map...");
     stdout.println("* Size multiplier: " + sizeMultiplier);
     stdout.println("* Max Bloat Factor: " + maxBloatFactor);
-    Set<PersistentCacheDef<?, ?>> cacheDefs = getAllBoundPersistentCacheDefs();
+    Set<Path> h2Files = getH2CacheFiles();
 
     Config outputChronicleMapConfig = new Config();
 
-    for (PersistentCacheDef<?, ?> in : cacheDefs) {
-      Optional<Path> h2CacheFile = getH2CacheFile(cacheDir.get(), in.name());
+    for (Path h2CacheFile : h2Files) {
+      H2AggregateData stats = getStats(h2CacheFile);
+      String baseName = baseName(h2CacheFile);
 
-      if (h2CacheFile.isPresent()) {
-        H2AggregateData stats = getStats(h2CacheFile.get());
-
-        if (!stats.isEmpty()) {
-          ChronicleMapCacheImpl<?, ?> chronicleMapCache =
-              new ChronicleMapCacheImpl<>(
-                  in,
-                  makeChronicleMapConfig(
-                      configFactory, cacheDir.get(), in, stats, sizeMultiplier, maxBloatFactor),
-                  null,
-                  new DisabledMetricMaker());
-          doMigrate(h2CacheFile.get(), in, chronicleMapCache, stats.size());
-          chronicleMapCache.close();
-          appendBloatedConfig(outputChronicleMapConfig, stats);
-        }
+      if (stats.isEmpty()) {
+        stdout.println(String.format("WARN: Cache %s is empty, skipping.", baseName));
+        continue;
       }
+
+      ChronicleMapCacheImpl<Byte[], Byte[]> chronicleMapCache =
+          new ChronicleMapCacheImpl<>(
+              makeChronicleMapConfig(
+                  configFactory, cacheDir.get(), baseName, stats, sizeMultiplier, maxBloatFactor),
+              baseName);
+      doMigrate(h2CacheFile, baseName, chronicleMapCache, stats.size());
+      chronicleMapCache.close();
+      appendBloatedConfig(outputChronicleMapConfig, stats);
     }
     stdout.println("Complete!");
     stdout.println();
@@ -125,41 +121,47 @@ public class MigrateH2Caches extends H2CacheSshCommand {
   protected static ChronicleMapCacheConfig makeChronicleMapConfig(
       ChronicleMapCacheConfig.Factory configFactory,
       Path cacheDir,
-      PersistentCacheDef<?, ?> in,
+      String baseName,
       H2AggregateData stats,
       int sizeMultiplier,
       int maxBloatFactor) {
     return configFactory.createWithValues(
-        in.configKey(),
-        ChronicleMapCacheFactory.fileName(cacheDir, in.name(), in.version()),
-        in.expireAfterWrite(),
-        in.refreshAfterWrite(),
+        baseName,
+        ChronicleMapCacheFactory.fileName(cacheDir, baseName, 0),
+        null,
+        null,
         stats.size() * sizeMultiplier,
         stats.avgKeySize(),
         stats.avgValueSize(),
         maxBloatFactor);
   }
 
+  private Byte[] box(byte[] bytes) {
+    Byte[] bytesWrapper = new Byte[bytes.length];
+    for (int j = 0; j < bytes.length; j++) bytesWrapper[j] = bytes[j];
+    return bytesWrapper;
+  }
+
   private void doMigrate(
       Path h2File,
-      PersistentCacheDef<?, ?> in,
-      ChronicleMapCacheImpl<?, ?> chronicleMapCache,
+      String name,
+      ChronicleMapCacheImpl<Byte[], Byte[]> chronicleMapCache,
       long totalEntries)
       throws UnloggedFailure {
 
     TextProgressMonitor cacheProgress = new TextProgressMonitor(stdout);
-    cacheProgress.beginTask(String.format("[%s]", in.name()), (int) totalEntries);
+    cacheProgress.beginTask(String.format("[%s]", name), (int) totalEntries);
 
     String url = jdbcUrl(h2File);
     try (Connection conn = Driver.load().connect(url, null)) {
       PreparedStatement preparedStatement =
           conn.prepareStatement("SELECT k, v, created FROM data WHERE version=?");
-      preparedStatement.setInt(1, in.version());
+      preparedStatement.setInt(1, 0);
 
       try (ResultSet r = preparedStatement.executeQuery()) {
         while (r.next()) {
-          Object key = in.keySerializer().deserialize(getBytes(r, 1, in.keySerializer()));
-          Object value = in.valueSerializer().deserialize(getBytes(r, 2, in.valueSerializer()));
+          final Byte[] key = box(r.getBytes(1));
+          final Byte[] value = box(r.getBytes(2));
           Timestamp created = r.getTimestamp(3);
           chronicleMapCache.putUnchecked(key, value, created);
           cacheProgress.update(1);
@@ -167,23 +169,12 @@ public class MigrateH2Caches extends H2CacheSshCommand {
       }
 
     } catch (Exception e) {
-      String message = String.format("FATAL: error migrating %s H2 cache", in.name());
+      String message = String.format("FATAL: error migrating %s H2 cache", name);
       logger.atSevere().withCause(e).log(message);
       stderr.println(message);
       throw die(e);
     }
     cacheProgress.endTask();
-  }
-
-  private Set<PersistentCacheDef<?, ?>> getAllBoundPersistentCacheDefs() {
-    Set<PersistentCacheDef<?, ?>> cacheDefs = new HashSet<>();
-    for (Map.Entry<Key<?>, Binding<?>> entry : injector.getParent().getAllBindings().entrySet()) {
-      final Class<?> rawType = entry.getKey().getTypeLiteral().getRawType();
-      if ("PersistentCacheDef".equals(rawType.getSimpleName())) {
-        cacheDefs.add((PersistentCacheDef<?, ?>) entry.getValue().getProvider().get());
-      }
-    }
-    return cacheDefs;
   }
 
   private byte[] getBytes(ResultSet r, int columnIndex, CacheSerializer<?> serializer)
@@ -210,5 +201,26 @@ public class MigrateH2Caches extends H2CacheSshCommand {
             stats.avgKeySize(),
             stats.avgValueSize()));
     config.setLong("cache", stats.cacheName(), "maxBloatFactor", maxBloatFactor);
+  }
+
+  private Set<Path> getH2CacheFiles() throws UnloggedFailure {
+
+    try {
+      return getCacheDir()
+          .map(
+              cacheDir -> {
+                try {
+                  return Files.walk(cacheDir)
+                      .filter(path -> path.toString().endsWith(H2_SUFFIX))
+                      .collect(Collectors.toSet());
+                } catch (IOException e) {
+                  logger.atSevere().withCause(e).log("Could not read H2 files");
+                  return Collections.<Path>emptySet();
+                }
+              })
+          .orElse(Collections.emptySet());
+    } catch (IOException e) {
+      throw die(e);
+    }
   }
 }

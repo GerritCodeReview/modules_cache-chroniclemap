@@ -14,13 +14,7 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheSshCommand.H2_SUFFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
-
 import com.google.common.base.Joiner;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.Sandboxed;
@@ -31,26 +25,33 @@ import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.account.CachedAccountDetails;
-import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.sshd.BaseCommand;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Key;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.Repository;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
-import org.eclipse.jgit.lib.Repository;
-import org.junit.Before;
-import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheSshCommand.H2_SUFFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
 
 @Sandboxed
 @UseSsh
@@ -64,6 +65,8 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
 
   @Inject protected GitRepositoryManager repoManager;
   @Inject private SitePaths sitePaths;
+  @Inject @GerritServerConfig Config cfg;
+  @Inject Injector injector;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
 
@@ -170,18 +173,8 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @SuppressWarnings("unchecked")
-  private <K, V> PersistentCacheDef<K, V> getPersistentCacheDef(String named) {
-    return findClassBoundWithName(PersistentCacheDef.class, named);
-  }
-
-  @SuppressWarnings("unchecked")
   private <K, V> H2CacheImpl<K, V> H2CacheFor(String named) {
     return (H2CacheImpl<K, V>) findClassBoundWithName(LoadingCache.class, named);
-  }
-
-  @SuppressWarnings("unchecked")
-  private <K, V> CacheLoader<K, V> cacheLoaderFor(String named) {
-    return findClassBoundWithName(CacheLoader.class, named);
   }
 
   private <T> T findClassBoundWithName(Class<T> clazz, String named) {
@@ -205,19 +198,17 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
       throws BaseCommand.UnloggedFailure, IOException {
     Path cacheDirectory = sitePaths.resolve(cfg.getString("cache", null, "directory"));
 
-    PersistentCacheDef<K, V> persistentDef = getPersistentCacheDef(cacheName);
     ChronicleMapCacheConfig config =
         MigrateH2Caches.makeChronicleMapConfig(
             chronicleMapCacheConfigFactory,
             cacheDirectory,
-            persistentDef,
+            cacheName,
             H2CacheSshCommand.getStats(
                 cacheDirectory.resolve(String.format("%s.%s", cacheName, H2_SUFFIX))),
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
-    return new ChronicleMapCacheImpl<>(
-        persistentDef, config, cacheLoaderFor(cacheName), new DisabledMetricMaker());
+    return new ChronicleMapCacheImpl<>(config, cacheName);
   }
 
   private void waitForCacheToLoad(String cacheName) throws InterruptedException {

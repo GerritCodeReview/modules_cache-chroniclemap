@@ -22,6 +22,9 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
+import net.openhft.chronicle.map.ChronicleMap;
+import net.openhft.chronicle.map.ChronicleMapBuilder;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -29,8 +32,6 @@ import java.time.Instant;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
-import net.openhft.chronicle.map.ChronicleMap;
-import net.openhft.chronicle.map.ChronicleMapBuilder;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -106,6 +107,38 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.percentageFreeSpace());
 
     metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+  }
+
+  ChronicleMapCacheImpl(ChronicleMapCacheConfig config, String name) throws IOException {
+    this.config = config;
+    this.loader = null;
+    this.hotEntries =
+        new InMemoryLRU<>(
+            (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
+
+    final Class<K> keyClass = (Class<K>) Object.class;
+    final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
+
+    final ChronicleMapBuilder<K, TimedValue<V>> mapBuilder =
+        ChronicleMap.of(keyClass, valueWrapperClass).name(name);
+
+    // Chronicle-map does not allow to custom-serialize boxed primitives
+    // such as Boolean, Integer, for which size is statically determined.
+    // This means that even though a custom serializer was provided for a primitive
+    // it cannot be used.
+    if (!mapBuilder.constantlySizedKeys()) {
+      mapBuilder.averageKeySize(config.getAverageKeySize());
+      mapBuilder.keyMarshaller(new ChronicleMapBinaryWriter<>());
+    }
+
+    mapBuilder.averageValueSize(config.getAverageValueSize());
+    mapBuilder.valueMarshaller(new TimedValueChronicleMaBinaryWriter<>());
+
+    mapBuilder.entries(config.getMaxEntries());
+
+    mapBuilder.maxBloatFactor(config.getMaxBloatFactor());
+
+    store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
   }
 
   private static class ChronicleMapStorageMetrics {
