@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.common.data.GlobalCapability;
 import com.google.gerrit.extensions.annotations.RequiresCapability;
 import com.google.gerrit.metrics.DisabledMetricMaker;
@@ -175,7 +176,8 @@ public class MigrateH2Caches extends H2CacheSshCommand {
     cacheProgress.endTask();
   }
 
-  private Set<PersistentCacheDef<?, ?>> getAllBoundPersistentCacheDefs() {
+  @VisibleForTesting
+  protected Set<PersistentCacheDef<?, ?>> getAllBoundPersistentCacheDefs() {
     Set<PersistentCacheDef<?, ?>> cacheDefs = new HashSet<>();
     for (Map.Entry<Key<?>, Binding<?>> entry : injector.getParent().getAllBindings().entrySet()) {
       final Class<?> rawType = entry.getKey().getTypeLiteral().getRawType();

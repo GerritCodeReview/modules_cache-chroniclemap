@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheSshCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
@@ -37,17 +38,22 @@ import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.sshd.BaseCommand;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Key;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,6 +70,8 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
 
   @Inject protected GitRepositoryManager repoManager;
   @Inject private SitePaths sitePaths;
+  @Inject @GerritServerConfig Config cfg;
+  @Inject Injector injector;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
 
@@ -136,6 +144,43 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
         H2CacheFor(ACCOUNTS_CACHE_NAME);
 
     assertThat(chronicleMapCache.diskStats().size()).isEqualTo(h2Cache.diskStats().size());
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldFindAllPersistedCaches() {
+    MigrateH2Caches migrateH2Caches =
+        new MigrateH2Caches(cfg, sitePaths, injector, chronicleMapCacheConfigFactory);
+
+    Set<PersistentCacheDef<?, ?>> allBoundPersistentCacheDefs =
+        migrateH2Caches.getAllBoundPersistentCacheDefs();
+
+    Stream.of(
+            "git_tags",
+            "oauth_tokens",
+            "conflicts",
+            "persisted_projects",
+            "external_ids_map",
+            "diff",
+            "pure_revert",
+            "change_notes",
+            "groups_external_persisted",
+            "mergeability",
+            "diff_summary",
+            "accounts",
+            "change_kind",
+            "diff_intraline",
+            "web_sessions") // <--- FAIL
+        .forEachOrdered(
+            cacheName ->
+                assertWithMessage(
+                        String.format(
+                            "Cache definition '%s' was expected to be bound, but it wasn't.",
+                            cacheName))
+                    .that(
+                        allBoundPersistentCacheDefs.stream()
+                            .anyMatch(c -> cacheName.equalsIgnoreCase(c.name())))
+                    .isTrue());
   }
 
   @Test
