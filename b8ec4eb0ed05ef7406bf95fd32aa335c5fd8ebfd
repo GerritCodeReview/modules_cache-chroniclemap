@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5baec17_84fb8718",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-23T13:32:27Z",
+      "side": 1,
+      "message": "@here does anyone know whether it\u0027s possible to get hold of the HttpInjector from an SSH command?\n\nWhen running some integration tests I can see that via the plugin.getHttpInjector(), the PersistentCacheDef is bound via:\n\n```\n{Key@9933} \"Key[type\u003dcom.google.gerrit.server.cache.PersistentCacheDef\u003cjava.lang.String, com.google.gerrit.httpd.WebSessionManager$Val\u003e, annotation\u003d@com.google.inject.name.Named(value\u003d\"web_sessions\")]\" -\u003e {ProviderInstanceBindingImpl@9934} \"ProviderInstanceBinding{key\u003dKey[type\u003dcom.google.gerrit.server.cache.PersistentCacheDef\u003cjava.lang.String, com.google.gerrit.httpd.WebSessionManager$Val\u003e, annotation\u003d@com.google.inject.name.Named(value\u003d\"web_sessions\")], source\u003dcom.google.gerrit.server.plugins.PluginGuiceEnvironment$2.configure(PluginGuiceEnvironment.java:551), scope\u003dScopes.NO_SCOPE, provider\u003dConstantFactory{value\u003dcom.google.gerrit.server.cache.PersistentCacheProvider@b80b461}[Scopes.SINGLETON]}\"\n```\n",
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
