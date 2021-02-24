@@ -110,6 +110,30 @@
       },
       "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d55bd2_14659de2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T08:53:06Z",
+      "side": 1,
+      "message": "Looking at the code, we need for migration a special ChronicleMapMarshallerAdapter that would just adds the length at the beginning of the value and the time.",
+      "parentUuid": "140a93e7_6e8d08ca",
+      "range": {
+        "startLine": 182,
+        "startChar": 47,
+        "endLine": 182,
+        "endChar": 95
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
