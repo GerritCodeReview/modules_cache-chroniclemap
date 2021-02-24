@@ -39,6 +39,30 @@
       },
       "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9729c7c7_77e75cff",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-24T07:43:35Z",
+      "side": 1,
+      "message": "yep, that\u0027s the approach we used for the analyze-h2-caches command, but I don\u0027t think grabbing the caches from files would help in this case.\n\nWe need the *cache definition* in order to construct the chronicle-map cache to migrate into, and that cannot be inferred by just looking at the files, unless I am missing something.\n\nWDYT?",
+      "parentUuid": "deb3d688_f0abae35",
+      "range": {
+        "startLine": 182,
+        "startChar": 47,
+        "endLine": 182,
+        "endChar": 95
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
