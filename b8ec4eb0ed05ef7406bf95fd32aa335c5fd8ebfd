@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c030c16_9cce8547",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-24T15:14:14Z",
+      "side": 1,
+      "message": "I don\u0027t understand what you mean by \"ALL caches\".\nHow do we know which caches should be migrated? isn\u0027t guice the only component that has visibility on what caches have been bound?\n\nThe idea of getting cache definitions from guice is to avoid guessing \u0027which\u0027 caches should be migrated: plugins for example might be installing some caches that also need migrating (i.e. github plugin, or analytics)\n\nWe could be looking at DynamicMap\u003cCache\u003c?,?\u003e, which has all caches, but that does not give us the cache definitions, only the cache itself and we need the cache definition to construct chroniclemap.",
+      "parentUuid": "b9b15089_e248a821",
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc3f5e22_48c39be2",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
         "patchSetId": 1
@@ -48,6 +66,30 @@
       "writtenOn": "2021-02-24T08:43:53Z",
       "side": 1,
       "message": "Why do we need to de-serialise the data? We are just moving stuff out of H2 and putting into chroniclemap, isn\u0027t it?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 96
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad10784c_305ede4a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-24T15:14:14Z",
+      "side": 1,
+      "message": "\u003e Why do we need to de-serialise the data?\n\nWhere H2 stores V objects Chronicle-map stores TimeValue\u003cV\u003e objects, so we need to transform one into the other.\n\n\u003e We are just moving stuff out of H2 and putting into chroniclemap, isn\u0027t it?\n\nputting data into chronicle-map requires to use the chronicle-map API, which AFAIK, requires a key K and a value V, not array of bytes.",
+      "parentUuid": "bc3f5e22_48c39be2",
       "range": {
         "startLine": 162,
         "startChar": 0,
@@ -143,6 +185,30 @@
       "side": 1,
       "message": "Looking at the code, we need for migration a special ChronicleMapMarshallerAdapter that would just adds the length at the beginning of the value and the time.",
       "parentUuid": "140a93e7_6e8d08ca",
+      "range": {
+        "startLine": 182,
+        "startChar": 47,
+        "endLine": 182,
+        "endChar": 95
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "388c4fc4_7fb0c3fd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-24T15:14:14Z",
+      "side": 1,
+      "message": "\u003e They can be read from the config, isn\u0027t it?\n\nI don\u0027t think reading from config would help:\n- Not every cache is necessarily in the config, where defaults are used.\n- config does not have details on which parameters are stored in the cache\n\n\u003e we need for migration a special ChronicleMapMarshallerAdapter that would just adds the length at the beginning of the value and the time.\n\nThis could make the migration quicker, but I don\u0027t think it will help with this issue: We still need to understand which types the cache is for, because that\u0027s going to be written in the header of the chronicle-map file and it is also needed to construct the chronicle-map cache.",
+      "parentUuid": "c8d55bd2_14659de2",
       "range": {
         "startLine": 182,
         "startChar": 47,
