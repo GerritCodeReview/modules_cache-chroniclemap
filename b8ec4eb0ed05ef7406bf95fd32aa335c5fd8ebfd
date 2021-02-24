@@ -102,6 +102,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1141f20_0c725cdd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T17:34:30Z",
+      "side": 1,
+      "message": "True, but then we get those values and we serialise them back.\n\nThe value, yes, needs to be wrapped also in a TimeValue\u003c\u003e which increases complexity, I agree with you.",
+      "parentUuid": "ad10784c_305ede4a",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 96
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "deb3d688_f0abae35",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
         "patchSetId": 1
@@ -209,6 +233,30 @@
       "side": 1,
       "message": "\u003e They can be read from the config, isn\u0027t it?\n\nI don\u0027t think reading from config would help:\n- Not every cache is necessarily in the config, where defaults are used.\n- config does not have details on which parameters are stored in the cache\n\n\u003e we need for migration a special ChronicleMapMarshallerAdapter that would just adds the length at the beginning of the value and the time.\n\nThis could make the migration quicker, but I don\u0027t think it will help with this issue: We still need to understand which types the cache is for, because that\u0027s going to be written in the header of the chronicle-map file and it is also needed to construct the chronicle-map cache.",
       "parentUuid": "c8d55bd2_14659de2",
+      "range": {
+        "startLine": 182,
+        "startChar": 47,
+        "endLine": 182,
+        "endChar": 95
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3417ee1_cf2e23a8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T17:34:30Z",
+      "side": 1,
+      "message": "\u003e \u003e They can be read from the config, isn\u0027t it?\n\u003e \n\u003e I don\u0027t think reading from config would help:\n\u003e - Not every cache is necessarily in the config, where defaults are used.\n\u003e - config does not have details on which parameters are stored in the cache\n\u003e \n\u003e \u003e we need for migration a special ChronicleMapMarshallerAdapter that would just adds the length at the beginning of the value and the time.\n\u003e \n\u003e This could make the migration quicker, but I don\u0027t think it will help with this issue: We still need to understand which types the cache is for\n\nDo we store the reference to the actual class in the cache file?\n\n\u003e because that\u0027s going to be written in the header of the chronicle-map file and it is also needed to construct the chronicle-map cache.\n\nThat is going to be a problem then: let\u0027s talk :-)",
+      "parentUuid": "388c4fc4_7fb0c3fd",
       "range": {
         "startLine": 182,
         "startChar": 47,
