@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b15089_e248a821",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T08:56:51Z",
+      "side": 1,
+      "message": "Another idea: instead of following my suggestion of working at lower level (raw files and serialised data) you could *also* change this into a REST-API and just inject *ALL* the caches in the constructor, instead of using hacks to get them from the Guice bindings.\n\nThat would be easier, simpler and safer IMHO.\n\nWDYT?",
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc3f5e22_48c39be2",
