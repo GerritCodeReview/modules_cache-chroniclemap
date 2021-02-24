@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef9bd405_15ad4a86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T17:39:08Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t understand what you mean by \"ALL caches\".\n\u003e How do we know which caches should be migrated? isn\u0027t guice the only component that has visibility on what caches have been bound?\n\nThe list of Gerrit caches that are defined in the code static, not dynamic.\nYes, hacking Guice is one option, but I was wondering if we have a KISS way also.\n\n\u003e The idea of getting cache definitions from guice is to avoid guessing \u0027which\u0027 caches should be migrated: plugins for example might be installing some caches that also need migrating (i.e. github plugin, or analytics)\n\nWe are entering a very difficult field here: you may not have access to the classes of the plugin and may not know exactly what they do, as you are running inside a different class-loader.\n\nI won\u0027t focus on migrating the caches that you don\u0027t know about, as you won\u0027t able to test them either.\n\nBear in mind this command is an optimisation and NOT a mandatory requirement for moving to ChronicleMap. We did not migrate any cache for GerritHub.io (apart from sessions) and all is good :-)\n\nI would opt for a failsafe option: something that always works, isn\u0027t hacky and won\u0027t cause problems in the future.",
+      "parentUuid": "6c030c16_9cce8547",
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc3f5e22_48c39be2",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
         "patchSetId": 1
