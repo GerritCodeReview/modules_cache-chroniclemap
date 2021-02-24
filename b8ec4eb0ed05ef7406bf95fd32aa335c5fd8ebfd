@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc3f5e22_48c39be2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T08:43:53Z",
+      "side": 1,
+      "message": "Why do we need to de-serialise the data? We are just moving stuff out of H2 and putting into chroniclemap, isn\u0027t it?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 96
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "deb3d688_f0abae35",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
         "patchSetId": 1
@@ -55,6 +78,30 @@
       "side": 1,
       "message": "yep, that\u0027s the approach we used for the analyze-h2-caches command, but I don\u0027t think grabbing the caches from files would help in this case.\n\nWe need the *cache definition* in order to construct the chronicle-map cache to migrate into, and that cannot be inferred by just looking at the files, unless I am missing something.\n\nWDYT?",
       "parentUuid": "deb3d688_f0abae35",
+      "range": {
+        "startLine": 182,
+        "startChar": 47,
+        "endLine": 182,
+        "endChar": 95
+      },
+      "revId": "b8ec4eb0ed05ef7406bf95fd32aa335c5fd8ebfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "140a93e7_6e8d08ca",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2Caches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-24T08:43:53Z",
+      "side": 1,
+      "message": "\u003e yep, that\u0027s the approach we used for the analyze-h2-caches command, but I don\u0027t think grabbing the caches from files would help in this case.\n\u003e \n\u003e We need the *cache definition* in order to construct the chronicle-map cache to migrate into, and that cannot be inferred by just looking at the files, unless I am missing something.\n\nThey can be read from the config, isn\u0027t it?\nWith regards to serialisers, we do not need them as we are just moving the data from one storage to another.",
+      "parentUuid": "9729c7c7_77e75cff",
       "range": {
         "startLine": 182,
         "startChar": 47,
