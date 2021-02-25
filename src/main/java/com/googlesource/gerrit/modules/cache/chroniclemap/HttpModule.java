@@ -1,4 +1,4 @@
-// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,14 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import com.google.gerrit.sshd.PluginCommandModule;
+import com.google.gerrit.extensions.config.FactoryModule;
+import com.google.inject.servlet.ServletModule;
 
-public class SSHCommandModule extends PluginCommandModule {
+public class HttpModule extends ServletModule {
+
   @Override
-  protected void configureCommands() {
-    factory(ChronicleMapCacheConfig.Factory.class);
-    command("analyze-h2-caches").to(AnalyzeH2Caches.class);
+  protected void configureServlets() {
+    install(
+        new FactoryModule() {
+          @Override
+          protected void configure() {
+            factory(ChronicleMapCacheConfig.Factory.class);
+          }
+        });
+
+    serve("/config/server/cache-chroniclemap~migrate").with(H2MigrationServlet.class);
   }
 }
