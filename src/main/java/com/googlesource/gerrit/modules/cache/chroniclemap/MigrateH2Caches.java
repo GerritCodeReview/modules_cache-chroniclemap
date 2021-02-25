@@ -13,6 +13,13 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.appendToConfig;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getCacheDir;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.jdbcUrl;
+
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.data.GlobalCapability;
 import com.google.gerrit.extensions.annotations.RequiresCapability;
 import com.google.gerrit.metrics.DisabledMetricMaker;
@@ -22,6 +29,7 @@ import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.sshd.CommandMetaData;
+import com.google.gerrit.sshd.SshCommand;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -44,13 +52,15 @@ import org.kohsuke.args4j.Option;
 
 @RequiresCapability(GlobalCapability.ADMINISTRATE_SERVER)
 @CommandMetaData(name = "migrate-h2-caches", description = "Migrate H2 caches to Chronicle-Map")
-public class MigrateH2Caches extends H2CacheSshCommand {
-
+public class MigrateH2Caches extends SshCommand {
+  protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final Injector injector;
   private final ChronicleMapCacheConfig.Factory configFactory;
 
   protected static int DEFAULT_SIZE_MULTIPLIER = 3;
   protected static int DEFAULT_MAX_BLOAT_FACTOR = 3;
+  private final SitePaths site;
+  private final Config gerritConfig;
 
   @Option(
       name = "--size-multiplier",
@@ -80,7 +90,7 @@ public class MigrateH2Caches extends H2CacheSshCommand {
 
   @Override
   protected void run() throws Exception {
-    Optional<Path> cacheDir = getCacheDir();
+    Optional<Path> cacheDir = getCacheDir(gerritConfig, site);
 
     if (!cacheDir.isPresent()) {
       throw die("Cannot run migration, cache directory is not configured");
