@@ -15,7 +15,10 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.gerrit.sshd.SshCommand;
+import org.apache.commons.io.FilenameUtils;
+import org.eclipse.jgit.lib.Config;
+import org.h2.Driver;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,22 +27,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
-import org.apache.commons.io.FilenameUtils;
-import org.eclipse.jgit.lib.Config;
-import org.h2.Driver;
 
-public abstract class H2CacheSshCommand extends SshCommand {
+public class H2CacheCommand {
   protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  protected static final String H2_SUFFIX = "h2.db";
+  public static final String H2_SUFFIX = "h2.db";
 
-  protected Config gerritConfig;
-  protected SitePaths site;
-
-  protected static String baseName(Path h2File) {
+  public static String baseName(Path h2File) {
     return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
   }
 
-  protected static H2AggregateData getStats(Path h2File) throws UnloggedFailure {
+  public static H2AggregateData getStats(Path h2File) throws Exception {
     String url = jdbcUrl(h2File);
     String baseName = baseName(h2File);
     try {
@@ -62,17 +59,18 @@ public abstract class H2CacheSshCommand extends SshCommand {
         return H2AggregateData.empty(baseName);
       }
     } catch (SQLException e) {
-      throw new UnloggedFailure(1, "fatal: " + e.getMessage(), e);
+      throw new Exception("fatal: " + e.getMessage(), e);
     }
   }
 
-  protected static String jdbcUrl(Path h2FilePath) {
+  public static String jdbcUrl(Path h2FilePath) {
     final String normalized =
         FilenameUtils.removeExtension(FilenameUtils.removeExtension(h2FilePath.toString()));
     return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE";
   }
 
-  protected Optional<Path> getCacheDir() throws IOException {
+  public static Optional<Path> getCacheDir(Config gerritConfig, SitePaths site)
+      throws IOException {
     String name = gerritConfig.getString("cache", null, "directory");
     if (name == null) {
       return Optional.empty();
@@ -89,7 +87,7 @@ public abstract class H2CacheSshCommand extends SshCommand {
     return Optional.of(loc);
   }
 
-  protected void appendToConfig(Config config, H2AggregateData stats) {
+  public static void appendToConfig(Config config, H2AggregateData stats) {
     config.setLong("cache", stats.cacheName(), "maxEntries", stats.size());
     config.setLong("cache", stats.cacheName(), "avgKeySize", stats.avgKeySize());
     config.setLong("cache", stats.cacheName(), "avgValueSize", stats.avgValueSize());
