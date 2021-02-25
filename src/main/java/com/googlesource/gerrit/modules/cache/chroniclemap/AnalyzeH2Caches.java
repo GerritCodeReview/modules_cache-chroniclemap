@@ -13,8 +13,16 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.appendToConfig;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.baseName;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getCacheDir;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.logger;
+
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.sshd.SshCommand;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +32,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Config;
 
-public class AnalyzeH2Caches extends H2CacheSshCommand {
+public class AnalyzeH2Caches extends SshCommand {
+
+  private final Config gerritConfig;
+  private final SitePaths site;
 
   @Inject
   AnalyzeH2Caches(@GerritServerConfig Config cfg, SitePaths site) {
@@ -33,7 +44,7 @@ public class AnalyzeH2Caches extends H2CacheSshCommand {
   }
 
   @Override
-  protected void run() throws UnloggedFailure, Failure, Exception {
+  protected void run() throws Exception {
     Set<Path> h2Files = getH2CacheFiles();
     stdout.println("Extracting information from H2 caches...");
 
@@ -56,10 +67,10 @@ public class AnalyzeH2Caches extends H2CacheSshCommand {
     stdout.println(config.toText());
   }
 
-  private Set<Path> getH2CacheFiles() throws UnloggedFailure {
+  private Set<Path> getH2CacheFiles() throws Exception {
 
     try {
-      return getCacheDir()
+      return getCacheDir(gerritConfig, site)
           .map(
               cacheDir -> {
                 try {

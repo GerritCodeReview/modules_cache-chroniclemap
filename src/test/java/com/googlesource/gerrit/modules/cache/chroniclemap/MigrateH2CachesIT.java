@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheSshCommand.H2_SUFFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
 
@@ -39,7 +39,6 @@ import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gerrit.sshd.BaseCommand;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Key;
@@ -201,8 +200,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
         && annotation.toString().endsWith(String.format("Named(value=\"%s\")", named));
   }
 
-  private <K, V> ChronicleMapCacheImpl<K, V> chronicleCacheFor(String cacheName)
-      throws BaseCommand.UnloggedFailure, IOException {
+  private <K, V> ChronicleMapCacheImpl<K, V> chronicleCacheFor(String cacheName) throws Exception {
     Path cacheDirectory = sitePaths.resolve(cfg.getString("cache", null, "directory"));
 
     PersistentCacheDef<K, V> persistentDef = getPersistentCacheDef(cacheName);
@@ -211,7 +209,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
             chronicleMapCacheConfigFactory,
             cacheDirectory,
             persistentDef,
-            H2CacheSshCommand.getStats(
+            H2CacheCommand.getStats(
                 cacheDirectory.resolve(String.format("%s.%s", cacheName, H2_SUFFIX))),
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
