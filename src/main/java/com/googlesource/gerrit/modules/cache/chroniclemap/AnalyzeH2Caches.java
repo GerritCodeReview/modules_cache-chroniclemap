@@ -44,7 +44,7 @@ public class AnalyzeH2Caches extends SshCommand {
   }
 
   @Override
-  protected void run() throws UnloggedFailure, Failure, Exception {
+  protected void run() throws Exception {
     Set<Path> h2Files = getH2CacheFiles();
     stdout.println("Extracting information from H2 caches...");
 
