@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f4433da_7cdd9219",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationEndpoint.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T23:59:03Z",
+      "side": 1,
+      "message": "I am still convinced this looks like a hack: what about my suggestion to just inject the caches in the constructor?\n\nP.S. I am also NOT convinced it would work for caches provided by plugins, where the serialiser is in a different class loader NOT accessible by this plugin.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 3
+      },
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d46af17_474c93f8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationFilter.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T23:59:03Z",
+      "side": 1,
+      "message": "Why choosing a filter rather than a Gerrit REST API?",
+      "range": {
+        "startLine": 32,
+        "startChar": 13,
+        "endLine": 32,
+        "endChar": 55
+      },
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f63d570_b34c8741",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T23:59:03Z",
+      "side": 1,
+      "message": "REST API",
+      "range": {
+        "startLine": 3,
+        "startChar": 24,
+        "endLine": 3,
+        "endChar": 37
+      },
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c139c2e2_2098a58f",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T23:59:03Z",
+      "side": 1,
+      "message": "It is quite unusual to have a REST-API returning a text file.",
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d2b9df6_b127145e",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T23:59:03Z",
+      "side": 1,
+      "message": "nit: inconsistent indenting",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 19
+      },
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
