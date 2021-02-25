@@ -14,19 +14,21 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_MAX_BLOAT_FACTOR;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_SIZE_MULTIPLIER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.MAX_BLOAT_FACTOR_PARAM;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.SIZE_MULTIPLIER_PARAM;
 
-import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
-import com.google.gerrit.acceptance.Sandboxed;
+import com.google.gerrit.acceptance.RestResponse;
+import com.google.gerrit.acceptance.RestSession;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.acceptance.UseSsh;
 import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
@@ -37,6 +39,7 @@ import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Binding;
@@ -47,78 +50,112 @@ import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Before;
 import org.junit.Test;
 
-@Sandboxed
-@UseSsh
 @TestPlugin(
     name = "cache-chroniclemap",
-    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
+    httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
 public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   private final Duration LOAD_CACHE_WAIT_TIMEOUT = Duration.ofSeconds(4);
   private String ACCOUNTS_CACHE_NAME = "accounts";
   private String PERSISTED_PROJECTS_CACHE_NAME = "persisted_projects";
+  private String MIGRATION_ENDPOINT = "/plugins/cache-chroniclemap/migrate";
 
   @Inject protected GitRepositoryManager repoManager;
   @Inject private SitePaths sitePaths;
+  @Inject @GerritServerConfig Config cfg;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
-
-  private String cmd = Joiner.on(" ").join("cache-chroniclemap", "migrate-h2-caches");
 
   @Before
   public void setUp() {
     chronicleMapCacheConfigFactory =
-        plugin.getSshInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
+        plugin.getHttpInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
   }
 
   @Test
   @UseLocalDisk
   public void shouldRunAndCompleteSuccessfullyWhenCacheDirectoryIsDefined() throws Exception {
-    String result = adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
-    assertThat(result).contains("Complete");
+    runMigration(adminRestSession).assertOK();
   }
 
   @Test
   @UseLocalDisk
-  public void shouldOutputChronicleMapBloatedConfiguration() throws Exception {
+  public void shouldReturnTexPlain() throws Exception {
+    RestResponse result = runMigration(adminRestSession);
+    assertThat(result.getHeader(CONTENT_TYPE)).contains("text/plain");
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldOutputChronicleMapBloatedDefaultConfiguration() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
 
-    String result = adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
+    RestResponse result = runMigration(adminRestSession);
+    result.assertOK();
 
-    assertThat(result)
-        .contains(
-            "[cache \""
-                + ACCOUNTS_CACHE_NAME
-                + "\"]\n"
-                + "\tmaxEntries = "
-                + H2CacheFor(ACCOUNTS_CACHE_NAME).diskStats().size() * DEFAULT_SIZE_MULTIPLIER);
+    Config configResult = new Config();
+    configResult.fromText(result.getEntityContent());
 
-    assertThat(result)
-        .contains(
-            "[cache \""
-                + PERSISTED_PROJECTS_CACHE_NAME
-                + "\"]\n"
-                + "\tmaxEntries = "
-                + H2CacheFor(PERSISTED_PROJECTS_CACHE_NAME).diskStats().size()
-                    * DEFAULT_SIZE_MULTIPLIER);
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "maxEntries", 0))
+        .isEqualTo(H2CacheFor(ACCOUNTS_CACHE_NAME).diskStats().size() * DEFAULT_SIZE_MULTIPLIER);
+
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "maxBloatFactor", 0))
+        .isEqualTo(DEFAULT_MAX_BLOAT_FACTOR);
+
+    assertThat(configResult.getInt("cache", PERSISTED_PROJECTS_CACHE_NAME, "maxEntries", 0))
+        .isEqualTo(
+            H2CacheFor(PERSISTED_PROJECTS_CACHE_NAME).diskStats().size() * DEFAULT_SIZE_MULTIPLIER);
+
+    assertThat(configResult.getInt("cache", PERSISTED_PROJECTS_CACHE_NAME, "maxBloatFactor", 0))
+        .isEqualTo(DEFAULT_MAX_BLOAT_FACTOR);
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldOutputChronicleMapBloatedProvidedConfiguration() throws Exception {
+    waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
+    waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
+
+    int sizeMultiplier = 2;
+    int maxBloatFactor = 3;
+    RestResponse result = runMigration(sizeMultiplier, maxBloatFactor);
+    result.assertOK();
+
+    Config configResult = new Config();
+    configResult.fromText(result.getEntityContent());
+
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "maxEntries", 0))
+        .isEqualTo(H2CacheFor(ACCOUNTS_CACHE_NAME).diskStats().size() * sizeMultiplier);
+
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "maxBloatFactor", 0))
+        .isEqualTo(maxBloatFactor);
+
+    assertThat(configResult.getInt("cache", PERSISTED_PROJECTS_CACHE_NAME, "maxEntries", 0))
+        .isEqualTo(H2CacheFor(PERSISTED_PROJECTS_CACHE_NAME).diskStats().size() * sizeMultiplier);
+
+    assertThat(configResult.getInt("cache", PERSISTED_PROJECTS_CACHE_NAME, "maxBloatFactor", 0))
+        .isEqualTo(maxBloatFactor);
   }
 
   @Test
   public void shouldFailWhenCacheDirectoryIsNotDefined() throws Exception {
-    adminSshSession.exec(cmd);
-    adminSshSession.assertFailure("fatal: Cannot run migration, cache directory is not configured");
+    RestResponse result = runMigration(adminRestSession);
+    result.assertBadRequest();
+    assertThat(result.getEntityContent())
+        .contains("Cannot run migration, cache directory is not configured");
   }
 
   @Test
   public void shouldFailWhenUserHasNoAdminServerCapability() throws Exception {
-    userSshSession.exec(cmd);
-    userSshSession.assertFailure("administrateServer for plugin cache-chroniclemap not permitted");
+    RestResponse result = runMigration(userRestSession);
+    result.assertForbidden();
+    assertThat(result.getEntityContent())
+        .contains("administrateServer for plugin cache-chroniclemap not permitted");
   }
 
   @Test
@@ -126,8 +163,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   public void shouldMigrateAccountsCache() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
 
-    adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
+    runMigration(adminRestSession).assertOK();
 
     ChronicleMapCacheImpl<CachedAccountDetails.Key, CachedAccountDetails> chronicleMapCache =
         chronicleCacheFor(ACCOUNTS_CACHE_NAME);
@@ -142,8 +178,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   public void shouldMigratePersistentProjects() throws Exception {
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
 
-    adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
+    runMigration(adminRestSession).assertOK();
 
     H2CacheImpl<Cache.ProjectCacheKeyProto, CachedProjectConfig> h2Cache =
         H2CacheFor(PERSISTED_PROJECTS_CACHE_NAME);
@@ -183,6 +218,21 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
     return findClassBoundWithName(CacheLoader.class, named);
   }
 
+  private RestResponse runMigration(int sizeMultiplier, int maxBloatFactor) throws IOException {
+    return adminRestSession.get(
+        String.format(
+            "%s?%s=%d&%s=%d",
+            MIGRATION_ENDPOINT,
+            MAX_BLOAT_FACTOR_PARAM,
+            maxBloatFactor,
+            SIZE_MULTIPLIER_PARAM,
+            sizeMultiplier));
+  }
+
+  private RestResponse runMigration(RestSession restSession) throws IOException {
+    return restSession.get(MIGRATION_ENDPOINT);
+  }
+
   private <T> T findClassBoundWithName(Class<T> clazz, String named) {
     return plugin.getSysInjector().getAllBindings().entrySet().stream()
         .filter(entry -> isClassBoundWithName(entry, clazz.getSimpleName(), named))
@@ -205,7 +255,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
 
     PersistentCacheDef<K, V> persistentDef = getPersistentCacheDef(cacheName);
     ChronicleMapCacheConfig config =
-        MigrateH2Caches.makeChronicleMapConfig(
+        H2MigrationServlet.makeChronicleMapConfig(
             chronicleMapCacheConfigFactory,
             cacheDirectory,
             persistentDef,
