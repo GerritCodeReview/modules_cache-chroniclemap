@@ -13,6 +13,13 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.appendToConfig;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.baseName;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getCacheDir;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.logger;
+
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.sshd.SshCommand;
@@ -24,13 +31,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Config;
-
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.appendToConfig;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.baseName;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getCacheDir;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.logger;
 
 public class AnalyzeH2Caches extends SshCommand {
 
@@ -44,7 +44,7 @@ public class AnalyzeH2Caches extends SshCommand {
   }
 
   @Override
-  protected void run() throws UnloggedFailure, Failure, Exception {
+  protected void run() throws Exception {
     Set<Path> h2Files = getH2CacheFiles();
     stdout.println("Extracting information from H2 caches...");
 
