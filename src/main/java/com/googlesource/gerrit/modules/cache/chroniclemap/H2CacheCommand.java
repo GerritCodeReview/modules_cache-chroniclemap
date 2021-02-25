@@ -15,10 +15,6 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.config.SitePaths;
-import org.apache.commons.io.FilenameUtils;
-import org.eclipse.jgit.lib.Config;
-import org.h2.Driver;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
+import org.apache.commons.io.FilenameUtils;
+import org.eclipse.jgit.lib.Config;
+import org.h2.Driver;
 
 public class H2CacheCommand {
   protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -69,7 +68,8 @@ public class H2CacheCommand {
     return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE";
   }
 
-  protected static Optional<Path> getCacheDir(Config gerritConfig, SitePaths site) throws IOException {
+  protected static Optional<Path> getCacheDir(Config gerritConfig, SitePaths site)
+      throws IOException {
     String name = gerritConfig.getString("cache", null, "directory");
     if (name == null) {
       return Optional.empty();

@@ -14,19 +14,20 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_MAX_BLOAT_FACTOR;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.MigrateH2Caches.DEFAULT_SIZE_MULTIPLIER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationEndpoint.DEFAULT_MAX_BLOAT_FACTOR;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationEndpoint.DEFAULT_SIZE_MULTIPLIER;
 
-import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.acceptance.UseSsh;
 import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
@@ -37,25 +38,29 @@ import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Key;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Before;
 import org.junit.Test;
 
 @Sandboxed
-@UseSsh
 @TestPlugin(
     name = "cache-chroniclemap",
-    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
+    httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
 public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   private final Duration LOAD_CACHE_WAIT_TIMEOUT = Duration.ofSeconds(4);
   private String ACCOUNTS_CACHE_NAME = "accounts";
@@ -63,23 +68,28 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
 
   @Inject protected GitRepositoryManager repoManager;
   @Inject private SitePaths sitePaths;
+  @Inject @GerritServerConfig Config cfg;
+  @Inject Injector injector;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
-
-  private String cmd = Joiner.on(" ").join("cache-chroniclemap", "migrate-h2-caches");
 
   @Before
   public void setUp() {
     chronicleMapCacheConfigFactory =
-        plugin.getSshInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
+        plugin.getHttpInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
   }
 
   @Test
   @UseLocalDisk
   public void shouldRunAndCompleteSuccessfullyWhenCacheDirectoryIsDefined() throws Exception {
-    String result = adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
-    assertThat(result).contains("Complete");
+    runMigration().assertOK();
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldReturnTexPlain() throws Exception {
+    RestResponse result = runMigration();
+    assertThat(result.getHeader(CONTENT_TYPE)).contains("text/plain");
   }
 
   @Test
@@ -88,10 +98,10 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
 
-    String result = adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
+    RestResponse result = runMigration();
+    result.assertOK();
 
-    assertThat(result)
+    assertThat(result.getEntityContent())
         .contains(
             "[cache \""
                 + ACCOUNTS_CACHE_NAME
@@ -99,7 +109,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
                 + "\tmaxEntries = "
                 + H2CacheFor(ACCOUNTS_CACHE_NAME).diskStats().size() * DEFAULT_SIZE_MULTIPLIER);
 
-    assertThat(result)
+    assertThat(result.getEntityContent())
         .contains(
             "[cache \""
                 + PERSISTED_PROJECTS_CACHE_NAME
@@ -111,14 +121,10 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldFailWhenCacheDirectoryIsNotDefined() throws Exception {
-    adminSshSession.exec(cmd);
-    adminSshSession.assertFailure("fatal: Cannot run migration, cache directory is not configured");
-  }
-
-  @Test
-  public void shouldFailWhenUserHasNoAdminServerCapability() throws Exception {
-    userSshSession.exec(cmd);
-    userSshSession.assertFailure("administrateServer for plugin cache-chroniclemap not permitted");
+    RestResponse result = runMigration();
+    result.assertBadRequest();
+    assertThat(result.getEntityContent())
+        .contains("Cannot run migration, cache directory is not configured");
   }
 
   @Test
@@ -126,8 +132,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   public void shouldMigrateAccountsCache() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
 
-    adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
+    runMigration().assertOK();
 
     ChronicleMapCacheImpl<CachedAccountDetails.Key, CachedAccountDetails> chronicleMapCache =
         chronicleCacheFor(ACCOUNTS_CACHE_NAME);
@@ -142,8 +147,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   public void shouldMigratePersistentProjects() throws Exception {
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
 
-    adminSshSession.exec(cmd);
-    adminSshSession.assertSuccess();
+    runMigration().assertOK();
 
     H2CacheImpl<Cache.ProjectCacheKeyProto, CachedProjectConfig> h2Cache =
         H2CacheFor(PERSISTED_PROJECTS_CACHE_NAME);
@@ -154,7 +158,46 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
     Cache.ProjectCacheKeyProto allProjectsProto = projectCacheKey(allProjects);
 
     assertThat(chronicleMapCache.get(allUsersProto)).isEqualTo(h2Cache.get(allUsersProto));
+
     assertThat(chronicleMapCache.get(allProjectsProto)).isEqualTo(h2Cache.get(allProjectsProto));
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldFindAllPersistedCaches() {
+    H2MigrationEndpoint h2MigrationEndpoint =
+        new H2MigrationEndpoint(
+            plugin.getHttpInjector(), cfg, sitePaths, chronicleMapCacheConfigFactory);
+
+    Set<PersistentCacheDef<?, ?>> allBoundPersistentCacheDefs =
+        h2MigrationEndpoint.getAllBoundPersistentCacheDefs();
+
+    Stream.of(
+            "git_tags",
+            "oauth_tokens",
+            "conflicts",
+            "persisted_projects",
+            "external_ids_map",
+            "diff",
+            "pure_revert",
+            "change_notes",
+            "groups_external_persisted",
+            "mergeability",
+            "diff_summary",
+            "accounts",
+            "change_kind",
+            "diff_intraline",
+            "web_sessions")
+        .forEachOrdered(
+            cacheName ->
+                assertWithMessage(
+                        String.format(
+                            "Cache definition '%s' was expected to be bound, but it wasn't.",
+                            cacheName))
+                    .that(
+                        allBoundPersistentCacheDefs.stream()
+                            .anyMatch(c -> cacheName.equalsIgnoreCase(c.name())))
+                    .isTrue());
   }
 
   private Cache.ProjectCacheKeyProto projectCacheKey(Project.NameKey key) throws IOException {
@@ -183,6 +226,10 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
     return findClassBoundWithName(CacheLoader.class, named);
   }
 
+  private RestResponse runMigration() throws IOException {
+    return adminRestSession.get("/config/server/cache-chroniclemap~migrate");
+  }
+
   private <T> T findClassBoundWithName(Class<T> clazz, String named) {
     return plugin.getSysInjector().getAllBindings().entrySet().stream()
         .filter(entry -> isClassBoundWithName(entry, clazz.getSimpleName(), named))
@@ -205,7 +252,7 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
 
     PersistentCacheDef<K, V> persistentDef = getPersistentCacheDef(cacheName);
     ChronicleMapCacheConfig config =
-        MigrateH2Caches.makeChronicleMapConfig(
+        H2MigrationEndpoint.makeChronicleMapConfig(
             chronicleMapCacheConfigFactory,
             cacheDirectory,
             persistentDef,
