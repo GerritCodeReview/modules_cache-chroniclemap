@@ -1,6 +1,6 @@
 ## Migration from H2 Caches
 
-This module provides an SSH command to help converting existing cache from H2 to
+This module provides an HTTP endpoiny to help converting existing cache from H2 to
 chronicle-map, which requires the `Administrate Server` capability to be
 executed.
 
@@ -25,31 +25,16 @@ INFO  com.google.gerrit.server.plugins.PluginLoader : Loaded plugin cache-chroni
 * You can now run the migration
 
 ```bash
-ssh -p 29418 admin@<gerrit-server> cache-chroniclemap migrate-h2-caches \
-    [--max-bloat-factor FACTOR] \
-    [--size-multiplier MULTIPLIER]
+curl -n 'http://localhost:8080/config/server/cache-chroniclemap~migrate?size-multiplier=FACTOR&bax-bloat-factor=MULTIPLIER'
 ```
 
 This might require some time, depending on the size of the H2 caches and it will
 terminate with the output of the configuration that should be places in
 `etc/gerrit.config`in order to leverage the newly created caches correctly.
 
-For example:
+Output example:
 
-```Migrating H2 caches to Chronicle-Map...
-   * Size multiplier: 1
-   * Max Bloat Factor: 1
-   [diff]:                 100% (216/216)
-   [persisted_projects]:   100% (3/3)
-   [diff_summary]:         100% (216/216)
-   [accounts]:             100% (2/2)
-   [mergeability]:         100% (2444/2444)
-   Complete!
-
-   ****************************
-   ** Chronicle-map template **
-   ****************************
-
+```
    [cache "diff"]
    	maxEntries = 216
    	avgKeySize = 188
@@ -75,9 +60,14 @@ For example:
    	avgKeySize = 150
    	avgValueSize = 20
    	maxBloatFactor = 1
+    [cache "web_sessions"]
+	maxEntries = 94852
+	avgKeySize = 68
+	avgValueSize = 382
+	maxBloatFactor = 4
 ```
 
-Optionally the SSH command can receive the following additional arguments:
+Optionally the HTTP command can receive the following additional arguments:
 
 * --max-bloat-factor (-m) FACTOR
 
