@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff4299af_8cfb6079",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-26T17:13:54Z",
+      "side": 1,
+      "message": "- HTTP Servlet does not receive calls\n- Missing Permissions check\n- Missing parameters binding\n",
+      "revId": "581560f1d350f46c0720e2c421ee6354cb0463d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
