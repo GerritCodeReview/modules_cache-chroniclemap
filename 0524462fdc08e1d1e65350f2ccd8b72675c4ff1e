@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fe069f2_6e7495fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-27T21:23:32Z",
+      "side": 1,
+      "message": "Also, the documentation should be updated with a sample invocation of the REST API.",
+      "revId": "0524462fdc08e1d1e65350f2ccd8b72675c4ff1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fc45b02_42246f96",
