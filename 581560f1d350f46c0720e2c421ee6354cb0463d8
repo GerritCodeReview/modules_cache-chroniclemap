@@ -16,6 +16,52 @@
       "message": "- HTTP Servlet does not receive calls\n- Missing Permissions check\n- Missing parameters binding\n",
       "revId": "581560f1d350f46c0720e2c421ee6354cb0463d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1d6d140_5190b3b1",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2CachesIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-27T01:21:35Z",
+      "side": 1,
+      "message": "Not needed",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 10
+      },
+      "revId": "581560f1d350f46c0720e2c421ee6354cb0463d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91bdeef8_bc4be62e",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2CachesIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-27T01:21:35Z",
+      "side": 1,
+      "message": "This URL is already occupied by the server config REST API.\n\nThe plugin\u0027s URL space starts with:\n/plugins/cache-chroniclemap/",
+      "range": {
+        "startLine": 189,
+        "startChar": 33,
+        "endLine": 189,
+        "endChar": 47
+      },
+      "revId": "581560f1d350f46c0720e2c421ee6354cb0463d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
