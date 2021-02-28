@@ -34,6 +34,47 @@
       "parentUuid": "5ed76c9a_7ca11627",
       "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b54818ca_54baf406",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-28T21:11:43Z",
+      "side": 1,
+      "message": "Yeah, maybe is something we should fix in Gerrit in the future.",
+      "parentUuid": "26fa3091_7353826a",
+      "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aa086ca_ed08764a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-28T21:11:43Z",
+      "side": 1,
+      "message": "To trigger a migration, an HTTP GET doesn\u0027t look appropriate.\nWhat about a POST instead?",
+      "range": {
+        "startLine": 149,
+        "startChar": 17,
+        "endLine": 149,
+        "endChar": 22
+      },
+      "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
