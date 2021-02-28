@@ -16,6 +16,24 @@
       "message": "Why it need to be a servlet and not just RestModifyView, like for example ReadOnlyEndpoint from readonly plugin?",
       "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26fa3091_7353826a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-28T18:50:04Z",
+      "side": 1,
+      "message": "RestView (any rest endpoint) need to be bound as part of Gerrit-Module, and not as part of Gerrit-HttpModule. When doing that however, the web_sessions PersistentCache becomes unavailable[1], since it can only be accessed in servlet.\n\n[1]\n\n1) No implementation for com.google.gerrit.server.cache.PersistentCacheDef\u003cjava.lang.String, com.google.gerrit.httpd.WebSessionManager$Val\u003e annotated with @com.google.inject.name.Named(value\u003d\"web_sessions\") was bound.\n  while locating com.google.gerrit.server.cache.PersistentCacheDef\u003cjava.lang.String, com.google.gerrit.httpd.WebSessionManager$Val\u003e annotated with @com.google.inject.name.Named(value\u003d\"web_sessions\")\n    for the 4th parameter of com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationEndpoint.\u003cinit\u003e(Unknown Source)\n  at com.google.gerrit.extensions.restapi.RestApiModule.view(RestApiModule.java:111) (via modules: com.googlesource.gerrit.modules.cache.chroniclemap.Module -\u003e com.googlesource.gerrit.modules.cache.chroniclemap.Module$1)",
+      "parentUuid": "5ed76c9a_7ca11627",
+      "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
