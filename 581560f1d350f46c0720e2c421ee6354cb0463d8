@@ -110,6 +110,30 @@
       },
       "revId": "581560f1d350f46c0720e2c421ee6354cb0463d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d5a908_e341807f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2CachesIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-28T13:29:25Z",
+      "side": 1,
+      "message": "Thanks a lot @luca, you really saved me from some big headache 😊",
+      "parentUuid": "1ede761b_417939a5",
+      "range": {
+        "startLine": 189,
+        "startChar": 33,
+        "endLine": 189,
+        "endChar": 47
+      },
+      "revId": "581560f1d350f46c0720e2c421ee6354cb0463d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -71,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2b8c5f2_6bd987f9",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationFilter.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-28T13:29:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d46af17_474c93f8",
+      "range": {
+        "startLine": 32,
+        "startChar": 13,
+        "endLine": 32,
+        "endChar": 55
+      },
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f63d570_b34c8741",
@@ -84,6 +108,30 @@
       "writtenOn": "2021-02-25T23:59:03Z",
       "side": 1,
       "message": "REST API",
+      "range": {
+        "startLine": 3,
+        "startChar": 24,
+        "endLine": 3,
+        "endChar": 37
+      },
+      "revId": "a2716d1653e78e83705dbabcccddd7ed5e1e4c2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d3b7c04_b371b348",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-02-28T13:29:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f63d570_b34c8741",
       "range": {
         "startLine": 3,
         "startChar": 24,
