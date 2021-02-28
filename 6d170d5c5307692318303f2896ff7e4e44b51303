@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed76c9a_7ca11627",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-02-28T14:04:08Z",
+      "side": 1,
+      "message": "Why it need to be a servlet and not just RestModifyView, like for example ReadOnlyEndpoint from readonly plugin?",
+      "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
