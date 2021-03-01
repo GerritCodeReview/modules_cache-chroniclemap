@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be64bc9f_98a76023",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-01T10:01:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f0b2287_f744e42d",
+      "revId": "57996057cedac4c85644a0498abce85f66bc3e92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9492f17e_04d69cbd",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-03-01T09:23:11Z",
       "side": 1,
       "message": "Should this be JSON format? It\u0027s not ssh command any more.",
+      "revId": "57996057cedac4c85644a0498abce85f66bc3e92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d6a5d0_fce40d00",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-01T10:01:54Z",
+      "side": 1,
+      "message": "Luca asked the same question, this is the answer I gave:\n\n```My original implementation was returning JSON, but I changed it because it was really difficult to use the result: the point of returning the configuration is to help the admin to configure Gerrit appropriately. I can easily change it, but I am not convinced it will improve things over text.```\n\nYou can find an example JSON output here[1].\n\nI think text is much more useful for the admin, to consume the output and adjust the configuration accordingly.\n\nWe could think about introducing some \"format\" parameter, but perhaps is out of scope, WDTY?\n\n[1]https://pastebin.com/raw/j4QzUAG2",
+      "parentUuid": "9492f17e_04d69cbd",
       "revId": "57996057cedac4c85644a0498abce85f66bc3e92",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c5ce1d1_322d53cd",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-01T10:01:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e687ca07_c916c616",
+      "range": {
+        "startLine": 88,
+        "startChar": 2,
+        "endLine": 88,
+        "endChar": 19
+      },
+      "revId": "57996057cedac4c85644a0498abce85f66bc3e92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2a30e13_2bf19f6a",
@@ -71,6 +131,30 @@
       "writtenOn": "2021-03-01T09:23:11Z",
       "side": 1,
       "message": "Here it was preserved.",
+      "range": {
+        "startLine": 93,
+        "startChar": 3,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "57996057cedac4c85644a0498abce85f66bc3e92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff67faba_842fda48",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-01T10:01:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f2a30e13_2bf19f6a",
       "range": {
         "startLine": 93,
         "startChar": 3,
