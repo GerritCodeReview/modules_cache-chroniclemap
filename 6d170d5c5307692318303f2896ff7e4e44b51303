@@ -75,6 +75,30 @@
       },
       "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e33b5ee_623119e0",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-01T08:47:30Z",
+      "side": 1,
+      "message": "Yes, good catch.\nI was thinking to adjust GET to a more appropriate verb, but then I forgot to do so, whilst dealing with other refactoring.\nI actually intended to change this to PUT instead, as the chronicle-map cache creation is idempotent.\n\nI will do so in the next patch.",
+      "parentUuid": "7aa086ca_ed08764a",
+      "range": {
+        "startLine": 149,
+        "startChar": 17,
+        "endLine": 149,
+        "endChar": 22
+      },
+      "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
