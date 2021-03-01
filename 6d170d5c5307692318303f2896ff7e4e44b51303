@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9125f1aa_2d6f9db6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-03-01T09:23:11Z",
+      "side": 1,
+      "message": "Thanks for clarifying.",
+      "parentUuid": "b54818ca_54baf406",
+      "revId": "6d170d5c5307692318303f2896ff7e4e44b51303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7aa086ca_ed08764a",
