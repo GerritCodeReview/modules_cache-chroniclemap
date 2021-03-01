@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9508763_21d708d1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-01T22:03:43Z",
+      "side": 1,
+      "message": "Need to add the SerialVersionUID",
+      "revId": "35a7341b60a863f46c2a37fe1100f796789ed462",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5a797d_36aecdbe",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-01T22:03:43Z",
+      "side": 1,
+      "message": "We should check the req\u0027s Accept header and, if the sender wants JSON, provide a 40x error.",
+      "revId": "35a7341b60a863f46c2a37fe1100f796789ed462",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
