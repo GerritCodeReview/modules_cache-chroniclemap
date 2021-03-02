@@ -42,4 +42,20 @@ public class InMemoryLRUTest {
 
     assertThat(map.toArray()).asList().containsExactly("B", "C");
   }
+
+  @Test
+  public void remove_unexistingEntryShouldReturnNull() {
+    InMemoryLRU<Object> map = new InMemoryLRU<>(1);
+
+    assertThat(map.remove("foo")).isNull();
+  }
+
+  @Test
+  public void remove_unexistingEntryShouldReturnTrue() {
+    InMemoryLRU<Object> map = new InMemoryLRU<>(1);
+
+    map.add("foo");
+
+    assertThat(map.remove("foo")).isTrue();
+  }
 }
