@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb85545a_a3a3baec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-03-02T16:53:19Z",
+      "side": 1,
+      "message": "Unrelated here, but we haven\u0027t adapted master branch to this refactoring gerrit core, in change 295126?",
+      "revId": "1cd250944e43b860e52d5d6e3231c622bea1d914",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
