@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dbee4905_bf177586",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-02T15:33:02Z",
+      "side": 1,
+      "message": "Sure, I can see all HttpServlet have it in the codebase.\n\nOut of curiosity: what\u0027s the benefit of adding SerialVersionUID for HttpServlets?\nIs this class ever going to be serialized and deserialized?",
+      "parentUuid": "c9508763_21d708d1",
+      "revId": "35a7341b60a863f46c2a37fe1100f796789ed462",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da5a797d_36aecdbe",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
         "patchSetId": 18
@@ -31,6 +49,24 @@
       "writtenOn": "2021-03-01T22:03:43Z",
       "side": 1,
       "message": "We should check the req\u0027s Accept header and, if the sender wants JSON, provide a 40x error.",
+      "revId": "35a7341b60a863f46c2a37fe1100f796789ed462",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdd7e2ba_066dbd85",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-02T15:33:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da5a797d_36aecdbe",
       "revId": "35a7341b60a863f46c2a37fe1100f796789ed462",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
