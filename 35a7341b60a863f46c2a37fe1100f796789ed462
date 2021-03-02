@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5651120_c727e456",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-02T15:33:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbee4905_bf177586",
+      "revId": "35a7341b60a863f46c2a37fe1100f796789ed462",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da5a797d_36aecdbe",

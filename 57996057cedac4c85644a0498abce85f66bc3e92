@@ -89,6 +89,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe32a97_568afcd1",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-02T15:33:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2cf86bd1_b1f7acd9",
+      "revId": "57996057cedac4c85644a0498abce85f66bc3e92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e687ca07_c916c616",
