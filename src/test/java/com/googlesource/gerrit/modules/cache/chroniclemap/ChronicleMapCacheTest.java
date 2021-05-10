@@ -25,6 +25,7 @@ import com.google.gerrit.lifecycle.LifecycleManager;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.metrics.dropwizard.DropWizardMetricMaker;
+import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Guice;
@@ -497,7 +498,15 @@ public class ChronicleMapCacheTest {
 
   private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(String cachedValue)
       throws IOException {
-    return newCache(true, cachedValue, null, null, 1, metricMaker);
+    return newCache(true, cachedValue, null, null, null, null, 1, metricMaker);
+  }
+
+  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
+      String cachedValue,
+      CacheSerializer<String> keySerializer,
+      CacheSerializer<String> valueSerializer)
+      throws IOException {
+    return newCache(true, cachedValue, null, null, null, null, 1, new DisabledMetricMaker());
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
@@ -512,6 +521,8 @@ public class ChronicleMapCacheTest {
         cachedValue,
         expireAfterWrite,
         refreshAfterWrite,
+        null,
+        null,
         version,
         new DisabledMetricMaker());
   }
@@ -521,10 +532,13 @@ public class ChronicleMapCacheTest {
       @Nullable String cachedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
+      @Nullable CacheSerializer<String> keySerializer,
+      @Nullable CacheSerializer<String> valueSerializer,
       Integer version,
       MetricMaker metricMaker)
       throws IOException {
-    TestPersistentCacheDef cacheDef = new TestPersistentCacheDef(cachedValue);
+    TestPersistentCacheDef cacheDef =
+        new TestPersistentCacheDef(cachedValue, keySerializer, valueSerializer);
 
     File persistentFile =
         ChronicleMapCacheFactory.fileName(
