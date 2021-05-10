@@ -97,6 +97,7 @@ public class H2MigrationServlet extends HttpServlet {
       SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
       PermissionBackend permissionBackend,
+      CacheSerializers cacheSerializers,
       @Named("web_sessions") PersistentCacheDef<String, WebSessionManager.Val> webSessionsCacheDef,
       @Named("accounts")
           PersistentCacheDef<CachedAccountDetails.Key, CachedAccountDetails> accountsCacheDef,

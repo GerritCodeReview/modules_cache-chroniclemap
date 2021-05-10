@@ -1,4 +1,4 @@
-// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,19 +20,18 @@ import net.openhft.chronicle.bytes.Bytes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Test;
 
-public class TimedValueMarshallerTest {
+public class KeyWrapperMarshallerTest {
 
   @Test
   public void shouldSerializeAndDeserializeBack() {
     ObjectId id = ObjectId.fromString("1234567890123456789012345678901234567890");
-    long timestamp = 1600329018L;
-    TimedValueMarshaller<ObjectId> marshaller = new TimedValueMarshaller<>("external_ids_map");
+    KeyWrapperMarshaller<ObjectId> marshaller = new KeyWrapperMarshaller<>("external_ids_map");
 
-    final TimedValue<ObjectId> wrapped = new TimedValue<>(id, timestamp);
+    final KeyWrapper<ObjectId> wrapped = new KeyWrapper<>(id);
 
     Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
     marshaller.write(out, wrapped);
-    final TimedValue<ObjectId> actual = marshaller.read(out, null);
+    final KeyWrapper<ObjectId> actual = marshaller.read(out, null);
     assertThat(actual).isEqualTo(wrapped);
   }
 }
