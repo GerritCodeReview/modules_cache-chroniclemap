@@ -16,6 +16,23 @@
       "message": "Wrapping the key does not work:\n\n```\n keyReader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n    reader: !com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapperMarshaller { serializer: !com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheTest$StringCacheSerializer1 { } }\n  },\n  keyDataAccess: !net.openhft.chronicle.hash.serialization.impl.ExternalBytesMarshallableDataAccess {\n    tClass: !type com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapper,\n    reader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n      reader: !com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapperMarshaller { serializer: !com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheTest$StringCacheSerializer1 { } }\n    },\n    writer: !com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapperMarshaller { serializer: !com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheTest$StringCacheSerializer1 { } }\n  },\n```\n\nThe actual serializer used is still persisted in the header file.\n\nI believe we have the same problem with the value (even though it\u0027s already wrapped in a TimedValue class):\n\n```\n  valueReader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n    reader: !com.googlesource.gerrit.modules.cache.chroniclemap.TimedValueMarshaller { serializer: !com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheTest$StringCacheSerializer1 { } }\n  },\n  valueDataAccess: !net.openhft.chronicle.hash.serialization.impl.ExternalBytesMarshallableDataAccess {\n    tClass: !type com.googlesource.gerrit.modules.cache.chroniclemap.TimedValue,\n    reader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n      reader: !com.googlesource.gerrit.modules.cache.chroniclemap.TimedValueMarshaller { serializer: !com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheTest$StringCacheSerializer1 { } }\n    },\n    writer: !com.googlesource.gerrit.modules.cache.chroniclemap.TimedValueMarshaller { serializer: !com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheTest$StringCacheSerializer1 { } }\n  },\n```",
       "revId": "73309536097915bf29228f5bc09fb5a345cdcd58",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfa48255_c8541e11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-05-10T15:54:02Z",
+      "side": 1,
+      "message": "@luca, @David,\nI believe we need to find another approach.\n\nSee my comments on this, I hope it makes sense.",
+      "revId": "73309536097915bf29228f5bc09fb5a345cdcd58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
