@@ -19,6 +19,7 @@ gerrit_plugin(
         "//lib:h2",
         "//lib/commons:io",
         "//proto:cache_java_proto",
+        "//java/com/google/gerrit/auth",
         "@chronicle-algo//jar",
         "@chronicle-bytes//jar",
         "@chronicle-core//jar",

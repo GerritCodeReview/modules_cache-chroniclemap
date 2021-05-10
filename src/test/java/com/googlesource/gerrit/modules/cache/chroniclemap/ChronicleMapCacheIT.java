@@ -26,12 +26,14 @@ import com.google.gerrit.extensions.api.accounts.AccountInput;
 import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.junit.Test;
 
 @UseLocalDisk
 public class ChronicleMapCacheIT extends AbstractDaemonTest {
 
   @Inject PersistentCacheFactory persistentCacheFactory;
+  @Inject Injector injector;
 
   @Override
   public com.google.inject.Module createModule() {

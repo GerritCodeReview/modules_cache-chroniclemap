@@ -13,7 +13,6 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import java.nio.ByteBuffer;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.util.ReadResolvable;
@@ -25,17 +24,18 @@ public class TimedValueMarshaller<V>
         BytesReader<TimedValue<V>>,
         ReadResolvable<TimedValueMarshaller<V>> {
 
-  private final CacheSerializer<V> serializer;
+  private final String name;
 
-  TimedValueMarshaller(CacheSerializer<V> serializer) {
-    this.serializer = serializer;
+  TimedValueMarshaller(String name) {
+    this.name = name;
   }
 
   @Override
   public TimedValueMarshaller<V> readResolve() {
-    return new TimedValueMarshaller<>(serializer);
+    return new TimedValueMarshaller<>(name);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public TimedValue<V> read(Bytes in, TimedValue<V> using) {
     long initialPosition = in.readPosition();
@@ -57,7 +57,7 @@ public class TimedValueMarshaller<V>
     // Deserialize object V (remaining bytes)
     byte[] serializedV = new byte[vLength];
     in.read(serializedV, 0, vLength);
-    V v = serializer.deserialize(serializedV);
+    V v = (V) CacheSerializers.getValueSerializer(name).deserialize(serializedV);
 
     using = new TimedValue<>(v, created);
 
@@ -66,7 +66,7 @@ public class TimedValueMarshaller<V>
 
   @Override
   public void write(Bytes out, TimedValue<V> toWrite) {
-    byte[] serialized = serializer.serialize(toWrite.getValue());
+    byte[] serialized = CacheSerializers.getValueSerializer(name).serialize(toWrite.getValue());
 
     // Serialize as follows:
     // created | length of serialized V | serialized value V
