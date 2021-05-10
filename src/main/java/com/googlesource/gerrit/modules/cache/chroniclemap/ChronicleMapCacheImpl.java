@@ -39,7 +39,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   private final ChronicleMapCacheConfig config;
   private final CacheLoader<K, V> loader;
-  private final ChronicleMap<K, TimedValue<V>> store;
+  private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
   private final LongAdder hitCount = new LongAdder();
   private final LongAdder missCount = new LongAdder();
   private final LongAdder loadSuccessCount = new LongAdder();
@@ -63,11 +63,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
 
-    final Class<K> keyClass = (Class<K>) def.keyType().getRawType();
+    final Class<KeyWrapper<K>> keyWrapperClass = (Class<KeyWrapper<K>>) (Class) KeyWrapper.class;
     final Class<TimedValue<V>> valueWrapperClass = (Class<TimedValue<V>>) (Class) TimedValue.class;
 
-    final ChronicleMapBuilder<K, TimedValue<V>> mapBuilder =
-        ChronicleMap.of(keyClass, valueWrapperClass).name(def.name());
+    final ChronicleMapBuilder<KeyWrapper<K>, TimedValue<V>> mapBuilder =
+        ChronicleMap.of(keyWrapperClass, valueWrapperClass).name(def.name());
 
     // Chronicle-map does not allow to custom-serialize boxed primitives
     // such as Boolean, Integer, for which size is statically determined.
@@ -75,11 +75,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     // it cannot be used.
     if (!mapBuilder.constantlySizedKeys()) {
       mapBuilder.averageKeySize(config.getAverageKeySize());
-      mapBuilder.keyMarshaller(new ChronicleMapMarshallerAdapter<>(def.keySerializer()));
+      mapBuilder.keyMarshaller(new KeyWrapperMarshaller<>(def.name()));
     }
 
     mapBuilder.averageValueSize(config.getAverageValueSize());
-    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.valueSerializer()));
+    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.name()));
 
     mapBuilder.entries(config.getMaxEntries());
 
@@ -117,7 +117,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
 
     <K, V> void registerCallBackMetrics(
-        String name, ChronicleMap<K, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
+        String name, ChronicleMap<KeyWrapper<K>, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
       String sanitizedName = metricMaker.sanitizeMetricName(name);
       String PERCENTAGE_FREE_SPACE_METRIC =
           "cache/chroniclemap/percentage_free_space_" + sanitizedName;
@@ -162,10 +162,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return config;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public V getIfPresent(Object objKey) {
-    if (store.containsKey(objKey)) {
-      TimedValue<V> vTimedValue = store.get(objKey);
+    KeyWrapper<K> keyWrapper = (KeyWrapper<K>) new KeyWrapper<>(objKey);
+    if (store.containsKey(keyWrapper)) {
+      TimedValue<V> vTimedValue = store.get(keyWrapper);
       if (!expired(vTimedValue.getCreated())) {
         hitCount.increment();
         hotEntries.add((K) objKey);
@@ -180,8 +182,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   @Override
   public V get(K key) throws ExecutionException {
-    if (store.containsKey(key)) {
-      TimedValue<V> vTimedValue = store.get(key);
+    KeyWrapper<K> keyWrapper = new KeyWrapper<>(key);
+    if (store.containsKey(keyWrapper)) {
+      TimedValue<V> vTimedValue = store.get(keyWrapper);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
         hotEntries.add(key);
@@ -211,8 +214,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   @Override
   public V get(K key, Callable<? extends V> valueLoader) throws ExecutionException {
-    if (store.containsKey(key)) {
-      TimedValue<V> vTimedValue = store.get(key);
+    KeyWrapper<K> keyWrapper = new KeyWrapper<>(key);
+    if (store.containsKey(keyWrapper)) {
+      TimedValue<V> vTimedValue = store.get(keyWrapper);
       if (!needsRefresh(vTimedValue.getCreated())) {
         hitCount.increment();
         return vTimedValue.getValue();
@@ -235,14 +239,16 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   @SuppressWarnings("unchecked")
   public void putUnchecked(Object key, Object value, Timestamp created) {
-    TimedValue<?> wrapped = new TimedValue<>(value, created.toInstant().toEpochMilli());
-    store.put((K) key, (TimedValue<V>) wrapped);
+    TimedValue<?> wrappedValue = new TimedValue<>(value, created.toInstant().toEpochMilli());
+    KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
+    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
   }
 
   @Override
   public void put(K key, V val) {
-    TimedValue<V> wrapped = new TimedValue<>(val);
-    store.put(key, wrapped);
+    KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
+    TimedValue<V> wrappedValue = new TimedValue<>(val);
+    store.put(wrappedKey, wrappedValue);
     hotEntries.add(key);
   }
 
@@ -251,7 +257,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       store.forEachEntry(
           c -> {
             if (expired(c.value().get().getCreated())) {
-              hotEntries.remove(c.key().get());
+              hotEntries.remove(c.key().get().getValue());
               c.context().remove(c);
             }
           });
@@ -282,17 +288,19 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private void evictColdEntries() {
     store.forEachEntryWhile(
         e -> {
-          if (!hotEntries.contains(e.key().get())) {
+          if (!hotEntries.contains(e.key().get().getValue())) {
             e.doRemove();
           }
           return runningOutOfFreeSpace();
         });
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void invalidate(Object key) {
-    store.remove(key);
-    hotEntries.remove((K) key);
+    KeyWrapper<K> wrappedKey = (KeyWrapper<K>) new KeyWrapper<>(key);
+    store.remove(wrappedKey);
+    hotEntries.remove(wrappedKey.getValue());
   }
 
   @Override
