@@ -25,6 +25,7 @@ import com.google.gerrit.lifecycle.LifecycleManager;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.metrics.dropwizard.DropWizardMetricMaker;
+import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Guice;
@@ -47,6 +48,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 public class ChronicleMapCacheTest {
+  private static final String TEST_CACHE_NAME = "test-cache-name";
   @Inject MetricMaker metricMaker;
   @Inject MetricRegistry metricRegistry;
 
@@ -58,6 +60,8 @@ public class ChronicleMapCacheTest {
 
   @Before
   public void setUp() throws Exception {
+    CacheSerializers.registerCacheKeySerializer(TEST_CACHE_NAME, StringCacheSerializer.INSTANCE);
+    CacheSerializers.registerCacheValueSerializer(TEST_CACHE_NAME, StringCacheSerializer.INSTANCE);
     sitePaths = new SitePaths(temporaryFolder.newFolder().toPath());
     Files.createDirectories(sitePaths.etc_dir);
 
@@ -82,7 +86,7 @@ public class ChronicleMapCacheTest {
   }
 
   @Test
-  public void getIfPresentShouldReturnNullWhenThereisNoCachedValue() throws Exception {
+  public void getIfPresentShouldReturnNullWhenThereIsNoCachedValue() throws Exception {
     assertThat(newCacheWithLoader(null).getIfPresent("foo")).isNull();
   }
 
@@ -237,7 +241,7 @@ public class ChronicleMapCacheTest {
   @Test
   public void getIfPresentShouldReturnNullWhenValueIsExpired() throws Exception {
     ChronicleMapCacheImpl<String, String> cache =
-        newCache(true, null, Duration.ofSeconds(1), null, 1);
+        newCache(true, TEST_CACHE_NAME, null, Duration.ofSeconds(1), null, 1);
     cache.put("foo", "some-stale-value");
     Thread.sleep(1010); // Allow cache entry to expire
     assertThat(cache.getIfPresent("foo")).isNull();
@@ -247,7 +251,7 @@ public class ChronicleMapCacheTest {
   public void getShouldRefreshValueWhenExpired() throws Exception {
     String newCachedValue = UUID.randomUUID().toString();
     ChronicleMapCacheImpl<String, String> cache =
-        newCache(true, newCachedValue, null, Duration.ofSeconds(1), 1);
+        newCache(true, TEST_CACHE_NAME, newCachedValue, null, Duration.ofSeconds(1), 1);
     cache.put("foo", "some-stale-value");
     Thread.sleep(1010); // Allow cache to be flagged as needing refresh
     assertThat(cache.get("foo")).isEqualTo(newCachedValue);
@@ -256,7 +260,7 @@ public class ChronicleMapCacheTest {
   @Test
   public void shouldPruneExpiredValues() throws Exception {
     ChronicleMapCacheImpl<String, String> cache =
-        newCache(true, null, Duration.ofSeconds(1), null, 1);
+        newCache(true, TEST_CACHE_NAME, null, Duration.ofSeconds(1), null, 1);
     cache.put("foo1", "some-stale-value1");
     cache.put("foo2", "some-stale-value1");
     Thread.sleep(1010); // Allow cache entries to expire
@@ -293,10 +297,10 @@ public class ChronicleMapCacheTest {
   public void shouldEvictOldestElementInCacheWhenIsNeverAccessed() throws Exception {
     final String fooValue = "foo";
 
-    gerritConfig.setInt("cache", "foo", "maxEntries", 2);
-    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
-    gerritConfig.setInt("cache", "foo", "avgKeySize", "foo1".getBytes().length);
-    gerritConfig.setInt("cache", "foo", "avgValueSize", valueSize(fooValue));
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", 2);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "percentageHotKeys", 10);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgKeySize", "foo1".getBytes().length);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgValueSize", valueSize(fooValue));
     gerritConfig.save();
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(fooValue);
@@ -313,10 +317,10 @@ public class ChronicleMapCacheTest {
   public void shouldEvictRecentlyInsertedElementInCacheWhenOldestElementIsAccessed()
       throws Exception {
     final String fooValue = "foo";
-    gerritConfig.setInt("cache", "foo", "maxEntries", 2);
-    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
-    gerritConfig.setInt("cache", "foo", "avgKeySize", "foo1".getBytes().length);
-    gerritConfig.setInt("cache", "foo", "avgValueSize", valueSize(fooValue));
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", 2);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "percentageHotKeys", 10);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgKeySize", "foo1".getBytes().length);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgValueSize", valueSize(fooValue));
     gerritConfig.save();
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(fooValue);
@@ -354,13 +358,13 @@ public class ChronicleMapCacheTest {
   @Test
   public void shouldTriggerPercentageFreeMetric() throws Exception {
     String cachedValue = UUID.randomUUID().toString();
-    String freeSpaceMetricName = "cache/chroniclemap/percentage_free_space_" + cachedValue;
-    gerritConfig.setInt("cache", cachedValue, "maxEntries", 2);
-    gerritConfig.setInt("cache", cachedValue, "avgKeySize", cachedValue.getBytes().length);
-    gerritConfig.setInt("cache", cachedValue, "avgValueSize", valueSize(cachedValue));
+    String freeSpaceMetricName = "cache/chroniclemap/percentage_free_space_" + TEST_CACHE_NAME;
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", 2);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgValueSize", valueSize(cachedValue));
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
 
     assertThat(getMetric(freeSpaceMetricName).getValue()).isEqualTo(100);
 
@@ -373,13 +377,13 @@ public class ChronicleMapCacheTest {
   @Test
   public void shouldTriggerRemainingAutoResizeMetric() throws Exception {
     String cachedValue = UUID.randomUUID().toString();
-    String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + cachedValue;
-    gerritConfig.setInt("cache", cachedValue, "maxEntries", 2);
-    gerritConfig.setInt("cache", cachedValue, "avgKeySize", cachedValue.getBytes().length);
-    gerritConfig.setInt("cache", cachedValue, "avgValueSize", valueSize(cachedValue));
+    String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + TEST_CACHE_NAME;
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", 2);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "avgValueSize", valueSize(cachedValue));
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
 
     assertThat(getMetric(autoResizeMetricName).getValue()).isEqualTo(1);
 
@@ -397,12 +401,12 @@ public class ChronicleMapCacheTest {
     int percentageHotKeys = 60;
     int maxEntries = 10;
     int expectedCapacity = 6;
-    String hotKeysCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + cachedValue;
-    gerritConfig.setInt("cache", cachedValue, "maxEntries", maxEntries);
-    gerritConfig.setInt("cache", cachedValue, "percentageHotKeys", percentageHotKeys);
+    String hotKeysCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + TEST_CACHE_NAME;
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", maxEntries);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "percentageHotKeys", percentageHotKeys);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
 
     assertThat(getMetric(hotKeysCapacityMetricName).getValue()).isEqualTo(expectedCapacity);
   }
@@ -414,12 +418,12 @@ public class ChronicleMapCacheTest {
     int maxEntries = 10;
     int maxHotKeyCapacity = 3;
     final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
-    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + cachedValue;
-    gerritConfig.setInt("cache", cachedValue, "maxEntries", maxEntries);
-    gerritConfig.setInt("cache", cachedValue, "percentageHotKeys", percentageHotKeys);
+    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + TEST_CACHE_NAME;
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", maxEntries);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "percentageHotKeys", percentageHotKeys);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
 
     assertThat(getMetric(hotKeysSizeMetricName).getValue()).isEqualTo(0);
 
@@ -448,12 +452,12 @@ public class ChronicleMapCacheTest {
     int maxEntries = 10;
     int maxHotKeyCapacity = 3;
     final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
-    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + cachedValue;
-    gerritConfig.setInt("cache", cachedValue, "maxEntries", maxEntries);
-    gerritConfig.setInt("cache", cachedValue, "percentageHotKeys", percentageHotKeys);
+    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + TEST_CACHE_NAME;
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "maxEntries", maxEntries);
+    gerritConfig.setInt("cache", TEST_CACHE_NAME, "percentageHotKeys", percentageHotKeys);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(cachedValue);
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
 
     for (int i = 0; i < maxHotKeyCapacity; i++) {
       cache.put(cachedValue + i, cachedValue);
@@ -478,7 +482,7 @@ public class ChronicleMapCacheTest {
     String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
     String hotKeyCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + sanitized;
 
-    newCacheWithMetrics(cacheName);
+    newCacheWithMetrics(cacheName, null);
 
     getMetric(hotKeySizeMetricName);
     getMetric(percentageFreeMetricName);
@@ -487,44 +491,61 @@ public class ChronicleMapCacheTest {
   }
 
   private int valueSize(String value) {
-    final TimedValueMarshaller<String> marshaller =
-        new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
+    final TimedValueMarshaller<String> marshaller = new TimedValueMarshaller<>(TEST_CACHE_NAME);
 
     Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
     marshaller.write(out, new TimedValue<>(value));
     return out.toByteArray().length;
   }
 
-  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(String cachedValue)
+  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
+      String cacheName, @Nullable String cachedValue) throws IOException {
+    return newCache(true, cacheName, cachedValue, null, null, null, null, 1, metricMaker);
+  }
+
+  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
+      String cacheName,
+      String cachedValue,
+      CacheSerializer<String> keySerializer,
+      CacheSerializer<String> valueSerializer)
       throws IOException {
-    return newCache(true, cachedValue, null, null, 1, metricMaker);
+    return newCache(
+        true, cacheName, cachedValue, null, null, null, null, 1, new DisabledMetricMaker());
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
       Boolean withLoader,
-      @Nullable String cachedValue,
+      String cacheName,
+      @Nullable String loadedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
       Integer version)
       throws IOException {
     return newCache(
         withLoader,
-        cachedValue,
+        cacheName,
+        loadedValue,
         expireAfterWrite,
         refreshAfterWrite,
+        null,
+        null,
         version,
         new DisabledMetricMaker());
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
       Boolean withLoader,
+      String cacheName,
       @Nullable String cachedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
+      @Nullable CacheSerializer<String> keySerializer,
+      @Nullable CacheSerializer<String> valueSerializer,
       Integer version,
       MetricMaker metricMaker)
       throws IOException {
-    TestPersistentCacheDef cacheDef = new TestPersistentCacheDef(cachedValue);
+    TestPersistentCacheDef cacheDef =
+        new TestPersistentCacheDef(cacheName, cachedValue, keySerializer, valueSerializer);
 
     File persistentFile =
         ChronicleMapCacheFactory.fileName(
@@ -542,21 +563,21 @@ public class ChronicleMapCacheTest {
         cacheDef, config, withLoader ? cacheDef.loader() : null, metricMaker);
   }
 
-  private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String cachedValue)
+  private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String loadedValue)
       throws IOException {
-    return newCache(true, cachedValue, null, null, 1);
+    return newCache(true, TEST_CACHE_NAME, loadedValue, null, null, 1);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader() throws IOException {
-    return newCache(true, null, null, null, 1);
+    return newCache(true, TEST_CACHE_NAME, null, null, null, 1);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheVersion(int version) throws IOException {
-    return newCache(true, null, null, null, version);
+    return newCache(true, TEST_CACHE_NAME, null, null, null, version);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithoutLoader() throws IOException {
-    return newCache(false, null, null, null, 1);
+    return newCache(false, TEST_CACHE_NAME, null, null, null, 1);
   }
 
   private <V> Gauge<V> getMetric(String name) {
