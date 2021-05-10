@@ -1,4 +1,4 @@
-// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,38 +13,42 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.util.ReadResolvable;
 import net.openhft.chronicle.hash.serialization.BytesReader;
 import net.openhft.chronicle.hash.serialization.BytesWriter;
 
-public class ChronicleMapMarshallerAdapter<T>
-    implements BytesWriter<T>, BytesReader<T>, ReadResolvable<ChronicleMapMarshallerAdapter<T>> {
+public class KeyWrapperMarshaller<V>
+    implements BytesWriter<KeyWrapper<V>>,
+        BytesReader<KeyWrapper<V>>,
+        ReadResolvable<KeyWrapperMarshaller<V>> {
 
-  private final CacheSerializer<T> cacheSerializer;
+  private final String name;
 
-  ChronicleMapMarshallerAdapter(CacheSerializer<T> cacheSerializer) {
-    this.cacheSerializer = cacheSerializer;
+  KeyWrapperMarshaller(String name) {
+    this.name = name;
   }
 
   @Override
-  public ChronicleMapMarshallerAdapter<T> readResolve() {
-    return new ChronicleMapMarshallerAdapter<>(cacheSerializer);
+  public KeyWrapperMarshaller<V> readResolve() {
+    return new KeyWrapperMarshaller<>(name);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public T read(Bytes in, T using) {
+  public KeyWrapper<V> read(Bytes in, KeyWrapper<V> using) {
     int serializedLength = (int) in.readUnsignedInt();
     byte[] serialized = new byte[serializedLength];
     in.read(serialized, 0, serializedLength);
-    using = cacheSerializer.deserialize(serialized);
+    V v = (V) CacheSerializers.getKeySerializer(name).deserialize(serialized);
+    using = new KeyWrapper<>(v);
+
     return using;
   }
 
   @Override
-  public void write(Bytes out, T toWrite) {
-    final byte[] serialized = cacheSerializer.serialize(toWrite);
+  public void write(Bytes out, KeyWrapper<V> toWrite) {
+    final byte[] serialized = CacheSerializers.getKeySerializer(name).serialize(toWrite.getValue());
     out.writeUnsignedInt(serialized.length);
     out.write(serialized);
   }

@@ -21,42 +21,61 @@ import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.inject.TypeLiteral;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.UUID;
 
 public class TestPersistentCacheDef implements PersistentCacheDef<String, String> {
 
   private static final Integer DEFAULT_DISK_LIMIT = 1024;
 
+  private final String name;
   private final String loadedValue;
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
   private final Integer diskLimit;
+  private final CacheSerializer<String> keySerializer;
+  private final CacheSerializer<String> valueSerializer;
 
   public TestPersistentCacheDef(
-      String loadedValue,
+      String name,
+      @Nullable String loadedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite) {
 
+    this.name = name;
     this.loadedValue = loadedValue;
     this.expireAfterWrite = expireAfterWrite;
     this.refreshAfterWrite = refreshAfterWrite;
     this.diskLimit = DEFAULT_DISK_LIMIT;
+    this.keySerializer = StringCacheSerializer.INSTANCE;
+    this.valueSerializer = StringCacheSerializer.INSTANCE;
   }
 
-  public TestPersistentCacheDef(String loadedValue, Integer diskLimit) {
+  public TestPersistentCacheDef(String name, @Nullable String loadedValue, Integer diskLimit) {
 
+    this.name = name;
     this.loadedValue = loadedValue;
     this.expireAfterWrite = null;
     this.refreshAfterWrite = null;
     this.diskLimit = diskLimit;
+    this.keySerializer = StringCacheSerializer.INSTANCE;
+    this.valueSerializer = StringCacheSerializer.INSTANCE;
   }
 
-  public TestPersistentCacheDef(String loadedValue) {
+  public TestPersistentCacheDef(
+      String name,
+      @Nullable String loadedValue,
+      @Nullable CacheSerializer<String> keySerializer,
+      @Nullable CacheSerializer<String> valueSerializer) {
 
+    this.name = name;
     this.loadedValue = loadedValue;
     this.expireAfterWrite = Duration.ZERO;
     this.refreshAfterWrite = Duration.ZERO;
     this.diskLimit = DEFAULT_DISK_LIMIT;
+    this.keySerializer = Optional.ofNullable(keySerializer).orElse(StringCacheSerializer.INSTANCE);
+    this.valueSerializer =
+        Optional.ofNullable(valueSerializer).orElse(StringCacheSerializer.INSTANCE);
   }
 
   @Override
@@ -71,17 +90,17 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
 
   @Override
   public CacheSerializer<String> keySerializer() {
-    return StringCacheSerializer.INSTANCE;
+    return keySerializer;
   }
 
   @Override
   public CacheSerializer<String> valueSerializer() {
-    return StringCacheSerializer.INSTANCE;
+    return valueSerializer;
   }
 
   @Override
   public String name() {
-    return loadedValue;
+    return name;
   }
 
   @Override
