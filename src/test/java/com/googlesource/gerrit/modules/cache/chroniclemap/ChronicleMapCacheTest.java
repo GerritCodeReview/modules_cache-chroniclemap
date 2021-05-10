@@ -25,6 +25,7 @@ import com.google.gerrit.lifecycle.LifecycleManager;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.metrics.dropwizard.DropWizardMetricMaker;
+import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Guice;
@@ -486,6 +487,39 @@ public class ChronicleMapCacheTest {
     getMetric(hotKeyCapacityMetricName);
   }
 
+  @Test
+  public void shouldAccessTheSamePersistedCacheRegardlessTheSerializerName()
+      throws IOException, ExecutionException {
+    StringCacheSerializer1 originalCacheSerializer = new StringCacheSerializer1();
+    ChronicleMapCacheImpl<String, String> originalCache =
+        newCache(
+            true,
+            "fooCache",
+            null,
+            null,
+            originalCacheSerializer,
+            originalCacheSerializer,
+            1,
+            new DisabledMetricMaker());
+
+    originalCache.put("foo", "bar");
+    originalCache.close();
+
+    StringCacheSerializer2 cacheSerializerWithDifferentName = new StringCacheSerializer2();
+    ChronicleMapCacheImpl<String, String> cacheWithDifferentName =
+        newCache(
+            true,
+            "fooCache",
+            null,
+            null,
+            cacheSerializerWithDifferentName,
+            cacheSerializerWithDifferentName,
+            1,
+            new DisabledMetricMaker());
+
+    assertThat(cacheWithDifferentName.get("foo")).isEqualTo("bar");
+  }
+
   private int valueSize(String value) {
     final TimedValueMarshaller<String> marshaller =
         new TimedValueMarshaller<>(StringCacheSerializer.INSTANCE);
@@ -497,7 +531,15 @@ public class ChronicleMapCacheTest {
 
   private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(String cachedValue)
       throws IOException {
-    return newCache(true, cachedValue, null, null, 1, metricMaker);
+    return newCache(true, cachedValue, null, null, null, null, 1, metricMaker);
+  }
+
+  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
+      String cachedValue,
+      CacheSerializer<String> keySerializer,
+      CacheSerializer<String> valueSerializer)
+      throws IOException {
+    return newCache(true, cachedValue, null, null, null, null, 1, new DisabledMetricMaker());
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
@@ -512,6 +554,8 @@ public class ChronicleMapCacheTest {
         cachedValue,
         expireAfterWrite,
         refreshAfterWrite,
+        null,
+        null,
         version,
         new DisabledMetricMaker());
   }
@@ -521,10 +565,13 @@ public class ChronicleMapCacheTest {
       @Nullable String cachedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
+      @Nullable CacheSerializer<String> keySerializer,
+      @Nullable CacheSerializer<String> valueSerializer,
       Integer version,
       MetricMaker metricMaker)
       throws IOException {
-    TestPersistentCacheDef cacheDef = new TestPersistentCacheDef(cachedValue);
+    TestPersistentCacheDef cacheDef =
+        new TestPersistentCacheDef(cachedValue, keySerializer, valueSerializer);
 
     File persistentFile =
         ChronicleMapCacheFactory.fileName(
@@ -564,5 +611,29 @@ public class ChronicleMapCacheTest {
     Gauge<V> gauge = (Gauge<V>) metricRegistry.getMetrics().get(name);
     assertWithMessage(name).that(gauge).isNotNull();
     return gauge;
+  }
+
+  private class StringCacheSerializer1 implements CacheSerializer<String> {
+    @Override
+    public byte[] serialize(String object) {
+      return StringCacheSerializer.INSTANCE.serialize(object);
+    }
+
+    @Override
+    public String deserialize(byte[] in) {
+      return StringCacheSerializer.INSTANCE.deserialize(in);
+    }
+  }
+
+  private class StringCacheSerializer2 implements CacheSerializer<String> {
+    @Override
+    public byte[] serialize(String object) {
+      return StringCacheSerializer.INSTANCE.serialize(object);
+    }
+
+    @Override
+    public String deserialize(byte[] in) {
+      return StringCacheSerializer.INSTANCE.deserialize(in);
+    }
   }
 }
