@@ -33,6 +33,24 @@
       "message": "@luca, @David,\nI believe we need to find another approach.\n\nSee my comments on this, I hope it makes sense.",
       "revId": "73309536097915bf29228f5bc09fb5a345cdcd58",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ea0db9_68daf884",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-12T01:14:40Z",
+      "side": 1,
+      "message": "See my next PS with a small evolution of the same concept.\nThere are still some tests failing, I believe because they were making assumptions that the cache definition could have been incomplete.",
+      "parentUuid": "cfa48255_c8541e11",
+      "revId": "73309536097915bf29228f5bc09fb5a345cdcd58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
