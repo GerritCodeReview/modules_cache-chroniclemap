@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94aa9d46_49241a81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-05-12T12:40:02Z",
+      "side": 1,
+      "message": "I believe this is now working fine.\nAll direct references to gerrit have gone.\n\n```\n!net.openhft.chronicle.map.VanillaChronicleMap {\n  keyClass: !type com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapper,\n  keySizeMarshaller: !net.openhft.chronicle.hash.serialization.impl.StopBitSizeMarshaller {\n  },\n  keyReader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n    reader: !com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapperMarshaller { name: git_tags }\n  },\n  keyDataAccess: !net.openhft.chronicle.hash.serialization.impl.ExternalBytesMarshallableDataAccess {\n    tClass: !type com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapper,\n    reader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n      reader: !com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapperMarshaller { name: git_tags }\n    },\n    writer: !com.googlesource.gerrit.modules.cache.chroniclemap.KeyWrapperMarshaller { name: git_tags }\n  },  valueClass: !type com.googlesource.gerrit.modules.cache.chroniclemap.TimedValue,\n  valueSizeMarshaller: !net.openhft.chronicle.hash.serialization.impl.StopBitSizeMarshaller {\n  },\n  valueReader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n    reader: !com.googlesource.gerrit.modules.cache.chroniclemap.TimedValueMarshaller { name: git_tags }\n  },\n  valueDataAccess: !net.openhft.chronicle.hash.serialization.impl.ExternalBytesMarshallableDataAccess {\n    tClass: !type com.googlesource.gerrit.modules.cache.chroniclemap.TimedValue,\n    reader: !net.openhft.chronicle.hash.serialization.impl.BytesAsSizedReader {\n      reader: !com.googlesource.gerrit.modules.cache.chroniclemap.TimedValueMarshaller { name: git_tags }\n    },\n    writer: !com.googlesource.gerrit.modules.cache.chroniclemap.TimedValueMarshaller { name: git_tags }\n  }\n```",
+      "revId": "ca52179f7b431619ea791c0d603cfe7d4a25e8de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
