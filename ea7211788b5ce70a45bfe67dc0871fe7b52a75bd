@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e27a5be5_cb591283",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-05-17T21:00:08Z",
+      "side": 1,
+      "message": "Just double checking: This used to be \"foo\", now it has a different value. I think the previous name was just ambiguous hence the renaming, right?",
+      "range": {
+        "startLine": 300,
+        "startChar": 33,
+        "endLine": 300,
+        "endChar": 48
+      },
+      "revId": "ea7211788b5ce70a45bfe67dc0871fe7b52a75bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
