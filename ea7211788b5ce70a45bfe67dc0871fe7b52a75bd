@@ -22,6 +22,30 @@
       },
       "revId": "ea7211788b5ce70a45bfe67dc0871fe7b52a75bd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12370209_e8153c54",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-18T07:50:30Z",
+      "side": 1,
+      "message": "Yes, the previous \"foo\" value happened to be the value of the cache other than the name of the cache.\n\nTests aren\u0027t tested and therefore the only way to check if they are valid is reading them :-)\nMaking them readable and not ambiguous is therefore paramount.",
+      "parentUuid": "e27a5be5_cb591283",
+      "range": {
+        "startLine": 300,
+        "startChar": 33,
+        "endLine": 300,
+        "endChar": 48
+      },
+      "revId": "ea7211788b5ce70a45bfe67dc0871fe7b52a75bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
