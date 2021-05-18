@@ -48,7 +48,7 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
     final int negativeDiskLimit = -1;
     final Cache<String, String> cache =
         persistentCacheFactory.build(
-            new TestPersistentCacheDef("foo", negativeDiskLimit), CacheBackend.CAFFEINE);
+            new TestPersistentCacheDef("foo", null, negativeDiskLimit), CacheBackend.CAFFEINE);
 
     assertThat(cache.getClass().getSimpleName()).isEqualTo("CaffeinatedGuavaCache");
   }
@@ -58,7 +58,7 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
     final int positiveDiskLimit = 1024;
     assertThat(
             persistentCacheFactory.build(
-                new TestPersistentCacheDef("foo", positiveDiskLimit), CacheBackend.CAFFEINE))
+                new TestPersistentCacheDef("foo", null, positiveDiskLimit), CacheBackend.CAFFEINE))
         .isInstanceOf(ChronicleMapCacheImpl.class);
   }
 
