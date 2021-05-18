@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47929db3_39fb9d0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-05-18T09:52:07Z",
+      "side": 1,
+      "message": "Might be worth adding, in a follow up, a test that checks for the \"mergiability chacche\" when enabled?",
+      "revId": "6792c7a077f97b0a5cdd27eb7dec63d3e7de4f2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
