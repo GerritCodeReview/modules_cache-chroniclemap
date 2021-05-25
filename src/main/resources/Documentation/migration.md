@@ -12,6 +12,12 @@ However note that since the migration perform many, sequential reads from the H2
 database, it will participate to the overall database load, so you should test
 accordingly.
 
+The migration would do the following:
+1. scan all existing cache key-value pairs
+2. calculate the parameters for the new cache
+3. create the new cache
+4. read all existing key-value pairs and insert them into the new cache-chroniclemap files
+
 The following caches will be migrated (if they exist and contain any data):
 
 * accounts
