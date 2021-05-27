@@ -162,7 +162,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     return cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile();
   }
 
-  private static Path getCacheDir(SitePaths site, String name) {
+  protected static Path getCacheDir(SitePaths site, String name) {
     if (name == null) {
       return null;
     }
