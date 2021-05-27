@@ -14,11 +14,24 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.sshd.PluginCommandModule;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Key;
 
 public class SSHCommandModule extends PluginCommandModule {
+  private final Injector injector;
+
+  @Inject
+  SSHCommandModule(Injector injector) {
+    this.injector = injector;
+  }
+
   @Override
   protected void configureCommands() {
-    factory(ChronicleMapCacheConfig.Factory.class);
+    if (injector.getExistingBinding(Key.get(ChronicleMapCacheConfig.Factory.class)) == null) {
+      factory(ChronicleMapCacheConfig.Factory.class);
+    }
     command("analyze-h2-caches").to(AnalyzeH2Caches.class);
+    command("tune-chroniclemap-caches").to(TuneChronicleMapCaches.class);
   }
 }

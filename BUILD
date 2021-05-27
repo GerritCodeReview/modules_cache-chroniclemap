@@ -29,6 +29,7 @@ gerrit_plugin(
         "@dev-jna//jar",
         "@javapoet//jar",
         "@jna-platform//jar",
+        "@commons-lang3//jar",
     ],
 )
 

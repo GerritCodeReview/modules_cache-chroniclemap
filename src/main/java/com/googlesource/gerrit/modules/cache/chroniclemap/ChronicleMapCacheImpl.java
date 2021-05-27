@@ -27,6 +27,7 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
@@ -47,6 +48,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder totalLoadTime = new LongAdder();
   private final LongAdder evictionCount = new LongAdder();
   private final InMemoryLRU<K> hotEntries;
+  private final PersistentCacheDef<K, V> cacheDefinition;
 
   @SuppressWarnings("unchecked")
   ChronicleMapCacheImpl(
@@ -57,6 +59,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       throws IOException {
     CacheSerializers.registerCacheDef(def);
 
+    this.cacheDefinition = def;
     this.config = config;
     this.loader = loader;
     this.hotEntries =
@@ -108,6 +111,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.percentageFreeSpace());
 
     metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+  }
+
+  protected PersistentCacheDef<K, V> getCacheDefinition() {
+    return cacheDefinition;
   }
 
   private static class ChronicleMapStorageMetrics {
@@ -246,6 +253,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
   }
 
+  @SuppressWarnings("unchecked")
+  public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
+    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
+  }
+
   @Override
   public void put(K key, V val) {
     KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
@@ -309,6 +321,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void invalidateAll() {
     store.clear();
     hotEntries.invalidateAll();
+  }
+
+  public ConcurrentMap<KeyWrapper<K>, TimedValue<V>> getStore() {
+    return store;
   }
 
   @Override
