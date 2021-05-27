@@ -15,19 +15,30 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.extensions.config.FactoryModule;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.servlet.ServletModule;
 
 public class HttpModule extends ServletModule {
+  private final Injector injector;
+
+  @Inject
+  HttpModule(Injector injector) {
+    this.injector = injector;
+  }
 
   @Override
   protected void configureServlets() {
-    install(
-        new FactoryModule() {
-          @Override
-          protected void configure() {
-            factory(ChronicleMapCacheConfig.Factory.class);
-          }
-        });
+    if (injector.getExistingBinding(Key.get(ChronicleMapCacheConfig.Factory.class)) == null) {
+      install(
+          new FactoryModule() {
+            @Override
+            protected void configure() {
+              factory(ChronicleMapCacheConfig.Factory.class);
+            }
+          });
+    }
 
     serve("/migrate").with(H2MigrationServlet.class);
   }
