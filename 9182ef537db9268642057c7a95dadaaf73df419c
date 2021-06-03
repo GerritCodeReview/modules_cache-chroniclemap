@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c0c1faa_ecbc143f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "When migrating from H2 to chroniclemap we do not have TimedValue yet, so we. have to build it by putting together the Object we want to serialize and the timestamp of its original creation.\n\nHence the signature:\npublic void putUnchecked(Object key, Object value, Timestamp created) {\n\nWhen migrating from chroniclemap to chroniclemap however we *already* have TimedValue objects, so we can just put\n\n  public void putUnchecked(KeyWrapper\u003cObject\u003e wrappedKey, TimedValue\u003cObject\u003e wrappedValue)\n  \n  \n  Hope it makes sense",
+      "parentUuid": "60cbc240_9da8ca77",
+      "range": {
+        "startLine": 257,
+        "startChar": 14,
+        "endLine": 257,
+        "endChar": 26
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a58f29b1_de1be484",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/HttpModule.java",
         "patchSetId": 6
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "712b348d_5b4c9dc4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/HttpModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "Exactly.\nThe binding might (or might have not) be already installed by the ChronicleMapModule().",
+      "parentUuid": "a58f29b1_de1be484",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa4eea38_af5d5ea3",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
         "patchSetId": 6
@@ -54,6 +96,30 @@
       "writtenOn": "2021-06-03T09:20:03Z",
       "side": 1,
       "message": "nit: maybe we could get both values with a single loop",
+      "range": {
+        "startLine": 69,
+        "startChar": 10,
+        "endLine": 70,
+        "endChar": 84
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "402330b5_66a7e884",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "good point, on big caches it might make a differrence.\nI will make the code more complex though (I am going to give it a try).",
+      "parentUuid": "aa4eea38_af5d5ea3",
       "range": {
         "startLine": 69,
         "startChar": 10,
@@ -89,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5302905_ac479b2f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a4bc2068_42736d71",
+      "range": {
+        "startLine": 114,
+        "startChar": 78,
+        "endLine": 114,
+        "endChar": 91
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7fa07a5_24883faa",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 6
@@ -100,6 +190,30 @@
       "writtenOn": "2021-06-03T09:20:03Z",
       "side": 1,
       "message": "This command will re-tune all the caches. Are we doing it because we don\u0027t know which ones are the new caches added?\nAlso, are we suggesting to re-tune them all or only the one we know they have been added?",
+      "range": {
+        "startLine": 120,
+        "startChar": 42,
+        "endLine": 120,
+        "endChar": 52
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dfeab71_4475df19",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "For some types (most types), every average key/value is just an estimate.\nYou don\u0027t really know what data is going to be stored in the map. it depends on thee *actual* data (think about thee diff cache for example, it really depends on the size of the changes).\n\nRe-tuning the caches (even the existing ones) is something that can always help to get them closer to reality, as data keeps changing.\n\nI agree there\u0027s some value in deciding which ones you want to tune, but perhaps we can do this as a separate change if needed.\n\n\nWDYT?",
+      "parentUuid": "f7fa07a5_24883faa",
       "range": {
         "startLine": 120,
         "startChar": 42,
@@ -135,6 +249,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc58f289_3d8d8bc7",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4ec7ec45_709cbe51",
+      "range": {
+        "startLine": 125,
+        "startChar": 23,
+        "endLine": 125,
+        "endChar": 28
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8618ddf0_55149d2c",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 6
@@ -158,6 +296,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e95ebbf6_b28d64ba",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "I guess it really depends on how big the caches are and how important the load on the gerrit server.\n\nFor the H2 to chroniclemap migration we wrote:\n\n```\nThe migration can be run online without any disruption of the Gerrit server. However note that since the migration perform many, sequential reads from the H2 database, it will participate to the overall database load, so you should test accordingly.\n```\n\nI can add a similar comment here.",
+      "parentUuid": "8618ddf0_55149d2c",
+      "range": {
+        "startLine": 142,
+        "startChar": 1,
+        "endLine": 146,
+        "endChar": 3
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "409eb1e4_16f7d911",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
         "patchSetId": 6
@@ -169,6 +331,30 @@
       "writtenOn": "2021-06-03T09:20:03Z",
       "side": 1,
       "message": "2021",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfced6b2_c5281bb8",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:35:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "409eb1e4_16f7d911",
       "range": {
         "startLine": 1,
         "startChar": 17,
