@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "060bad5d_d9c7be22",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T12:14:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5c0c1faa_ecbc143f",
+      "range": {
+        "startLine": 257,
+        "startChar": 14,
+        "endLine": 257,
+        "endChar": 26
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a58f29b1_de1be484",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Exactly.\nThe binding might (or might have not) be already installed by the ChronicleMapModule().",
       "parentUuid": "a58f29b1_de1be484",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1209e51c_dc4294b1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/HttpModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T12:14:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "712b348d_5b4c9dc4",
       "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -226,6 +268,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54204dab_10874fd4",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T12:14:50Z",
+      "side": 1,
+      "message": "It might not be needed to *only* retune a particular cache. I was more trying to understand from a user POV. What shall I do once I get back the new config for all the caches? Should I  just go and re-tune them all or should I just cherry-pick the new ones? O should I somehow decide what to do depending on the values I got back ?",
+      "parentUuid": "6dfeab71_4475df19",
+      "range": {
+        "startLine": 120,
+        "startChar": 42,
+        "endLine": 120,
+        "endChar": 52
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ec7ec45_709cbe51",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 6
@@ -308,6 +374,30 @@
       "side": 1,
       "message": "I guess it really depends on how big the caches are and how important the load on the gerrit server.\n\nFor the H2 to chroniclemap migration we wrote:\n\n```\nThe migration can be run online without any disruption of the Gerrit server. However note that since the migration perform many, sequential reads from the H2 database, it will participate to the overall database load, so you should test accordingly.\n```\n\nI can add a similar comment here.",
       "parentUuid": "8618ddf0_55149d2c",
+      "range": {
+        "startLine": 142,
+        "startChar": 1,
+        "endLine": 146,
+        "endChar": 3
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb7d1a2_7c131dd0",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T12:14:50Z",
+      "side": 1,
+      "message": "yep might be worth",
+      "parentUuid": "e95ebbf6_b28d64ba",
       "range": {
         "startLine": 142,
         "startChar": 1,
