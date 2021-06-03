@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60cbc240_9da8ca77",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "Why do we need a different implementation and we cannot use the one at L250?",
+      "range": {
+        "startLine": 257,
+        "startChar": 14,
+        "endLine": 257,
+        "endChar": 26
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a58f29b1_de1be484",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/HttpModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "Is this trick to use it both as lib and plugin?",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4eea38_af5d5ea3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "nit: maybe we could get both values with a single loop",
+      "range": {
+        "startLine": 69,
+        "startChar": 10,
+        "endLine": 70,
+        "endChar": 84
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4bc2068_42736d71",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "What about \"store\" as a name instead of the data type?",
+      "range": {
+        "startLine": 114,
+        "startChar": 78,
+        "endLine": 114,
+        "endChar": 91
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7fa07a5_24883faa",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "This command will re-tune all the caches. Are we doing it because we don\u0027t know which ones are the new caches added?\nAlso, are we suggesting to re-tune them all or only the one we know they have been added?",
+      "range": {
+        "startLine": 120,
+        "startChar": 42,
+        "endLine": 120,
+        "endChar": 52
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ec7ec45_709cbe51",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "might have",
+      "range": {
+        "startLine": 125,
+        "startChar": 23,
+        "endLine": 125,
+        "endChar": 28
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8618ddf0_55149d2c",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "Is this command resource intensive? If so maybe we should wan to avoid doing it in prod, or do it on a non-active node",
+      "range": {
+        "startLine": 142,
+        "startChar": 1,
+        "endLine": 146,
+        "endChar": 3
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "409eb1e4_16f7d911",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T09:20:03Z",
+      "side": 1,
+      "message": "2021",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
