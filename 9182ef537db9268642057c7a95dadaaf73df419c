@@ -91,6 +91,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2bd9e0fd_92a2c368",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Is it worth putting a comment on both of them, so that we do not forget why we have two and what they were originally design for?",
+      "parentUuid": "060bad5d_d9c7be22",
+      "range": {
+        "startLine": 257,
+        "startChar": 14,
+        "endLine": 257,
+        "endChar": 26
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e51e959_cd8def97",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "This looks like a violation of the abstraction of this class: I believe you would need it to copy the data over to the new cache, isn\u0027t it?\n\nCan we make it package level access instead of public?",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 3
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a58f29b1_de1be484",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/HttpModule.java",
         "patchSetId": 6
@@ -144,6 +191,81 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d844ecf_06d8fb83",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/HttpModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Can you add comment to explain the hack?",
+      "parentUuid": "1209e51c_dc4294b1",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d369d2cf_1824f138",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/SSHCommandModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "auto-adjust-caches?",
+      "range": {
+        "startLine": 35,
+        "startChar": 13,
+        "endLine": 35,
+        "endChar": 37
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c3eada8_10feae33",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "This class is actually automatically adjusting the size of the cache keys/values and migrating it.\n\nWhat about AutoAdjustCaches?",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd31ada0_c94e0b8a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Can we also add a \u0027--dry-run\u0027 command option?",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa4eea38_af5d5ea3",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
         "patchSetId": 6
@@ -191,6 +313,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37434969_99fa8a7b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "This would be skipped in case of --dry-run",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 11
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4bc2068_42736d71",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
         "patchSetId": 6
@@ -231,6 +376,121 @@
         "startChar": 78,
         "endLine": 114,
         "endChar": 91
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de4b653b_6809aa10",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "This looks like the copy\u0026paste of the method at L113. Why not simply having a method to get the average size and use it twice?",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 3
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb9b905c_cf1a4bfb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "resolveNewFile?",
+      "range": {
+        "startLine": 180,
+        "startChar": 15,
+        "endLine": 180,
+        "endChar": 29
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec2b79ee_db0e1092",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCaches.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Why not simply passing the filename as parameter?",
+      "range": {
+        "startLine": 181,
+        "startChar": 4,
+        "endLine": 181,
+        "endChar": 51
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf3de0a_506ca134",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Unrelated: the \u0027analyze\u0027 term is here is not telling the truth of what the command does.\n\nShould we rename it to something more meaningful in a follow-up change?",
+      "range": {
+        "startLine": 17,
+        "startChar": 3,
+        "endLine": 17,
+        "endChar": 20
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92eacb90_fd62ecef",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Auto-adjust",
+      "range": {
+        "startLine": 113,
+        "startChar": 3,
+        "endLine": 113,
+        "endChar": 7
       },
       "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
@@ -356,6 +616,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "105e8938_80b91936",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "you have to rely",
+      "range": {
+        "startLine": 126,
+        "startChar": 70,
+        "endLine": 127,
+        "endChar": 18
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0adbc831_4cb9d3ba",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Actually, the auto-tuning may be required on a regular basis anyway, as the keys/values averages may change over time based on utilisation.",
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8618ddf0_55149d2c",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 6
@@ -427,6 +727,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cfc40f90_3c20ef3a",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "I would also recommend to indicate how to proceed in an HA environment: the tuning can be done on a single node and then caches just copied over to the other nodes.",
+      "parentUuid": "cdb7d1a2_7c131dd0",
+      "range": {
+        "startLine": 142,
+        "startChar": 1,
+        "endLine": 146,
+        "endChar": 3
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49949c43_281fd959",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Have you tried on GerritHub.io, so that you can give some numbers based on a real use-case?",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 7
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "409eb1e4_16f7d911",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
         "patchSetId": 6
@@ -467,6 +814,52 @@
         "startChar": 17,
         "endLine": 1,
         "endChar": 21
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7246f488_bc60b598",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Why do we need a local disk?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 13
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1acba1f6_0dab5897",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-04T01:40:01Z",
+      "side": 1,
+      "message": "Wouldn\u0027t \"cache-chroniclemap tune-chroniclemap-caches\" be simpler?\nWhat\u0027s the purpose of using a Joiner here?",
+      "range": {
+        "startLine": 64,
+        "startChar": 23,
+        "endLine": 64,
+        "endChar": 93
       },
       "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
