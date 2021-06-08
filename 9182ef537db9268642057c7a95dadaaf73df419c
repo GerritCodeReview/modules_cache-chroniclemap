@@ -767,6 +767,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db93d06d_36caf6e4",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-08T20:40:22Z",
+      "side": 1,
+      "message": "It isn\u0027t a discussion for this change, sorry for raising it.",
+      "parentUuid": "4432924a_1893187b",
+      "range": {
+        "startLine": 17,
+        "startChar": 3,
+        "endLine": 17,
+        "endChar": 20
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92eacb90_fd62ecef",
@@ -1360,6 +1384,30 @@
       "side": 1,
       "message": "Everything we do as part of chronicle-map requires persistency.\nWe need chronicle-map to be able to store .dat files on disk. If we were not using local disk we would end up using in-memory caches.",
       "parentUuid": "7246f488_bc60b598",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 13
+      },
+      "revId": "9182ef537db9268642057c7a95dadaaf73df419c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ede7b8d5_52c96718",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TuneChronicleMapCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-08T20:40:22Z",
+      "side": 1,
+      "message": "I believe that annotation is for the Git repositories, not for everything else.",
+      "parentUuid": "3b8ec439_9e0e107d",
       "range": {
         "startLine": 42,
         "startChar": 0,
