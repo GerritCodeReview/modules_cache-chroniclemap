@@ -142,4 +142,8 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
   public static File fileName(Path cacheDir, String name, Integer version) {
     return cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile();
   }
+
+  protected static Path getCacheDir(SitePaths site, String name) {
+    return site.resolve(name);
+  }
 }
