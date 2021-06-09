@@ -36,6 +36,7 @@ public class ChronicleMapCacheConfig {
   private final int maxBloatFactor;
   private final int percentageFreeSpaceEvictionThreshold;
   private final int percentageHotKeys;
+  private final String configKey;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -87,6 +88,7 @@ public class ChronicleMapCacheConfig {
       @Assisted("avgValueSize") long avgValueSize,
       @Assisted("maxBloatFactor") int maxBloatFactor) {
     this.persistedFile = persistedFile;
+    this.configKey = configKey;
 
     this.maxEntries = maxEntries;
     this.averageKeySize = avgKeySize;
@@ -156,6 +158,10 @@ public class ChronicleMapCacheConfig {
 
   public int getMaxBloatFactor() {
     return maxBloatFactor;
+  }
+
+  public String getConfigKey() {
+    return configKey;
   }
 
   private static long toSeconds(@Nullable Duration duration) {
