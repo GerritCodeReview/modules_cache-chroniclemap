@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ed08a94_94aee725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-10T11:55:02Z",
+      "side": 1,
+      "message": "These failures have nothing to do with the merge itself.\nPlease look at [1] for a change that exposes failures.\n\n[1]https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/309026",
+      "revId": "23f95ba8a19fda61ea19d42fcde26b2dd33d27c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
