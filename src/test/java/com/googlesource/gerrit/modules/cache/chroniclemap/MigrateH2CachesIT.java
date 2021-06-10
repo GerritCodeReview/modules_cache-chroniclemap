@@ -213,6 +213,24 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
     assertThat(chronicleMapCache.get(allProjectsProto)).isEqualTo(h2Cache.get(allProjectsProto));
   }
 
+  @Test
+  @UseLocalDisk
+  public void shouldAssert1() throws Exception {
+    assertThat(true).isTrue();
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldAssert2() throws Exception {
+    assertThat(true).isTrue();
+  }
+
+  @Test
+  @UseLocalDisk
+  public void shouldAssert3() throws Exception {
+    assertThat(true).isTrue();
+  }
+
   private Cache.ProjectCacheKeyProto projectCacheKey(Project.NameKey key) throws IOException {
     try (Repository git = repoManager.openRepository(key)) {
       return Cache.ProjectCacheKeyProto.newBuilder()
