@@ -41,7 +41,6 @@ junit_tests(
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":cache-chroniclemap__plugin",
         "@chronicle-bytes//jar",
-        ":chroniclemap-test-lib",
     ],
 )
 
@@ -51,16 +50,8 @@ acceptance_tests(
     labels = ["server"],
     deps = [
         ":cache-chroniclemap__plugin",
-        ":chroniclemap-test-lib",
         "//java/com/google/gerrit/server/cache/h2",
         "//java/com/google/gerrit/server/cache/serialize",
         "//proto:cache_java_proto",
     ],
-)
-
-java_library(
-    name = "chroniclemap-test-lib",
-    testonly = True,
-    srcs = ["src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java"],
-    deps = PLUGIN_DEPS,
 )
