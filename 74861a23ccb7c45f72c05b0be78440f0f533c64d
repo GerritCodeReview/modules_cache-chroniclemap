@@ -63,6 +63,23 @@
       "message": "Can anyone help me figuring out why these tests might be failing for Java heap space error?\n\n",
       "revId": "74861a23ccb7c45f72c05b0be78440f0f533c64d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e15ef7_9e1fc580",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-18T00:27:46Z",
+      "side": 1,
+      "message": "I believe the problem is indirectly caused by the massive use of @UseLocalDisk which implies the sandboxed Gerrit instances.\n\nBasically, every run of the test is starting and stopping a Gerrit instance, which longer term may cause an OOM.",
+      "revId": "74861a23ccb7c45f72c05b0be78440f0f533c64d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
