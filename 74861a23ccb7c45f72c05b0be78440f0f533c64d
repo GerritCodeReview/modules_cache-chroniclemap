@@ -80,6 +80,24 @@
       "message": "I believe the problem is indirectly caused by the massive use of @UseLocalDisk which implies the sandboxed Gerrit instances.\n\nBasically, every run of the test is starting and stopping a Gerrit instance, which longer term may cause an OOM.",
       "revId": "74861a23ccb7c45f72c05b0be78440f0f533c64d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8f912f_2d28d6ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-18T17:35:54Z",
+      "side": 1,
+      "message": "@luca, yes.\nThis appears to be an issue _only_ when using acceptance_tests and not junit_tests though.\nHave you seen the monorail issue [1] and the related change[2] I created on Wednesday?\n\nNow that we know how to work around it I will fix chronicle-map accordingly, but I believe it makes sense keep the causing issue opened for reference.\n\nWDYT?\n\n[1] https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d14678\n[2] https://gerrit-review.googlesource.com/c/gerrit/+/309444",
+      "parentUuid": "78e15ef7_9e1fc580",
+      "revId": "74861a23ccb7c45f72c05b0be78440f0f533c64d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
