@@ -14,16 +14,6 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_MAX_BLOAT_FACTOR;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_SIZE_MULTIPLIER;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.MAX_BLOAT_FACTOR_PARAM;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.SIZE_MULTIPLIER_PARAM;
-import static org.apache.http.HttpHeaders.ACCEPT;
-import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
-
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -47,21 +37,32 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Key;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.Map;
 import org.apache.http.message.BasicHeader;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_MAX_BLOAT_FACTOR;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_SIZE_MULTIPLIER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.MAX_BLOAT_FACTOR_PARAM;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.SIZE_MULTIPLIER_PARAM;
+import static org.apache.http.HttpHeaders.ACCEPT;
+import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
+
 @TestPlugin(
     name = "cache-chroniclemap",
     httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
-public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
+@UseLocalDisk
+public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   private final Duration LOAD_CACHE_WAIT_TIMEOUT = Duration.ofSeconds(4);
   private String ACCOUNTS_CACHE_NAME = "accounts";
   private String PERSISTED_PROJECTS_CACHE_NAME = "persisted_projects";
@@ -80,38 +81,21 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  @UseLocalDisk
   public void shouldRunAndCompleteSuccessfullyWhenCacheDirectoryIsDefined() throws Exception {
     runMigration(adminRestSession).assertOK();
   }
 
   @Test
-  @UseLocalDisk
-  public void shouldReturnTexPlain() throws Exception {
-    RestResponse result = runMigration(adminRestSession);
-    assertThat(result.getHeader(CONTENT_TYPE)).contains(TEXT_PLAIN);
-  }
-
-  @Test
-  @UseLocalDisk
-  public void shouldReturnBadRequestWhenTextPlainIsNotAnAcceptedHeader() throws Exception {
-    runMigrationWithAcceptHeader(adminRestSession, "application/json").assertBadRequest();
-  }
-
-  @Test
-  @UseLocalDisk
   public void shouldReturnSuccessWhenAllTextContentsAreAccepted() throws Exception {
     runMigrationWithAcceptHeader(adminRestSession, "text/*").assertOK();
   }
 
   @Test
-  @UseLocalDisk
   public void shouldReturnSuccessWhenAllContentsAreAccepted() throws Exception {
     runMigrationWithAcceptHeader(adminRestSession, "*/*").assertOK();
   }
 
   @Test
-  @UseLocalDisk
   public void shouldOutputChronicleMapBloatedDefaultConfiguration() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
@@ -137,7 +121,6 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  @UseLocalDisk
   public void shouldOutputChronicleMapBloatedProvidedConfiguration() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
@@ -164,23 +147,6 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  public void shouldFailWhenCacheDirectoryIsNotDefined() throws Exception {
-    RestResponse result = runMigration(adminRestSession);
-    result.assertBadRequest();
-    assertThat(result.getEntityContent())
-        .contains("Cannot run migration, cache directory is not configured");
-  }
-
-  @Test
-  public void shouldFailWhenUserHasNoAdminServerCapability() throws Exception {
-    RestResponse result = runMigration(userRestSession);
-    result.assertForbidden();
-    assertThat(result.getEntityContent())
-        .contains("administrateServer for plugin cache-chroniclemap not permitted");
-  }
-
-  @Test
-  @UseLocalDisk
   public void shouldMigrateAccountsCache() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
 
@@ -195,7 +161,6 @@ public class MigrateH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  @UseLocalDisk
   public void shouldMigratePersistentProjects() throws Exception {
     waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
 
