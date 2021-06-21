@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
@@ -33,6 +34,8 @@ import org.junit.Test;
 @TestPlugin(
     name = "cache-chroniclemap",
     sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
+@UseLocalDisk
+@Sandboxed
 public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
 
   @Inject private SitePaths sitePaths;
@@ -40,7 +43,6 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   private String cmd = Joiner.on(" ").join("cache-chroniclemap", "analyze-h2-caches");
 
   @Test
-  @UseLocalDisk
   public void shouldAnalyzeH2Cache() throws Exception {
     createChange();
 
@@ -73,9 +75,7 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  @UseLocalDisk
   public void shouldIgnoreNonH2Files() throws Exception {
-
     Path cacheDirectory = sitePaths.resolve(cfg.getString("cache", null, "directory"));
     Files.write(cacheDirectory.resolve("some.dat"), "some_content".getBytes());
 
@@ -95,7 +95,6 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  @UseLocalDisk
   public void shouldFailWhenCacheDirectoryDoesNotExists() throws Exception {
     cfg.setString("cache", null, "directory", "/tmp/non_existing_directory");
 
