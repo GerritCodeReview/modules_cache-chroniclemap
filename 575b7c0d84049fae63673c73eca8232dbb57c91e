@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "684b5045_8ebd6c33",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AnalyzeH2CachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T01:04:26Z",
+      "side": 1,
+      "message": "@UseLocalDisk involves already @Sandboxed",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 10
+      },
+      "revId": "575b7c0d84049fae63673c73eca8232dbb57c91e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
