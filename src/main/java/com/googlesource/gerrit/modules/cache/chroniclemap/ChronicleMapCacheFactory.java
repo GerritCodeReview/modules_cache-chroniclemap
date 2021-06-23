@@ -30,6 +30,8 @@ import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorServ
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import org.eclipse.jgit.lib.Config;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -40,7 +42,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.eclipse.jgit.lib.Config;
 
 @Singleton
 class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements LifecycleListener {
@@ -141,5 +142,9 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
   public static File fileName(Path cacheDir, String name, Integer version) {
     return cacheDir.resolve(String.format("%s_%s.dat", name, version)).toFile();
+  }
+
+  protected static Path getCacheDir(SitePaths site, String name) {
+    return site.resolve(name);
   }
 }
