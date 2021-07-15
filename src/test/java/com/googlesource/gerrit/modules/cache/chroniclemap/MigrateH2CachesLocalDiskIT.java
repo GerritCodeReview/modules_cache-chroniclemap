@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowCapability;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_SIZE_MULTIPLIER;
@@ -31,6 +32,7 @@ import com.google.gerrit.acceptance.RestSession;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.WaitUtil;
+import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
@@ -41,9 +43,11 @@ import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.server.group.SystemGroupBackend;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Key;
+import com.google.inject.Module;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
@@ -66,6 +70,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   private String MIGRATION_ENDPOINT = "/plugins/cache-chroniclemap/migrate";
 
   @Inject private SitePaths sitePaths;
+  @Inject private ProjectOperations projectOperations;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
 
@@ -73,6 +78,11 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   public void setUp() {
     chronicleMapCacheConfigFactory =
         plugin.getHttpInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
+  }
+
+  /** Override to bind an additional Guice module */
+  public Module createModule() {
+    return new CapabilityModule();
   }
 
   @Test
@@ -113,6 +123,25 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
 
     assertThat(configResult.getInt("cache", PERSISTED_PROJECTS_CACHE_NAME, "maxBloatFactor", 0))
         .isEqualTo(DEFAULT_MAX_BLOAT_FACTOR);
+  }
+
+  @Test
+  public void shouldDenyH2MigrationForNonAdminsAndUsersWithoutAdministerCachePermission()
+      throws Exception {
+    waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
+    waitForCacheToLoad(PERSISTED_PROJECTS_CACHE_NAME);
+
+    runMigration(userRestSession).assertForbidden();
+
+    projectOperations
+        .project(allProjects)
+        .forUpdate()
+        .add(
+            allowCapability("cache-chroniclemap-" + AdministerCachesCapability.ID)
+                .group(SystemGroupBackend.REGISTERED_USERS))
+        .update();
+
+    runMigration(userRestSession).assertOK();
   }
 
   @Test
