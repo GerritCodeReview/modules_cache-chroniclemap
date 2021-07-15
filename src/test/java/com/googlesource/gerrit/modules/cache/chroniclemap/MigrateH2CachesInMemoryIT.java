@@ -23,8 +23,6 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.RestSession;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.inject.Inject;
 import java.io.IOException;
 import org.apache.http.message.BasicHeader;
 import org.junit.Test;
@@ -34,8 +32,6 @@ import org.junit.Test;
     httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
 public class MigrateH2CachesInMemoryIT extends LightweightPluginDaemonTest {
   private static final String MIGRATION_ENDPOINT = "/plugins/cache-chroniclemap/migrate";
-
-  @Inject protected GitRepositoryManager repoManager;
 
   @Test
   public void shouldReturnTexPlain() throws Exception {
