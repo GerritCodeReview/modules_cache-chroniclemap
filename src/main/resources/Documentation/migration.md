@@ -1,8 +1,8 @@
 ## Migration from H2 Caches
 
 This module provides a REST API to help converting existing cache from H2 to
-chronicle-map, which requires the `Administrate Server` capability to be
-executed.
+chronicle-map, which requires the `Administrate Caches` or `Administrate Server`
+capabilities to be executed.
 
 The migration must be executed _before_ switching to use chronicle-map, while
 Gerrit cache is still backed by H2.

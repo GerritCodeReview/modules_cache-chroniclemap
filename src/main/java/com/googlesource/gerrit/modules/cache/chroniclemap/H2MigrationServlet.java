@@ -26,7 +26,6 @@ import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.client.ChangeKind;
-import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.httpd.WebSessionManager;
 import com.google.gerrit.metrics.DisabledMetricMaker;
@@ -46,9 +45,6 @@ import com.google.gerrit.server.patch.IntraLineDiff;
 import com.google.gerrit.server.patch.IntraLineDiffKey;
 import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListKey;
-import com.google.gerrit.server.permissions.GlobalPermission;
-import com.google.gerrit.server.permissions.PermissionBackend;
-import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.query.change.ConflictKey;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -81,7 +77,7 @@ public class H2MigrationServlet extends HttpServlet {
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final SitePaths site;
   private final Config gerritConfig;
-  private final PermissionBackend permissionBackend;
+  private final AdministerCachePermission adminCachePermission;
 
   public static int DEFAULT_SIZE_MULTIPLIER = 3;
   public static int DEFAULT_MAX_BLOAT_FACTOR = 3;
@@ -96,7 +92,7 @@ public class H2MigrationServlet extends HttpServlet {
       @GerritServerConfig Config cfg,
       SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
-      PermissionBackend permissionBackend,
+      AdministerCachePermission permissionBackend,
       @Named("web_sessions") PersistentCacheDef<String, WebSessionManager.Val> webSessionsCacheDef,
       @Named("accounts")
           PersistentCacheDef<CachedAccountDetails.Key, CachedAccountDetails> accountsCacheDef,
@@ -121,7 +117,7 @@ public class H2MigrationServlet extends HttpServlet {
     this.configFactory = configFactory;
     this.site = site;
     this.gerritConfig = cfg;
-    this.permissionBackend = permissionBackend;
+    this.adminCachePermission = permissionBackend;
     this.persistentCacheDefs =
         Stream.of(
                 webSessionsCacheDef,
@@ -150,15 +146,11 @@ public class H2MigrationServlet extends HttpServlet {
       return;
     }
 
-    try {
-      permissionBackend.currentUser().check(GlobalPermission.ADMINISTRATE_SERVER);
-    } catch (AuthException | PermissionBackendException e) {
-      setResponse(
-          rsp,
-          HttpServletResponse.SC_FORBIDDEN,
-          "administrateServer for plugin cache-chroniclemap not permitted");
+    if (!adminCachePermission.isCurrentUserAllowed()) {
+      setResponse(rsp, HttpServletResponse.SC_FORBIDDEN, "not permitted to administer caches");
       return;
     }
+
     Optional<Path> cacheDir = getCacheDir();
 
     int maxBloatFactor =

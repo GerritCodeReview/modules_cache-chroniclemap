@@ -99,6 +99,12 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     assertThat(tunedCaches.size()).isEqualTo(EXPECTED_CACHES.size());
   }
 
+  @Test
+  public void shouldDenyAccessToCreateNewCacheFiles() throws Exception {
+    userSshSession.exec(cmd);
+    userSshSession.assertFailure("not permitted");
+  }
+
   private Config configResult(String result) throws ConfigInvalidException {
     Config configResult = new Config();
     configResult.fromText((result.split(CONFIG_HEADER))[1]);

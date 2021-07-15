@@ -48,8 +48,7 @@ public class MigrateH2CachesInMemoryIT extends LightweightPluginDaemonTest {
   public void shouldFailWhenUserHasNoAdminServerCapability() throws Exception {
     RestResponse result = runMigration(userRestSession);
     result.assertForbidden();
-    assertThat(result.getEntityContent())
-        .contains("administrateServer for plugin cache-chroniclemap not permitted");
+    assertThat(result.getEntityContent()).contains("not permitted");
   }
 
   @Test
