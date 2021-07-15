@@ -50,7 +50,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final InMemoryLRU<K> hotEntries;
   private final PersistentCacheDef<K, V> cacheDefinition;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "cast", "rawtypes"})
   ChronicleMapCacheImpl(
       PersistentCacheDef<K, V> def,
       ChronicleMapCacheConfig config,
