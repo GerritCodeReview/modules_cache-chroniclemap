@@ -181,9 +181,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         hitCount.increment();
         hotEntries.add((K) objKey);
         return vTimedValue.getValue();
-      } else {
-        invalidate(objKey);
       }
+      invalidate(objKey);
     }
     missCount.increment();
     return null;
