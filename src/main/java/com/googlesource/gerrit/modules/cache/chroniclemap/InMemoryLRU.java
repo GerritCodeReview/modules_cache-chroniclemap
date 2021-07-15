@@ -31,6 +31,8 @@ public class InMemoryLRU<K> {
     LRUMap =
         Collections.synchronizedMap(
             new LinkedHashMap<K, Boolean>(capacity, 0.75f, true) {
+              private static final long serialVersionUID = 1L;
+
               @Override
               protected boolean removeEldestEntry(Map.Entry<K, Boolean> eldest) {
                 return size() > capacity;
