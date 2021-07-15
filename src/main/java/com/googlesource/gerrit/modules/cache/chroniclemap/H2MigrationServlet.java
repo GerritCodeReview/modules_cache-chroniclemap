@@ -21,9 +21,12 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.
 import static org.apache.http.HttpHeaders.ACCEPT;
 import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.CachedProjectConfig;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.api.access.PluginPermission;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.client.ChangeKind;
 import com.google.gerrit.extensions.restapi.AuthException;
@@ -48,6 +51,7 @@ import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.permissions.GlobalPermission;
 import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.permissions.PermissionBackend.WithUser;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.query.change.ConflictKey;
 import com.google.inject.Inject;
@@ -90,6 +94,7 @@ public class H2MigrationServlet extends HttpServlet {
   public static final String SIZE_MULTIPLIER_PARAM = "size-multiplier";
 
   private final Set<PersistentCacheDef<?, ?>> persistentCacheDefs;
+  private final String pluginName;
 
   @Inject
   H2MigrationServlet(
@@ -97,6 +102,7 @@ public class H2MigrationServlet extends HttpServlet {
       SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
       PermissionBackend permissionBackend,
+      @PluginName String pluginName,
       @Named("web_sessions") PersistentCacheDef<String, WebSessionManager.Val> webSessionsCacheDef,
       @Named("accounts")
           PersistentCacheDef<CachedAccountDetails.Key, CachedAccountDetails> accountsCacheDef,
@@ -122,6 +128,7 @@ public class H2MigrationServlet extends HttpServlet {
     this.site = site;
     this.gerritConfig = cfg;
     this.permissionBackend = permissionBackend;
+    this.pluginName = pluginName;
     this.persistentCacheDefs =
         Stream.of(
                 webSessionsCacheDef,
@@ -151,6 +158,11 @@ public class H2MigrationServlet extends HttpServlet {
     }
 
     try {
+      WithUser currentUser = permissionBackend.currentUser();
+      currentUser.checkAny(
+          ImmutableSet.of(
+              GlobalPermission.ADMINISTRATE_SERVER,
+              new PluginPermission(pluginName, AdministerCachesCapability.ID)));
       permissionBackend.currentUser().check(GlobalPermission.ADMINISTRATE_SERVER);
     } catch (AuthException | PermissionBackendException e) {
       setResponse(
