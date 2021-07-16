@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6177eca2_7ec25a70",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T08:35:52Z",
+      "side": 1,
+      "message": "As follow up changes, we should probably add this capability check to other SSH commands as well.\n\nI am happy to do that.\n\nWDYT?",
+      "range": {
+        "startLine": 9,
+        "startChar": 42,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "2d861c46b6bc6bcbf1931a703156fcd2279d27c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b25988_60117fe5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T08:35:52Z",
+      "side": 1,
+      "message": "nit: can be inlined at L162",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 61
+      },
+      "revId": "2d861c46b6bc6bcbf1931a703156fcd2279d27c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

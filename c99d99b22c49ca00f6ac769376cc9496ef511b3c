@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74414e0_9b765331",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2CachesInMemoryIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-16T08:35:52Z",
+      "side": 0,
+      "message": "nit: unrelated, should this go in a separate CR?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 53
+      },
+      "revId": "c99d99b22c49ca00f6ac769376cc9496ef511b3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
