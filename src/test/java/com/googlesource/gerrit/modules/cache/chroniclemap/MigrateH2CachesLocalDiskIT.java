@@ -32,6 +32,7 @@ import com.google.gerrit.acceptance.RestSession;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.WaitUtil;
+import com.google.gerrit.acceptance.config.GerritConfig;
 import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
@@ -172,6 +173,30 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "cache.accounts.maxBloatFactor", value = "1")
+  @GerritConfig(name = "cache.accounts.maxEntries", value = "10")
+  @GerritConfig(name = "cache.accounts.avgKeySize", value = "100")
+  @GerritConfig(name = "cache.accounts.avgValueSize", value = "1000")
+  public void shouldKeepExistingChronicleMapConfiguration() throws Exception {
+    waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
+
+    int sizeMultiplier = 2;
+    int maxBloatFactor = 3;
+    RestResponse result = runMigration(sizeMultiplier, maxBloatFactor);
+    result.assertOK();
+
+    Config configResult = new Config();
+    String entityContent = result.getEntityContent();
+    configResult.fromText(entityContent);
+
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "maxBloatFactor", 0)).isEqualTo(1);
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "maxEntries", 0)).isEqualTo(10);
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "avgKeySize", 0)).isEqualTo(100);
+    assertThat(configResult.getInt("cache", ACCOUNTS_CACHE_NAME, "avgValueSize", 0))
+        .isEqualTo(1000);
+  }
+
+  @Test
   public void shouldMigrateAccountsCache() throws Exception {
     waitForCacheToLoad(ACCOUNTS_CACHE_NAME);
 
@@ -276,7 +301,8 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             cacheDirectory,
             persistentDef,
             H2CacheCommand.getStats(
-                cacheDirectory.resolve(String.format("%s.%s", cacheName, H2_SUFFIX))),
+                    cacheDirectory.resolve(String.format("%s.%s", cacheName, H2_SUFFIX)))
+                .get(),
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
