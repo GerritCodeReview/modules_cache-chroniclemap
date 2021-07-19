@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.appendToConfig;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.jdbcUrl;
 import static org.apache.http.HttpHeaders.ACCEPT;
@@ -50,6 +49,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -180,21 +180,55 @@ public class H2MigrationServlet extends HttpServlet {
     try {
       for (PersistentCacheDef<?, ?> in : persistentCacheDefs) {
         Optional<Path> h2CacheFile = getH2CacheFile(cacheDir.get(), in.name());
+        Optional<ChronicleMapCacheConfig> chronicleMapConfig;
 
         if (h2CacheFile.isPresent()) {
-          H2AggregateData stats = getStats(h2CacheFile.get());
+          if (hasFullPersistentCacheConfiguration(in)) {
+            if (sizeMultiplier != DEFAULT_SIZE_MULTIPLIER) {
+              logger.atWarning().log(
+                  "Size multiplier = %d ignored because of existing configuration found",
+                  sizeMultiplier);
+            }
+            if (maxBloatFactor != DEFAULT_MAX_BLOAT_FACTOR) {
+              logger.atWarning().log(
+                  "Max Bloat Factor = %d ignored because of existing configuration found",
+                  maxBloatFactor);
+            }
 
-          if (!stats.isEmpty()) {
+            File cacheFile =
+                ChronicleMapCacheFactory.fileName(cacheDir.get(), in.name(), in.version());
+            chronicleMapConfig =
+                Optional.of(
+                    configFactory.create(
+                        in.name(), cacheFile, in.expireAfterWrite(), in.refreshAfterWrite()));
+
+          } else {
+            if (hasPartialPersistentCacheConfiguration(in)) {
+              logger.atWarning().log(
+                  "Existing configuration for cache %s found gerrit.config and will be ignored because incomplete",
+                  in.name());
+            }
+            chronicleMapConfig =
+                getStats(h2CacheFile.get())
+                    .map(
+                        (stats) ->
+                            makeChronicleMapConfig(
+                                configFactory,
+                                cacheDir.get(),
+                                in,
+                                stats,
+                                sizeMultiplier,
+                                maxBloatFactor));
+          }
+
+          if (chronicleMapConfig.isPresent()) {
+            ChronicleMapCacheConfig cacheConfig = chronicleMapConfig.get();
             ChronicleMapCacheImpl<?, ?> chronicleMapCache =
-                new ChronicleMapCacheImpl<>(
-                    in,
-                    makeChronicleMapConfig(
-                        configFactory, cacheDir.get(), in, stats, sizeMultiplier, maxBloatFactor),
-                    null,
-                    new DisabledMetricMaker());
+                new ChronicleMapCacheImpl<>(in, cacheConfig, null, new DisabledMetricMaker());
+
             doMigrate(h2CacheFile.get(), in, chronicleMapCache);
             chronicleMapCache.close();
-            appendBloatedConfig(outputChronicleMapConfig, stats, maxBloatFactor, sizeMultiplier);
+            copyExistingCacheSettingsToConfig(outputChronicleMapConfig, cacheConfig);
           }
         }
       }
@@ -205,6 +239,20 @@ public class H2MigrationServlet extends HttpServlet {
 
     logger.atInfo().log("Migration completed");
     setResponse(rsp, HttpServletResponse.SC_OK, outputChronicleMapConfig.toText());
+  }
+
+  private boolean hasFullPersistentCacheConfiguration(PersistentCacheDef<?, ?> in) {
+    return gerritConfig.getLong("cache", in.name(), "avgKeySize", 0L) > 0
+        && gerritConfig.getLong("cache", in.name(), "avgValueSize", 0L) > 0
+        && gerritConfig.getLong("cache", in.name(), "maxEntries", 0L) > 0
+        && gerritConfig.getInt("cache", in.name(), "maxBloatFactor", 0) > 0;
+  }
+
+  private boolean hasPartialPersistentCacheConfiguration(PersistentCacheDef<?, ?> in) {
+    return gerritConfig.getLong("cache", in.name(), "avgKeySize", 0L) > 0
+        || gerritConfig.getLong("cache", in.name(), "avgValueSize", 0L) > 0
+        || gerritConfig.getLong("cache", in.name(), "maxEntries", 0L) > 0
+        || gerritConfig.getInt("cache", in.name(), "maxBloatFactor", 0) > 0;
   }
 
   protected Optional<Path> getCacheDir() throws IOException {
@@ -230,18 +278,6 @@ public class H2MigrationServlet extends HttpServlet {
       return Optional.of(h2CacheFile);
     }
     return Optional.empty();
-  }
-
-  private void appendBloatedConfig(
-      Config config, H2AggregateData stats, int maxBloatFactor, int sizeMultiplier) {
-    appendToConfig(
-        config,
-        H2AggregateData.create(
-            stats.cacheName(),
-            stats.size() * sizeMultiplier,
-            stats.avgKeySize(),
-            stats.avgValueSize()));
-    config.setLong("cache", stats.cacheName(), "maxBloatFactor", maxBloatFactor);
   }
 
   protected static ChronicleMapCacheConfig makeChronicleMapConfig(
@@ -309,5 +345,14 @@ public class H2MigrationServlet extends HttpServlet {
   private boolean hasInvalidAcceptHeader(HttpServletRequest req) {
     return req.getHeader(ACCEPT) != null
         && !Arrays.asList("text/plain", "text/*", "*/*").contains(req.getHeader(ACCEPT));
+  }
+
+  private static void copyExistingCacheSettingsToConfig(
+      Config outputConfig, ChronicleMapCacheConfig cacheConfig) {
+    String cacheName = cacheConfig.getConfigKey();
+    outputConfig.setLong("cache", cacheName, "avgKeySize", cacheConfig.getAverageKeySize());
+    outputConfig.setLong("cache", cacheName, "avgValueSize", cacheConfig.getAverageValueSize());
+    outputConfig.setLong("cache", cacheName, "maxEntries", cacheConfig.getMaxEntries());
+    outputConfig.setLong("cache", cacheName, "maxBloatFactor", cacheConfig.getMaxBloatFactor());
   }
 }

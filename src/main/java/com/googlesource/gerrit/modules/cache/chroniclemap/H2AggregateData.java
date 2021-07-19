@@ -29,12 +29,4 @@ abstract class H2AggregateData {
       String cacheName, long size, long avgKeySize, long avgValueSize) {
     return new AutoValue_H2AggregateData(cacheName, size, avgKeySize, avgValueSize);
   }
-
-  protected static H2AggregateData empty(String cacheName) {
-    return new AutoValue_H2AggregateData(cacheName, 0L, 0L, 0L);
-  }
-
-  protected boolean isEmpty() {
-    return size() == 0L;
-  }
 }

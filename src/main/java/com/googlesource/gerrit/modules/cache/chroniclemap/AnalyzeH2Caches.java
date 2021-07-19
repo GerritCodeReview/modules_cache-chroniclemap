@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Config;
@@ -57,14 +58,14 @@ public class AnalyzeH2Caches extends SshCommand {
 
     Config config = new Config();
     for (Path h2 : h2Files) {
-      H2AggregateData stats = getStats(h2);
+      Optional<H2AggregateData> stats = getStats(h2);
       String baseName = baseName(h2);
 
       if (stats.isEmpty()) {
         stdout.println(String.format("WARN: Cache %s is empty, skipping.", baseName));
         continue;
       }
-      appendToConfig(config, stats);
+      appendToConfig(config, stats.get());
     }
     stdout.println();
     stdout.println("****************************");
