@@ -14,9 +14,14 @@ accordingly.
 
 The migration would do the following:
 1. scan all existing cache key-value pairs
-2. calculate the parameters for the new cache
+2. calculate the parameters for the new cache, if not already defined in gerrit.config.
 3. create the new cache
 4. read all existing key-value pairs and insert them into the new cache-chroniclemap files
+
+> **NOTE**: The existing cache parameters are kept in `gerrit.config` only when they are all
+> defined (avgKeySize, avgValueSize, maxEntries and maxBloatFactor), otherwise the
+> migration process will recalculate them and create the new cache based on the new
+> values.
 
 The following caches will be migrated (if they exist and contain any data):
 
