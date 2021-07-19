@@ -50,6 +50,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -178,23 +179,47 @@ public class H2MigrationServlet extends HttpServlet {
     Config outputChronicleMapConfig = new Config();
 
     try {
+      Set<String> gerritConfigCaches = gerritConfig.getSubsections("cache");
       for (PersistentCacheDef<?, ?> in : persistentCacheDefs) {
         Optional<Path> h2CacheFile = getH2CacheFile(cacheDir.get(), in.name());
+        Optional<ChronicleMapCacheConfig> chronicleMapConfig = Optional.empty();
+        Optional<H2AggregateData> stats = Optional.empty();
 
         if (h2CacheFile.isPresent()) {
-          H2AggregateData stats = getStats(h2CacheFile.get());
+          if (gerritConfigCaches.contains(in.name())
+              && gerritConfig.getLong("cache", in.name(), "avgKeySize", 0L) > 0
+              && gerritConfig.getLong("cache", in.name(), "avgValueSize", 0L) > 0
+              && gerritConfig.getLong("cache", in.name(), "maxEntries", 0L) > 0
+              && gerritConfig.getInt("cache", in.name(), "maxBloatFactor", 0) > 0) {
+            File cacheFile =
+                ChronicleMapCacheFactory.fileName(cacheDir.get(), in.name(), in.version());
+            chronicleMapConfig =
+                Optional.of(
+                    configFactory.create(
+                        in.name(), cacheFile, in.expireAfterWrite(), in.refreshAfterWrite()));
 
-          if (!stats.isEmpty()) {
+          } else {
+            stats = getStats(h2CacheFile.get());
+            chronicleMapConfig =
+                stats.map(
+                    (s) ->
+                        makeChronicleMapConfig(
+                            configFactory, cacheDir.get(), in, s, sizeMultiplier, maxBloatFactor));
+          }
+
+          if (!chronicleMapConfig.isEmpty()) {
             ChronicleMapCacheImpl<?, ?> chronicleMapCache =
                 new ChronicleMapCacheImpl<>(
-                    in,
-                    makeChronicleMapConfig(
-                        configFactory, cacheDir.get(), in, stats, sizeMultiplier, maxBloatFactor),
-                    null,
-                    new DisabledMetricMaker());
+                    in, chronicleMapConfig.get(), null, new DisabledMetricMaker());
             doMigrate(h2CacheFile.get(), in, chronicleMapCache);
             chronicleMapCache.close();
-            appendBloatedConfig(outputChronicleMapConfig, stats, maxBloatFactor, sizeMultiplier);
+
+            if (stats.isPresent()) {
+              appendBloatedConfig(
+                  outputChronicleMapConfig, stats.get(), maxBloatFactor, sizeMultiplier);
+            } else {
+              copyExistingCacheSettingsToConfig(outputChronicleMapConfig, gerritConfig, in.name());
+            }
           }
         }
       }
@@ -309,5 +334,14 @@ public class H2MigrationServlet extends HttpServlet {
   private boolean hasInvalidAcceptHeader(HttpServletRequest req) {
     return req.getHeader(ACCEPT) != null
         && !Arrays.asList("text/plain", "text/*", "*/*").contains(req.getHeader(ACCEPT));
+  }
+
+  private static void copyExistingCacheSettingsToConfig(
+      Config outputConfig, Config existingConfig, String cacheName) {
+    for (String configKey :
+        Arrays.asList("maxEntries", "avgKeySize", "avgValueSize", "maxBloatFactor")) {
+      outputConfig.setLong(
+          "cache", cacheName, configKey, existingConfig.getLong("cache", cacheName, configKey, 0L));
+    }
   }
 }

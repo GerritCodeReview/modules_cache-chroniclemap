@@ -35,7 +35,7 @@ public class H2CacheCommand {
     return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
   }
 
-  protected static H2AggregateData getStats(Path h2File) throws Exception {
+  protected static Optional<H2AggregateData> getStats(Path h2File) throws Exception {
     String url = jdbcUrl(h2File);
     String baseName = baseName(h2File);
     try {
@@ -52,10 +52,13 @@ public class H2CacheCommand {
 
           // Account for extra serialization bytes of TimedValue entries.
           short TIMED_VALUE_WRAPPER_OVERHEAD = Long.BYTES + Integer.BYTES;
-          return H2AggregateData.create(
-              baseName, size, avgKeySize, avgValueSize + TIMED_VALUE_WRAPPER_OVERHEAD);
+          if (size > 0) {
+            return Optional.of(
+                H2AggregateData.create(
+                    baseName, size, avgKeySize, avgValueSize + TIMED_VALUE_WRAPPER_OVERHEAD));
+          }
         }
-        return H2AggregateData.empty(baseName);
+        return Optional.empty();
       }
     } catch (SQLException e) {
       throw new Exception("fatal: " + e.getMessage(), e);
