@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ed63221_34aff937",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T12:52:41Z",
+      "side": 1,
+      "message": "Is changing this signature related to this CR?\nis it just so that you can map over the result? [1]\n\nAlso, the isEmpty method and constructors are now unused and should be removed[2]\n\n[1] https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/changes/62/312562/3/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java#200\n\n[2] https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/changes/62/312562/3/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2AggregateData.java#33",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32451b56_6a46a58d",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
         "patchSetId": 3
@@ -43,6 +66,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31a294ef_4e57cf7e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T12:52:41Z",
+      "side": 1,
+      "message": "These parameters are effectively ignored when a previous configuration exists.\n\nI think we should at least give a warning to the user that this is the case and document this behaviour in the documentation.\n\nI am thinking whether an alternative approach would be to be _explicit_ when calling the REST-API as to whether the previous configuration should be used or new averages computed.\n\nsomething like:\n\n```\n\u0026use-current-config\u003dtrue\n```\n\nWDYT?",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 45
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da282a37_1f261c31",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T12:52:41Z",
+      "side": 1,
+      "message": "nit: redundant initialization",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 183,
+        "endChar": 80
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60a3ebcb_f1ce53fc",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
         "patchSetId": 3
@@ -59,6 +128,75 @@
         "startChar": 14,
         "endLine": 189,
         "endChar": 81
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca15c5c_bcfbfc8f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T12:52:41Z",
+      "side": 1,
+      "message": "All these settings have a default value.\nWhat if an existing configuration has only avgKeySize and avgValueSize explicitly set, whilst  maxEntries is not defined?\n\nI think if *any* of these is set (as opposed to *all*), then we should consider it pre-configured, and missing values should be taken from the defaults, where missing.",
+      "range": {
+        "startLine": 186,
+        "startChar": 10,
+        "endLine": 189,
+        "endChar": 84
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "412488d5_bb94be96",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T12:52:41Z",
+      "side": 1,
+      "message": "nit: stats?",
+      "range": {
+        "startLine": 201,
+        "startChar": 24,
+        "endLine": 201,
+        "endChar": 30
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d97dc80c_3dc459d3",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2CachesLocalDiskIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T12:52:41Z",
+      "side": 1,
+      "message": "I think it would be worth testing this behavior when only a subset of config exists",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 179,
+        "endChar": 69
       },
       "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
