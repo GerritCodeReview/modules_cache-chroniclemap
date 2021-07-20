@@ -16,6 +16,52 @@
       "message": "Verified with Gerrit v3.3.x E2E",
       "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32451b56_6a46a58d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-20T09:49:26Z",
+      "side": 1,
+      "message": "Is this part of this change? If yes can we add a comment in why we are checking for \"size \u003e 0\" ? Why shouldn\u0027t we have entries in H2 while migrating ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 32
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60a3ebcb_f1ce53fc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-20T09:49:26Z",
+      "side": 1,
+      "message": "What if we wrap this into a method like:\n  boolean isMaunalTuning() {...}\n  \nThis is what the check is for, right?",
+      "range": {
+        "startLine": 186,
+        "startChar": 14,
+        "endLine": 189,
+        "endChar": 81
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
