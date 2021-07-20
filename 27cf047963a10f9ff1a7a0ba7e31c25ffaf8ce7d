@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fe3fb0c_5b2d504c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "\u003e Is changing this signature related to this CR?\n\nYou mean related to this Change? Yes, it is.\n\n\u003e is it just so that you can map over the result? [1]\n\nThe ChronicleMap becomes an Optional\u003c\u003e in this change and therefore may or may not exist, either from the config or the H2 cache.\n\n\u003e Also, the isEmpty method and constructors are now unused and should be removed[2]\n\u003e \n\u003e [1] https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/changes/62/312562/3/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java#200\n\u003e \n\u003e [2] https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/changes/62/312562/3/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2AggregateData.java#33\n\nDone.",
+      "parentUuid": "2ed63221_34aff937",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32451b56_6a46a58d",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-20T09:49:26Z",
       "side": 1,
       "message": "Is this part of this change? If yes can we add a comment in why we are checking for \"size \u003e 0\" ? Why shouldn\u0027t we have entries in H2 while migrating ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 32
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f97da19_59e06c55",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "I can add a comment on that: a cache may be defined but empty and therefore we may not know nothing about it.",
+      "parentUuid": "32451b56_6a46a58d",
       "range": {
         "startLine": 55,
         "startChar": 9,
@@ -87,6 +135,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a3b59c3_9fec00b8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "\u003e These parameters are effectively ignored when a previous configuration exists.\n\u003e \n\u003e I think we should at least give a warning to the user that this is the case and document this behaviour in the documentation.\n\nI\u0027ll document the behaviour. We can\u0027t give a warning because the output is already used to return the new configuration.\n\n\u003e I am thinking whether an alternative approach would be to be _explicit_ when calling the REST-API as to whether the previous configuration should be used or new averages computed.\n\nThat doesn\u0027t resolve the issue: you can have the maxBloatFactor be used for cacheA but not for cacheB (because of existing settings).\n\n\u003e something like:\n\u003e \n\u003e ```\n\u003e \u0026use-current-config\u003dtrue\n\nSure, we could, but won\u0027t resolve the issue of warning the user when the parameter is used or not.",
+      "parentUuid": "31a294ef_4e57cf7e",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 45
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da282a37_1f261c31",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-07-20T12:52:41Z",
       "side": 1,
       "message": "nit: redundant initialization",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 183,
+        "endChar": 80
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a36377f_c7193786",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da282a37_1f261c31",
       "range": {
         "startLine": 183,
         "startChar": 60,
@@ -156,6 +252,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81cc5f09_4153af2a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "\u003e All these settings have a default value.\n\u003e What if an existing configuration has only avgKeySize and avgValueSize explicitly set, whilst  maxEntries is not defined?\n\nI don\u0027t believe that\u0027s a valid configuration and therefore we won\u0027t be able to use it.\n\n\u003e I think if *any* of these is set (as opposed to *all*), then we should consider it pre-configured, and missing values should be taken from the defaults, where missing.\n\nI disagree: if you don\u0027t define all of them it means you did make a mistake when copy \u0026 pasting from an existing pre-testing in staging of the H2 cache files.\n\nIgnoring them is the right thing to do IMHO, but we should add a warning to the logs. Adding that now.",
+      "parentUuid": "fca15c5c_bcfbfc8f",
+      "range": {
+        "startLine": 186,
+        "startChar": 10,
+        "endLine": 189,
+        "endChar": 84
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6587b337_1ac41493",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60a3ebcb_f1ce53fc",
+      "range": {
+        "startLine": 186,
+        "startChar": 14,
+        "endLine": 189,
+        "endChar": 81
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "412488d5_bb94be96",
@@ -179,6 +323,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b13b592_c5c60d61",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "412488d5_bb94be96",
+      "range": {
+        "startLine": 201,
+        "startChar": 24,
+        "endLine": 201,
+        "endChar": 30
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d97dc80c_3dc459d3",
@@ -192,6 +360,30 @@
       "writtenOn": "2021-07-20T12:52:41Z",
       "side": 1,
       "message": "I think it would be worth testing this behavior when only a subset of config exists",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 179,
+        "endChar": 69
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e876ec38_e46071fc",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/MigrateH2CachesLocalDiskIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T22:12:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d97dc80c_3dc459d3",
       "range": {
         "startLine": 176,
         "startChar": 0,
