@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "930a73d2_5b14dd00",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T00:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2454536_2828c8a3",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 76
+      },
+      "revId": "171e2eab63a7b33e370b18bcb3771d4e8eb99b5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4685ded4_34e816b7",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-20T00:18:40Z",
       "side": 1,
       "message": "This isn\u0027t needed because if the subsection isn\u0027t defined, then the L190-L193 would fail anyway.",
+      "range": {
+        "startLine": 189,
+        "startChar": 14,
+        "endLine": 189,
+        "endChar": 52
+      },
+      "revId": "171e2eab63a7b33e370b18bcb3771d4e8eb99b5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcc090c3_a9b4661e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T00:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4685ded4_34e816b7",
       "range": {
         "startLine": 189,
         "startChar": 14,
@@ -64,6 +112,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "644dcce3_06d5b35c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T00:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52bdd208_fb3e6d85",
+      "revId": "171e2eab63a7b33e370b18bcb3771d4e8eb99b5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d4bedcb_1f74be19",
@@ -87,6 +153,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff0a2d3_c2a5a21a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T00:31:20Z",
+      "side": 1,
+      "message": "Not really: we do need to manage the exception occurred during migration at L227",
+      "parentUuid": "7d4bedcb_1f74be19",
+      "range": {
+        "startLine": 210,
+        "startChar": 10,
+        "endLine": 210,
+        "endChar": 46
+      },
+      "revId": "171e2eab63a7b33e370b18bcb3771d4e8eb99b5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d86e79c2_b02b5662",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-07-20T00:18:40Z",
       "side": 1,
       "message": "This can be a static array of strings",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 342,
+        "endChar": 83
+      },
+      "revId": "171e2eab63a7b33e370b18bcb3771d4e8eb99b5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "332288d6_6fd53140",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T00:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d86e79c2_b02b5662",
       "range": {
         "startLine": 342,
         "startChar": 8,
