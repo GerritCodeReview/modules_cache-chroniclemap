@@ -27,6 +27,7 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
@@ -47,8 +48,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder totalLoadTime = new LongAdder();
   private final LongAdder evictionCount = new LongAdder();
   private final InMemoryLRU<K> hotEntries;
+  private final PersistentCacheDef<K, V> cacheDefinition;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "cast", "rawtypes"})
   ChronicleMapCacheImpl(
       PersistentCacheDef<K, V> def,
       ChronicleMapCacheConfig config,
@@ -57,6 +59,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       throws IOException {
     CacheSerializers.registerCacheDef(def);
 
+    this.cacheDefinition = def;
     this.config = config;
     this.loader = loader;
     this.hotEntries =
@@ -108,6 +111,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.percentageFreeSpace());
 
     metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+  }
+
+  protected PersistentCacheDef<K, V> getCacheDefinition() {
+    return cacheDefinition;
   }
 
   private static class ChronicleMapStorageMetrics {
@@ -174,9 +181,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         hitCount.increment();
         hotEntries.add((K) objKey);
         return vTimedValue.getValue();
-      } else {
-        invalidate(objKey);
       }
+      invalidate(objKey);
     }
     missCount.increment();
     return null;
@@ -239,10 +245,35 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return v;
   }
 
+  /**
+   * Associates the specified value with the specified key. This method should be used when the
+   * creation time of the value needs to be preserved, rather than computed at insertion time
+   * ({@link #put}. This is typically the case when migrating from an existing cache where the
+   * creation timestamp needs to be preserved. See ({@link H2MigrationServlet} for an example.
+   *
+   * @param key
+   * @param value
+   * @param created
+   */
   @SuppressWarnings("unchecked")
   public void putUnchecked(Object key, Object value, Timestamp created) {
     TimedValue<?> wrappedValue = new TimedValue<>(value, created.toInstant().toEpochMilli());
     KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
+    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
+  }
+
+  /**
+   * Associates the specified value with the specified key. This method should be used when the
+   * {@link TimedValue} and the {@link KeyWrapper} have already been constructed elsewhere rather
+   * than delegate their construction to this cache ({@link #put}. This is typically the case when
+   * the key/value are extracted from another chronicle-map cache see ({@link AutoAdjustCaches} for
+   * an example.
+   *
+   * @param wrappedKey The wrapper for the key object
+   * @param wrappedValue the wrapper for the value object
+   */
+  @SuppressWarnings("unchecked")
+  public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
     store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
   }
 
@@ -309,6 +340,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void invalidateAll() {
     store.clear();
     hotEntries.invalidateAll();
+  }
+
+  ConcurrentMap<KeyWrapper<K>, TimedValue<V>> getStore() {
+    return store;
   }
 
   @Override

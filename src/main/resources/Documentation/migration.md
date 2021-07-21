@@ -1,8 +1,8 @@
 ## Migration from H2 Caches
 
 This module provides a REST API to help converting existing cache from H2 to
-chronicle-map, which requires the `Administrate Server` capability to be
-executed.
+chronicle-map, which requires the `Administrate Caches` or `Administrate Server`
+capabilities to be executed.
 
 The migration must be executed _before_ switching to use chronicle-map, while
 Gerrit cache is still backed by H2.
@@ -11,6 +11,17 @@ The migration can be run online without any disruption of the Gerrit server.
 However note that since the migration perform many, sequential reads from the H2
 database, it will participate to the overall database load, so you should test
 accordingly.
+
+The migration would do the following:
+1. scan all existing cache key-value pairs
+2. calculate the parameters for the new cache, if not already defined in gerrit.config.
+3. create the new cache
+4. read all existing key-value pairs and insert them into the new cache-chroniclemap files
+
+> **NOTE**: The existing cache parameters are kept in `gerrit.config` only when they are all
+> defined (avgKeySize, avgValueSize, maxEntries and maxBloatFactor), otherwise the
+> migration process will recalculate them and create the new cache based on the new
+> values.
 
 The following caches will be migrated (if they exist and contain any data):
 

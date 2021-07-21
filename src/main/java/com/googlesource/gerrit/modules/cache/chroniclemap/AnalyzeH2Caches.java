@@ -36,15 +36,22 @@ public class AnalyzeH2Caches extends SshCommand {
 
   private final Config gerritConfig;
   private final SitePaths site;
+  private final AdministerCachePermission adminCachePermission;
 
   @Inject
-  AnalyzeH2Caches(@GerritServerConfig Config cfg, SitePaths site) {
+  AnalyzeH2Caches(
+      @GerritServerConfig Config cfg,
+      SitePaths site,
+      AdministerCachePermission adminCachePermission) {
     this.gerritConfig = cfg;
     this.site = site;
+    this.adminCachePermission = adminCachePermission;
   }
 
   @Override
   protected void run() throws Exception {
+    adminCachePermission.checkCurrentUserAllowed(e -> stderr.println(e.getLocalizedMessage()));
+
     Set<Path> h2Files = getH2CacheFiles();
     stdout.println("Extracting information from H2 caches...");
 

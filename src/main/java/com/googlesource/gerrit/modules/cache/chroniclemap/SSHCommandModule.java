@@ -14,11 +14,29 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.gerrit.sshd.PluginCommandModule;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Key;
 
 public class SSHCommandModule extends PluginCommandModule {
+  private final Injector injector;
+
+  @Inject
+  SSHCommandModule(Injector injector) {
+    this.injector = injector;
+  }
+
   @Override
   protected void configureCommands() {
-    factory(ChronicleMapCacheConfig.Factory.class);
+    /*
+     This module can be installed as a plugin, as a lib or both, depending on the wanted usage
+     (refer to the docs for more details on why this is needed). For this reason, some binding
+     might or might have not already been configured.
+    */
+    if (injector.getExistingBinding(Key.get(ChronicleMapCacheConfig.Factory.class)) == null) {
+      factory(ChronicleMapCacheConfig.Factory.class);
+    }
     command("analyze-h2-caches").to(AnalyzeH2Caches.class);
+    command("auto-adjust-caches").to(AutoAdjustCaches.class);
   }
 }
