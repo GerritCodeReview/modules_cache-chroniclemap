@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30e2f905_b673ea43",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-21T19:11:23Z",
+      "side": 1,
+      "message": "I could keep it as is, and manage anyway. In that sense, yes, it is not strictly needed. Let me do it now.",
+      "parentUuid": "1e094175_503592ec",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32451b56_6a46a58d",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
         "patchSetId": 3
@@ -362,6 +386,30 @@
       "side": 1,
       "message": "\u003e \u003e All these settings have a default value.\n\u003e \u003e What if an existing configuration has only avgKeySize and avgValueSize explicitly set, whilst  maxEntries is not defined?\n\u003e \n\u003e I don\u0027t believe that\u0027s a valid configuration and therefore we won\u0027t be able to use it.\n\nWhy do you believe that\u0027s not a valid configuration?\n\nConsider, for example:\n\n[cache \"foo\"]\n avgKeySize \u003d 1024\n avgValueSize \u003d 2048\n \nThis is a valid configuration.\nThe cache is configured by using those settings and falls back do defaults[1] for other (i.e. maxEntries, maxBlotFactor, etc).\nThere are no warnings, nor errors related to this cache.\n \n\u003e \n\u003e \u003e I think if *any* of these is set (as opposed to *all*), then we should consider it pre-configured, and missing values should be taken from the defaults, where missing.\n\u003e \n\u003e I disagree: if you don\u0027t define all of them it means you did make a mistake when copy \u0026 pasting from an existing pre-testing in staging of the H2 cache files.\n\u003e \n\u003e Ignoring them is the right thing to do IMHO, but we should add a warning to the logs. Adding that now.\n\n\n[1]https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/heads/stable-3.3/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java#171",
       "parentUuid": "81cc5f09_4153af2a",
+      "range": {
+        "startLine": 186,
+        "startChar": 10,
+        "endLine": 189,
+        "endChar": 84
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdd33cc0_def01a36",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-21T19:11:23Z",
+      "side": 1,
+      "message": "\u003e \u003e \u003e All these settings have a default value.\n\u003e \u003e \u003e What if an existing configuration has only avgKeySize and avgValueSize explicitly set, whilst  maxEntries is not defined?\n\u003e \u003e \n\u003e \u003e I don\u0027t believe that\u0027s a valid configuration and therefore we won\u0027t be able to use it.\n\u003e \n\u003e Why do you believe that\u0027s not a valid configuration?\n\u003e \n\u003e Consider, for example:\n\u003e \n\u003e [cache \"foo\"]\n\u003e  avgKeySize \u003d 1024\n\u003e  avgValueSize \u003d 2048\n\u003e  \n\u003e This is a valid configuration.\n\u003e The cache is configured by using those settings and falls back do defaults[1] for other (i.e. maxEntries, maxBlotFactor, etc).\n\u003e There are no warnings, nor errors related to this cache.\n\nYes, but that is clearly a mistake because *IF* you performed the conversion from H2 to ChronicleMap in staging based on the stats, you do know what were the number of entries and that was missed instead.\n\nThe defaults aren\u0027t as good as the real value calculated during migration.\n\n\u003e [1]https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/heads/stable-3.3/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java#171",
+      "parentUuid": "ab231d56_c73babd6",
       "range": {
         "startLine": 186,
         "startChar": 10,
