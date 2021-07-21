@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba858bf0_01f69278",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-21T18:50:18Z",
+      "side": 1,
+      "message": "No sure either about this signature change 😕",
+      "parentUuid": "1e094175_503592ec",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "27cf047963a10f9ff1a7a0ba7e31c25ffaf8ce7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32451b56_6a46a58d",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2CacheCommand.java",
         "patchSetId": 3
