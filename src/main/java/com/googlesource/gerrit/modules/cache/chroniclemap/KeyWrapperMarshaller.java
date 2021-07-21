@@ -34,7 +34,7 @@ public class KeyWrapperMarshaller<V>
     return new KeyWrapperMarshaller<>(name);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
   public KeyWrapper<V> read(Bytes in, KeyWrapper<V> using) {
     int serializedLength = (int) in.readUnsignedInt();
@@ -46,6 +46,7 @@ public class KeyWrapperMarshaller<V>
     return using;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public void write(Bytes out, KeyWrapper<V> toWrite) {
     final byte[] serialized = CacheSerializers.getKeySerializer(name).serialize(toWrite.getValue());

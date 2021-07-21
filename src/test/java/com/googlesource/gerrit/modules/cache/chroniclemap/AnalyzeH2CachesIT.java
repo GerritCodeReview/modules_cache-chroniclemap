@@ -56,6 +56,12 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void shouldDenyAccessToAnalyzeH2Cache() throws Exception {
+    userSshSession.exec(cmd);
+    userSshSession.assertFailure("not permitted");
+  }
+
+  @Test
   public void shouldProduceWarningWhenCacheFileIsEmpty() throws Exception {
     List<String> expected =
         ImmutableList.of(
