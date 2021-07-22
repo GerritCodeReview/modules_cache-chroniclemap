@@ -50,7 +50,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final InMemoryLRU<K> hotEntries;
   private final PersistentCacheDef<K, V> cacheDefinition;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "cast", "rawtypes"})
   ChronicleMapCacheImpl(
       PersistentCacheDef<K, V> def,
       ChronicleMapCacheConfig config,
@@ -181,9 +181,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         hitCount.increment();
         hotEntries.add((K) objKey);
         return vTimedValue.getValue();
-      } else {
-        invalidate(objKey);
       }
+      invalidate(objKey);
     }
     missCount.increment();
     return null;
@@ -249,7 +248,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   /**
    * Associates the specified value with the specified key. This method should be used when the
    * creation time of the value needs to be preserved, rather than computed at insertion time
-   * ({@link #put(K,V)}. This is typically the case when migrating from an existing cache where the
+   * ({@link #put}. This is typically the case when migrating from an existing cache where the
    * creation timestamp needs to be preserved. See ({@link H2MigrationServlet} for an example.
    *
    * @param key
@@ -266,9 +265,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   /**
    * Associates the specified value with the specified key. This method should be used when the
    * {@link TimedValue} and the {@link KeyWrapper} have already been constructed elsewhere rather
-   * than delegate their construction to this cache ({@link #put(K, V)}. This is typically the case
-   * when the key/value are extracted from another chronicle-map cache see ({@link AutoAdjustCaches}
-   * for an example.
+   * than delegate their construction to this cache ({@link #put}. This is typically the case when
+   * the key/value are extracted from another chronicle-map cache see ({@link AutoAdjustCaches} for
+   * an example.
    *
    * @param wrappedKey The wrapper for the key object
    * @param wrappedValue the wrapper for the value object

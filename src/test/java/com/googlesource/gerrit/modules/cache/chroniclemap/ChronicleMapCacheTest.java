@@ -406,7 +406,7 @@ public class ChronicleMapCacheTest {
     gerritConfig.setInt("cache", TEST_CACHE_NAME, "percentageHotKeys", percentageHotKeys);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
+    newCacheWithMetrics(TEST_CACHE_NAME, cachedValue);
 
     assertThat(getMetric(hotKeysCapacityMetricName).getValue()).isEqualTo(expectedCapacity);
   }
@@ -501,16 +501,6 @@ public class ChronicleMapCacheTest {
   private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
       String cacheName, @Nullable String cachedValue) throws IOException {
     return newCache(true, cacheName, cachedValue, null, null, null, null, 1, metricMaker);
-  }
-
-  private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
-      String cacheName,
-      String cachedValue,
-      CacheSerializer<String> keySerializer,
-      CacheSerializer<String> valueSerializer)
-      throws IOException {
-    return newCache(
-        true, cacheName, cachedValue, null, null, null, null, 1, new DisabledMetricMaker());
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(

@@ -23,6 +23,9 @@ with the default H2 cache backend.
 The idea is to read from the _actual_ H2 persisted files and output the
 information that will be required to configure chronicle-map as an alternative.
 
+The Gerrit/SSH command to analyze H2 caches requires the user to have
+ `Administrate Caches` or `Administrate Server` capabilities.
+
 You can do this _before_ installing cache-chroniclemap as a lib module so that
 your Gerrit server will not need downtime. As follows:
 
@@ -129,6 +132,9 @@ you have to rely on default values.
 This plugin provides an SSH command that will help you analyze the current,
 suboptimal, chronicle-map caches and migrate into new ones for which a more
 realistic configuration is generated based on data.
+
+The Gerrit/SSH command to tuning the caches requires the user to have
+ `Administrate Caches` or `Administrate Server` capabilities.
 
 * Symlink the `cache-chroniclemap.jar` file in the `plugins/` directory (from
   the `lib/` directory).
