@@ -43,6 +43,7 @@ public class AutoAdjustCaches extends SshCommand {
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final Path cacheDir;
+  private final AdministerCachePermission adminCachePermission;
 
   @Option(
       name = "--dry-run",
@@ -55,14 +56,18 @@ public class AutoAdjustCaches extends SshCommand {
       @GerritServerConfig Config cfg,
       SitePaths site,
       DynamicMap<Cache<?, ?>> cacheMap,
-      ChronicleMapCacheConfig.Factory configFactory) {
+      ChronicleMapCacheConfig.Factory configFactory,
+      AdministerCachePermission adminCachePermission) {
     this.cacheMap = cacheMap;
     this.configFactory = configFactory;
     this.cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
+    this.adminCachePermission = adminCachePermission;
   }
 
   @Override
   protected void run() throws Exception {
+    adminCachePermission.checkCurrentUserAllowed(e -> stderr.println(e.getLocalizedMessage()));
+
     Config outputChronicleMapConfig = new Config();
 
     Map<String, ChronicleMapCacheImpl<Object, Object>> chronicleMapCaches = getChronicleMapCaches();

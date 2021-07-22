@@ -35,7 +35,7 @@ public class TimedValueMarshaller<V>
     return new TimedValueMarshaller<>(name);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
   public TimedValue<V> read(Bytes in, TimedValue<V> using) {
     long initialPosition = in.readPosition();
@@ -64,6 +64,7 @@ public class TimedValueMarshaller<V>
     return using;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public void write(Bytes out, TimedValue<V> toWrite) {
     byte[] serialized = CacheSerializers.getValueSerializer(name).serialize(toWrite.getValue());
