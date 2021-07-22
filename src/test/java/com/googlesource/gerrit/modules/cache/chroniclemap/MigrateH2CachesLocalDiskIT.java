@@ -220,7 +220,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
 
   private RestResponse runMigrationWithAcceptHeader(RestSession restSession, String acceptHeader)
       throws IOException {
-    return restSession.putWithHeader(MIGRATION_ENDPOINT, new BasicHeader(ACCEPT, acceptHeader));
+    return restSession.putWithHeaders(MIGRATION_ENDPOINT, new BasicHeader(ACCEPT, acceptHeader));
   }
 
   private <T> T findClassBoundWithName(Class<T> clazz, String named) {

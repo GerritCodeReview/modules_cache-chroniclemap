@@ -70,6 +70,6 @@ public class MigrateH2CachesInMemoryIT extends LightweightPluginDaemonTest {
 
   private RestResponse runMigrationWithAcceptHeader(RestSession restSession, String acceptHeader)
       throws IOException {
-    return restSession.putWithHeader(MIGRATION_ENDPOINT, new BasicHeader(ACCEPT, acceptHeader));
+    return restSession.putWithHeaders(MIGRATION_ENDPOINT, new BasicHeader(ACCEPT, acceptHeader));
   }
 }
