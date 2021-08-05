@@ -84,6 +84,14 @@ public class AutoAdjustCaches extends SshCommand {
 
           long averageKeySize = avgSizes.getKey();
           long averageValueSize = avgSizes.getValue();
+
+          ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
+
+          if (currCacheConfig.getAverageKeySize() == averageKeySize
+              && currCacheConfig.getAverageValueSize() == averageValueSize) {
+            return;
+          }
+
           ChronicleMapCacheConfig newChronicleMapCacheConfig =
               makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
 
@@ -129,9 +137,15 @@ public class AutoAdjustCaches extends SshCommand {
         });
 
     stdout.println();
-    stdout.println("****************************");
-    stdout.println("** Chronicle-map template **");
-    stdout.println("****************************");
+    stdout.println("**********************************");
+
+    if (outputChronicleMapConfig.getSections().isEmpty()) {
+      stdout.println("All exsting caches are already tuned: no changes needed.");
+      return;
+    }
+
+    stdout.println("** Chronicle-map config changes **");
+    stdout.println("**********************************");
     stdout.println();
     stdout.println(CONFIG_HEADER);
     stdout.println(outputChronicleMapConfig.toText());
