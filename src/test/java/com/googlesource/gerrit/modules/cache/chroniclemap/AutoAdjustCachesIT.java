@@ -20,6 +20,7 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCache
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.Sandboxed;
@@ -29,10 +30,18 @@ import com.google.gerrit.acceptance.UseSsh;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Test;
@@ -100,6 +109,47 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void shouldNotRecreateCacheFilesForCachesAlreadyTuned() throws Exception {
+    createChange();
+
+    String result = adminSshSession.exec(CMD);
+    adminSshSession.assertSuccess();
+
+    Config configResult = configResult(result);
+    List<String> amendedConfig =
+        StreamSupport.stream(
+                Splitter.on("\n").split(cfg.toText() + "\n" + configResult.toText()).spliterator(),
+                false)
+            .collect(Collectors.toList());
+    Files.write(
+        sitePaths.etc_dir.resolve("gerrit.config"),
+        amendedConfig,
+        StandardCharsets.UTF_8,
+        StandardOpenOption.TRUNCATE_EXISTING);
+
+    for (String tunedFileName : listTunedFileNames()) {
+      applyTunedCacheFile(tunedFileName);
+    }
+
+    restart();
+
+    String resultAfterRestart = adminSshSession.exec(CMD);
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(resultAfterRestart).toText().trim()).isEmpty();
+    assertThat(listTunedFileNames()).isEmpty();
+  }
+
+  private void applyTunedCacheFile(String tunedCacheFileName) throws IOException {
+    Path tunedCachePath = cachePath().resolve(tunedCacheFileName);
+    String targetCacheFileName =
+        tunedCacheFileName.substring(0, tunedCacheFileName.indexOf(TUNED_INFIX)) + ".dat";
+    Path targetCachePath = cachePath().resolve(targetCacheFileName);
+    Files.copy(tunedCachePath, targetCachePath, StandardCopyOption.REPLACE_EXISTING);
+    Files.delete(tunedCachePath);
+  }
+
+  @Test
   public void shouldDenyAccessToCreateNewCacheFiles() throws Exception {
     userSshSession.exec(CMD);
     userSshSession.assertFailure("not permitted");
@@ -109,5 +159,19 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     Config configResult = new Config();
     configResult.fromText((result.split(CONFIG_HEADER))[1]);
     return configResult;
+  }
+
+  private List<String> listTunedFileNames() {
+    List<String> tunedFileNames =
+        Stream.of(Objects.requireNonNull(cachePath().toFile().listFiles()))
+            .filter(file -> !file.isDirectory())
+            .map(File::getName)
+            .filter(n -> n.contains(TUNED_INFIX))
+            .collect(Collectors.toList());
+    return tunedFileNames;
+  }
+
+  private Path cachePath() {
+    return sitePaths.resolve(cfg.getString("cache", null, "directory"));
   }
 }
