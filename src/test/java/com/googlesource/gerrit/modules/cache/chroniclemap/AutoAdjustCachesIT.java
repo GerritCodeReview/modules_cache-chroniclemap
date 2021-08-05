@@ -20,15 +20,19 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCache
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
+import com.google.gerrit.acceptance.config.GerritConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +51,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   private static final String CMD = "cache-chroniclemap auto-adjust-caches";
   private static final String MERGEABILITY = "mergeability";
   private static final String DIFF = "diff";
+  private static final String DIFF_TUNED_FILE_PREFIX = DIFF + "_0" + AutoAdjustCaches.TUNED_INFIX;
   private static final String DIFF_SUMMARY = "diff_summary";
   private static final String ACCOUNTS = "accounts";
   private static final String PERSISTED_PROJECTS = "persisted_projects";
@@ -100,6 +105,28 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "cache.diff.avgKeySize", value = "94")
+  @GerritConfig(name = "cache.diff.avgValueSize", value = "260")
+  public void shouldNotRecreateCacheFilesForCachesAlreadyTuned() throws Exception {
+    createChange();
+    String tuneResult = adminSshSession.exec(CMD);
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(tuneResult).getSubsections("cache")).doesNotContain(DIFF);
+    assertThat(Joiner.on('\n').join(listTunedFileNames())).doesNotContain(DIFF_TUNED_FILE_PREFIX);
+  }
+
+  @Test
+  public void shouldCreateDiffCacheTuned() throws Exception {
+    createChange();
+    String tuneResult = adminSshSession.exec(CMD);
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(tuneResult).getSubsections("cache")).contains(DIFF);
+    assertThat(Joiner.on('\n').join(listTunedFileNames())).contains(DIFF_TUNED_FILE_PREFIX);
+  }
+
+  @Test
   public void shouldDenyAccessToCreateNewCacheFiles() throws Exception {
     userSshSession.exec(CMD);
     userSshSession.assertFailure("not permitted");
@@ -109,5 +136,14 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     Config configResult = new Config();
     configResult.fromText((result.split(CONFIG_HEADER))[1]);
     return configResult;
+  }
+
+  private List<String> listTunedFileNames() {
+    Path cachePath = sitePaths.resolve(cfg.getString("cache", null, "directory"));
+    return Stream.of(Objects.requireNonNull(cachePath.toFile().listFiles()))
+        .filter(file -> !file.isDirectory())
+        .map(File::getName)
+        .filter(n -> n.contains(TUNED_INFIX))
+        .collect(Collectors.toList());
   }
 }
