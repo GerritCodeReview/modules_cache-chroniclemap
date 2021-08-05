@@ -38,7 +38,7 @@ import org.kohsuke.args4j.Option;
 public class AutoAdjustCaches extends SshCommand {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   protected static final String CONFIG_HEADER = "__CONFIG__";
-  protected static final String TUNED_INFIX = "tuned";
+  protected static final String TUNED_INFIX = "_tuned_";
 
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final ChronicleMapCacheConfig.Factory configFactory;
@@ -84,6 +84,14 @@ public class AutoAdjustCaches extends SshCommand {
 
           long averageKeySize = avgSizes.getKey();
           long averageValueSize = avgSizes.getValue();
+
+          ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
+
+          if (currCacheConfig.getAverageKeySize() == averageKeySize
+              && currCacheConfig.getAverageValueSize() == averageValueSize) {
+            return;
+          }
+
           ChronicleMapCacheConfig newChronicleMapCacheConfig =
               makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
 
@@ -129,9 +137,15 @@ public class AutoAdjustCaches extends SshCommand {
         });
 
     stdout.println();
-    stdout.println("****************************");
-    stdout.println("** Chronicle-map template **");
-    stdout.println("****************************");
+    stdout.println("**********************************");
+
+    if (outputChronicleMapConfig.getSections().isEmpty()) {
+      stdout.println("All exsting caches are already tuned: no changes needed.");
+      return;
+    }
+
+    stdout.println("** Chronicle-map config changes **");
+    stdout.println("**********************************");
     stdout.println();
     stdout.println(CONFIG_HEADER);
     stdout.println(outputChronicleMapConfig.toText());
@@ -186,7 +200,7 @@ public class AutoAdjustCaches extends SshCommand {
   private File resolveNewFile(String currentFileName) {
     String newFileName =
         String.format(
-            "%s_%s_%s.%s",
+            "%s%s%s.%s",
             FilenameUtils.getBaseName(currentFileName),
             TUNED_INFIX,
             System.currentTimeMillis(),
