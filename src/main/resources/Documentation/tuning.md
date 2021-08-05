@@ -156,15 +156,15 @@ ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-
 Calculate the average key and value size, but do not migrate current cache
 data into new files
 
-For each chronicle-map cache (i.e. `foo_1.dat` file) in the `cache` directory, a
-new one will be created (i.e. `foo_1_tuned_<timestamp>.dat`).
+For each chronicle-map cache that needs tuning (i.e. `foo_1.dat` file) in
+the `cache` directory, a new one will be created (i.e. `foo_1_tuned_<timestamp>.dat`).
 The new cache will have these characteristics:
 - Will have the same entries as the original cache.
 - Will be configured with the *actual* average key size and values calculated by
   looking at the content of the original cache.
 
-An output will also be generated with the new configuration that should be put
-into `gerrit.config`, should you decide to use the new caches.
+An output will also be generated with the configuration changes that should
+be included into `gerrit.config`, should you decide to use the new caches.
 
 An example of the output is the following:
 

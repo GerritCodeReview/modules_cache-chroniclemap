@@ -20,15 +20,24 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCache
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
 
+import com.google.common.base.Joiner;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
+import com.google.gerrit.acceptance.config.GerritConfig;
+import com.google.gerrit.server.ModuleImpl;
+import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,15 +59,44 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   private static final String DIFF_SUMMARY = "diff_summary";
   private static final String ACCOUNTS = "accounts";
   private static final String PERSISTED_PROJECTS = "persisted_projects";
+  private static final String TEST_CACHE_NAME = "test_cache";
+  private static final int TEST_CACHE_VERSION = 1;
+  private static final String TEST_CACHE_FILENAME_TUNED =
+      TEST_CACHE_NAME + "_" + TEST_CACHE_VERSION + AutoAdjustCaches.TUNED_INFIX;
+  private static final String TEST_CACHE_KEY_100_CHARS = new String(new char[100]);
 
   private static final ImmutableList<String> EXPECTED_CACHES =
       ImmutableList.of(MERGEABILITY, DIFF, DIFF_SUMMARY, ACCOUNTS, PERSISTED_PROJECTS);
 
   @Inject private SitePaths sitePaths;
 
+  @Inject
+  @Named(TEST_CACHE_NAME)
+  LoadingCache<String, String> testCache;
+
+  @ModuleImpl(name = CacheModule.PERSISTENT_MODULE)
+  public static class TestPersistentCacheModule extends CacheModule {
+
+    @Override
+    protected void configure() {
+      persist(TEST_CACHE_NAME, String.class, String.class)
+          .loader(TestCacheLoader.class)
+          .version(TEST_CACHE_VERSION);
+      install(new ChronicleMapCacheModule());
+    }
+  }
+
+  public static class TestCacheLoader extends CacheLoader<String, String> {
+
+    @Override
+    public String load(String key) throws Exception {
+      return key;
+    }
+  }
+
   @Override
   public com.google.inject.Module createModule() {
-    return new ChronicleMapCacheModule();
+    return new TestPersistentCacheModule();
   }
 
   @Test
@@ -100,6 +138,31 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "cache.test_cache.avgKeySize", value = "207")
+  @GerritConfig(name = "cache.test_cache.avgValueSize", value = "207")
+  public void shouldNotRecreateTestCacheFileWhenAlreadyTuned() throws Exception {
+    testCache.get(TEST_CACHE_KEY_100_CHARS);
+
+    String tuneResult = adminSshSession.exec(CMD);
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(tuneResult).getSubsections("cache")).doesNotContain(TEST_CACHE_NAME);
+    assertThat(Joiner.on('\n').join(listTunedFileNames()))
+        .doesNotContain(TEST_CACHE_FILENAME_TUNED);
+  }
+
+  @Test
+  public void shouldCreateTestCacheTuned() throws Exception {
+    testCache.get(TEST_CACHE_KEY_100_CHARS);
+
+    String tuneResult = adminSshSession.exec(CMD);
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(tuneResult).getSubsections("cache")).contains(TEST_CACHE_NAME);
+    assertThat(Joiner.on('\n').join(listTunedFileNames())).contains(TEST_CACHE_FILENAME_TUNED);
+  }
+
+  @Test
   public void shouldDenyAccessToCreateNewCacheFiles() throws Exception {
     userSshSession.exec(CMD);
     userSshSession.assertFailure("not permitted");
@@ -109,5 +172,14 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     Config configResult = new Config();
     configResult.fromText((result.split(CONFIG_HEADER))[1]);
     return configResult;
+  }
+
+  private List<String> listTunedFileNames() {
+    Path cachePath = sitePaths.resolve(cfg.getString("cache", null, "directory"));
+    return Stream.of(Objects.requireNonNull(cachePath.toFile().listFiles()))
+        .filter(file -> !file.isDirectory())
+        .map(File::getName)
+        .filter(n -> n.contains(TUNED_INFIX))
+        .collect(Collectors.toList());
   }
 }
