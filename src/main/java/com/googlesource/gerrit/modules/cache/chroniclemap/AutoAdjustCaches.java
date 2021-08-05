@@ -84,6 +84,14 @@ public class AutoAdjustCaches extends SshCommand {
 
           long averageKeySize = avgSizes.getKey();
           long averageValueSize = avgSizes.getValue();
+
+          ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
+
+          if (currCacheConfig.getAverageKeySize() == averageKeySize
+              && currCacheConfig.getAverageValueSize() == averageValueSize) {
+            return;
+          }
+
           ChronicleMapCacheConfig newChronicleMapCacheConfig =
               makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
 
