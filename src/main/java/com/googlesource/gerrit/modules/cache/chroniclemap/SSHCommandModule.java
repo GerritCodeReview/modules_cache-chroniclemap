@@ -37,6 +37,6 @@ public class SSHCommandModule extends PluginCommandModule {
       factory(ChronicleMapCacheConfig.Factory.class);
     }
     command("analyze-h2-caches").to(AnalyzeH2Caches.class);
-    command("auto-adjust-caches").to(AutoAdjustCaches.class);
+    command("auto-adjust-caches").to(AutoAdjustCachesCommand.class);
   }
 }
