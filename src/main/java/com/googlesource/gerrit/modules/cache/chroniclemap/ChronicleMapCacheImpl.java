@@ -266,8 +266,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
    * Associates the specified value with the specified key. This method should be used when the
    * {@link TimedValue} and the {@link KeyWrapper} have already been constructed elsewhere rather
    * than delegate their construction to this cache ({@link #put}. This is typically the case when
-   * the key/value are extracted from another chronicle-map cache see ({@link AutoAdjustCaches} for
-   * an example.
+   * the key/value are extracted from another chronicle-map cache see ({@link
+   * AutoAdjustCachesCommand} for an example.
    *
    * @param wrappedKey The wrapper for the key object
    * @param wrappedValue the wrapper for the value object
