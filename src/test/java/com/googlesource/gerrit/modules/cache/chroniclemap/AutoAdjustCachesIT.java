@@ -44,7 +44,7 @@ import org.junit.Test;
     name = "cache-chroniclemap",
     sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
 public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
-  private static final String cmd = "cache-chroniclemap auto-adjust-caches";
+  private static final String CMD = "cache-chroniclemap auto-adjust-caches";
   private static final String MERGEABILITY = "mergeability";
   private static final String DIFF = "diff";
   private static final String DIFF_SUMMARY = "diff_summary";
@@ -65,7 +65,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldUseDefaultsWhenCachesAreNotConfigured() throws Exception {
     createChange();
 
-    String result = adminSshSession.exec(cmd);
+    String result = adminSshSession.exec(CMD);
 
     adminSshSession.assertSuccess();
     Config configResult = configResult(result);
@@ -82,7 +82,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldCreateNewCacheFiles() throws Exception {
     createChange();
 
-    adminSshSession.exec(cmd);
+    adminSshSession.exec(CMD);
 
     adminSshSession.assertSuccess();
     File cacheDir = sitePaths.resolve(cfg.getString("cache", null, "directory")).toFile();
@@ -101,7 +101,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldDenyAccessToCreateNewCacheFiles() throws Exception {
-    userSshSession.exec(cmd);
+    userSshSession.exec(CMD);
     userSshSession.assertFailure("not permitted");
   }
 
