@@ -129,11 +129,11 @@ When this happens, you might have little or no idea of what values should be
 provided for those caches, such as average key size and average value size, and
 you have to rely on default values.
 
-This plugin provides an SSH command that will help you analyze the current,
-suboptimal, chronicle-map caches and migrate into new ones for which a more
-realistic configuration is generated based on data.
+This plugin provides an SSH command and a REST-API that will help you analyze
+the current, suboptimal, chronicle-map caches and migrate into new ones for
+which a more realistic configuration is generated based on data.
 
-The Gerrit/SSH command to tuning the caches requires the user to have
+The tuning of the caches requires the user to have
  `Administrate Caches` or `Administrate Server` capabilities.
 
 * Symlink the `cache-chroniclemap.jar` file in the `plugins/` directory (from
@@ -151,7 +151,13 @@ INFO  com.google.gerrit.server.plugins.PluginLoader : Loaded plugin cache-chroni
 ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run]
 ```
 
-* --dry-run (Optional)
+* You can also use the REST-API:
+
+```
+PUT /plugins/cache-chroniclemap/auto-adjust-caches
+```
+
+* `--dry-run` or `-d` (SSH), `?dry-run` or `?d` (REST-API) optional parameter
 
 Calculate the average key and value size, but do not migrate current cache
 data into new files
