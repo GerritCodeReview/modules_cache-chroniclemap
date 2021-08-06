@@ -30,7 +30,7 @@ You can do this _before_ installing cache-chroniclemap as a lib module so that
 your Gerrit server will not need downtime. As follows:
 
 * Drop `cache-chroniclemap.jar` file in the `plugins/` directory.
-* Wait for the pluginLoader to acknowledge and load the new plugin. You will 
+* Wait for the pluginLoader to acknowledge and load the new plugin. You will
 see an entry in the `error_log`:
 
 ```
