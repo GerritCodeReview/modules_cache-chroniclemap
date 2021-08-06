@@ -15,8 +15,8 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.CONFIG_HEADER;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.TUNED_INFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.TUNED_INFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
 
@@ -25,11 +25,13 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
 import com.google.gerrit.acceptance.config.GerritConfig;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.ModuleImpl;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.config.SitePaths;
@@ -52,9 +54,11 @@ import org.junit.Test;
 @UseSsh
 @TestPlugin(
     name = "cache-chroniclemap",
-    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
+    sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule",
+    httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
 public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
-  private static final String CMD = "cache-chroniclemap auto-adjust-caches";
+  private static final String SSH_CMD = "cache-chroniclemap auto-adjust-caches";
+  private static final String REST_CMD = "/plugins/cache-chroniclemap/auto-adjust-caches";
   private static final String MERGEABILITY = "mergeability";
   private static final String DIFF = "diff";
   private static final String DIFF_SUMMARY = "diff_summary";
@@ -104,10 +108,10 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldUseDefaultsWhenCachesAreNotConfigured() throws Exception {
     createChange();
 
-    String result = adminSshSession.exec(CMD);
+    String result = adminSshSession.exec(SSH_CMD);
 
     adminSshSession.assertSuccess();
-    Config configResult = configResult(result);
+    Config configResult = configResult(result, CONFIG_HEADER);
 
     for (String cache : EXPECTED_CACHES) {
       assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
@@ -121,7 +125,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldCreateNewCacheFiles() throws Exception {
     createChange();
 
-    adminSshSession.exec(CMD);
+    adminSshSession.exec(SSH_CMD);
 
     adminSshSession.assertSuccess();
     File cacheDir = sitePaths.resolve(cfg.getString("cache", null, "directory")).toFile();
@@ -144,10 +148,11 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldNotRecreateTestCacheFileWhenAlreadyTuned() throws Exception {
     testCache.get(TEST_CACHE_KEY_100_CHARS);
 
-    String tuneResult = adminSshSession.exec(CMD);
+    String tuneResult = adminSshSession.exec(SSH_CMD);
     adminSshSession.assertSuccess();
 
-    assertThat(configResult(tuneResult).getSubsections("cache")).doesNotContain(TEST_CACHE_NAME);
+    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+        .doesNotContain(TEST_CACHE_NAME);
     assertThat(Joiner.on('\n').join(listTunedFileNames()))
         .doesNotContain(TEST_CACHE_FILENAME_TUNED);
   }
@@ -155,23 +160,39 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   @Test
   public void shouldCreateTestCacheTuned() throws Exception {
     testCache.get(TEST_CACHE_KEY_100_CHARS);
-
-    String tuneResult = adminSshSession.exec(CMD);
+    String tuneResult = adminSshSession.exec(SSH_CMD);
     adminSshSession.assertSuccess();
 
-    assertThat(configResult(tuneResult).getSubsections("cache")).contains(TEST_CACHE_NAME);
+    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+        .contains(TEST_CACHE_NAME);
     assertThat(Joiner.on('\n').join(listTunedFileNames())).contains(TEST_CACHE_FILENAME_TUNED);
   }
 
   @Test
-  public void shouldDenyAccessToCreateNewCacheFiles() throws Exception {
-    userSshSession.exec(CMD);
+  public void shouldDenyAccessOverSshToCreateNewCacheFiles() throws Exception {
+    userSshSession.exec(SSH_CMD);
     userSshSession.assertFailure("not permitted");
   }
 
-  private Config configResult(String result) throws ConfigInvalidException {
+  @Test
+  public void shouldDenyAccessOverRestToCreateNewCacheFiles() throws Exception {
+    userRestSession.put(REST_CMD).assertForbidden();
+  }
+
+  @Test
+  public void shouldAllowTuningOverRestForAdmin() throws Exception {
+    RestResponse resp = adminRestSession.put(REST_CMD);
+
+    resp.assertCreated();
+
+    assertThat(configResult(resp.getEntityContent(), null).getSubsections("cache")).isNotEmpty();
+    assertThat(listTunedFileNames()).isNotEmpty();
+  }
+
+  private Config configResult(String result, @Nullable String configHeader)
+      throws ConfigInvalidException {
     Config configResult = new Config();
-    configResult.fromText((result.split(CONFIG_HEADER))[1]);
+    configResult.fromText(configHeader == null ? result : result.split(configHeader)[1]);
     return configResult;
   }
 
