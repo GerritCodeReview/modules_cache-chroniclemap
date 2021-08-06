@@ -17,11 +17,13 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 
 import com.google.common.cache.Cache;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicMap;
+import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.gerrit.sshd.SshCommand;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
@@ -32,10 +34,10 @@ import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.lib.TextProgressMonitor;
-import org.kohsuke.args4j.Option;
+import org.eclipse.jgit.lib.NullProgressMonitor;
+import org.eclipse.jgit.lib.ProgressMonitor;
 
-public class AutoAdjustCaches extends SshCommand {
+public class AutoAdjustCaches {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   protected static final String CONFIG_HEADER = "__CONFIG__";
   protected static final String TUNED_INFIX = "_tuned_";
@@ -45,10 +47,6 @@ public class AutoAdjustCaches extends SshCommand {
   private final Path cacheDir;
   private final AdministerCachePermission adminCachePermission;
 
-  @Option(
-      name = "--dry-run",
-      aliases = {"-d"},
-      usage = "Calculate the average key and value size, but do not migrate the data.")
   private boolean dryRun;
 
   @Inject
@@ -64,112 +62,111 @@ public class AutoAdjustCaches extends SshCommand {
     this.adminCachePermission = adminCachePermission;
   }
 
-  @Override
-  protected void run() throws Exception {
-    adminCachePermission.checkCurrentUserAllowed(e -> stderr.println(e.getLocalizedMessage()));
+  public boolean isDryRun() {
+    return dryRun;
+  }
+
+  public void setDryRun(boolean dryRun) {
+    this.dryRun = dryRun;
+  }
+
+  protected Config run(@Nullable ProgressMonitor optionalProgressMonitor)
+      throws AuthException, PermissionBackendException, IOException {
+    ProgressMonitor progressMonitor =
+        optionalProgressMonitor == null ? NullProgressMonitor.INSTANCE : optionalProgressMonitor;
+    adminCachePermission.checkCurrentUserAllowed(null);
 
     Config outputChronicleMapConfig = new Config();
 
     Map<String, ChronicleMapCacheImpl<Object, Object>> chronicleMapCaches = getChronicleMapCaches();
 
-    chronicleMapCaches.forEach(
-        (cacheName, currCache) -> {
-          ImmutablePair<Long, Long> avgSizes = averageSizes(cacheName, currCache.getStore());
-          if (!(avgSizes.getKey() > 0) || !(avgSizes.getValue() > 0)) {
-            logger.atWarning().log(
-                "Cache [%s] has %s entries, but average of (key: %d, value: %d). Skipping.",
-                cacheName, currCache.size(), avgSizes.getKey(), avgSizes.getValue());
-            return;
-          }
+    for (Map.Entry<String, ChronicleMapCacheImpl<Object, Object>> cache :
+        chronicleMapCaches.entrySet()) {
+      String cacheName = cache.getKey();
+      ChronicleMapCacheImpl<Object, Object> currCache = cache.getValue();
 
-          long averageKeySize = avgSizes.getKey();
-          long averageValueSize = avgSizes.getValue();
+      {
+        ImmutablePair<Long, Long> avgSizes =
+            averageSizes(cacheName, currCache.getStore(), progressMonitor);
+        if (!(avgSizes.getKey() > 0) || !(avgSizes.getValue() > 0)) {
+          logger.atWarning().log(
+              "Cache [%s] has %s entries, but average of (key: %d, value: %d). Skipping.",
+              cacheName, currCache.size(), avgSizes.getKey(), avgSizes.getValue());
+          continue;
+        }
 
-          ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
+        long averageKeySize = avgSizes.getKey();
+        long averageValueSize = avgSizes.getValue();
 
-          if (currCacheConfig.getAverageKeySize() == averageKeySize
-              && currCacheConfig.getAverageValueSize() == averageValueSize) {
-            return;
-          }
+        ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
 
-          ChronicleMapCacheConfig newChronicleMapCacheConfig =
-              makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
+        if (currCacheConfig.getAverageKeySize() == averageKeySize
+            && currCacheConfig.getAverageValueSize() == averageValueSize) {
+          continue;
+        }
 
-          updateOutputConfig(
-              outputChronicleMapConfig,
-              cacheName,
-              averageKeySize,
-              averageValueSize,
-              currCache.getConfig().getMaxEntries(),
-              currCache.getConfig().getMaxBloatFactor());
+        ChronicleMapCacheConfig newChronicleMapCacheConfig =
+            makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
 
-          if (!dryRun) {
-            try {
-              ChronicleMapCacheImpl<Object, Object> newCache =
-                  new ChronicleMapCacheImpl<>(
-                      currCache.getCacheDefinition(),
-                      newChronicleMapCacheConfig,
-                      null,
-                      new DisabledMetricMaker());
+        updateOutputConfig(
+            outputChronicleMapConfig,
+            cacheName,
+            averageKeySize,
+            averageValueSize,
+            currCache.getConfig().getMaxEntries(),
+            currCache.getConfig().getMaxBloatFactor());
 
-              TextProgressMonitor cacheMigrationProgress = new TextProgressMonitor(stdout);
-              cacheMigrationProgress.beginTask(
-                  String.format("[%s] migrate content", cacheName), (int) currCache.size());
+        if (!dryRun) {
+          ChronicleMapCacheImpl<Object, Object> newCache =
+              new ChronicleMapCacheImpl<>(
+                  currCache.getCacheDefinition(),
+                  newChronicleMapCacheConfig,
+                  null,
+                  new DisabledMetricMaker());
 
-              currCache
-                  .getStore()
-                  .forEach(
-                      (k, v) -> {
-                        try {
-                          newCache.putUnchecked(k, v);
-                          cacheMigrationProgress.update(1);
-                        } catch (Exception e) {
-                          logger.atWarning().withCause(e).log(
-                              "[%s] Could not migrate entry %s -> %s",
-                              cacheName, k.getValue(), v.getValue());
-                        }
-                      });
+          progressMonitor.beginTask(
+              String.format("[%s] migrate content", cacheName), (int) currCache.size());
 
-            } catch (IOException e) {
-              stderr.println(String.format("Could not create new cache %s", cacheName));
-            }
-          }
-        });
+          currCache
+              .getStore()
+              .forEach(
+                  (k, v) -> {
+                    try {
+                      newCache.putUnchecked(k, v);
 
-    stdout.println();
-    stdout.println("**********************************");
-
-    if (outputChronicleMapConfig.getSections().isEmpty()) {
-      stdout.println("All exsting caches are already tuned: no changes needed.");
-      return;
+                      progressMonitor.update(1);
+                    } catch (Exception e) {
+                      logger.atWarning().withCause(e).log(
+                          "[%s] Could not migrate entry %s -> %s",
+                          cacheName, k.getValue(), v.getValue());
+                    }
+                  });
+        }
+      }
     }
 
-    stdout.println("** Chronicle-map config changes **");
-    stdout.println("**********************************");
-    stdout.println();
-    stdout.println(CONFIG_HEADER);
-    stdout.println(outputChronicleMapConfig.toText());
+    return outputChronicleMapConfig;
   }
 
   private ImmutablePair<Long, Long> averageSizes(
-      String cacheName, ConcurrentMap<KeyWrapper<Object>, TimedValue<Object>> store) {
+      String cacheName,
+      ConcurrentMap<KeyWrapper<Object>, TimedValue<Object>> store,
+      ProgressMonitor progressMonitor) {
     long kAvg = 0;
     long vAvg = 0;
 
     if (store.isEmpty()) return ImmutablePair.of(kAvg, vAvg);
 
-    TextProgressMonitor progress = new TextProgressMonitor(stdout);
-
-    progress.beginTask(
+    progressMonitor.beginTask(
         String.format("[%s] calculate average key/value size", cacheName), store.size());
 
     int i = 1;
     for (Map.Entry<KeyWrapper<Object>, TimedValue<Object>> entry : store.entrySet()) {
       kAvg = kAvg + (serializedKeyLength(cacheName, entry.getKey()) - kAvg) / i;
       vAvg = vAvg + (serializedValueLength(cacheName, entry.getValue()) - vAvg) / i;
-      progress.update(1);
+      progressMonitor.update(1);
     }
-    progress.endTask();
+    progressMonitor.endTask();
     return ImmutablePair.of(kAvg, vAvg);
   }
 
