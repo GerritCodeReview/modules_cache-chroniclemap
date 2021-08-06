@@ -148,7 +148,7 @@ INFO  com.google.gerrit.server.plugins.PluginLoader : Loaded plugin cache-chroni
 * You can now run an the tuning command:
 
 ```bash
-ssh -p 29418 admin@<gerrit-server> cache-chroniclemap tune-chroniclemap-caches [--dry-run]
+ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run]
 ```
 
 * --dry-run (Optional)
