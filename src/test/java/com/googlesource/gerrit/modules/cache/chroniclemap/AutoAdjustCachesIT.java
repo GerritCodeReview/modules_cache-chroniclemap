@@ -40,9 +40,9 @@ import com.google.inject.name.Named;
 import java.io.File;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.errors.ConfigInvalidException;
@@ -69,6 +69,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   private static final String TEST_CACHE_FILENAME_TUNED =
       TEST_CACHE_NAME + "_" + TEST_CACHE_VERSION + AutoAdjustCaches.TUNED_INFIX;
   private static final String TEST_CACHE_KEY_100_CHARS = new String(new char[100]);
+  private static final Function<String, Boolean> MATCH_ALL = (n) -> true;
 
   private static final ImmutableList<String> EXPECTED_CACHES =
       ImmutableList.of(MERGEABILITY, DIFF, DIFF_SUMMARY, ACCOUNTS, PERSISTED_PROJECTS);
@@ -130,16 +131,8 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     adminSshSession.exec(SSH_CMD);
 
     adminSshSession.assertSuccess();
-    File cacheDir = sitePaths.resolve(cfg.getString("cache", null, "directory")).toFile();
     Set<String> tunedCaches =
-        Stream.of(Objects.requireNonNull(cacheDir.listFiles()))
-            .filter(file -> !file.isDirectory())
-            .map(File::getName)
-            .filter(
-                n ->
-                    n.contains(TUNED_INFIX)
-                        && n.matches(".*(" + String.join("|", EXPECTED_CACHES) + ").*"))
-            .collect(Collectors.toSet());
+        tunedFileNamesSet(n -> n.matches(".*(" + String.join("|", EXPECTED_CACHES) + ").*"));
 
     assertThat(tunedCaches.size()).isEqualTo(EXPECTED_CACHES.size());
   }
@@ -155,7 +148,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
         .doesNotContain(TEST_CACHE_NAME);
-    assertThat(Joiner.on('\n').join(listTunedFileNames()))
+    assertThat(Joiner.on('\n').join(tunedFileNamesSet(MATCH_ALL)))
         .doesNotContain(TEST_CACHE_FILENAME_TUNED);
   }
 
@@ -167,7 +160,9 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
         .contains(TEST_CACHE_NAME);
-    assertThat(Joiner.on('\n').join(listTunedFileNames())).contains(TEST_CACHE_FILENAME_TUNED);
+    assertThat(
+            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+        .isNotEmpty();
   }
 
   @Test
@@ -188,7 +183,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     resp.assertCreated();
 
     assertThat(configResult(resp.getEntityContent(), null).getSubsections("cache")).isNotEmpty();
-    assertThat(listTunedFileNames()).isNotEmpty();
+    assertThat(tunedFileNamesSet(MATCH_ALL)).isNotEmpty();
   }
 
   private Config configResult(String result, @Nullable String configHeader)
@@ -198,12 +193,12 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     return configResult;
   }
 
-  private List<String> listTunedFileNames() {
+  private Set<String> tunedFileNamesSet(Function<String, Boolean> fileNameFilter) {
     Path cachePath = sitePaths.resolve(cfg.getString("cache", null, "directory"));
     return Stream.of(Objects.requireNonNull(cachePath.toFile().listFiles()))
         .filter(file -> !file.isDirectory())
         .map(File::getName)
-        .filter(n -> n.contains(TUNED_INFIX))
-        .collect(Collectors.toList());
+        .filter(n -> n.contains(TUNED_INFIX) && fileNameFilter.apply(n))
+        .collect(Collectors.toSet());
   }
 }
