@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffc06fe6_040c32ed",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T09:26:17Z",
+      "side": 1,
+      "message": "nit: this should be based on AutoAdjustCaches.TUNED_INFIX",
+      "range": {
+        "startLine": 54,
+        "startChar": 65,
+        "endLine": 54,
+        "endChar": 72
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b9eec5a_01506a03",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T09:26:17Z",
+      "side": 1,
+      "message": "This test seems flaky, see failure[1]\n\n```\nThere was 1 failure:\n1) shouldNotRecreateCacheFilesForCachesAlreadyTuned(com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesIT)\nexpected not to contain: diff\nbut was                : [mergeability, diff_summary, diff, accounts, persisted_projects]\n\tat com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesIT.shouldNotRecreateCacheFilesForCachesAlreadyTuned(AutoAdjustCachesIT.java:115)\n```\n\nI think it might be to the fact that some other tests running before this might participate to change the average key/value size?\n\nPerhaps making this test @Sandboxed would ensure this won\u0027t happen from time to time.\n\n\n[1]https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/29%252F313929%252F6/1/console",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 83
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "751a39db_964a3568",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T09:26:17Z",
+      "side": 1,
+      "message": "nit: can just return without using temporary variable",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 33
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f6f55e3_3d6fa1ed",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T09:26:17Z",
+      "side": 1,
+      "message": "nit: this filter/collect is the same as L95-L97. Consider factor out",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 31
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f735a80_d719e300",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T09:26:17Z",
+      "side": 1,
+      "message": "nit: Consider using this method at L93",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 3
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
