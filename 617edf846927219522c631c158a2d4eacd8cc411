@@ -1,9 +1,9 @@
 {
   "checks": {
     "gerritforge:cache-chroniclemap-build-test": {
-      "state": "NOT_STARTED",
+      "state": "SCHEDULED",
       "created": "2021-08-06T23:42:46Z",
-      "updated": "2021-08-09T09:51:30Z"
+      "updated": "2021-08-09T09:54:40Z"
     },
     "gerritforge:cache-chroniclemap-code-style": {
       "state": "SUCCESSFUL",
