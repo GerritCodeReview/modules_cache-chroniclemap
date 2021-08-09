@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "45fe77c6_a5931290",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T09:50:47Z",
+      "side": 1,
+      "message": "Ignore my last suggestion: tests are already @Sandboxed at class level.",
+      "parentUuid": "9b9eec5a_01506a03",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 83
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "751a39db_964a3568",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
         "patchSetId": 6
