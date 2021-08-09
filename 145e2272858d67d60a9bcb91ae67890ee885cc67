@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "064eae19_b2bfd05d",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T20:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffc06fe6_040c32ed",
+      "range": {
+        "startLine": 54,
+        "startChar": 65,
+        "endLine": 54,
+        "endChar": 72
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b9eec5a_01506a03",
@@ -73,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d31df591_a06133ea",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T20:09:47Z",
+      "side": 1,
+      "message": "Thanks for the hint, I also saw the flakiness on the CI. Let me dig more into it.",
+      "parentUuid": "45fe77c6_a5931290",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 83
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "751a39db_964a3568",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
         "patchSetId": 6
@@ -84,6 +132,30 @@
       "writtenOn": "2021-08-09T09:26:17Z",
       "side": 1,
       "message": "nit: can just return without using temporary variable",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 33
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3c1ab7d_67d87868",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T20:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "751a39db_964a3568",
       "range": {
         "startLine": 142,
         "startChar": 0,
@@ -107,6 +179,30 @@
       "writtenOn": "2021-08-09T09:26:17Z",
       "side": 1,
       "message": "nit: this filter/collect is the same as L95-L97. Consider factor out",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 31
+      },
+      "revId": "145e2272858d67d60a9bcb91ae67890ee885cc67",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4585dc0b_1c861489",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T20:09:47Z",
+      "side": 1,
+      "message": "Yes, but I would prefer to do the refactoring in a separate change: one of the \"golden rules\" of git is \"separate refactoring from features\" :-)",
+      "parentUuid": "2f6f55e3_3d6fa1ed",
       "range": {
         "startLine": 142,
         "startChar": 0,
