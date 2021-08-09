@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2f320c1_b6c00636",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T22:29:03Z",
+      "side": 1,
+      "message": "Because I do need a fresh instance at L49 otherwise it would not be reentrant.\nI\u0027ll add a comment to make it more explicit.",
+      "parentUuid": "3fd61410_a5565928",
+      "range": {
+        "startLine": 43,
+        "startChar": 26,
+        "endLine": 43,
+        "endChar": 77
+      },
+      "revId": "617edf846927219522c631c158a2d4eacd8cc411",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b31d9fd7_954b2850",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-09T09:53:02Z",
       "side": 1,
       "message": "typoe: existing",
+      "range": {
+        "startLine": 70,
+        "startChar": 17,
+        "endLine": 70,
+        "endChar": 24
+      },
+      "revId": "617edf846927219522c631c158a2d4eacd8cc411",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b29c4a2f_d205c9d5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T22:29:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b31d9fd7_954b2850",
       "range": {
         "startLine": 70,
         "startChar": 17,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1938671b_3cb2f4b4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T22:29:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1791b177_93c0af82",
+      "range": {
+        "startLine": 84,
+        "startChar": 2,
+        "endLine": 84,
+        "endChar": 15
+      },
+      "revId": "617edf846927219522c631c158a2d4eacd8cc411",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07b804a7_80e78aeb",
@@ -93,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7273ba7_6467d199",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T22:29:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07b804a7_80e78aeb",
+      "range": {
+        "startLine": 92,
+        "startChar": 2,
+        "endLine": 92,
+        "endChar": 17
+      },
+      "revId": "617edf846927219522c631c158a2d4eacd8cc411",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fbcf135e_fa7e7290",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-08-09T09:53:02Z",
       "side": 1,
       "message": "Nit: These are the same as the methods defined in the H2MigrationServlet.\nConsider factoring out, even as a follow up change.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 3
+      },
+      "revId": "617edf846927219522c631c158a2d4eacd8cc411",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58f28537_6f16358e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesServlet.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-09T22:29:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fbcf135e_fa7e7290",
       "range": {
         "startLine": 84,
         "startChar": 0,
