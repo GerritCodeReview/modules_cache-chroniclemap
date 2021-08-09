@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static org.apache.http.HttpHeaders.ACCEPT;
-import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.checkAcceptHeader;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.setResponse;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.restapi.AuthException;
@@ -24,8 +24,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Optional;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -49,11 +47,7 @@ public class AutoAdjustCachesServlet extends HttpServlet {
   @Override
   protected void doPut(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
     AutoAdjustCaches autoAdjustCachesEngine = autoAdjustCachesProvider.get();
-    if (hasInvalidAcceptHeader(req)) {
-      setResponse(
-          rsp,
-          HttpServletResponse.SC_BAD_REQUEST,
-          "No advertised 'Accept' headers can be honoured. 'text/plain' should be provided in the request 'Accept' header.");
+    if (!checkAcceptHeader(req, rsp)) {
       return;
     }
 
@@ -81,18 +75,5 @@ public class AutoAdjustCachesServlet extends HttpServlet {
           "not permitted to administer caches : " + e.getLocalizedMessage());
       return;
     }
-  }
-
-  private static void setResponse(HttpServletResponse httpResponse, int statusCode, String value)
-      throws IOException {
-    httpResponse.setContentType(TEXT_PLAIN);
-    httpResponse.setStatus(statusCode);
-    PrintWriter writer = httpResponse.getWriter();
-    writer.print(value);
-  }
-
-  private static boolean hasInvalidAcceptHeader(HttpServletRequest req) {
-    return req.getHeader(ACCEPT) != null
-        && !Arrays.asList("text/plain", "text/*", "*/*").contains(req.getHeader(ACCEPT));
   }
 }
