@@ -65,7 +65,7 @@ import org.junit.Test;
     httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
 @UseLocalDisk
 public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
-  private final Duration LOAD_CACHE_WAIT_TIMEOUT = Duration.ofSeconds(4);
+  private final Duration LOAD_CACHE_WAIT_TIMEOUT = Duration.ofSeconds(60);
   private String ACCOUNTS_CACHE_NAME = "accounts";
   private String PERSISTED_PROJECTS_CACHE_NAME = "persisted_projects";
   private String MIGRATION_ENDPOINT = "/plugins/cache-chroniclemap/migrate";

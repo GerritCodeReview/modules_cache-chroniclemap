@@ -51,6 +51,7 @@ acceptance_tests(
     srcs = glob(["src/test/java/**/*IT.java"]),
     group = "server_cache",
     labels = ["server"],
+    vm_args = ["-Xmx2G"],
     deps = [
         ":cache-chroniclemap__plugin",
         ":chroniclemap-test-lib",
