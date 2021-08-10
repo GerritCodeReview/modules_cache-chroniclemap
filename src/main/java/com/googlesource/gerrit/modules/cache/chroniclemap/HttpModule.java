@@ -46,5 +46,6 @@ public class HttpModule extends ServletModule {
     }
 
     serve("/migrate").with(H2MigrationServlet.class);
+    serve("/auto-adjust-caches").with(AutoAdjustCachesServlet.class);
   }
 }
