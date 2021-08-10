@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbc400ac_8b80b11f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-10T18:28:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87c6e180_89e11127",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 48
+      },
+      "revId": "f70a7b32738f65a69c30a56b5e311e7839fddd15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c16e51ed_b5e7c3b3",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-10T08:53:20Z",
       "side": 1,
       "message": "this is not testing diff cache anymore",
+      "range": {
+        "startLine": 158,
+        "startChar": 26,
+        "endLine": 158,
+        "endChar": 30
+      },
+      "revId": "f70a7b32738f65a69c30a56b5e311e7839fddd15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d91cb81f_2e72d34d",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-10T18:28:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c16e51ed_b5e7c3b3",
       "range": {
         "startLine": 158,
         "startChar": 26,
