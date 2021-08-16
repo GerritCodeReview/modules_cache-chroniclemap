@@ -17,8 +17,8 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.jdbcUrl;
-import static org.apache.http.HttpHeaders.ACCEPT;
-import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.checkAcceptHeader;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.setResponse;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
@@ -51,14 +51,12 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -138,11 +136,7 @@ public class H2MigrationServlet extends HttpServlet {
 
   @Override
   protected void doPut(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
-    if (hasInvalidAcceptHeader(req)) {
-      setResponse(
-          rsp,
-          HttpServletResponse.SC_BAD_REQUEST,
-          "No advertised 'Accept' headers can be honoured. 'text/plain' should be provided in the request 'Accept' header.");
+    if (!checkAcceptHeader(req, rsp)) {
       return;
     }
 
@@ -339,19 +333,6 @@ public class H2MigrationServlet extends HttpServlet {
 
   private boolean isStringType(TypeLiteral<?> typeLiteral) {
     return typeLiteral.getRawType().getSimpleName().equals("String");
-  }
-
-  private void setResponse(HttpServletResponse httpResponse, int statusCode, String value)
-      throws IOException {
-    httpResponse.setContentType(TEXT_PLAIN);
-    httpResponse.setStatus(statusCode);
-    PrintWriter writer = httpResponse.getWriter();
-    writer.print(value);
-  }
-
-  private boolean hasInvalidAcceptHeader(HttpServletRequest req) {
-    return req.getHeader(ACCEPT) != null
-        && !Arrays.asList("text/plain", "text/*", "*/*").contains(req.getHeader(ACCEPT));
   }
 
   private static void copyExistingCacheSettingsToConfig(
