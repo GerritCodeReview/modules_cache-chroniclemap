@@ -30,7 +30,7 @@ You can do this _before_ installing cache-chroniclemap as a lib module so that
 your Gerrit server will not need downtime. As follows:
 
 * Drop `cache-chroniclemap.jar` file in the `plugins/` directory.
-* Wait for the pluginLoader to acknowledge and load the new plugin. You will 
+* Wait for the pluginLoader to acknowledge and load the new plugin. You will
 see an entry in the `error_log`:
 
 ```
@@ -129,11 +129,11 @@ When this happens, you might have little or no idea of what values should be
 provided for those caches, such as average key size and average value size, and
 you have to rely on default values.
 
-This plugin provides an SSH command that will help you analyze the current,
-suboptimal, chronicle-map caches and migrate into new ones for which a more
-realistic configuration is generated based on data.
+This plugin provides an SSH command and a REST-API that will help you analyze
+the current, suboptimal, chronicle-map caches and migrate into new ones for
+which a more realistic configuration is generated based on data.
 
-The Gerrit/SSH command to tuning the caches requires the user to have
+The tuning of the caches requires the user to have
  `Administrate Caches` or `Administrate Server` capabilities.
 
 * Symlink the `cache-chroniclemap.jar` file in the `plugins/` directory (from
@@ -148,23 +148,29 @@ INFO  com.google.gerrit.server.plugins.PluginLoader : Loaded plugin cache-chroni
 * You can now run an the tuning command:
 
 ```bash
-ssh -p 29418 admin@<gerrit-server> cache-chroniclemap tune-chroniclemap-caches [--dry-run]
+ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run]
 ```
 
-* --dry-run (Optional)
+* You can also use the REST-API:
+
+```
+PUT /plugins/cache-chroniclemap/auto-adjust-caches
+```
+
+* `--dry-run` or `-d` (SSH), `?dry-run` or `?d` (REST-API) optional parameter
 
 Calculate the average key and value size, but do not migrate current cache
 data into new files
 
-For each chronicle-map cache (i.e. `foo_1.dat` file) in the `cache` directory, a
-new one will be created (i.e. `foo_1_tuned_<timestamp>.dat`).
+For each chronicle-map cache that needs tuning (i.e. `foo_1.dat` file) in
+the `cache` directory, a new one will be created (i.e. `foo_1_tuned_<timestamp>.dat`).
 The new cache will have these characteristics:
 - Will have the same entries as the original cache.
 - Will be configured with the *actual* average key size and values calculated by
   looking at the content of the original cache.
 
-An output will also be generated with the new configuration that should be put
-into `gerrit.config`, should you decide to use the new caches.
+An output will also be generated with the configuration changes that should
+be included into `gerrit.config`, should you decide to use the new caches.
 
 An example of the output is the following:
 
