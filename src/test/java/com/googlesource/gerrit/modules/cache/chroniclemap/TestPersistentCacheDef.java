@@ -26,12 +26,19 @@ import java.util.UUID;
 
 public class TestPersistentCacheDef implements PersistentCacheDef<String, String> {
 
+  private static final Duration ONE_YEAR = Duration.ofDays(365);
+
   private static final Integer DEFAULT_DISK_LIMIT = 1024;
+  private static final Integer DEFAULT_MEMORY_LIMIT = 1024;
+
+  private static final Duration DEFAULT_EXPIRY_AFTER_MEMORY_ACCESS = ONE_YEAR;
 
   private final String name;
   private final String loadedValue;
   private final Duration expireAfterWrite;
   private final Duration refreshAfterWrite;
+  private final Duration expireFromMemoryAfterAccess;
+  private final Integer maximumWeight;
   private final Integer diskLimit;
   private final CacheSerializer<String> keySerializer;
   private final CacheSerializer<String> valueSerializer;
@@ -46,33 +53,51 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
     this.loadedValue = loadedValue;
     this.expireAfterWrite = expireAfterWrite;
     this.refreshAfterWrite = refreshAfterWrite;
+    this.expireFromMemoryAfterAccess = DEFAULT_EXPIRY_AFTER_MEMORY_ACCESS;
     this.diskLimit = DEFAULT_DISK_LIMIT;
+    this.maximumWeight = DEFAULT_MEMORY_LIMIT;
     this.keySerializer = StringCacheSerializer.INSTANCE;
     this.valueSerializer = StringCacheSerializer.INSTANCE;
   }
 
-  public TestPersistentCacheDef(String name, @Nullable String loadedValue, Integer diskLimit) {
+  public TestPersistentCacheDef(
+      String name, @Nullable String loadedValue, Integer diskLimit, Integer memoryLimit) {
 
     this.name = name;
     this.loadedValue = loadedValue;
     this.expireAfterWrite = null;
     this.refreshAfterWrite = null;
+    this.expireFromMemoryAfterAccess = DEFAULT_EXPIRY_AFTER_MEMORY_ACCESS;
     this.diskLimit = diskLimit;
     this.keySerializer = StringCacheSerializer.INSTANCE;
     this.valueSerializer = StringCacheSerializer.INSTANCE;
+    this.maximumWeight = memoryLimit;
   }
 
   public TestPersistentCacheDef(
       String name,
       @Nullable String loadedValue,
       @Nullable CacheSerializer<String> keySerializer,
-      @Nullable CacheSerializer<String> valueSerializer) {
+      @Nullable CacheSerializer<String> valueSerializer,
+      boolean withLoader) {
+    this(name, loadedValue, keySerializer, valueSerializer, withLoader, null);
+  }
+
+  public TestPersistentCacheDef(
+      String name,
+      @Nullable String loadedValue,
+      @Nullable CacheSerializer<String> keySerializer,
+      @Nullable CacheSerializer<String> valueSerializer,
+      boolean withLoader,
+      @Nullable Duration maxAge) {
 
     this.name = name;
     this.loadedValue = loadedValue;
-    this.expireAfterWrite = Duration.ZERO;
-    this.refreshAfterWrite = Duration.ZERO;
+    this.expireAfterWrite = withLoader ? ONE_YEAR : null;
+    this.refreshAfterWrite = withLoader ? ONE_YEAR : null;
+    this.expireFromMemoryAfterAccess = maxAge == null ? DEFAULT_EXPIRY_AFTER_MEMORY_ACCESS : maxAge;
     this.diskLimit = DEFAULT_DISK_LIMIT;
+    this.maximumWeight = DEFAULT_MEMORY_LIMIT;
     this.keySerializer = Optional.ofNullable(keySerializer).orElse(StringCacheSerializer.INSTANCE);
     this.valueSerializer =
         Optional.ofNullable(valueSerializer).orElse(StringCacheSerializer.INSTANCE);
@@ -120,7 +145,7 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
 
   @Override
   public long maximumWeight() {
-    return 0;
+    return maximumWeight;
   }
 
   @Override
@@ -130,7 +155,7 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
 
   @Override
   public Duration expireFromMemoryAfterAccess() {
-    return Duration.ZERO;
+    return expireFromMemoryAfterAccess;
   }
 
   @Override

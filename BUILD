@@ -28,6 +28,7 @@ gerrit_plugin(
         "@chronicle-values//jar",
         "@chronicle-wire//jar",
         "@dev-jna//jar",
+        "@error-prone-annotations//jar",
         "@javapoet//jar",
         "@jna-platform//jar",
         "@commons-lang3//jar",
@@ -57,6 +58,7 @@ acceptance_tests(
         "//java/com/google/gerrit/server/cache/h2",
         "//java/com/google/gerrit/server/cache/serialize",
         "//proto:cache_java_proto",
+        "@com_google_protobuf//java/core:lite",
     ],
 )
 
