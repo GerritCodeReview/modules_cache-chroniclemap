@@ -37,8 +37,8 @@ import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.account.CachedAccountDetails;
+import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
@@ -72,6 +72,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
 
   @Inject private SitePaths sitePaths;
   @Inject private ProjectOperations projectOperations;
+  @Inject private ChronicleMapCacheFactory chronicleMapCacheFactory;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
 
@@ -328,8 +329,9 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
-    return new ChronicleMapCacheImpl<>(
-        persistentDef, config, cacheLoaderFor(cacheName), new DisabledMetricMaker());
+    return (ChronicleMapCacheImpl<K, V>)
+        chronicleMapCacheFactory.build(
+            persistentDef, cacheLoaderFor(cacheName), CacheBackend.CAFFEINE, config);
   }
 
   private void waitForCacheToLoad(String cacheName) throws InterruptedException {

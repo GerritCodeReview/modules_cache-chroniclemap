@@ -19,40 +19,41 @@ import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
+import com.google.gerrit.acceptance.AbstractDaemonTest;
+import com.google.gerrit.acceptance.Sandboxed;
+import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.common.Nullable;
-import com.google.gerrit.lifecycle.LifecycleManager;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
-import com.google.gerrit.metrics.dropwizard.DropWizardMetricMaker;
+import com.google.gerrit.server.cache.CacheBackend;
+import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import net.openhft.chronicle.bytes.Bytes;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-public class ChronicleMapCacheTest {
+@UseLocalDisk // Needed to have Gerrit with DropWizardMetricMaker enabled
+@Sandboxed
+public class ChronicleMapCacheTest extends AbstractDaemonTest {
+  private static final Duration ONE_YEAR = Duration.ofDays(365);
   private static final String TEST_CACHE_NAME = "test-cache-name";
   @Inject MetricMaker metricMaker;
   @Inject MetricRegistry metricRegistry;
+  @Inject MemoryCacheFactory memCacheFactory;
 
-  @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
   private SitePaths sitePaths;
   private StoredConfig gerritConfig;
 
@@ -71,18 +72,6 @@ public class ChronicleMapCacheTest {
     gerritConfig.load();
     gerritConfig.setString("cache", null, "directory", cacheDirectory);
     gerritConfig.save();
-
-    setupMetrics();
-  }
-
-  public void setupMetrics() {
-    Injector injector = Guice.createInjector(new DropWizardMetricMaker.ApiModule());
-
-    LifecycleManager mgr = new LifecycleManager();
-    mgr.add(injector);
-    mgr.start();
-
-    injector.injectMembers(this);
   }
 
   @Test
@@ -499,7 +488,7 @@ public class ChronicleMapCacheTest {
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
-      String cacheName, @Nullable String cachedValue) throws IOException {
+      String cacheName, @Nullable String cachedValue) {
     return newCache(true, cacheName, cachedValue, null, null, null, null, 1, metricMaker);
   }
 
@@ -509,8 +498,7 @@ public class ChronicleMapCacheTest {
       @Nullable String loadedValue,
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
-      Integer version)
-      throws IOException {
+      Integer version) {
     return newCache(
         withLoader,
         cacheName,
@@ -520,7 +508,7 @@ public class ChronicleMapCacheTest {
         null,
         null,
         version,
-        new DisabledMetricMaker());
+        metricMaker);
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
@@ -532,10 +520,10 @@ public class ChronicleMapCacheTest {
       @Nullable CacheSerializer<String> keySerializer,
       @Nullable CacheSerializer<String> valueSerializer,
       Integer version,
-      MetricMaker metricMaker)
-      throws IOException {
+      MetricMaker metricMaker) {
     TestPersistentCacheDef cacheDef =
-        new TestPersistentCacheDef(cacheName, cachedValue, keySerializer, valueSerializer);
+        new TestPersistentCacheDef(
+            cacheName, cachedValue, keySerializer, valueSerializer, withLoader);
 
     File persistentFile =
         ChronicleMapCacheFactory.fileName(
@@ -546,27 +534,35 @@ public class ChronicleMapCacheTest {
             gerritConfig,
             cacheDef.configKey(),
             persistentFile,
-            expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
-            refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO);
+            expireAfterWrite != null ? expireAfterWrite : (withLoader ? ONE_YEAR : Duration.ZERO),
+            refreshAfterWrite != null
+                ? refreshAfterWrite
+                : (withLoader ? ONE_YEAR : Duration.ZERO));
 
-    return new ChronicleMapCacheImpl<>(
-        cacheDef, config, withLoader ? cacheDef.loader() : null, metricMaker);
+    ChronicleMapCacheFactory cacheFactory =
+        new ChronicleMapCacheFactory(
+            memCacheFactory, new Config(), sitePaths, null, null, metricMaker);
+    if (withLoader) {
+      return (ChronicleMapCacheImpl<String, String>)
+          cacheFactory.build(cacheDef, cacheDef.loader(), CacheBackend.CAFFEINE, config);
+    }
+    return (ChronicleMapCacheImpl<String, String>)
+        cacheFactory.build(cacheDef, CacheBackend.CAFFEINE, config);
   }
 
-  private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String loadedValue)
-      throws IOException {
+  private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String loadedValue) {
     return newCache(true, TEST_CACHE_NAME, loadedValue, null, null, 1);
   }
 
-  private ChronicleMapCacheImpl<String, String> newCacheWithLoader() throws IOException {
+  private ChronicleMapCacheImpl<String, String> newCacheWithLoader() {
     return newCache(true, TEST_CACHE_NAME, null, null, null, 1);
   }
 
-  private ChronicleMapCacheImpl<String, String> newCacheVersion(int version) throws IOException {
+  private ChronicleMapCacheImpl<String, String> newCacheVersion(int version) {
     return newCache(true, TEST_CACHE_NAME, null, null, null, version);
   }
 
-  private ChronicleMapCacheImpl<String, String> newCacheWithoutLoader() throws IOException {
+  private ChronicleMapCacheImpl<String, String> newCacheWithoutLoader() {
     return newCache(false, TEST_CACHE_NAME, null, null, null, 1);
   }
 
