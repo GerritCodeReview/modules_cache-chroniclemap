@@ -20,7 +20,6 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.restapi.AuthException;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -91,7 +90,7 @@ public class AutoAdjustCaches {
         if (!(avgSizes.getKey() > 0) || !(avgSizes.getValue() > 0)) {
           logger.atWarning().log(
               "Cache [%s] has %s entries, but average of (key: %d, value: %d). Skipping.",
-              cacheName, currCache.size(), avgSizes.getKey(), avgSizes.getValue());
+              cacheName, currCache.diskStats().size(), avgSizes.getKey(), avgSizes.getValue());
           continue;
         }
 
@@ -119,10 +118,7 @@ public class AutoAdjustCaches {
         if (!dryRun) {
           ChronicleMapCacheImpl<Object, Object> newCache =
               new ChronicleMapCacheImpl<>(
-                  currCache.getCacheDefinition(),
-                  newChronicleMapCacheConfig,
-                  null,
-                  new DisabledMetricMaker());
+                  currCache.getCacheDefinition(), newChronicleMapCacheConfig);
 
           progressMonitor.beginTask(
               String.format("[%s] migrate content", cacheName), (int) currCache.size());
@@ -220,7 +216,7 @@ public class AutoAdjustCaches {
     config.setLong("cache", cacheName, "maxBloatFactor", maxBloatFactor);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "rawtypes"})
   private Map<String, ChronicleMapCacheImpl<Object, Object>> getChronicleMapCaches() {
     return cacheMap.plugins().stream()
         .map(cacheMap::byPlugin)
@@ -229,7 +225,9 @@ public class AutoAdjustCaches {
                 pluginCaches.entrySet().stream()
                     .map(entry -> ImmutablePair.of(entry.getKey(), entry.getValue().get())))
         .filter(
-            pair -> pair.getValue() instanceof ChronicleMapCacheImpl && pair.getValue().size() > 0)
+            pair ->
+                pair.getValue() instanceof ChronicleMapCacheImpl
+                    && ((ChronicleMapCacheImpl) pair.getValue()).diskStats().size() > 0)
         .collect(
             Collectors.toMap(
                 ImmutablePair::getKey, p -> (ChronicleMapCacheImpl<Object, Object>) p.getValue()));

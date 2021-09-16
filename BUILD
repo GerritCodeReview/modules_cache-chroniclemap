@@ -28,6 +28,7 @@ gerrit_plugin(
         "@chronicle-values//jar",
         "@chronicle-wire//jar",
         "@dev-jna//jar",
+        "@error-prone-annotations//jar",
         "@javapoet//jar",
         "@jna-platform//jar",
         "@commons-lang3//jar",
