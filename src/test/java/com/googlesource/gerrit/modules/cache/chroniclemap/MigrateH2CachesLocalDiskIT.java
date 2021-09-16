@@ -24,6 +24,7 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServ
 import static org.apache.http.HttpHeaders.ACCEPT;
 import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
 
+import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -272,11 +273,6 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
     return (H2CacheImpl<K, V>) findClassBoundWithName(LoadingCache.class, named);
   }
 
-  @SuppressWarnings("unchecked")
-  private <K, V> CacheLoader<K, V> cacheLoaderFor(String named) {
-    return findClassBoundWithName(CacheLoader.class, named);
-  }
-
   private RestResponse runMigration(int sizeMultiplier, int maxBloatFactor) throws IOException {
     return adminRestSession.put(
         String.format(
@@ -328,11 +324,26 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
-    return new ChronicleMapCacheImpl<>(
-        persistentDef, config, cacheLoaderFor(cacheName), new DisabledMetricMaker());
+    LoadingCache<K, TimedValue<V>> mem =
+        CacheBuilder.newBuilder().build(timedCacheLoaderFor(cacheName));
+
+    return new ChronicleMapCacheImpl<>(persistentDef, config, new DisabledMetricMaker(), mem);
   }
 
   private void waitForCacheToLoad(String cacheName) throws InterruptedException {
     WaitUtil.waitUntil(() -> H2CacheFor(cacheName).diskStats().size() > 0, LOAD_CACHE_WAIT_TIMEOUT);
+  }
+
+  private <K, V> CacheLoader<K, TimedValue<V>> timedCacheLoaderFor(String named) {
+    @SuppressWarnings({"cast", "unchecked"})
+    final CacheLoader<K, V> cacheLoader =
+        (CacheLoader<K, V>) findClassBoundWithName(CacheLoader.class, named);
+    return new CacheLoader<K, TimedValue<V>>() {
+
+      @Override
+      public TimedValue<V> load(K key) throws Exception {
+        return new TimedValue<>(cacheLoader.load(key));
+      }
+    };
   }
 }
