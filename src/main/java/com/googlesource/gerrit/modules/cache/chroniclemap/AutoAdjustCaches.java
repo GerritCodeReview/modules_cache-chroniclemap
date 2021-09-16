@@ -21,6 +21,7 @@ import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -46,6 +47,7 @@ public class AutoAdjustCaches {
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final Path cacheDir;
   private final AdministerCachePermission adminCachePermission;
+  private final MemoryCacheFactory memCacheFactory;
 
   private boolean dryRun;
 
@@ -55,11 +57,13 @@ public class AutoAdjustCaches {
       SitePaths site,
       DynamicMap<Cache<?, ?>> cacheMap,
       ChronicleMapCacheConfig.Factory configFactory,
-      AdministerCachePermission adminCachePermission) {
+      AdministerCachePermission adminCachePermission,
+      MemoryCacheFactory memCacheFactory) {
     this.cacheMap = cacheMap;
     this.configFactory = configFactory;
     this.cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.adminCachePermission = adminCachePermission;
+    this.memCacheFactory = memCacheFactory;
   }
 
   public boolean isDryRun() {
@@ -121,8 +125,8 @@ public class AutoAdjustCaches {
               new ChronicleMapCacheImpl<>(
                   currCache.getCacheDefinition(),
                   newChronicleMapCacheConfig,
-                  null,
-                  new DisabledMetricMaker());
+                  new DisabledMetricMaker(),
+                  null);
 
           progressMonitor.beginTask(
               String.format("[%s] migrate content", cacheName), (int) currCache.size());
