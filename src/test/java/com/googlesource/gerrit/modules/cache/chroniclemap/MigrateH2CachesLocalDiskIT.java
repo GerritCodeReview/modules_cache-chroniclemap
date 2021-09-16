@@ -24,7 +24,6 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServ
 import static org.apache.http.HttpHeaders.ACCEPT;
 import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
 
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.RestResponse;
@@ -37,11 +36,11 @@ import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.entities.CachedProjectConfig;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.account.CachedAccountDetails;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
+import com.google.gerrit.server.cache.proto.Cache.ProjectCacheKeyProto.Builder;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.group.SystemGroupBackend;
@@ -245,20 +244,20 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
         chronicleCacheFor(PERSISTED_PROJECTS_CACHE_NAME);
 
     Cache.ProjectCacheKeyProto allUsersProto = projectCacheKey(allUsers);
-    Cache.ProjectCacheKeyProto allProjectsProto = projectCacheKey(allProjects);
 
     assertThat(chronicleMapCache.get(allUsersProto)).isEqualTo(h2Cache.get(allUsersProto));
-    assertThat(chronicleMapCache.get(allProjectsProto)).isEqualTo(h2Cache.get(allProjectsProto));
   }
 
   private Cache.ProjectCacheKeyProto projectCacheKey(Project.NameKey key) throws IOException {
     try (Repository git = repoManager.openRepository(key)) {
-      return Cache.ProjectCacheKeyProto.newBuilder()
-          .setProject(key.get())
-          .setRevision(
-              ObjectIdConverter.create()
-                  .toByteString(git.exactRef(RefNames.REFS_CONFIG).getObjectId()))
-          .build();
+      Builder builder =
+          Cache.ProjectCacheKeyProto.newBuilder()
+              .setProject(key.get())
+              .setRevision(
+                  ObjectIdConverter.create()
+                      .toByteString(git.exactRef(RefNames.REFS_CONFIG).getObjectId()));
+
+      return builder.build();
     }
   }
 
@@ -270,11 +269,6 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   @SuppressWarnings("unchecked")
   private <K, V> H2CacheImpl<K, V> H2CacheFor(String named) {
     return (H2CacheImpl<K, V>) findClassBoundWithName(LoadingCache.class, named);
-  }
-
-  @SuppressWarnings("unchecked")
-  private <K, V> CacheLoader<K, V> cacheLoaderFor(String named) {
-    return findClassBoundWithName(CacheLoader.class, named);
   }
 
   private RestResponse runMigration(int sizeMultiplier, int maxBloatFactor) throws IOException {
@@ -328,8 +322,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
-    return new ChronicleMapCacheImpl<>(
-        persistentDef, config, cacheLoaderFor(cacheName), new DisabledMetricMaker());
+    return new ChronicleMapCacheImpl<>(persistentDef, config);
   }
 
   private void waitForCacheToLoad(String cacheName) throws InterruptedException {
