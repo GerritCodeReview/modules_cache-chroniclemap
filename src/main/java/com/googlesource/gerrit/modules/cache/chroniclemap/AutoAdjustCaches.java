@@ -20,7 +20,6 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.restapi.AuthException;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -119,10 +118,7 @@ public class AutoAdjustCaches {
         if (!dryRun) {
           ChronicleMapCacheImpl<Object, Object> newCache =
               new ChronicleMapCacheImpl<>(
-                  currCache.getCacheDefinition(),
-                  newChronicleMapCacheConfig,
-                  null,
-                  new DisabledMetricMaker());
+                  currCache.getCacheDefinition(), newChronicleMapCacheConfig);
 
           progressMonitor.beginTask(
               String.format("[%s] migrate content", cacheName), (int) currCache.size());
