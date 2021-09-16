@@ -218,7 +218,7 @@ public class H2MigrationServlet extends HttpServlet {
           if (chronicleMapConfig.isPresent()) {
             ChronicleMapCacheConfig cacheConfig = chronicleMapConfig.get();
             ChronicleMapCacheImpl<?, ?> chronicleMapCache =
-                new ChronicleMapCacheImpl<>(in, cacheConfig, null, new DisabledMetricMaker());
+                new ChronicleMapCacheImpl<>(in, cacheConfig, new DisabledMetricMaker(), null);
 
             doMigrate(h2CacheFile.get(), in, chronicleMapCache);
             chronicleMapCache.close();

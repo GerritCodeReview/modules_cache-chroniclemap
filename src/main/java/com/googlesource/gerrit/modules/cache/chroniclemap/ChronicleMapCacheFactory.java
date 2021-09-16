@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -27,6 +28,7 @@ import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.server.logging.LoggingContextAwareExecutorService;
 import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorService;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -57,6 +59,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   private final ScheduledExecutorService cleanup;
   private final Path cacheDir;
 
+  private final LoggingContextAwareExecutorService executor;
+
   @Inject
   ChronicleMapCacheFactory(
       MemoryCacheFactory memCacheFactory,
@@ -80,10 +84,19 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
                     .setNameFormat("ChronicleMap-Prune-%d")
                     .setDaemon(true)
                     .build()));
+    this.executor =
+        new LoggingContextAwareExecutorService(
+            Executors.newFixedThreadPool(
+                1, new ThreadFactoryBuilder().setNameFormat("ChronicleMap-Store-%d").build()));
   }
 
   @Override
   public <K, V> Cache<K, V> build(PersistentCacheDef<K, V> in, CacheBackend backend) {
+    return build(in, backend, metricMaker);
+  }
+
+  public <K, V> Cache<K, V> build(
+      PersistentCacheDef<K, V> in, CacheBackend backend, MetricMaker metricMaker) {
     if (isInMemoryCache(in)) {
       return memCacheFactory.build(in, backend);
     }
@@ -93,9 +106,26 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
             in.refreshAfterWrite());
+    return build(in, backend, config, metricMaker);
+  }
+
+  @SuppressWarnings("unchecked")
+  @VisibleForTesting
+  <K, V> Cache<K, V> build(
+      PersistentCacheDef<K, V> in,
+      CacheBackend backend,
+      ChronicleMapCacheConfig config,
+      MetricMaker metricMaker) {
+    ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
+
     ChronicleMapCacheImpl<K, V> cache;
     try {
-      cache = new ChronicleMapCacheImpl<>(in, config, null, metricMaker);
+      cache =
+          new ChronicleMapCacheImpl<>(
+              in,
+              config,
+              metricMaker,
+              (Cache<K, TimedValue<V>>) memCacheFactory.build(def, backend));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -108,6 +138,16 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   @Override
   public <K, V> LoadingCache<K, V> build(
       PersistentCacheDef<K, V> in, CacheLoader<K, V> loader, CacheBackend backend) {
+    return build(in, loader, backend, metricMaker);
+  }
+
+  @VisibleForTesting
+  public <K, V> LoadingCache<K, V> build(
+      PersistentCacheDef<K, V> in,
+      CacheLoader<K, V> loader,
+      CacheBackend backend,
+      MetricMaker metricMaker) {
+
     if (isInMemoryCache(in)) {
       return memCacheFactory.build(in, loader, backend);
     }
@@ -117,9 +157,30 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
             in.refreshAfterWrite());
+    return build(in, loader, backend, config, metricMaker);
+  }
+
+  @SuppressWarnings("unchecked")
+  @VisibleForTesting
+  public <K, V> LoadingCache<K, V> build(
+      PersistentCacheDef<K, V> in,
+      CacheLoader<K, V> loader,
+      CacheBackend backend,
+      ChronicleMapCacheConfig config,
+      MetricMaker metricMaker) {
     ChronicleMapCacheImpl<K, V> cache;
+    ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
+
     try {
-      cache = new ChronicleMapCacheImpl<>(in, config, loader, metricMaker);
+      cache = new ChronicleMapCacheImpl<>(in, config, metricMaker, null);
+
+      ChronicleMapCacheLoaderImpl<K, V> memLoader =
+          new ChronicleMapCacheLoaderImpl<>(executor, cache.getStore(), loader);
+      Cache<K, TimedValue<V>> mem =
+          (Cache<K, TimedValue<V>>)
+              memCacheFactory.build(def, (CacheLoader<K, V>) memLoader, backend);
+
+      cache.setMem(mem, memLoader);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

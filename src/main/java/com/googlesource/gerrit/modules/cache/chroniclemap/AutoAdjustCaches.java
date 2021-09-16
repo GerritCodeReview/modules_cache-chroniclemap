@@ -121,8 +121,8 @@ public class AutoAdjustCaches {
               new ChronicleMapCacheImpl<>(
                   currCache.getCacheDefinition(),
                   newChronicleMapCacheConfig,
-                  null,
-                  new DisabledMetricMaker());
+                  new DisabledMetricMaker(),
+                  null);
 
           progressMonitor.beginTask(
               String.format("[%s] migrate content", cacheName), (int) currCache.size());
