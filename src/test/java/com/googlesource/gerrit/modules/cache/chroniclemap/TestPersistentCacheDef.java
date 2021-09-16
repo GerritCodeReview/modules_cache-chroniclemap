@@ -26,6 +26,8 @@ import java.util.UUID;
 
 public class TestPersistentCacheDef implements PersistentCacheDef<String, String> {
 
+  private static final Duration ONE_YEAR = Duration.ofDays(365);
+
   private static final Integer DEFAULT_DISK_LIMIT = 1024;
 
   private final String name;
@@ -66,12 +68,13 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
       String name,
       @Nullable String loadedValue,
       @Nullable CacheSerializer<String> keySerializer,
-      @Nullable CacheSerializer<String> valueSerializer) {
+      @Nullable CacheSerializer<String> valueSerializer,
+      boolean withLoader) {
 
     this.name = name;
     this.loadedValue = loadedValue;
-    this.expireAfterWrite = Duration.ZERO;
-    this.refreshAfterWrite = Duration.ZERO;
+    this.expireAfterWrite = withLoader ? ONE_YEAR : null;
+    this.refreshAfterWrite = withLoader ? ONE_YEAR : null;
     this.diskLimit = DEFAULT_DISK_LIMIT;
     this.keySerializer = Optional.ofNullable(keySerializer).orElse(StringCacheSerializer.INSTANCE);
     this.valueSerializer =
