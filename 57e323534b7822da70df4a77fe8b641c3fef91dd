@@ -106,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dc70a92_469d1a5c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheDefProxy.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T18:14:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14cb874b_3d0fef6d",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1ac979d_3db84bc1",
@@ -119,6 +143,30 @@
       "writtenOn": "2021-09-17T15:50:30Z",
       "side": 1,
       "message": "I understand why memcache is optional:\n- We need a store in order to create is (so that we have to set it in two steps with the setMem)\n- In some scenarios we might not want to populate the in-memory cache at all. For example during migrations, etc (i.e.AudtoAdjust and MigrationServlet)\n\nHowever, I think this now creates some duplication in which a similar retrieval logic needs to be implemented in two places:\n- ChronicleMapCacheLoaderImpl (used by the memory cache) \n- ChronicleMapCacheImpl itself (when inmemory cache is not defined).\n\nDepending on where the value is loaded from (in-memory vs directly from chroniclemap) we either do or don\u0027t increment metrics, or invalidate entries.\n\nAm I reading this wrong or we should be looking at consolidating these sparse loading implementations?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "872420e1_e7374329",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T18:14:05Z",
+      "side": 1,
+      "message": "True, that logic is now split into two parts. Let me fix all the tests and I\u0027ll definitely DRY that out before the final review and merge.",
+      "parentUuid": "e1ac979d_3db84bc1",
       "range": {
         "startLine": 70,
         "startChar": 0,
@@ -146,6 +194,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8a87a2a_f79dfefd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T18:14:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85e5276b_41e954a9",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b61436ec_667c9436",
@@ -159,6 +225,30 @@
       "writtenOn": "2021-09-17T15:50:30Z",
       "side": 1,
       "message": "nit: unrelated",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 3
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9005d297_4c145f78",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T18:14:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b61436ec_667c9436",
       "range": {
         "startLine": 113,
         "startChar": 0,
