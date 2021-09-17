@@ -1,0 +1,371 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac0939a7_970b9d0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "Shall we create a monorail issue for this?\nIt seems quite substantial change",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fde005d_fc99b934",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheDefProxy.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "2021",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14cb874b_3d0fef6d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheDefProxy.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "TimedValue",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1ac979d_3db84bc1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "I understand why memcache is optional:\n- We need a store in order to create is (so that we have to set it in two steps with the setMem)\n- In some scenarios we might not want to populate the in-memory cache at all. For example during migrations, etc (i.e.AudtoAdjust and MigrationServlet)\n\nHowever, I think this now creates some duplication in which a similar retrieval logic needs to be implemented in two places:\n- ChronicleMapCacheLoaderImpl (used by the memory cache) \n- ChronicleMapCacheImpl itself (when inmemory cache is not defined).\n\nDepending on where the value is loaded from (in-memory vs directly from chroniclemap) we either do or don\u0027t increment metrics, or invalidate entries.\n\nAm I reading this wrong or we should be looking at consolidating these sparse loading implementations?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85e5276b_41e954a9",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "nit: unrelated?",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b61436ec_667c9436",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "nit: unrelated",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 3
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "278671bc_8406adbb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "nit: can use method reference",
+      "range": {
+        "startLine": 183,
+        "startChar": 31,
+        "endLine": 183,
+        "endChar": 55
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09481dd_608062c4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "nit: can be private",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a2d5cd1_073ca4d2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "This is trying to get the value from memcache and, when not available it tries to get it from the store.\n\nIsn\u0027t this what the loader is for?\nIs this because mem can be null?\n\nIf so, perhaps we should be more explicit in the if condition: if `mem` was NOT null and the item was NOT present in cache, we would try one more time to get it from store even though we know we will not find it right?",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1ef4747_5bf0d038",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we update these even when the item is retrieved by memory cache?\nI don\u0027t see the equivalent in ChronicleMapCacheLoaderImpl",
+      "range": {
+        "startLine": 195,
+        "startChar": 14,
+        "endLine": 196,
+        "endChar": 41
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b403ee87_8148cc49",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "if mem was present, wouldn\u0027t the value already be put in memory as a result of\n\n```\n asLoadingCache.get(key)\n```\n\n?",
+      "range": {
+        "startLine": 224,
+        "startChar": 8,
+        "endLine": 224,
+        "endChar": 52
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "523ef003_13fcef77",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "I believe this is now wrong.\n\nWe used to be able to get here only when loader was null, but now any cache miss will result in an UnsupportedOperationException?",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e7edb31_762876f3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoaderImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "Missing header",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b01497ef_cd45f1a8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoaderImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "nit: unneeded, will be inferred",
+      "range": {
+        "startLine": 51,
+        "startChar": 27,
+        "endLine": 51,
+        "endChar": 28
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b114858e_730d5d0e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoaderImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "nit: could use method reference\n\n```\nreturn Futures.transform(reloadedValue, TimedValue::new, executor);\n```",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 80
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbe64cd_a8d69209",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "Should we rename this to ChronicleMapCacheTest to highlight this is now an integration test?",
+      "range": {
+        "startLine": 49,
+        "startChar": 13,
+        "endLine": 49,
+        "endChar": 34
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc3d8e4d_784ca05f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T15:50:30Z",
+      "side": 1,
+      "message": "I am struggling to understand this.\nWhy having `withLoader` requires a finite expiry duration?",
+      "range": {
+        "startLine": 539,
+        "startChar": 58,
+        "endLine": 539,
+        "endChar": 98
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
