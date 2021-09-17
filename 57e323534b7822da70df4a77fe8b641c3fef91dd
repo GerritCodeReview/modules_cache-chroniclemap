@@ -282,6 +282,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "897cd35b_7733b4de",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "278671bc_8406adbb",
+      "range": {
+        "startLine": 183,
+        "startChar": 31,
+        "endLine": 183,
+        "endChar": 55
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c09481dd_608062c4",
@@ -299,6 +323,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e747509_f915f8fb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c09481dd_608062c4",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a2d5cd1_073ca4d2",
@@ -312,6 +354,30 @@
       "writtenOn": "2021-09-17T15:50:30Z",
       "side": 1,
       "message": "This is trying to get the value from memcache and, when not available it tries to get it from the store.\n\nIsn\u0027t this what the loader is for?\nIs this because mem can be null?\n\nIf so, perhaps we should be more explicit in the if condition: if `mem` was NOT null and the item was NOT present in cache, we would try one more time to get it from store even though we know we will not find it right?",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ee7f462_eb3b6176",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "\u003e This is trying to get the value from memcache and, when not available it tries to get it from the store.\n\u003e \n\u003e Isn\u0027t this what the loader is for?\n\nThe loader would load it from the loader function when it is not present.\nThis method instead returns it ONLY if it was already loaded from the loader function.\n\n\u003e Is this because mem can be null?\n\nAlso yes, mem can be null and, in that case, we need to get it from the store directly.\n\n\u003e If so, perhaps we should be more explicit in the if condition: if `mem` was NOT null and the item was NOT present in cache, we would try one more time to get it from store even though we know we will not find it right?\n\nIsn\u0027t the flapMap already doing that?",
+      "parentUuid": "1a2d5cd1_073ca4d2",
       "range": {
         "startLine": 189,
         "startChar": 4,
@@ -347,6 +413,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db0b087e_e97b23ae",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "You touched an important point: the hotEntries and hitCounts.\n\nI believe the Guava caches already have something out there, so we can just reuse what is there. With regards to the hotEntries, what is in Guava is by definition \"hot\u0027 isn\u0027t it? Possibly we don\u0027t need the hotEntries anymore, WDYT?",
+      "parentUuid": "b1ef4747_5bf0d038",
+      "range": {
+        "startLine": 195,
+        "startChar": 14,
+        "endLine": 196,
+        "endChar": 41
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b403ee87_8148cc49",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -358,6 +448,30 @@
       "writtenOn": "2021-09-17T15:50:30Z",
       "side": 1,
       "message": "if mem was present, wouldn\u0027t the value already be put in memory as a result of\n\n```\n asLoadingCache.get(key)\n```\n\n?",
+      "range": {
+        "startLine": 224,
+        "startChar": 8,
+        "endLine": 224,
+        "endChar": 52
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9880c4e8_b2996f05",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "Not necessarily: if mem was present but it *was not* a loading cache, then the block between L209 and L217 isn\u0027t executed. When we then load it from the store we need to add it to mem manually.",
+      "parentUuid": "b403ee87_8148cc49",
       "range": {
         "startLine": 224,
         "startChar": 8,
@@ -391,6 +505,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dbb3ed2_9cf88547",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "You are right: this should be an exception for cache miss.",
+      "parentUuid": "523ef003_13fcef77",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e7edb31_762876f3",
@@ -408,6 +546,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0755e87f_de02cd04",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoaderImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e7edb31_762876f3",
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b01497ef_cd45f1a8",
@@ -421,6 +577,30 @@
       "writtenOn": "2021-09-17T15:50:30Z",
       "side": 1,
       "message": "nit: unneeded, will be inferred",
+      "range": {
+        "startLine": 51,
+        "startChar": 27,
+        "endLine": 51,
+        "endChar": 28
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d3672b8_521268a7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoaderImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "This form actually matches the Futures.addCallback documentation:\n\n   * \u003cpre\u003e{@code\n   * ListenableFuture\u003cQueryResult\u003e future \u003d ...;\n   * Executor e \u003d ...\n   * addCallback(future,\n   *     new FutureCallback\u003cQueryResult\u003e() {\n   *       public void onSuccess(QueryResult result) {\n   *         storeInCache(result);\n   *       }\n   *       public void onFailure(Throwable t) {\n   *         reportError(t);\n   *       }\n   *     }, e);\n   * }\u003c/pre\u003e",
+      "parentUuid": "b01497ef_cd45f1a8",
       "range": {
         "startLine": 51,
         "startChar": 27,
@@ -454,6 +634,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79abdf82_6eb1cf71",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoaderImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b114858e_730d5d0e",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 80
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bbe64cd_a8d69209",
@@ -477,6 +681,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40da9159_64c97c76",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bbe64cd_a8d69209",
+      "range": {
+        "startLine": 49,
+        "startChar": 13,
+        "endLine": 49,
+        "endChar": 34
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc3d8e4d_784ca05f",
@@ -490,6 +718,30 @@
       "writtenOn": "2021-09-17T15:50:30Z",
       "side": 1,
       "message": "I am struggling to understand this.\nWhy having `withLoader` requires a finite expiry duration?",
+      "range": {
+        "startLine": 539,
+        "startChar": 58,
+        "endLine": 539,
+        "endChar": 98
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310e57fd_2f636bbd",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-17T19:02:37Z",
+      "side": 1,
+      "message": "I believe that was required by the Guava cache, but let me double-check.",
+      "parentUuid": "cc3d8e4d_784ca05f",
       "range": {
         "startLine": 539,
         "startChar": 58,
