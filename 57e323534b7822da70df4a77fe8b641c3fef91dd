@@ -390,6 +390,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cfe7b6e6_f9b60b65",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T19:58:24Z",
+      "side": 1,
+      "message": "I can think of 4 possible states, resulting in different values for the variable `h`:\n\n1 - mem is NOT defined \u003d\u003e h is NOT defined\n2 - mem IS defined \u0026\u0026 objKey is already in mem cache (loading is not attempted) \u003d\u003e h is defined\n3 - mem IS defined \u0026\u0026 objKey is not in cache \u0026\u0026 the loader successfully gets it from store \u003d\u003e h is defined.\n4 - mem IS defined \u0026\u0026 objKey is NOT in cache, the loader tries to get it from store, it\u0027s not there either (getIfPresent returns null) \u003d\u003e h is NOT defined.\n\nGiven the above, we can endup in the or() block due to 1) or 4).\n\nAren\u0027t we always destined to fail if we ended up in the or() due to point 4)?\nWe know that the objKey will not be in store right?\n\nSo in this case, we will always try to get the object from the store twice: one, failing from point 4 and one, failing in the or() block.",
+      "parentUuid": "3ee7f462_eb3b6176",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1ef4747_5bf0d038",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -425,6 +449,30 @@
       "side": 1,
       "message": "You touched an important point: the hotEntries and hitCounts.\n\nI believe the Guava caches already have something out there, so we can just reuse what is there. With regards to the hotEntries, what is in Guava is by definition \"hot\u0027 isn\u0027t it? Possibly we don\u0027t need the hotEntries anymore, WDYT?",
       "parentUuid": "b1ef4747_5bf0d038",
+      "range": {
+        "startLine": 195,
+        "startChar": 14,
+        "endLine": 196,
+        "endChar": 41
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4cc3874_ccd47682",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-17T19:58:24Z",
+      "side": 1,
+      "message": "\u003e You touched an important point: the hotEntries and hitCounts.\n\u003e \n\u003e I believe the Guava caches already have something out there, so we can just reuse what is there.\n\noh cool, let\u0027s have a look.\n\n\u003e With regards to the hotEntries, what is in Guava is by definition \"hot\u0027 isn\u0027t it? Possibly we don\u0027t need the hotEntries anymore, WDYT?\n\nYes, that would be cool if we could remove it.\nI also feel there is one too many in-memory caches here now.\nThe thing is that we modeled hotEntries as a LRU cache whilst Guava cache is not ordered, so I am not sure we could just replace it as-is.",
+      "parentUuid": "db0b087e_e97b23ae",
       "range": {
         "startLine": 195,
         "startChar": 14,
