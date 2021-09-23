@@ -179,6 +179,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cf21ca4_974ff995",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-23T01:06:59Z",
+      "side": 1,
+      "message": "I don\u0027t believe it can be fully DRYed out: the ChronicleMapLoader is tried with a logic that loads from store and then from an external loader if needed. However, there is logic that returns from store but NOT from the external loader.\n\nWDYT?",
+      "parentUuid": "872420e1_e7374329",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85e5276b_41e954a9",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -414,6 +438,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2118862_b3224c1f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-23T01:06:59Z",
+      "side": 1,
+      "message": "\u003e Aren\u0027t we always destined to fail if we ended up in the or() due to point 4)?\n\u003e We know that the objKey will not be in store right?\n\nYes, correct.\n\n\u003e So in this case, we will always try to get the object from the store twice: one, failing from point 4 and one, failing in the or() block.\n\nYes, correct. Is that a big penalty? The key isn\u0027t in the store and we don\u0027t spend time in deserialising stuff. WDYT?",
+      "parentUuid": "cfe7b6e6_f9b60b65",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1ef4747_5bf0d038",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -483,6 +531,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a613523a_1904812c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-23T01:06:59Z",
+      "side": 1,
+      "message": "\u003e Yes, that would be cool if we could remove it.\n\u003e I also feel there is one too many in-memory caches here now.\n\u003e The thing is that we modeled hotEntries as a LRU cache whilst Guava cache is not ordered, so I am not sure we could just replace it as-is.\n\nI believe this change is already quite big: I would remove (if possible and needed) the hot-entries in a follow-up.",
+      "parentUuid": "b4cc3874_ccd47682",
+      "range": {
+        "startLine": 195,
+        "startChar": 14,
+        "endLine": 196,
+        "endChar": 41
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b403ee87_8148cc49",
@@ -520,6 +592,30 @@
       "side": 1,
       "message": "Not necessarily: if mem was present but it *was not* a loading cache, then the block between L209 and L217 isn\u0027t executed. When we then load it from the store we need to add it to mem manually.",
       "parentUuid": "b403ee87_8148cc49",
+      "range": {
+        "startLine": 224,
+        "startChar": 8,
+        "endLine": 224,
+        "endChar": 52
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55905e75_4e069ec3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-23T01:06:59Z",
+      "side": 1,
+      "message": "This put isn\u0027t needed after all: we ended up here because mem wasn\u0027t a loading cache and therefore isn\u0027t supposed to have this value in.",
+      "parentUuid": "9880c4e8_b2996f05",
       "range": {
         "startLine": 224,
         "startChar": 8,
@@ -814,6 +910,30 @@
       "side": 1,
       "message": "I believe that was required by the Guava cache, but let me double-check.",
       "parentUuid": "cc3d8e4d_784ca05f",
+      "range": {
+        "startLine": 539,
+        "startChar": 58,
+        "endLine": 539,
+        "endChar": 98
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9af740b8_e6bb6048",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-23T01:06:59Z",
+      "side": 1,
+      "message": "It wasn\u0027t required. Removed.",
+      "parentUuid": "310e57fd_2f636bbd",
       "range": {
         "startLine": 539,
         "startChar": 58,
