@@ -203,6 +203,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66482841_f78a7ca5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-23T08:58:36Z",
+      "side": 1,
+      "message": "yes, I see what you mean, I think you have a point.\nI think we should DRY out what\u0027s possible, if anything (I believe some logic is).\n\nThe concern I had was that the duplicated logic was behaving differently, in terms of metrics and cache invalidation (ChronicleMapCacheLoader vs ChronicleMapCacheImpl).\n\nI will check again those differences and pinpoint them explicitly so that we can discuss about them.",
+      "parentUuid": "6cf21ca4_974ff995",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85e5276b_41e954a9",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -450,6 +474,30 @@
       "side": 1,
       "message": "\u003e Aren\u0027t we always destined to fail if we ended up in the or() due to point 4)?\n\u003e We know that the objKey will not be in store right?\n\nYes, correct.\n\n\u003e So in this case, we will always try to get the object from the store twice: one, failing from point 4 and one, failing in the or() block.\n\nYes, correct. Is that a big penalty? The key isn\u0027t in the store and we don\u0027t spend time in deserialising stuff. WDYT?",
       "parentUuid": "cfe7b6e6_f9b60b65",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0a17e1d_ec24e6cf",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-23T08:58:36Z",
+      "side": 1,
+      "message": "\u003e Yes, correct. Is that a big penalty? The key isn\u0027t in the store and we don\u0027t spend time in deserialising stuff. WDYT?\n\nWouldn\u0027t chronicle-map access the disk, _looking_ for the potential entry though?\n\nIf we narrowed this or() condition to only execute if we haven\u0027t already tried to load the item, we could avoid this extra IO op.",
+      "parentUuid": "b2118862_b3224c1f",
       "range": {
         "startLine": 189,
         "startChar": 4,
