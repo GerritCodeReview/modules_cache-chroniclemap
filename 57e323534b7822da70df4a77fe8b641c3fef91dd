@@ -225,6 +225,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e0adadb_b095cdaa",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-28T22:30:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66482841_f78a7ca5",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85e5276b_41e954a9",
@@ -498,6 +522,30 @@
       "side": 1,
       "message": "\u003e Yes, correct. Is that a big penalty? The key isn\u0027t in the store and we don\u0027t spend time in deserialising stuff. WDYT?\n\nWouldn\u0027t chronicle-map access the disk, _looking_ for the potential entry though?\n\nIf we narrowed this or() condition to only execute if we haven\u0027t already tried to load the item, we could avoid this extra IO op.",
       "parentUuid": "b2118862_b3224c1f",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "57e323534b7822da70df4a77fe8b641c3fef91dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c492c5f_e39b212e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-28T22:30:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0a17e1d_ec24e6cf",
       "range": {
         "startLine": 189,
         "startChar": 4,
