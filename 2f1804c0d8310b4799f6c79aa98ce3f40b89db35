@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "gerritforge:cache-chroniclemap-code-style": {
+      "state": "RUNNING",
+      "url": "https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/75%252F318275%252F13/1/console",
+      "started": "2021-09-28T23:10:36Z",
+      "created": "2021-09-28T23:07:26Z",
+      "updated": "2021-09-28T23:07:26Z"
+    }
+  }
+}
