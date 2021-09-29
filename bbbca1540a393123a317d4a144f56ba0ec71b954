@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdc095a2_5efb381f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:04:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f6a6bca_944fdfe3",
+      "range": {
+        "startLine": 14,
+        "startChar": 20,
+        "endLine": 14,
+        "endChar": 23
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ea5e271_150fc8c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-29T14:51:28Z",
       "side": 1,
       "message": "serialization?",
+      "range": {
+        "startLine": 16,
+        "startChar": 24,
+        "endLine": 16,
+        "endChar": 35
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80100e40_1600acaf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:04:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ea5e271_150fc8c0",
       "range": {
         "startLine": 16,
         "startChar": 24,
@@ -82,6 +130,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cac879e9_2ff4bab1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:04:19Z",
+      "side": 1,
+      "message": "I\u0027ve removed the dependency from protobuf, as it wasn\u0027t really needed.",
+      "parentUuid": "a688d41f_a4a1777b",
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28e7f029_7b9fe680",
@@ -95,6 +161,30 @@
       "writtenOn": "2021-09-29T14:51:28Z",
       "side": 1,
       "message": "When this is recovered it is actually the same store that was previously persisted.\nWhy renaming this to newStore?",
+      "range": {
+        "startLine": 128,
+        "startChar": 47,
+        "endLine": 128,
+        "endChar": 55
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cb06c9b_a2acaddf",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:04:19Z",
+      "side": 1,
+      "message": "True, I was pulled by the \u0027create\u0027 verb in the method. Let me find a better name.",
+      "parentUuid": "28e7f029_7b9fe680",
       "range": {
         "startLine": 128,
         "startChar": 47,
