@@ -218,6 +218,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "213a86b7_e7335711",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:42:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0931d27d_556bd739",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 26
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "148a1353_9c53765f",
@@ -241,6 +265,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5455a59c_557c0037",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:42:50Z",
+      "side": 1,
+      "message": "I believe this part of the code is largely obsolete: mem is *never* null now, so L406-L411 is dead code. Let me get rid of it.",
+      "parentUuid": "148a1353_9c53765f",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 65
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4cbaebc_1df3a874",
@@ -254,6 +302,30 @@
       "writtenOn": "2021-09-29T14:51:28Z",
       "side": 1,
       "message": "I understand we are calling this when `mem` is still empty, so it might not be a big deal, but this is not a static method that generates a new InMemoryCache.\n\nAs such, I believe we should preserve the current properties of the ChronicleMapCacheLoader, including stats() and size().\n\nWDYT?",
+      "range": {
+        "startLine": 192,
+        "startChar": 19,
+        "endLine": 192,
+        "endChar": 48
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e66983b7_848b26b8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-29T18:42:50Z",
+      "side": 1,
+      "message": "I agree that *some* behaviour should be mocked:\n- size: should return how much of the data is cached in memory, then zero is the right value\n- stats: who would be interested in getting the stats of a cache by-pass that does nothing? I can throw an exception and that would be the correct behaviour IMHO.\n\nJust did with an exception and as expected none of the tests are failing.",
+      "parentUuid": "f4cbaebc_1df3a874",
       "range": {
         "startLine": 192,
         "startChar": 19,
