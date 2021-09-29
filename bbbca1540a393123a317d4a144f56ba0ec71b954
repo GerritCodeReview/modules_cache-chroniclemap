@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f6a6bca_944fdfe3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "is",
+      "range": {
+        "startLine": 14,
+        "startChar": 20,
+        "endLine": 14,
+        "endChar": 23
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea5e271_150fc8c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "serialization?",
+      "range": {
+        "startLine": 16,
+        "startChar": 24,
+        "endLine": 16,
+        "endChar": 35
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8a126aae_95d02d8d",
@@ -14,6 +60,116 @@
       "writtenOn": "2021-09-29T09:01:30Z",
       "side": 1,
       "message": "Build failure look just related to a dependency visiblility:\n\n```\nERROR: /home/jenkins/workspace/roniclemap-verifier_75_318275_14/gerrit/plugins/cache-chroniclemap/BUILD:51:17: in java_test rule //plugins/cache-chroniclemap:server_cache: target \u0027@com_google_protobuf//java/core:lite\u0027 is not visible from target \u0027//plugins/cache-chroniclemap:server_cache\u0027. Check the visibility declaration of the former target if you think the dependency is legitimate\n```",
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a688d41f_a4a1777b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "I believe you should be using the public alias for it.\n\nthis works:\n\n```\n\"@com_google_protobuf//java/lite\",\nzzz",
+      "parentUuid": "8a126aae_95d02d8d",
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28e7f029_7b9fe680",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "When this is recovered it is actually the same store that was previously persisted.\nWhy renaming this to newStore?",
+      "range": {
+        "startLine": 128,
+        "startChar": 47,
+        "endLine": 128,
+        "endChar": 55
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0931d27d_556bd739",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "Should it really be counted as \u0027miss\u0027 when there is no loader?",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 26
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "148a1353_9c53765f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "I am not sure I follow why we are summing the stats of the store and the stats for the mem cache?\n\nWhy aren\u0027t we doing the sam thing for hitCount, btw?",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 65
+      },
+      "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4cbaebc_1df3a874",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-29T14:51:28Z",
+      "side": 1,
+      "message": "I understand we are calling this when `mem` is still empty, so it might not be a big deal, but this is not a static method that generates a new InMemoryCache.\n\nAs such, I believe we should preserve the current properties of the ChronicleMapCacheLoader, including stats() and size().\n\nWDYT?",
+      "range": {
+        "startLine": 192,
+        "startChar": 19,
+        "endLine": 192,
+        "endChar": 48
+      },
       "revId": "bbbca1540a393123a317d4a144f56ba0ec71b954",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
