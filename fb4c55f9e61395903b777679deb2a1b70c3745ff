@@ -1,0 +1,297 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df54e486_d610db70",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheFactory.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "executor seems a bit generic.\nThis `executor` is used by the loader to populate the store\nShall we highlight in the name what this is for?\n\nloaderExecutor?\nstoreLoaderExecutor?",
+      "range": {
+        "startLine": 88,
+        "startChar": 9,
+        "endLine": 88,
+        "endChar": 17
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "136eeb15_9a894c22",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "Is this really @Nullable?\nIt looks to me we always pass an instance of GuavaInMemoryCache to the ChronicleMapCacheImpl constructor",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 40
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c959df1_0867fecd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "I believe mem is always defined, isn\u0027t?",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 69
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c6038c4_fcd7b080",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: Perhaps we should call this createOrRecoverStore to highlight the fact that this is not just creating a new store every time is called.",
+      "range": {
+        "startLine": 96,
+        "startChar": 59,
+        "endLine": 96,
+        "endChar": 70
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d46243a2_996cb899",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: unrelated?",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 73
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea96d7f9_0ea16119",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "I am still getting my head around this:\nShouldn\u0027t values from the ChronicleMap store exclusively loaded by the CacheChronicleMapLoader?",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 82
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f14e81bb_28b24794",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: might be useful to log which cache and which key caused the failure as they might not be obvious from the stack trace.",
+      "range": {
+        "startLine": 119,
+        "startChar": 12,
+        "endLine": 119,
+        "endChar": 80
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86cf9c69_efc6ef43",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: this logic is the same of the one implemented by ChronicleMapCacheImpl, consider DRY this out.\n\n```\n  static boolean expired(Duration expireAfterWrite, long created) {\n    Duration age \u003d Duration.between(Instant.ofEpochMilli(created), TimeUtil.now());\n    return !expireAfterWrite.isZero() \u0026\u0026 age.compareTo(expireAfterWrite) \u003e 0;\n  }\n```",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 3
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fc5711d_171d2d47",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "these getters appear unused",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 3
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66626fe_a50a4864",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: can be final",
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675071e3_e4e5dde1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "Do we need this parameter?\nCan\u0027t we just look at the time of `guavaCache` to understand whether this is LoadingCache\u003c\u003e?",
+      "range": {
+        "startLine": 28,
+        "startChar": 62,
+        "endLine": 28,
+        "endChar": 84
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b944a97_bff73728",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: shoud use isLoadingCache()",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccd2082_49320385",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheIT.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T12:52:37Z",
+      "side": 1,
+      "message": "nit: consider naming this `memoryLimit`",
+      "range": {
+        "startLine": 60,
+        "startChar": 74,
+        "endLine": 60,
+        "endChar": 76
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
