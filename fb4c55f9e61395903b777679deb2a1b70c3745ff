@@ -531,6 +531,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9feffb78_bb655112",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T19:04:04Z",
+      "side": 1,
+      "message": "\u003e Unfortunately not: the guavaCache we receive is *always* a loading one\n\nShall we change the signature of the constructor to be more specific then?\n\n```\nGuavaInMemoryCache(LoadingCache\u003cK, TimedValue\u003cV\u003e\u003e guavaCache, boolean loadingCache)\n```\n\n\n\u003e because it needs to load from ChronicleMap store, but it may or may not be linked to an external loading source.\n\u003e \n\u003e Hence it could be an instance of a loading cache but effectively NOT loading from an external source.\n\nGotcha.\n\nperhaps the `loadingCache` name is a bit confusing here, since it overlaps with the fact that guava is already a LoadingCache?\n\nHow about: `hasExternalLoader` or something similar.\n\nAlso, could you consider adding just a couple of lines of comment to explain why we have this:\n\n- Why the ChronicleMapCacheLoader takes a `loader` as parameter.\n- Why the GuavaInMemoryCache takes a LoadingCache *and* a boolean indicating whether to load from an external source.",
+      "parentUuid": "f45c16de_cf35f2e2",
+      "range": {
+        "startLine": 28,
+        "startChar": 62,
+        "endLine": 28,
+        "endChar": 84
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b944a97_bff73728",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
         "patchSetId": 19
@@ -566,6 +590,30 @@
       "side": 1,
       "message": "Why? LoadingCache is a private boolean and is accessible to internal methods. Is there any value in making yet another method call?",
       "parentUuid": "1b944a97_bff73728",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843e94f5_3b57881b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-30T19:04:04Z",
+      "side": 1,
+      "message": "the refresh() method at L70 is using the isLoadingCache() method, so it was just for consistency.\n\nWe can adapt either of those.\n\njust a nit anyway.",
+      "parentUuid": "181829fc_88a4c64c",
       "range": {
         "startLine": 55,
         "startChar": 8,
