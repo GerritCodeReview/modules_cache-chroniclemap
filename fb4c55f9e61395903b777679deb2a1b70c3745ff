@@ -553,6 +553,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f6e97ac_cadbb7a6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T23:13:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9feffb78_bb655112",
+      "range": {
+        "startLine": 28,
+        "startChar": 62,
+        "endLine": 28,
+        "endChar": 84
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b944a97_bff73728",
@@ -614,6 +638,30 @@
       "side": 1,
       "message": "the refresh() method at L70 is using the isLoadingCache() method, so it was just for consistency.\n\nWe can adapt either of those.\n\njust a nit anyway.",
       "parentUuid": "181829fc_88a4c64c",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "fb4c55f9e61395903b777679deb2a1b70c3745ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d7936d4_f89a89bc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/GuavaInMemoryCache.java",
+        "patchSetId": 19
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-09-30T23:13:20Z",
+      "side": 1,
+      "message": "Ah, good catch. Let me adapt the L70 then.",
+      "parentUuid": "843e94f5_3b57881b",
       "range": {
         "startLine": 55,
         "startChar": 8,
