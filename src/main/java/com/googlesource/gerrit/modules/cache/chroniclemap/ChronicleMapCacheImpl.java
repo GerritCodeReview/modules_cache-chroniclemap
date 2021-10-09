@@ -39,7 +39,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ChronicleMapCacheConfig config;
-  private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
+  private final ChronicleMapStoreWithHistory<KeyWrapper<K>, TimedValue<V>> store;
   private final LongAdder hitCount = new LongAdder();
   private final LongAdder missCount = new LongAdder();
   private final LongAdder loadSuccessCount = new LongAdder();
@@ -74,7 +74,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       MetricMaker metricMaker,
       ChronicleMapCacheLoader<K, V> memLoader,
       InMemoryCache<K, V> mem,
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store) {
+      ChronicleMapStoreWithHistory<KeyWrapper<K>, TimedValue<V>> store) {
 
     this.cacheDefinition = def;
     this.config = config;
@@ -90,7 +90,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
-  static <K, V> ChronicleMap<KeyWrapper<K>, TimedValue<V>> createOrRecoverStore(
+  static <K, V> ChronicleMapStoreWithHistory<KeyWrapper<K>, TimedValue<V>> createOrRecoverStore(
       PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config) throws IOException {
     CacheSerializers.registerCacheDef(def);
 
@@ -137,7 +137,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    return store;
+    return new ChronicleMapStoreWithHistory<>(store);
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
@@ -310,14 +310,19 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   }
 
   public void prune() {
-    if (!config.getExpireAfterWrite().isZero()) {
-      store.forEachEntry(
-          c -> {
-            if (memLoader.expired(c.value().get().getCreated())) {
-              hotEntries.remove(c.key().get().getValue());
-              c.context().remove(c);
-            }
-          });
+    Duration expireAfterWrite = config.getExpireAfterWrite();
+    if (!expireAfterWrite.isZero()) {
+      long maxHistoryTimestamp = expireAfterWrite.toMillis();
+      store
+          .keysHistory()
+          .forEachEntry(
+              System.currentTimeMillis() - maxHistoryTimestamp,
+              key -> {
+                if (store.containsKey(key)) {
+                  hotEntries.remove(key.getValue());
+                  store.remove(key);
+                }
+              });
     }
 
     if (runningOutOfFreeSpace()) {
