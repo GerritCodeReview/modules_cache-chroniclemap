@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eebbf52_6c2ebd1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-09T02:18:14Z",
+      "side": 1,
+      "message": "It is still a prototype without persistent, however it works and passes the tests, which is promising 👍",
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
