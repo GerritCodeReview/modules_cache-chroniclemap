@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "874d2ad3_e9eca6b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-11T23:33:25Z",
+      "side": 1,
+      "message": "As part of this change. Let me mark it as WIP because it is really the current status.",
+      "parentUuid": "54987665_935e2745",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9eebbf52_6c2ebd1d",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-10-11T18:38:43Z",
       "side": 1,
       "message": "This contains TimedValues, why naming this timedKeys?",
+      "range": {
+        "startLine": 22,
+        "startChar": 53,
+        "endLine": 22,
+        "endChar": 62
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63d37ac3_1c163cff",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-11T23:33:25Z",
+      "side": 1,
+      "message": "Because is keys with Timestamp associated. I\u0027ve \"reused\" the TimedValue\u003c\u003e class for that, but possibly I should call it just Timed\u003c\u003e",
+      "parentUuid": "8f1b8617_82e63450",
       "range": {
         "startLine": 22,
         "startChar": 53,
