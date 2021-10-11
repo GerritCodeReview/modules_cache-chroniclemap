@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "54987665_935e2745",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "Are you planning to integrate this as part of this CR or have it as a follow up?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9eebbf52_6c2ebd1d",
@@ -14,6 +37,184 @@
       "writtenOn": "2021-10-09T02:18:14Z",
       "side": 1,
       "message": "It is still a prototype without persistent, however it works and passes the tests, which is promising 👍",
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5449a43b_a9c17e18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "I think overall looks good, I think it could be a viable solution.\nAny chance to add some tests to check the behaviour of the history?",
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f1b8617_82e63450",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "This contains TimedValues, why naming this timedKeys?",
+      "range": {
+        "startLine": 22,
+        "startChar": 53,
+        "endLine": 22,
+        "endChar": 62
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76d5ab6a_5a5c10c5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "nit: this is unused, consider removing",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 3
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9b20127_5ea1630c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "nit: this is unused, consider removing",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9e81ed9_7b2f25e1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "I thought this method executed `action` as-long-as entries are older than `maxTimeStamp`.\n\nBut this is not the case: it is also destructing `timedKeys` as it goes.\n\n\nCalling this twice would produce different results for example\n```\n.forEachEntry(..., System.out::println);\n```\n\nWe only use this for pruning, so in that context does what we want, but could not be used generically as the name suggests.\n\nI think we should make it less generic, or make it more explicit that it does not just execute action for each entry.",
+      "range": {
+        "startLine": 36,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 19
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7aa0cc7_87fe6a72",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "Do we need to unconditionally instantiate a ChronicleMapStoreWithHistory.\n\nIf maxAge (expireAfterWrite) was negative we wouldn\u0027t need the additional FIFO queue, and no pruning would be required.\n\nShould we fall back to return the vanilla ChronicleMap, in such case?",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 53
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d527ba05_6c033930",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStoreWithHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "2021",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a59a27e2_0d2f40e8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStoreWithHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-10-11T18:38:43Z",
+      "side": 1,
+      "message": "This is not taking care of removing the relevant entry from the history, which makes sense, because we cannot afford to scan it and updating, just for removal.\n\nDoes this mean however, that we will end up with potential stale entries in the history that just rely on prune() to be removed?\n\nit will take up to ($expireAfterWrite + $pruneScheduleFrequency) for such entry to be removed from history.\n\nIs this acceptable? I believe this should at least be documented.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 36
+      },
       "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
