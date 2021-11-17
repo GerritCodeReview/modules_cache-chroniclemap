@@ -49,7 +49,8 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
     String result = adminSshSession.exec(cmd);
 
     adminSshSession.assertSuccess();
-    assertThat(result).contains("[cache \"diff\"]\n" + "\tmaxEntries = 1\n");
+    assertThat(result).contains("[cache \"git_file_diff\"]\n" + "\tmaxEntries = 1\n");
+    assertThat(result).contains("[cache \"gerrit_file_diff\"]\n" + "\tmaxEntries = 2\n");
     assertThat(result).contains("[cache \"accounts\"]\n" + "\tmaxEntries = 4\n");
     assertThat(result).contains("[cache \"diff_summary\"]\n" + "\tmaxEntries = 1\n");
     assertThat(result).contains("[cache \"persisted_projects\"]\n" + "\tmaxEntries = 3\n");
@@ -68,7 +69,8 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
             "WARN: Cache diff_intraline is empty, skipping.",
             "WARN: Cache change_kind is empty, skipping.",
             "WARN: Cache diff_summary is empty, skipping.",
-            "WARN: Cache diff is empty, skipping.",
+            "WARN: Cache gerrit_file_diff is empty, skipping.",
+            "WARN: Cache git_file_diff is empty, skipping.",
             "WARN: Cache pure_revert is empty, skipping.",
             "WARN: Cache git_tags is empty, skipping.");
     String result = adminSshSession.exec(cmd);
@@ -87,7 +89,8 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
             "WARN: Cache diff_intraline is empty, skipping.",
             "WARN: Cache change_kind is empty, skipping.",
             "WARN: Cache diff_summary is empty, skipping.",
-            "WARN: Cache diff is empty, skipping.",
+            "WARN: Cache gerrit_file_diff is empty, skipping.",
+            "WARN: Cache git_file_diff is empty, skipping.",
             "WARN: Cache pure_revert is empty, skipping.",
             "WARN: Cache git_tags is empty, skipping.");
     String result = adminSshSession.exec(cmd);

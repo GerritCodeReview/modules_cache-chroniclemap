@@ -59,7 +59,8 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   private static final String SSH_CMD = "cache-chroniclemap auto-adjust-caches";
   private static final String REST_CMD = "/plugins/cache-chroniclemap/auto-adjust-caches";
   private static final String GROUPS_BYUUID_PERSISTED = "groups_byuuid_persisted";
-  private static final String DIFF = "diff";
+  private static final String GERRIT_FILE_DIFF = "gerrit_file_diff";
+  private static final String GIT_FILE_DIFF = "git_file_diff";
   private static final String DIFF_SUMMARY = "diff_summary";
   private static final String ACCOUNTS = "accounts";
   private static final String PERSISTED_PROJECTS = "persisted_projects";
@@ -71,7 +72,13 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   private static final Function<String, Boolean> MATCH_ALL = (n) -> true;
 
   private static final ImmutableList<String> EXPECTED_CACHES =
-      ImmutableList.of(GROUPS_BYUUID_PERSISTED, DIFF, DIFF_SUMMARY, ACCOUNTS, PERSISTED_PROJECTS);
+      ImmutableList.of(
+          GROUPS_BYUUID_PERSISTED,
+          GERRIT_FILE_DIFF,
+          GIT_FILE_DIFF,
+          DIFF_SUMMARY,
+          ACCOUNTS,
+          PERSISTED_PROJECTS);
 
   @Inject private SitePaths sitePaths;
 

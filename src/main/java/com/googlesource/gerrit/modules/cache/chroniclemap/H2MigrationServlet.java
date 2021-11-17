@@ -42,8 +42,10 @@ import com.google.gerrit.server.patch.DiffSummary;
 import com.google.gerrit.server.patch.DiffSummaryKey;
 import com.google.gerrit.server.patch.IntraLineDiff;
 import com.google.gerrit.server.patch.IntraLineDiffKey;
-import com.google.gerrit.server.patch.PatchList;
-import com.google.gerrit.server.patch.PatchListKey;
+import com.google.gerrit.server.patch.filediff.FileDiffCacheKey;
+import com.google.gerrit.server.patch.filediff.FileDiffOutput;
+import com.google.gerrit.server.patch.gitfilediff.GitFileDiff;
+import com.google.gerrit.server.patch.gitfilediff.GitFileDiffCacheKey;
 import com.google.gerrit.server.query.change.ConflictKey;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -104,7 +106,9 @@ public class H2MigrationServlet extends HttpServlet {
       @Named("git_tags") PersistentCacheDef<String, TagSetHolder> gitTagsCacheDef,
       @Named("change_notes")
           PersistentCacheDef<ChangeNotesCache.Key, ChangeNotesState> changeNotesCacheDef,
-      @Named("diff") PersistentCacheDef<PatchListKey, PatchList> diffCacheDef,
+      @Named("gerrit_file_diff")
+          PersistentCacheDef<FileDiffCacheKey, FileDiffOutput> gerritFileDiffDef,
+      @Named("git_file_diff") PersistentCacheDef<GitFileDiffCacheKey, GitFileDiff> gitFileDiffDef,
       @Named("diff_intraline")
           PersistentCacheDef<IntraLineDiffKey, IntraLineDiff> diffIntraLineCacheDef,
       @Named("diff_summary") PersistentCacheDef<DiffSummaryKey, DiffSummary> diffSummaryCacheDef,
@@ -126,7 +130,8 @@ public class H2MigrationServlet extends HttpServlet {
                 pureRevertCacheDef,
                 gitTagsCacheDef,
                 changeNotesCacheDef,
-                diffCacheDef,
+                gerritFileDiffDef,
+                gitFileDiffDef,
                 diffIntraLineCacheDef,
                 diffSummaryCacheDef,
                 persistedProjectsCacheDef,
