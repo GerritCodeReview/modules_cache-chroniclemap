@@ -30,6 +30,7 @@ import org.junit.Test;
 @UseLocalDisk
 public class ChronicleMapCacheIT extends AbstractDaemonTest {
 
+  private static final int ZERO_INMEMORY_CACHE = 0;
   @Inject PersistentCacheFactory persistentCacheFactory;
 
   @Override
@@ -47,7 +48,7 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
     final int negativeDiskLimit = -1;
     final Cache<String, String> cache =
         persistentCacheFactory.build(
-            new TestPersistentCacheDef("foo", null, negativeDiskLimit), CacheBackend.CAFFEINE);
+            new TestPersistentCacheDef("foo", null, negativeDiskLimit, 0), CacheBackend.CAFFEINE);
 
     assertThat(cache.getClass().getSimpleName()).isEqualTo("CaffeinatedGuavaCache");
   }
@@ -57,7 +58,8 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
     final int positiveDiskLimit = 1024;
     assertThat(
             persistentCacheFactory.build(
-                new TestPersistentCacheDef("foo", null, positiveDiskLimit), CacheBackend.CAFFEINE))
+                new TestPersistentCacheDef("foo", null, positiveDiskLimit, ZERO_INMEMORY_CACHE),
+                CacheBackend.CAFFEINE))
         .isInstanceOf(ChronicleMapCacheImpl.class);
   }
 
