@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +56,8 @@ public class AutoAdjustCachesServlet extends HttpServlet {
         Optional.ofNullable(req.getParameter("dry-run"))
             .or(() -> Optional.ofNullable(req.getParameter("d")))
             .isPresent());
+
+    autoAdjustCachesEngine.addCacheNames(Arrays.asList(req.getParameterValues("CACHE_NAME")));
 
     try {
       Config outputChronicleMapConfig = autoAdjustCachesEngine.run(null);
