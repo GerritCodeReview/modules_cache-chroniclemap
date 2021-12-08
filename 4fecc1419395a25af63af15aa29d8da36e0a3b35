@@ -34,6 +34,24 @@
       "parentUuid": "8f675746_29541840",
       "revId": "4fecc1419395a25af63af15aa29d8da36e0a3b35",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d531705e_637873f1",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-08T23:57:16Z",
+      "side": 1,
+      "message": "Done with Change-Id: I90842baa17d3",
+      "parentUuid": "60859ca9_9b002b67",
+      "revId": "4fecc1419395a25af63af15aa29d8da36e0a3b35",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
