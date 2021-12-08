@@ -27,7 +27,10 @@ import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
@@ -47,6 +50,7 @@ public class AutoAdjustCaches {
   private final AdministerCachePermission adminCachePermission;
 
   private boolean dryRun;
+  private Set<String> cacheNames = new HashSet<>();
 
   @Inject
   AutoAdjustCaches(
@@ -67,6 +71,10 @@ public class AutoAdjustCaches {
 
   public void setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
+  }
+
+  public void addCacheNames(List<String> cacheNames) {
+    this.cacheNames.addAll(cacheNames);
   }
 
   protected Config run(@Nullable ProgressMonitor optionalProgressMonitor)
@@ -228,6 +236,7 @@ public class AutoAdjustCaches {
             pair ->
                 pair.getValue() instanceof ChronicleMapCacheImpl
                     && ((ChronicleMapCacheImpl) pair.getValue()).diskStats().size() > 0)
+        .filter(pair -> cacheNames.isEmpty() ? true : cacheNames.contains(pair.getKey()))
         .collect(
             Collectors.toMap(
                 ImmutablePair::getKey, p -> (ChronicleMapCacheImpl<Object, Object>) p.getValue()));
