@@ -135,6 +135,19 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void shouldCreateNewCacheFileForSingleDiffCache() throws Exception {
+    createChange();
+
+    adminSshSession.exec(SSH_CMD + " " + DIFF);
+
+    adminSshSession.assertSuccess();
+    Set<String> tunedCaches =
+        tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*"));
+
+    assertThat(tunedCaches.size()).isEqualTo(1);
+  }
+
+  @Test
   @GerritConfig(name = "cache.test_cache.avgKeySize", value = "207")
   @GerritConfig(name = "cache.test_cache.avgValueSize", value = "207")
   public void shouldNotRecreateTestCacheFileWhenAlreadyTuned() throws Exception {

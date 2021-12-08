@@ -19,8 +19,10 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.sshd.SshCommand;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Arrays;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.TextProgressMonitor;
+import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 public class AutoAdjustCachesCommand extends SshCommand {
@@ -36,6 +38,16 @@ public class AutoAdjustCachesCommand extends SshCommand {
       usage = "Calculate the average key and value size, but do not migrate the data.")
   public void setDryRun(boolean dryRun) {
     autoAdjustCachesEngine.setDryRun(dryRun);
+  }
+
+  @Argument(
+      index = 0,
+      required = false,
+      multiValued = true,
+      metaVar = "CACHE_NAME",
+      usage = "name of cache to be adjusted")
+  public void setCacheName(String cacheName) {
+    autoAdjustCachesEngine.addCacheNames(Arrays.asList(cacheName));
   }
 
   @Inject
