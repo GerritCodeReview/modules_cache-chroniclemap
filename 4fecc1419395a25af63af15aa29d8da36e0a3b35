@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f675746_29541840",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-12-08T23:09:07Z",
+      "side": 1,
+      "message": "what about a similar test for the REST API as well? Even in a followup",
+      "revId": "4fecc1419395a25af63af15aa29d8da36e0a3b35",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
