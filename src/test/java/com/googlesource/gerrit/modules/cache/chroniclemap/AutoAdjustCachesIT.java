@@ -196,6 +196,19 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     assertThat(tunedFileNamesSet(MATCH_ALL)).isNotEmpty();
   }
 
+  @Test
+  public void shouldAllowTuningOfSingleDiffCacheOverRestForAdmin() throws Exception {
+    createChange();
+
+    RestResponse resp = adminRestSession.put(REST_CMD + "?CACHE_NAME=" + DIFF);
+
+    resp.assertCreated();
+
+    assertThat(configResult(resp.getEntityContent(), null).getSubsections("cache")).isNotEmpty();
+    assertThat(tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*")))
+        .hasSize(1);
+  }
+
   private Config configResult(String result, @Nullable String configHeader)
       throws ConfigInvalidException {
     Config configResult = new Config();
