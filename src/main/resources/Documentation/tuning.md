@@ -148,7 +148,7 @@ INFO  com.google.gerrit.server.plugins.PluginLoader : Loaded plugin cache-chroni
 * You can now run an the tuning command:
 
 ```bash
-ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run] [cache-name]
+ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run] [--force] [cache-name]
 ```
 
 * You can also use the REST-API:
@@ -159,12 +159,18 @@ PUT /plugins/cache-chroniclemap/auto-adjust-caches
 
 * `--dry-run` or `-d` (SSH), `?dry-run` or `?d` (REST-API) optional parameter
 
+  Calculate the average key and value size, but do not migrate current cache
+  data into new files.
+
+* `--force` or `-f` (SSH), `?force` or `?d` (REST-API) optional parameter
+
+  Force the migration of the current cache data into new files, even though
+  the average key and value size do not need adjustment. Typically needed when
+  the cache needs to be expanded into a new pre-allocated file.
+
 * `cache-name` (SSH), `?CACHE_NAME=cache-name` (REST-API) optional restriction of the caches
   to analyze and auto-tune. The parameter can be repeated multiple times for analyzing
   multiple caches. By default, analyze and adjust all persistent caches.
-
-Calculate the average key and value size, but do not migrate current cache
-data into new files
 
 For each chronicle-map cache that needs tuning (i.e. `foo_1.dat` file) in
 the `cache` directory, a new one will be created (i.e. `foo_1_tuned_<timestamp>.dat`).

@@ -50,6 +50,7 @@ public class AutoAdjustCaches {
   private final AdministerCachePermission adminCachePermission;
 
   private boolean dryRun;
+  private boolean force;
   private Set<String> cacheNames = new HashSet<>();
 
   @Inject
@@ -71,6 +72,14 @@ public class AutoAdjustCaches {
 
   public void setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
+  }
+
+  public boolean isForce() {
+    return force;
+  }
+
+  public void setForce(boolean force) {
+    this.force = force;
   }
 
   public void addCacheNames(List<String> cacheNames) {
@@ -107,7 +116,8 @@ public class AutoAdjustCaches {
 
         ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
 
-        if (currCacheConfig.getAverageKeySize() == averageKeySize
+        if (!force
+            && currCacheConfig.getAverageKeySize() == averageKeySize
             && currCacheConfig.getAverageValueSize() == averageValueSize) {
           continue;
         }

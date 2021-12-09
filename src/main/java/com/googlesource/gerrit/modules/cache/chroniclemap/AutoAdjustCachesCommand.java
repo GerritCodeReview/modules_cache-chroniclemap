@@ -40,6 +40,14 @@ public class AutoAdjustCachesCommand extends SshCommand {
     autoAdjustCachesEngine.setDryRun(dryRun);
   }
 
+  @Option(
+      name = "--force",
+      aliases = {"-f"},
+      usage = "Force migration of all the data, even if average key and value size do not change.")
+  public void setForce(boolean force) {
+    autoAdjustCachesEngine.setForce(force);
+  }
+
   @Argument(
       index = 0,
       required = false,
