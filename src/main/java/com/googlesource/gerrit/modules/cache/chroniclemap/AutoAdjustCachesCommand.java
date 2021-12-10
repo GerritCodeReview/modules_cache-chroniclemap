@@ -20,6 +20,7 @@ import com.google.gerrit.sshd.SshCommand;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.kohsuke.args4j.Argument;
@@ -38,6 +39,14 @@ public class AutoAdjustCachesCommand extends SshCommand {
       usage = "Calculate the average key and value size, but do not migrate the data.")
   public void setDryRun(boolean dryRun) {
     autoAdjustCachesEngine.setDryRun(dryRun);
+  }
+
+  @Option(
+      name = "--max-entries",
+      aliases = {"-m"},
+      usage = "The number of entries that the new tuned cache is going to hold.")
+  public void setMaxEntries(long maxEntries) {
+    autoAdjustCachesEngine.setOptionalMaxEntries(Optional.of(maxEntries));
   }
 
   @Argument(
