@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8df12e1f_a4db1ae9",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-10T21:14:04Z",
+      "side": 1,
+      "message": "I don\u0027t believe this is correct: we would risk to double the cache size regardless, which is a wasteful diverging behaviour.\n\nThe correct formula should be:\n\n    long currMaxEntries \u003d currCache.getConfig().getMaxEntries();\n    long currFreeEntries \u003d currMaxEntries * 100 / currCache.getStore().percentageFreeSpace();\n    return getOptionalMaxEntries()\n        .orElse(\n            Math.max(\n                currMaxEntries,\n                (currMaxEntries - currFreeEntries) * DEFAULT_MAX_ENTRIES_MULTIPLIER));",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 94
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8636bcaf_6d5ce12e",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-10T21:14:04Z",
+      "side": 1,
+      "message": "This is incorrect: it would raise the number of max entries only if the current utilisation is over 50%",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 36
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b892806_4e9614ca",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-10T21:14:04Z",
+      "side": 1,
+      "message": "using",
+      "range": {
+        "startLine": 176,
+        "startChar": 62,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c8f103a_8713f919",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-10T21:14:04Z",
+      "side": 1,
+      "message": "This is incorrect: it should not have changed unless there was over 50% of the entries used in cache.",
+      "range": {
+        "startLine": 119,
+        "startChar": 21,
+        "endLine": 119,
+        "endChar": 41
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
