@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
+import net.openhft.chronicle.map.VanillaChronicleMap;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -391,5 +392,17 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public void close() {
     store.close();
+  }
+
+  @SuppressWarnings("rawtypes")
+  public double percentageUsedAutoResizes() {
+    VanillaChronicleMap vanillaStore = (VanillaChronicleMap) store;
+    double maxResizes = config.getMaxBloatFactor() * vanillaStore.actualSegments;
+    long usedResizes = vanillaStore.globalMutableState().getExtraTiersInUse();
+    return usedResizes * 100 / maxResizes;
+  }
+
+  public String name() {
+    return store.name();
   }
 }
