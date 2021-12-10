@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
+import net.openhft.chronicle.map.VanillaChronicleMap;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -391,5 +392,35 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public void close() {
     store.close();
+  }
+
+  @SuppressWarnings("rawtypes")
+  public double percentageUsedAutoResizes() {
+    /*
+     * Chronicle-map already exposes the number of _remaining_ auto-resizes, but
+     * this is an absolute value, and it is not enough to understand the
+     * percentage of auto-resizes that have been utilized.
+     *
+     * For that, we fist need to understand the _maximum_ number of possible
+     * resizes (inclusive of the resizes allowed by the max-bloat factor).
+     * This information is exposed at low level, by the VanillaChronicleMap,
+     * which has access to the number of allocated segments.
+     *
+     * So we proceed as follows:
+     *
+     * Calculate the maximum number of segments by multiplying the allocated
+     * segments (`actualSegments`) by the configured max-bloat-factor.
+     *
+     * The ratio between this value and the _current_ segment utilization
+     * (`getExtraTiersInUse`) shows the overall percentage.
+     */
+    VanillaChronicleMap vanillaStore = (VanillaChronicleMap) store;
+    double maxResizes = config.getMaxBloatFactor() * vanillaStore.actualSegments;
+    long usedResizes = vanillaStore.globalMutableState().getExtraTiersInUse();
+    return usedResizes * 100 / maxResizes;
+  }
+
+  public String name() {
+    return store.name();
   }
 }
