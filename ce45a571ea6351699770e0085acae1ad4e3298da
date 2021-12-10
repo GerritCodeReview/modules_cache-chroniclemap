@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba997c27_23dc3c97",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-10T23:23:00Z",
+      "side": 1,
+      "message": "True, then the most accurate measure is:\n\n    long currMaxEntries \u003d currCache.getConfig().getMaxEntries();\n    long currEntries \u003d currCache.getStore().entrySet().size();\n    long newMaxEntries \u003d\n        getOptionalMaxEntries()\n            .orElse(Math.max(currMaxEntries, currEntries * DEFAULT_MAX_ENTRIES_MULTIPLIER));\n            \nBy getting the size of the entrySet of the underlying store, we get exactly the number of items that are currently in the cache, including the expansions that happened.\n\nWDYT?",
+      "parentUuid": "79ac3b12_45ee2b7d",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 94
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8636bcaf_6d5ce12e",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 2
