@@ -14,22 +14,23 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.checkAcceptHeader;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.setResponse;
-
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
+import org.eclipse.jgit.lib.Config;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.eclipse.jgit.lib.Config;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
+
+import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.checkAcceptHeader;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.HttpServletOps.setResponse;
 
 @Singleton
 public class AutoAdjustCachesServlet extends HttpServlet {
@@ -56,6 +57,11 @@ public class AutoAdjustCachesServlet extends HttpServlet {
         Optional.ofNullable(req.getParameter("dry-run"))
             .or(() -> Optional.ofNullable(req.getParameter("d")))
             .isPresent());
+
+    autoAdjustCachesEngine.setOptionalMaxEntries(
+        Optional.ofNullable(req.getParameter("max-entries"))
+            .or(() -> Optional.ofNullable(req.getParameter("m")))
+            .map(Long::parseLong));
 
     String[] cacheNames = req.getParameterValues("CACHE_NAME");
     if (cacheNames != null) {

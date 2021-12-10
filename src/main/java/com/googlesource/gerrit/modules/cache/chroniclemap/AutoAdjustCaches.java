@@ -13,8 +13,6 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.getCacheDir;
-
 import com.google.common.cache.Cache;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
@@ -24,25 +22,31 @@ import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.NullProgressMonitor;
 import org.eclipse.jgit.lib.ProgressMonitor;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
+
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.getCacheDir;
+
 public class AutoAdjustCaches {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   protected static final String CONFIG_HEADER = "__CONFIG__";
   protected static final String TUNED_INFIX = "_tuned_";
+
+  protected static final Integer DEFAULT_MAX_ENTRIES_MULTIPLIER = 2;
 
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final ChronicleMapCacheConfig.Factory configFactory;
@@ -50,6 +54,7 @@ public class AutoAdjustCaches {
   private final AdministerCachePermission adminCachePermission;
 
   private boolean dryRun;
+  private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
 
   @Inject
@@ -71,6 +76,14 @@ public class AutoAdjustCaches {
 
   public void setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
+  }
+
+  public Optional<Long> getOptionalMaxEntries() {
+    return optionalMaxEntries;
+  }
+
+  public void setOptionalMaxEntries(Optional<Long> maxEntries) {
+    this.optionalMaxEntries = maxEntries;
   }
 
   public void addCacheNames(List<String> cacheNames) {
@@ -106,21 +119,24 @@ public class AutoAdjustCaches {
         long averageValueSize = avgSizes.getValue();
 
         ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
+        long newMaxEntries = newMaxEntries(currCache.getConfig().getMaxEntries());
 
         if (currCacheConfig.getAverageKeySize() == averageKeySize
-            && currCacheConfig.getAverageValueSize() == averageValueSize) {
+            && currCacheConfig.getAverageValueSize() == averageValueSize
+            && currCacheConfig.getMaxEntries() == newMaxEntries) {
           continue;
         }
 
         ChronicleMapCacheConfig newChronicleMapCacheConfig =
-            makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
+            makeChronicleMapConfig(
+                currCache.getConfig(), newMaxEntries, averageKeySize, averageValueSize);
 
         updateOutputConfig(
             outputChronicleMapConfig,
             cacheName,
             averageKeySize,
             averageValueSize,
-            currCache.getConfig().getMaxEntries(),
+            newMaxEntries,
             currCache.getConfig().getMaxBloatFactor());
 
         if (!dryRun) {
@@ -184,6 +200,7 @@ public class AutoAdjustCaches {
 
   private ChronicleMapCacheConfig makeChronicleMapConfig(
       ChronicleMapCacheConfig currentChronicleMapConfig,
+      long newMaxEntries,
       long averageKeySize,
       long averageValueSize) {
 
@@ -192,10 +209,14 @@ public class AutoAdjustCaches {
         resolveNewFile(currentChronicleMapConfig.getPersistedFile().getName()),
         currentChronicleMapConfig.getExpireAfterWrite(),
         currentChronicleMapConfig.getRefreshAfterWrite(),
-        currentChronicleMapConfig.getMaxEntries(),
+        newMaxEntries,
         averageKeySize,
         averageValueSize,
         currentChronicleMapConfig.getMaxBloatFactor());
+  }
+
+  private long newMaxEntries(long currentMaxEntries) {
+    return getOptionalMaxEntries().orElse(currentMaxEntries * DEFAULT_MAX_ENTRIES_MULTIPLIER);
   }
 
   private File resolveNewFile(String currentFileName) {

@@ -14,12 +14,6 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.TUNED_INFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
-
 import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -37,6 +31,10 @@ import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import org.eclipse.jgit.errors.ConfigInvalidException;
+import org.eclipse.jgit.lib.Config;
+import org.junit.Test;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -44,9 +42,13 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.eclipse.jgit.errors.ConfigInvalidException;
-import org.eclipse.jgit.lib.Config;
-import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.DEFAULT_MAX_ENTRIES_MULTIPLIER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.TUNED_INFIX;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
 
 @Sandboxed
 @UseLocalDisk
@@ -115,9 +117,25 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     for (String cache : EXPECTED_CACHES) {
       assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
-          .isEqualTo(maxEntriesFor(cache));
+          .isEqualTo(maxEntriesFor(cache) * DEFAULT_MAX_ENTRIES_MULTIPLIER);
       assertThat(configResult.getLong("cache", cache, "maxBloatFactor", 0))
           .isEqualTo(maxBloatFactorFor(cache));
+    }
+  }
+
+  @Test
+  public void shouldHonourMaxEntriesParameter() throws Exception {
+    createChange();
+    Long wantedMaxEntries = 100L;
+
+    String result =
+        adminSshSession.exec(String.format("%s --max-entries %s", SSH_CMD, wantedMaxEntries));
+
+    adminSshSession.assertSuccess();
+    Config configResult = configResult(result, CONFIG_HEADER);
+
+    for (String cache : EXPECTED_CACHES) {
+      assertThat(configResult.getLong("cache", cache, "maxEntries", 0)).isEqualTo(wantedMaxEntries);
     }
   }
 
@@ -153,7 +171,11 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldNotRecreateTestCacheFileWhenAlreadyTuned() throws Exception {
     testCache.get(TEST_CACHE_KEY_100_CHARS);
 
-    String tuneResult = adminSshSession.exec(SSH_CMD);
+    String tuneResult =
+        adminSshSession.exec(
+            String.format(
+                "%s --max-entries %s",
+                SSH_CMD, ChronicleMapCacheConfig.Defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
     adminSshSession.assertSuccess();
 
     assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
@@ -194,6 +216,21 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     assertThat(configResult(resp.getEntityContent(), null).getSubsections("cache")).isNotEmpty();
     assertThat(tunedFileNamesSet(MATCH_ALL)).isNotEmpty();
+  }
+
+  @Test
+  public void shouldHonourMaxEntriesOverRestForAdmin() throws Exception {
+    Long wantedMaxEntries = 100L;
+
+    RestResponse resp =
+        adminRestSession.put(String.format("%s?max-entries=%s", REST_CMD, wantedMaxEntries));
+
+    resp.assertCreated();
+
+    assertThat(
+            configResult(resp.getEntityContent(), null)
+                .getLong("cache", ACCOUNTS, "maxEntries", 0L))
+        .isEqualTo(wantedMaxEntries);
   }
 
   @Test
