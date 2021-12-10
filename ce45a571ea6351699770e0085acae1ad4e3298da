@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79ac3b12_45ee2b7d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-10T22:13:22Z",
+      "side": 1,
+      "message": "I am not sure this is right, because it\u0027s not considering the maxBloatFactor.\n\nThe percentageFreeSpace [1] value is a function of maxBloatFactor too and it will _increase_ when the cache expands.\n\nSo that that PercentageFreeSpace might go from 2% to, say 80%, on a cache that just expanded.\n\nThe right algorithm should also factor in how many times the cache expanded, but I am not sure that metric is available.\n\nI think we need to test this behaviour first to make sure it does what we want.\n\nWDYT?\n\n[1]https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#percentageFreeSpace--",
+      "parentUuid": "8df12e1f_a4db1ae9",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 94
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8636bcaf_6d5ce12e",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 2
