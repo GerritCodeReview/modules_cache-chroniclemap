@@ -12,7 +12,7 @@ If you have not migrated to chronicle-map yet, then follow instructions on how
 to analyze your existing H2 caches [here](#analyze-h2-caches).
 
 In case you have already migrated to chronicle-map please follow instructions on
-how to further tune existing .dat caches [here](#tune-chronicle-map-caches).
+how to further tune existing .dat caches [here](#auto-adjust-chronicle-map-caches).
 
 ## Analyze H2 caches
 
