@@ -159,12 +159,26 @@ PUT /plugins/cache-chroniclemap/auto-adjust-caches
 
 * `--dry-run` or `-d` (SSH), `?dry-run` or `?d` (REST-API) optional parameter
 
+Calculate the average key and value size, but do not migrate current cache
+data into new files
+
+* `--max-entries` or `-m` (SSH), `?max-entries` or `?m` (REST-API) optional parameter
+
+The number of entries the tuned cache file is going to hold. This is typically
+useful when the auto-tuning is executed with the intent to increase the number
+of entries that the current cache can hold. When not specified, the newly
+generated cache will increase the current number of entries by a factor of *2*.
+
+To avoid increasing the number of max entries during auto-tuning, the current
+value should be passed _explicitly_.
+
+Note that this parameter will be used globally across all caches, so if you want
+to increase the size of a particular cache only you should be ussing this
+together with the `cache-name` parameter.
+
 * `cache-name` (SSH), `?CACHE_NAME=cache-name` (REST-API) optional restriction of the caches
   to analyze and auto-tune. The parameter can be repeated multiple times for analyzing
   multiple caches. By default, analyze and adjust all persistent caches.
-
-Calculate the average key and value size, but do not migrate current cache
-data into new files
 
 For each chronicle-map cache that needs tuning (i.e. `foo_1.dat` file) in
 the `cache` directory, a new one will be created (i.e. `foo_1_tuned_<timestamp>.dat`).
