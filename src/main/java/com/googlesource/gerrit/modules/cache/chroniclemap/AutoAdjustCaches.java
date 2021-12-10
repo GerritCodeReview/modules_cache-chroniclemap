@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -44,12 +45,15 @@ public class AutoAdjustCaches {
   protected static final String CONFIG_HEADER = "__CONFIG__";
   protected static final String TUNED_INFIX = "_tuned_";
 
+  protected static final Integer DEFAULT_MAX_ENTRIES_MULTIPLIER = 2;
+
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final Path cacheDir;
   private final AdministerCachePermission adminCachePermission;
 
   private boolean dryRun;
+  private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
 
   @Inject
@@ -71,6 +75,14 @@ public class AutoAdjustCaches {
 
   public void setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
+  }
+
+  public Optional<Long> getOptionalMaxEntries() {
+    return optionalMaxEntries;
+  }
+
+  public void setOptionalMaxEntries(Optional<Long> maxEntries) {
+    this.optionalMaxEntries = maxEntries;
   }
 
   public void addCacheNames(List<String> cacheNames) {
@@ -106,21 +118,24 @@ public class AutoAdjustCaches {
         long averageValueSize = avgSizes.getValue();
 
         ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
+        long newMaxEntries = newMaxEntries(currCache);
 
         if (currCacheConfig.getAverageKeySize() == averageKeySize
-            && currCacheConfig.getAverageValueSize() == averageValueSize) {
+            && currCacheConfig.getAverageValueSize() == averageValueSize
+            && currCacheConfig.getMaxEntries() == newMaxEntries) {
           continue;
         }
 
         ChronicleMapCacheConfig newChronicleMapCacheConfig =
-            makeChronicleMapConfig(currCache.getConfig(), averageKeySize, averageValueSize);
+            makeChronicleMapConfig(
+                currCache.getConfig(), newMaxEntries, averageKeySize, averageValueSize);
 
         updateOutputConfig(
             outputChronicleMapConfig,
             cacheName,
             averageKeySize,
             averageValueSize,
-            currCache.getConfig().getMaxEntries(),
+            newMaxEntries,
             currCache.getConfig().getMaxBloatFactor());
 
         if (!dryRun) {
@@ -184,6 +199,7 @@ public class AutoAdjustCaches {
 
   private ChronicleMapCacheConfig makeChronicleMapConfig(
       ChronicleMapCacheConfig currentChronicleMapConfig,
+      long newMaxEntries,
       long averageKeySize,
       long averageValueSize) {
 
@@ -192,10 +208,20 @@ public class AutoAdjustCaches {
         resolveNewFile(currentChronicleMapConfig.getPersistedFile().getName()),
         currentChronicleMapConfig.getExpireAfterWrite(),
         currentChronicleMapConfig.getRefreshAfterWrite(),
-        currentChronicleMapConfig.getMaxEntries(),
+        newMaxEntries,
         averageKeySize,
         averageValueSize,
         currentChronicleMapConfig.getMaxBloatFactor());
+  }
+
+  private long newMaxEntries(ChronicleMapCacheImpl<Object, Object> currCache) {
+    long currMaxEntries = currCache.getConfig().getMaxEntries();
+    long currFreeEntries = currMaxEntries * 100 / currCache.getStore().percentageFreeSpace();
+    return getOptionalMaxEntries()
+        .orElse(
+            Math.max(
+                currMaxEntries,
+                (currMaxEntries - currFreeEntries) * DEFAULT_MAX_ENTRIES_MULTIPLIER));
   }
 
   private File resolveNewFile(String currentFileName) {

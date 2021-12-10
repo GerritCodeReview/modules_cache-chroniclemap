@@ -57,6 +57,11 @@ public class AutoAdjustCachesServlet extends HttpServlet {
             .or(() -> Optional.ofNullable(req.getParameter("d")))
             .isPresent());
 
+    autoAdjustCachesEngine.setOptionalMaxEntries(
+        Optional.ofNullable(req.getParameter("max-entries"))
+            .or(() -> Optional.ofNullable(req.getParameter("m")))
+            .map(Long::parseLong));
+
     String[] cacheNames = req.getParameterValues("CACHE_NAME");
     if (cacheNames != null) {
       autoAdjustCachesEngine.addCacheNames(Arrays.asList(cacheNames));
