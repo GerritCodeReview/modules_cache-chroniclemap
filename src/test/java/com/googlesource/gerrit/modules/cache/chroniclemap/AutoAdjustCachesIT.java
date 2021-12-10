@@ -122,6 +122,22 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void shouldHonourMaxEntriesParameter() throws Exception {
+    createChange();
+    Long wantedMaxEntries = 100L;
+
+    String result =
+        adminSshSession.exec(String.format("%s --max-entries %s", SSH_CMD, wantedMaxEntries));
+
+    adminSshSession.assertSuccess();
+    Config configResult = configResult(result, CONFIG_HEADER);
+
+    for (String cache : EXPECTED_CACHES) {
+      assertThat(configResult.getLong("cache", cache, "maxEntries", 0)).isEqualTo(wantedMaxEntries);
+    }
+  }
+
+  @Test
   public void shouldCreateNewCacheFiles() throws Exception {
     createChange();
 
@@ -153,7 +169,11 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   public void shouldNotRecreateTestCacheFileWhenAlreadyTuned() throws Exception {
     testCache.get(TEST_CACHE_KEY_100_CHARS);
 
-    String tuneResult = adminSshSession.exec(SSH_CMD);
+    String tuneResult =
+        adminSshSession.exec(
+            String.format(
+                "%s --max-entries %s",
+                SSH_CMD, ChronicleMapCacheConfig.Defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
     adminSshSession.assertSuccess();
 
     assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
@@ -194,6 +214,21 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     assertThat(configResult(resp.getEntityContent(), null).getSubsections("cache")).isNotEmpty();
     assertThat(tunedFileNamesSet(MATCH_ALL)).isNotEmpty();
+  }
+
+  @Test
+  public void shouldHonourMaxEntriesOverRestForAdmin() throws Exception {
+    Long wantedMaxEntries = 100L;
+
+    RestResponse resp =
+        adminRestSession.put(String.format("%s?max-entries=%s", REST_CMD, wantedMaxEntries));
+
+    resp.assertCreated();
+
+    assertThat(
+            configResult(resp.getEntityContent(), null)
+                .getLong("cache", ACCOUNTS, "maxEntries", 0L))
+        .isEqualTo(wantedMaxEntries);
   }
 
   @Test
