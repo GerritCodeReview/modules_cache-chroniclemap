@@ -27,7 +27,6 @@ import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.client.ChangeKind;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.httpd.WebSessionManager;
-import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.account.CachedAccountDetails;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.proto.Cache;
@@ -223,7 +222,7 @@ public class H2MigrationServlet extends HttpServlet {
           if (chronicleMapConfig.isPresent()) {
             ChronicleMapCacheConfig cacheConfig = chronicleMapConfig.get();
             ChronicleMapCacheImpl<?, ?> chronicleMapCache =
-                new ChronicleMapCacheImpl<>(in, cacheConfig, null, new DisabledMetricMaker());
+                new ChronicleMapCacheImpl<>(in, cacheConfig);
 
             doMigrate(h2CacheFile.get(), in, chronicleMapCache);
             chronicleMapCache.close();
