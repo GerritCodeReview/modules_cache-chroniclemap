@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d0ce363_b0eb8f7b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-13T09:14:01Z",
+      "side": 1,
+      "message": "\u003e True, then the most accurate measure is:\n\u003e \n\u003e     long currMaxEntries \u003d currCache.getConfig().getMaxEntries();\n\u003e     long currEntries \u003d currCache.getStore().entrySet().size();\n\u003e     long newMaxEntries \u003d\n\u003e         getOptionalMaxEntries()\n\u003e             .orElse(Math.max(currMaxEntries, currEntries * DEFAULT_MAX_ENTRIES_MULTIPLIER));\n\u003e             \n\u003e By getting the size of the entrySet of the underlying store, we get exactly the number of items that are currently in the cache, including the expansions that happened.\n\nI don\u0027t think this works either.\nGetting the number of entries in the cache does not necessarily tell you how much the cache is used.\n\nImagine this scenario:\n\n- maxEntries 10\n- maxBloatFactor 3\n- avgKeySize 2048 (2kb)\n- avgValueSize 1024 (1kb)\n\nThis means that if all your keys/values were _exactly_ adhering to those averages, you would have no fragmentation and you would be able to store _exactly_ 10 entries without blowing the cache.\n\nIn this scenario, the algorithm you suggested works.\n\nBut imagine now, more realistically, that you are storing keys/values that are slightly (or even very) different from your estimated averages.\n\nIf you store an entry that is massive, for example, you will burn more space more quickly.\nImagine you have 3 entries in your cache:\n\n1 - (k:7Kb, v: 1kb)\n2 - (k:5Kb, v: 5kb)\n2 - (k:6Kb, v: 4kb)\n\nIn this scenario, the cache is pretty much full even though you have stored much fewer than 10 entries.\n\nSo counting the number of entries in your cache will not necessarily tell you how much your cache is full.\n\nPerhaps we should be looking at `remainingAutoResizing` [1] to figure out the status of the cache.\n\nLet me see if that\u0027s the case.\n\n[1]https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#remainingAutoResizes--",
+      "parentUuid": "ba997c27_23dc3c97",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 94
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8636bcaf_6d5ce12e",
         "filename": "src/main/resources/Documentation/tuning.md",
         "patchSetId": 2
