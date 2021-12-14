@@ -96,6 +96,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33650d9_0035694c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-14T11:50:27Z",
+      "side": 1,
+      "message": "I think I have found a viable solution.\n\nUsing `remainingAutoResizes` does not help because it does not tell what is the MAXIMUM number of possible resizes.\nWe know that when `remainingAutoResizes` drops to zero, we are in trouble, but by just looking at that value we wouldn\u0027t know how much the cache is actually been utilized, including all its possible resizes.\n\nLooking at its definition however [1], we can see that is calculated:\n\n```\nmaxTiers (i.e. maximum number of resizes) - tiersUsed (used number of resizes)\n```\n\nIn turn, the maximum number of available resizes is calculated as [2] \n\n```\nmaxBloatFactor * actualSegments\n```\n\nGiven the above, we can calculate the percentage of cache utilization (inclusive of all possible resizes) by:\n\n```\nusedResizes * 100 / maxResizes;\n```\n\nWhich is what I have implemented in the newest patchset.\n\n\n[1]https://github.com/OpenHFT/Chronicle-Map/blob/ea/src/main/java/net/openhft/chronicle/map/VanillaChronicleMap.java#L277\n\n[2]https://github.com/OpenHFT/Chronicle-Map/blob/ea/src/main/java/net/openhft/chronicle/map/VanillaChronicleMap.java#L270",
+      "parentUuid": "0d0ce363_b0eb8f7b",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 94
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8636bcaf_6d5ce12e",
@@ -109,6 +133,30 @@
       "writtenOn": "2021-12-10T21:14:04Z",
       "side": 1,
       "message": "This is incorrect: it would raise the number of max entries only if the current utilisation is over 50%",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 36
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "023b551f_d36ad59d",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-14T11:50:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8636bcaf_6d5ce12e",
       "range": {
         "startLine": 172,
         "startChar": 0,
@@ -142,6 +190,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc229863_ec6df7d5",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-14T11:50:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b892806_4e9614ca",
+      "range": {
+        "startLine": 176,
+        "startChar": 62,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c8f103a_8713f919",
@@ -155,6 +227,30 @@
       "writtenOn": "2021-12-10T21:14:04Z",
       "side": 1,
       "message": "This is incorrect: it should not have changed unless there was over 50% of the entries used in cache.",
+      "range": {
+        "startLine": 119,
+        "startChar": 21,
+        "endLine": 119,
+        "endChar": 41
+      },
+      "revId": "ce45a571ea6351699770e0085acae1ad4e3298da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98e81f72_d11e8d23",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-14T11:50:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c8f103a_8713f919",
       "range": {
         "startLine": 119,
         "startChar": 21,
