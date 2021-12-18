@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97be6115_97f74501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-18T02:28:51Z",
+      "side": 1,
+      "message": "Looks good to me. Just a suggestion to remember how we ended up with this formula.",
+      "revId": "38ab809893a96090e2c908be9180c76de37fb142",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b6baabd_d5566b8a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-18T02:28:51Z",
+      "side": 1,
+      "message": "This logic is quite complex: why not adding some comments to explain how you ended up with it?",
+      "range": {
+        "startLine": 399,
+        "startChar": 0,
+        "endLine": 402,
+        "endChar": 42
+      },
+      "revId": "38ab809893a96090e2c908be9180c76de37fb142",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
