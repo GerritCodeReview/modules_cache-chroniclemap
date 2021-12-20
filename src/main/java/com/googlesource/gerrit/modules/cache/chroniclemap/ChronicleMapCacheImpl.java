@@ -66,7 +66,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.mem = memLoader.asInMemoryCacheBypass();
 
     ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(new DisabledMetricMaker());
-    metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+    metrics.registerCallBackMetrics(def.name(), this);
   }
 
   ChronicleMapCacheImpl(
@@ -87,7 +87,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.store = store;
 
     ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
-    metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+    metrics.registerCallBackMetrics(def.name(), this);
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
@@ -153,13 +153,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       this.metricMaker = metricMaker;
     }
 
-    <K, V> void registerCallBackMetrics(
-        String name, ChronicleMap<KeyWrapper<K>, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
+    <K, V> void registerCallBackMetrics(String name, ChronicleMapCacheImpl<K, V> cache) {
       String sanitizedName = metricMaker.sanitizeMetricName(name);
       String PERCENTAGE_FREE_SPACE_METRIC =
           "cache/chroniclemap/percentage_free_space_" + sanitizedName;
       String REMAINING_AUTORESIZES_METRIC =
           "cache/chroniclemap/remaining_autoresizes_" + sanitizedName;
+      String MAX_AUTORESIZES_METRIC = "cache/chroniclemap/max_autoresizes_" + sanitizedName;
       String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + sanitizedName;
       String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + sanitizedName;
 
@@ -168,7 +168,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
           Long.class,
           new Description(
               String.format("The amount of free space in the %s cache as a percentage", name)),
-          () -> (long) store.percentageFreeSpace());
+          () -> (long) cache.store.percentageFreeSpace());
 
       metricMaker.newCallbackMetric(
           REMAINING_AUTORESIZES_METRIC,
@@ -176,11 +176,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
           new Description(
               String.format(
                   "The number of times the %s cache can automatically expand its capacity", name)),
-          store::remainingAutoResizes);
+          cache.store::remainingAutoResizes);
 
       metricMaker.newConstantMetric(
           HOT_KEYS_CAPACITY_METRIC,
-          hotEntries.getCapacity(),
+          cache.hotEntries.getCapacity(),
           new Description(
               String.format(
                   "The number of hot cache keys for %s cache that can be kept in memory", name)));
@@ -191,7 +191,15 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
           new Description(
               String.format(
                   "The number of hot cache keys for %s cache that are currently in memory", name)),
-          hotEntries::size);
+          cache.hotEntries::size);
+
+      metricMaker.newConstantMetric(
+          MAX_AUTORESIZES_METRIC,
+          cache.maxAutoResizes(),
+          new Description(
+              String.format(
+                  "The maximum number of times the %s cache can automatically expand its capacity",
+                  name)));
     }
   }
 
@@ -415,9 +423,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
      * (`getExtraTiersInUse`) shows the overall percentage.
      */
     VanillaChronicleMap vanillaStore = (VanillaChronicleMap) store;
-    double maxResizes = config.getMaxBloatFactor() * vanillaStore.actualSegments;
     long usedResizes = vanillaStore.globalMutableState().getExtraTiersInUse();
-    return usedResizes * 100 / maxResizes;
+    return usedResizes * 100 / maxAutoResizes();
+  }
+
+  @SuppressWarnings("rawtypes")
+  public double maxAutoResizes() {
+    return config.getMaxBloatFactor() * ((VanillaChronicleMap) store).actualSegments;
   }
 
   public String name() {
