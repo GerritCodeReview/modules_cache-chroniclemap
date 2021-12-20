@@ -403,6 +403,21 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   @Test
+  public void shouldTriggerMaxAutoResizeMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + testCacheName;
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 2);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", valueSize(cachedValue));
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 3);
+    gerritConfig.save();
+
+    newCacheWithMetrics(testCacheName, cachedValue);
+
+    assertThat(getMetric(maxAutoResizeMetricName).getValue()).isEqualTo(3);
+  }
+
+  @Test
   public void shouldTriggerHotKeysCapacityCacheMetric() throws Exception {
     String cachedValue = UUID.randomUUID().toString();
     int percentageHotKeys = 60;
@@ -487,6 +502,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     String hotKeySizeMetricName = "cache/chroniclemap/hot_keys_size_" + sanitized;
     String percentageFreeMetricName = "cache/chroniclemap/percentage_free_space_" + sanitized;
     String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
+    String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + sanitized;
     String hotKeyCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + sanitized;
 
     newCacheWithMetrics(cacheName, null);
@@ -494,6 +510,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     getMetric(hotKeySizeMetricName);
     getMetric(percentageFreeMetricName);
     getMetric(autoResizeMetricName);
+    getMetric(maxAutoResizeMetricName);
     getMetric(hotKeyCapacityMetricName);
   }
 
