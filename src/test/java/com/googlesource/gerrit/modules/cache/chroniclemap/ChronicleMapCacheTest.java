@@ -355,11 +355,46 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     while (!cache.runningOutOfFreeSpace()) {
       cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
-    assertThat(cache.runningOutOfFreeSpace()).isTrue();
+  }
 
-    cache.prune();
+  @Test
+  public void shouldRecoverWhenPutFailsBecauseEntryIsTooBig() throws Exception {
+    String key = UUID.randomUUID().toString();
+    String value = UUID.randomUUID().toString();
+    int uuidSize = valueSize(value);
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 1);
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 1);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", uuidSize / 2);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize / 2);
+    gerritConfig.save();
 
-    assertThat(cache.runningOutOfFreeSpace()).isFalse();
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithoutLoader();
+
+    cache.put(key, value);
+
+    assertThat(cache.getStore().size()).isEqualTo(0);
+    assertThat(cache.getIfPresent(key)).isNull();
+  }
+
+  @Test
+  public void shouldRecoverWhenPutFailsBecauseCacheCannotExpand() throws Exception {
+    String key = UUID.randomUUID().toString();
+    String value = UUID.randomUUID().toString();
+    int uuidSize = valueSize(value);
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 1);
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 1);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", uuidSize);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithoutLoader();
+
+    cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    cache.put(key, value);
+
+    assertThat(cache.getStore().size()).isEqualTo(2);
+    assertThat(cache.getIfPresent(key)).isNull();
   }
 
   @Test

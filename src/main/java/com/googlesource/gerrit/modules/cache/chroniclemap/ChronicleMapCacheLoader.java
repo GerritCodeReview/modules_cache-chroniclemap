@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheImpl.tryPut;
+
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheStats;
 import com.google.common.flogger.FluentLogger;
@@ -98,7 +100,13 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
         TimedValue<V> loadedValue = new TimedValue<>(loader.get().load(key));
         loadSuccessCount.increment();
         totalLoadTime.add(System.nanoTime() - start);
-        storePersistenceExecutor.execute(() -> store.put(new KeyWrapper<>(key), loadedValue));
+        storePersistenceExecutor.execute(
+            () ->
+                // Note that the load() operation results successful even when tryPut
+                // fails. In other words, we return a loadedValue, even when we
+                // couldn't populate the cache with it, to preserve the functionality
+                // of cache's clients
+                tryPut(store, new KeyWrapper<>(key), loadedValue));
         return loadedValue;
       }
 
@@ -133,8 +141,9 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
         new FutureCallback<V>() {
           @Override
           public void onSuccess(V result) {
-            store.put(new KeyWrapper<>(key), new TimedValue<>(result));
-            loadSuccessCount.increment();
+            if (tryPut(store, new KeyWrapper<>(key), new TimedValue<>(result))) {
+              loadSuccessCount.increment();
+            }
             totalLoadTime.add(System.nanoTime() - start);
           }
 
@@ -175,7 +184,7 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
 
       @Override
       public void put(K key, TimedValue<V> value) {
-        store.put(new KeyWrapper<>(key), value);
+        tryPut(store, new KeyWrapper<>(key), value);
       }
 
       @Override
