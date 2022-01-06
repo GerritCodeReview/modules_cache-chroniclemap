@@ -285,7 +285,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void putUnchecked(Object key, Object value, Timestamp created) {
     TimedValue<?> wrappedValue = new TimedValue<>(value, created.toInstant().toEpochMilli());
     KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
-    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
+    putWrapper(store, (KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
     mem.put((K) key, (TimedValue<V>) wrappedValue);
   }
 
@@ -301,7 +301,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
    */
   @SuppressWarnings("unchecked")
   public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
-    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
+    putWrapper(store, (KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
     mem.put((K) wrappedKey.getValue(), (TimedValue<V>) wrappedValue);
   }
 
@@ -314,8 +314,21 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   void putTimedToStore(K key, TimedValue<V> timedVal) {
     KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
-    store.put(wrappedKey, timedVal);
+    putWrapper(store, wrappedKey, timedVal);
     hotEntries.add(key);
+  }
+
+  static <K, V> void putWrapper(
+      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
+      KeyWrapper<K> wrappedKey,
+      TimedValue<V> timedVal) {
+    try {
+      store.put(wrappedKey, timedVal);
+    } catch (Exception e) {
+      logger.atWarning().withCause(e).log(
+          "[cache %s] Caught exception when inserting entry '%s' in chronicle-map",
+          store.name(), wrappedKey.getValue());
+    }
   }
 
   public void prune() {
