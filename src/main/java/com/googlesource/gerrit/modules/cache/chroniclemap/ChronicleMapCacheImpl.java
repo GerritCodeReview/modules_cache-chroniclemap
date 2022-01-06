@@ -23,6 +23,10 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
+import net.openhft.chronicle.map.ChronicleMap;
+import net.openhft.chronicle.map.ChronicleMapBuilder;
+import net.openhft.chronicle.map.VanillaChronicleMap;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -30,9 +34,6 @@ import java.time.Instant;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
-import net.openhft.chronicle.map.ChronicleMap;
-import net.openhft.chronicle.map.ChronicleMapBuilder;
-import net.openhft.chronicle.map.VanillaChronicleMap;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -285,7 +286,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void putUnchecked(Object key, Object value, Timestamp created) {
     TimedValue<?> wrappedValue = new TimedValue<>(value, created.toInstant().toEpochMilli());
     KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
-    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
+    putWrapper(store, (KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
     mem.put((K) key, (TimedValue<V>) wrappedValue);
   }
 
@@ -301,7 +302,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
    */
   @SuppressWarnings("unchecked")
   public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
-    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
+    putWrapper(store, (KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
     mem.put((K) wrappedKey.getValue(), (TimedValue<V>) wrappedValue);
   }
 
@@ -314,8 +315,34 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   void putTimedToStore(K key, TimedValue<V> timedVal) {
     KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
-    store.put(wrappedKey, timedVal);
+    putWrapper(store, wrappedKey, timedVal);
     hotEntries.add(key);
+  }
+
+  /**
+   * Attempt to put the key/value pair into the chronicle-map cache. Also catches and warns on disk
+   * allocation errors, so that such failures result in non-cached entries rather than throwing.
+   *
+   * @param store the chronicle-map store
+   * @param wrappedKey the wrapped key value
+   * @param timedVal the timed value
+   * @param <K> the type of the wrapped key
+   * @param <V> the type of the timed value
+   * @return true when the value was successfully inserted in chronicle-map, false otherwise
+   */
+  static <K, V> boolean putWrapper(
+      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
+      KeyWrapper<K> wrappedKey,
+      TimedValue<V> timedVal) {
+    try {
+      store.put(wrappedKey, timedVal);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      logger.atWarning().withCause(e).log(
+          "[cache %s] Caught exception when inserting entry '%s' in chronicle-map",
+          store.name(), wrappedKey.getValue());
+      return false;
+    }
+    return true;
   }
 
   public void prune() {
