@@ -95,6 +95,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f3bcd2_123ca4ca",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T17:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "093738fa_8d702bfd",
+      "range": {
+        "startLine": 332,
+        "startChar": 24,
+        "endLine": 332,
+        "endChar": 34
+      },
+      "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89a2b2d3_86ce0149",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T17:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "677ba86a_27a74170",
+      "range": {
+        "startLine": 332,
+        "startChar": 16,
+        "endLine": 332,
+        "endChar": 23
+      },
+      "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f26bae0_d39df099",
@@ -126,6 +174,24 @@
       "side": 1,
       "message": "Sure, let me add another one for completeness.",
       "parentUuid": "4f26bae0_d39df099",
+      "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1b2c6ac_85acc926",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T17:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14a400b3_45741cee",
       "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
