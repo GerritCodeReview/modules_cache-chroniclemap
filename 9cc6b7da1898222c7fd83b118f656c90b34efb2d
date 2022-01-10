@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad767b3f_c7dd4f85",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-10T09:45:15Z",
+      "side": 1,
+      "message": "This would potentially be harmful, if the exception we are throwing isn\u0027t one that can be dealt with by just ignoring it.\n\nAlso, we should communicate back to the caller that the operation has actually failed.",
+      "range": {
+        "startLine": 327,
+        "startChar": 13,
+        "endLine": 327,
+        "endChar": 24
+      },
+      "revId": "9cc6b7da1898222c7fd83b118f656c90b34efb2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
