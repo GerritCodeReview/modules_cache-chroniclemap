@@ -49,6 +49,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "093738fa_8d702bfd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T14:41:08Z",
+      "side": 1,
+      "message": "We explored that path, but a tryPut didn\u0027t really embody the fact that some exceptions will still be thrown.\n\nI am happy to rename it though, tryPut is not any worse than putwrapper.",
+      "parentUuid": "78a79e39_ced896b6",
+      "range": {
+        "startLine": 332,
+        "startChar": 24,
+        "endLine": 332,
+        "endChar": 34
+      },
+      "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "677ba86a_27a74170",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T14:41:08Z",
+      "side": 1,
+      "message": "This is in response to @luca\u0027s comment [1]\n\n`Also, we should communicate back to the caller that the operation has actually failed.`\n\n\n[1]https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/327617/comment/ad767b3f_c7dd4f85/",
+      "parentUuid": "ceafa70f_141fa901",
+      "range": {
+        "startLine": 332,
+        "startChar": 16,
+        "endLine": 332,
+        "endChar": 23
+      },
+      "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f26bae0_d39df099",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
         "patchSetId": 3
@@ -60,6 +108,24 @@
       "writtenOn": "2022-01-10T14:35:43Z",
       "side": 1,
       "message": "Which exception is this test catching? Since we are handling 2 exceptions (`IllegalArgumentException` and `IllegalStateException`), I was expecting 2 tests.\n\nAm I missing something?",
+      "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a400b3_45741cee",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T14:41:08Z",
+      "side": 1,
+      "message": "Sure, let me add another one for completeness.",
+      "parentUuid": "4f26bae0_d39df099",
       "revId": "a5c5b2fae8b74b7f719f6099e02df2da0890aee1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
