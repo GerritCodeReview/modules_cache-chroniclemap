@@ -22,6 +22,30 @@
       },
       "revId": "9cc6b7da1898222c7fd83b118f656c90b34efb2d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b91ddb5_c4241abe",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-10T09:54:56Z",
+      "side": 1,
+      "message": "\u003e This would potentially be harmful, if the exception we are throwing isn\u0027t one that can be dealt with by just ignoring it.\n\nRight, we should catch just non-fatal exceptions here.\nHowever, I don\u0027t think we should tailor this catch only to the specific IllegalArgumentException and IllegalStateException, related to this issue.\n\nI think we want to avoid any non-fatal exception from bubbling up outside the caching layer to avoid breaking APIs.\n\n\u003e \n\u003e Also, we should communicate back to the caller that the operation has actually failed.\n\nSure, I can do, but no caller is interested in this information, at least for the time being.\n\nAre you suggesting this because it\u0027s a cleaner API or because you think the caller should make any use of it?",
+      "parentUuid": "ad767b3f_c7dd4f85",
+      "range": {
+        "startLine": 327,
+        "startChar": 13,
+        "endLine": 327,
+        "endChar": 24
+      },
+      "revId": "9cc6b7da1898222c7fd83b118f656c90b34efb2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
