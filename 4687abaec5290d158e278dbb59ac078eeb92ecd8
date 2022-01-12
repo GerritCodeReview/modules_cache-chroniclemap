@@ -132,6 +132,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24f43957_5cf6b62a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-01-12T09:48:08Z",
+      "side": 1,
+      "message": "\u003e Why so?\n\u003e I thought it was a nice behaviour since it would still allow the item to be cached avoiding repeated context switches related to stack exceptions.\n\u003e \n\nI thought the same. The only question I have is: can we have any issue if the caches go out of sync?",
+      "parentUuid": "0f10cf79_6ecb652b",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 51
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc0fdc0f_e04252f8",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 4
