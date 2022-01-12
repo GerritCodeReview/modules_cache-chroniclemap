@@ -35,6 +35,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc40eb40_ac67e28e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T10:34:37Z",
+      "side": 1,
+      "message": "Removing the -2 as we had the discussion on how to move forward.",
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b5f5748_0afae958",
