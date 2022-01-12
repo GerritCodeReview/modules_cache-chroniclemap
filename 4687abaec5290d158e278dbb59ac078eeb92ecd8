@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f10cf79_6ecb652b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T09:39:59Z",
+      "side": 1,
+      "message": "Why so?\nI thought it was a nice behaviour since it would still allow the item to be cached avoiding repeated context switches related to stack exceptions.\n\nNot being able to store the item is a limitation of chronicle-map, why should we apply the same limitation to the in-memory one?",
+      "parentUuid": "0b5f5748_0afae958",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 51
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc0fdc0f_e04252f8",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 4
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-12T09:36:17Z",
       "side": 1,
       "message": "Same as above: the mem.put() should be conditioned to the success of tryPut() above.",
+      "range": {
+        "startLine": 305,
+        "startChar": 4,
+        "endLine": 305,
+        "endChar": 69
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd74298d_54da4e2e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T09:39:59Z",
+      "side": 1,
+      "message": "See above",
+      "parentUuid": "dc0fdc0f_e04252f8",
       "range": {
         "startLine": 305,
         "startChar": 4,
@@ -112,6 +160,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "951e83db_ef968fbc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T09:39:59Z",
+      "side": 1,
+      "message": "Makes sense",
+      "parentUuid": "2e4b64f3_88c0166d",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 41
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8568f70e_fc098819",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
         "patchSetId": 4
@@ -123,6 +195,24 @@
       "writtenOn": "2022-01-12T09:36:17Z",
       "side": 1,
       "message": "Once we introduce the metrics of the storage failures (follow-up change?), we should also assert that the storage failures have increased.",
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0da31e0e_22cea03e",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T09:39:59Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "8568f70e_fc098819",
       "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
