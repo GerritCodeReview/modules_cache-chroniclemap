@@ -108,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88bd8bab_b2532f43",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T09:46:47Z",
+      "side": 1,
+      "message": "I understand your point, but then wouldn\u0027t this be something that would need to be fixed in the gerrit core?\n\nAlso, being too big for chronicle-map, does not mean the entry is \"too big\" for the gerrit memory allowance, as you can see in the tests I have reproduced the issue with very small key/values.\n\nLet\u0027s discuss",
+      "parentUuid": "f8409ab5_f3c96800",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 51
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc0fdc0f_e04252f8",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 4
