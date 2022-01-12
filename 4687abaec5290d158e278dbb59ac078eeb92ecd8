@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a112c895_78a20383",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:44:05Z",
+      "side": 1,
+      "message": "Blocking the submission for now, just before it needs more discussion.",
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b5f5748_0afae958",
@@ -67,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8409ab5_f3c96800",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:44:05Z",
+      "side": 1,
+      "message": "Well, let me give you a real-case scenario: change-notes.\n\nOne of the 300k changes is so big that would blow-up cache-chroniclemap (it\u0027s about 10GB in size). If we keep that in-memory we\u0027re still causing massive issues.\n\nIf something is so bad that blows up our cache, it\u0027s safer to avoid to keep the toxic item.\n\nIt isn\u0027t a cache-chroniclemap issue IMHO, it\u0027s a data issue. That why my initial proposal wasn\u0027t catching cache-chroniclemap exceptions at all, but just include a filter on what items aren\u0027t suitable for caching at all.",
+      "parentUuid": "0f10cf79_6ecb652b",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 51
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc0fdc0f_e04252f8",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 4
@@ -102,6 +143,30 @@
       "side": 1,
       "message": "See above",
       "parentUuid": "dc0fdc0f_e04252f8",
+      "range": {
+        "startLine": 305,
+        "startChar": 4,
+        "endLine": 305,
+        "endChar": 69
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26bba961_c754322a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:44:05Z",
+      "side": 1,
+      "message": "Same observation as above.",
+      "parentUuid": "dd74298d_54da4e2e",
       "range": {
         "startLine": 305,
         "startChar": 4,
