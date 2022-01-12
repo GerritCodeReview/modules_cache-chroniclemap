@@ -171,6 +171,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba250df0_4f3a61cd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T13:46:21Z",
+      "side": 1,
+      "message": "Resolving this. We agreed not to store in the in-memory cache, when we fail storing in chronicle-map.",
+      "parentUuid": "24f43957_5cf6b62a",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 51
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc0fdc0f_e04252f8",
@@ -242,6 +266,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c2313a1_7d21b610",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T13:46:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "26bba961_c754322a",
+      "range": {
+        "startLine": 305,
+        "startChar": 4,
+        "endLine": 305,
+        "endChar": 69
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72c67760_16f08f74",
@@ -255,6 +303,30 @@
       "writtenOn": "2022-01-12T09:36:17Z",
       "side": 1,
       "message": "This is worth a comment as it could be misunderstood by the reader.\n\nIn theory here we *should* fail if tryPut() returns false. However, failing the execution of the loading of the value would result in an application-level exception, therefore we preserve the external functionality but *pretending* tryPut() succeeded anyway.",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 27
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ccb57b5_78e94987",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T13:46:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72c67760_16f08f74",
       "range": {
         "startLine": 104,
         "startChar": 8,
@@ -302,6 +374,30 @@
       "side": 1,
       "message": "Makes sense",
       "parentUuid": "2e4b64f3_88c0166d",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 41
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da619ef0_a8777dc1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-12T13:46:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "951e83db_ef968fbc",
       "range": {
         "startLine": 139,
         "startChar": 0,
