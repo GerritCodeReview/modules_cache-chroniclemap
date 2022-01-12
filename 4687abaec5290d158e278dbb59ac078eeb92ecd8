@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab55f17d_7af6d693",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:36:17Z",
+      "side": 1,
+      "message": "Thanks, Tony. We\u0027re getting there :-)",
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b5f5748_0afae958",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:36:17Z",
+      "side": 1,
+      "message": "If the tryPut() and the value hasn\u0027t be effectively cached, I believe we shouldn\u0027t also put into mem.\n\nEx:\n\nif(tryPut(store,(KeyWrapper\u003cK\u003e) wrappedKey, (TimedValue\u003cV\u003e) wrappedValue)) {\n    mem.put((K) key, (TimedValue\u003cV\u003e) wrappedValue);\n}",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 51
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc0fdc0f_e04252f8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:36:17Z",
+      "side": 1,
+      "message": "Same as above: the mem.put() should be conditioned to the success of tryPut() above.",
+      "range": {
+        "startLine": 305,
+        "startChar": 4,
+        "endLine": 305,
+        "endChar": 69
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c67760_16f08f74",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:36:17Z",
+      "side": 1,
+      "message": "This is worth a comment as it could be misunderstood by the reader.\n\nIn theory here we *should* fail if tryPut() returns false. However, failing the execution of the loading of the value would result in an application-level exception, therefore we preserve the external functionality but *pretending* tryPut() succeeded anyway.",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 27
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4b64f3_88c0166d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:36:17Z",
+      "side": 1,
+      "message": "Is this really a success? If tryPut() returns false, we haven\u0027t actually loaded anything in the cache.\n\nOptional (as a follow-up change?): we should track in a metric these failures, as the Gerrit admin may want to track it and raise alarms when caches have values failing to be stored in cache-chroniclemap.",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 41
+      },
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8568f70e_fc098819",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:36:17Z",
+      "side": 1,
+      "message": "Once we introduce the metrics of the storage failures (follow-up change?), we should also assert that the storage failures have increased.",
+      "revId": "4687abaec5290d158e278dbb59ac078eeb92ecd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
