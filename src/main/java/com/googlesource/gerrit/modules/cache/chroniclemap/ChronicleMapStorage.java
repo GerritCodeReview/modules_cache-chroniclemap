@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.metrics.Counter0;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
 import java.io.File;
@@ -40,6 +41,7 @@ class ChronicleMapStorage<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValu
 
   private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
   private final ChronicleMapCacheConfig config;
+  private final ChronicleMapStorageMetrics metrics;
 
   ChronicleMapStorage(
       ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
@@ -47,8 +49,7 @@ class ChronicleMapStorage<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValu
       MetricMaker metricMaker) {
     this.store = store;
     this.config = config;
-
-    ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
+    this.metrics = new ChronicleMapStorageMetrics(store.name(), metricMaker);
     metrics.registerCallBackMetrics(this);
   }
 
@@ -64,6 +65,7 @@ class ChronicleMapStorage<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValu
     try {
       store.put(wrappedKey, timedVal);
     } catch (IllegalArgumentException | IllegalStateException e) {
+      metrics.incrementPutFailures();
       logger.atWarning().withCause(e).log(
           "[cache %s] Caught exception when inserting entry '%s' in chronicle-map",
           store.name(), wrappedKey.getValue());
@@ -327,16 +329,30 @@ class ChronicleMapStorage<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValu
   }
 
   private static class ChronicleMapStorageMetrics {
-
+    private final String sanitizedName;
     private final MetricMaker metricMaker;
+    private final String name;
+    private final Counter0 storagePutFailures;
 
-    ChronicleMapStorageMetrics(MetricMaker metricMaker) {
+    ChronicleMapStorageMetrics(String name, MetricMaker metricMaker) {
+      this.name = name;
+      this.sanitizedName = metricMaker.sanitizeMetricName(name);
       this.metricMaker = metricMaker;
+
+      this.storagePutFailures =
+          metricMaker.newCounter(
+              "cache/chroniclemap/storage_put_failures_" + sanitizedName,
+              new Description(
+                      "cumulative number of errors when inserting entries in cache: " + name)
+                  .setCumulative()
+                  .setUnit("errors"));
+    }
+
+    void incrementPutFailures() {
+      storagePutFailures.increment();
     }
 
     <K, V> void registerCallBackMetrics(ChronicleMapStorage<K, V> store) {
-      String name = store.name();
-      String sanitizedName = metricMaker.sanitizeMetricName(name);
       String PERCENTAGE_FREE_SPACE_METRIC =
           "cache/chroniclemap/percentage_free_space_" + sanitizedName;
       String REMAINING_AUTORESIZES_METRIC =
