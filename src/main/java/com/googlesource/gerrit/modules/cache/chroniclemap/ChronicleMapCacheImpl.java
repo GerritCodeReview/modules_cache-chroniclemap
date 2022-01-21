@@ -32,7 +32,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
-import net.openhft.chronicle.map.VanillaChronicleMap;
 
 public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
@@ -40,7 +39,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ChronicleMapCacheConfig config;
-  private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
+  private final ChronicleMapStorage<K, V> store;
   private final LongAdder hitCount = new LongAdder();
   private final LongAdder missCount = new LongAdder();
   private final LongAdder loadSuccessCount = new LongAdder();
@@ -90,7 +89,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
-  static <K, V> ChronicleMap<KeyWrapper<K>, TimedValue<V>> createOrRecoverStore(
+  static <K, V> ChronicleMapStorage<K, V> createOrRecoverStore(
       PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config) throws IOException {
     CacheSerializers.registerCacheDef(def);
 
@@ -137,7 +136,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    return store;
+    return new ChronicleMapStorage<>(store, config);
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
@@ -194,7 +193,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
       metricMaker.newConstantMetric(
           MAX_AUTORESIZES_METRIC,
-          cache.maxAutoResizes(),
+          cache.store.maxAutoResizes(),
           new Description(
               String.format(
                   "The maximum number of times the %s cache can automatically expand its capacity",
@@ -433,34 +432,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     store.close();
   }
 
-  @SuppressWarnings("rawtypes")
   public double percentageUsedAutoResizes() {
-    /*
-     * Chronicle-map already exposes the number of _remaining_ auto-resizes, but
-     * this is an absolute value, and it is not enough to understand the
-     * percentage of auto-resizes that have been utilized.
-     *
-     * For that, we fist need to understand the _maximum_ number of possible
-     * resizes (inclusive of the resizes allowed by the max-bloat factor).
-     * This information is exposed at low level, by the VanillaChronicleMap,
-     * which has access to the number of allocated segments.
-     *
-     * So we proceed as follows:
-     *
-     * Calculate the maximum number of segments by multiplying the allocated
-     * segments (`actualSegments`) by the configured max-bloat-factor.
-     *
-     * The ratio between this value and the _current_ segment utilization
-     * (`getExtraTiersInUse`) shows the overall percentage.
-     */
-    VanillaChronicleMap vanillaStore = (VanillaChronicleMap) store;
-    long usedResizes = vanillaStore.globalMutableState().getExtraTiersInUse();
-    return usedResizes * 100 / maxAutoResizes();
-  }
-
-  @SuppressWarnings("rawtypes")
-  public double maxAutoResizes() {
-    return config.getMaxBloatFactor() * ((VanillaChronicleMap) store).actualSegments;
+    return store.percentageUsedAutoResizes();
   }
 
   public String name() {
