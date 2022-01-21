@@ -138,8 +138,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
               config,
               metricMaker,
               memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, false),
-              store);
+              new InMemoryCacheLoadingFromStoreImpl<>(mem, false));
 
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -204,8 +203,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
               config,
               metricMaker,
               memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, true),
-              store);
+              new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

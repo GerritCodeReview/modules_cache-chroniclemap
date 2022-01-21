@@ -74,8 +74,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       ChronicleMapCacheConfig config,
       MetricMaker metricMaker,
       ChronicleMapCacheLoader<K, V> memLoader,
-      InMemoryCache<K, V> mem,
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store) {
+      InMemoryCache<K, V> mem) {
 
     this.cacheDefinition = def;
     this.config = config;
@@ -84,7 +83,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
     this.memLoader = memLoader;
     this.mem = mem;
-    this.store = store;
+    this.store = memLoader.getStore();
 
     ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
     metrics.registerCallBackMetrics(def.name(), this);

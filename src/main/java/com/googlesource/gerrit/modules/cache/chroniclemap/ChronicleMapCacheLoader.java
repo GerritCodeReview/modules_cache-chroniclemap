@@ -119,6 +119,10 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
     }
   }
 
+  public ChronicleMap<KeyWrapper<K>, TimedValue<V>> getStore() {
+    return store;
+  }
+
   TimedValue<V> loadIfPresent(K key) {
     TimedValue<V> h = store.get(new KeyWrapper<>(key));
     if (h != null && !expired(h.getCreated())) {
