@@ -257,7 +257,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void putUnchecked(Object key, Object value, Timestamp created) {
     TimedValue<?> wrappedValue = new TimedValue<>(value, created.toInstant().toEpochMilli());
     KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
-    if (tryPut(store, (KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
+    if (store.tryPut((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
       mem.put((K) key, (TimedValue<V>) wrappedValue);
     }
   }
@@ -274,7 +274,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
    */
   @SuppressWarnings("unchecked")
   public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
-    if (tryPut(store, (KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
+    if (store.tryPut((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
       mem.put((K) wrappedKey.getValue(), (TimedValue<V>) wrappedValue);
     }
   }
@@ -289,37 +289,11 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   boolean putTimedToStore(K key, TimedValue<V> timedVal) {
     KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
-    boolean putSuccess = tryPut(store, wrappedKey, timedVal);
+    boolean putSuccess = store.tryPut(wrappedKey, timedVal);
     if (putSuccess) {
       hotEntries.add(key);
     }
     return putSuccess;
-  }
-
-  /**
-   * Attempt to put the key/value pair into the chronicle-map cache. Also catches and warns on disk
-   * allocation errors, so that such failures result in non-cached entries rather than throwing.
-   *
-   * @param store the chronicle-map store
-   * @param wrappedKey the wrapped key value
-   * @param timedVal the timed value
-   * @param <K> the type of the wrapped key
-   * @param <V> the type of the timed value
-   * @return true when the value was successfully inserted in chronicle-map, false otherwise
-   */
-  static <K, V> boolean tryPut(
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
-      KeyWrapper<K> wrappedKey,
-      TimedValue<V> timedVal) {
-    try {
-      store.put(wrappedKey, timedVal);
-    } catch (IllegalArgumentException | IllegalStateException e) {
-      logger.atWarning().withCause(e).log(
-          "[cache %s] Caught exception when inserting entry '%s' in chronicle-map",
-          store.name(), wrappedKey.getValue());
-      return false;
-    }
-    return true;
   }
 
   public void prune() {
