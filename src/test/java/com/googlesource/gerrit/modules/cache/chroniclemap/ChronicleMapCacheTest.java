@@ -17,6 +17,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
+import com.codahale.metrics.Counter;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
@@ -368,12 +369,14 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize / 2);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithoutLoader();
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, value);
 
     cache.put(key, value);
 
     assertThat(cache.getStore().size()).isEqualTo(0);
     assertThat(cache.getIfPresent(key)).isNull();
+    assertThat(getCounter("cache/chroniclemap/store_put_failures_" + testCacheName).getCount())
+        .isEqualTo(1L);
   }
 
   @Test
@@ -395,6 +398,8 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     assertThat(cache.getStore().size()).isEqualTo(2);
     assertThat(cache.getIfPresent(key)).isNull();
+    assertThat(getCounter("cache/chroniclemap/store_put_failures_" + testCacheName).getCount())
+        .isEqualTo(1L);
   }
 
   @Test
@@ -642,5 +647,11 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     Gauge<V> gauge = (Gauge<V>) metricRegistry.getMetrics().get(name);
     assertWithMessage(name).that(gauge).isNotNull();
     return gauge;
+  }
+
+  private Counter getCounter(String name) {
+    Counter counter = (Counter) metricRegistry.getMetrics().get(name);
+    assertWithMessage(name).that(counter).isNotNull();
+    return counter;
   }
 }
