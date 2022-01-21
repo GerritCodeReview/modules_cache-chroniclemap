@@ -53,6 +53,26 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
     metrics.registerCallBackMetrics(this);
   }
 
+  /**
+   * Attempt to put the key/value pair into the chronicle-map store. Also catches and warns on disk
+   * allocation errors, so that such failures result in non-cached entries rather than throwing.
+   *
+   * @param wrappedKey the wrapped key value
+   * @param timedVal the timed value
+   * @return true when the value was successfully inserted in chronicle-map, false otherwise
+   */
+  public boolean tryPut(KeyWrapper<K> wrappedKey, TimedValue<V> timedVal) {
+    try {
+      store.put(wrappedKey, timedVal);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      logger.atWarning().withCause(e).log(
+          "[cache %s] Caught exception when inserting entry '%s' in chronicle-map",
+          store.name(), wrappedKey.getValue());
+      return false;
+    }
+    return true;
+  }
+
   @SuppressWarnings("rawtypes")
   public double percentageUsedAutoResizes() {
     /*
