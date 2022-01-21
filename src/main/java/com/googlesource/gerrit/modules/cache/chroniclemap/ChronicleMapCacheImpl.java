@@ -52,19 +52,20 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   ChronicleMapCacheImpl(PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config)
       throws IOException {
+    DisabledMetricMaker metricMaker = new DisabledMetricMaker();
 
     this.cacheDefinition = def;
     this.config = config;
     this.hotEntries =
         new InMemoryLRU<>(
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
-    this.store = createOrRecoverStore(def, config);
+    this.store = createOrRecoverStore(def, config, metricMaker);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
             MoreExecutors.directExecutor(), store, config.getExpireAfterWrite());
     this.mem = memLoader.asInMemoryCacheBypass();
 
-    ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(new DisabledMetricMaker());
+    ChronicleMapCacheMetrics metrics = new ChronicleMapCacheMetrics(metricMaker);
     metrics.registerCallBackMetrics(def.name(), this);
   }
 
@@ -84,13 +85,14 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.mem = mem;
     this.store = memLoader.getStore();
 
-    ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
+    ChronicleMapCacheMetrics metrics = new ChronicleMapCacheMetrics(metricMaker);
     metrics.registerCallBackMetrics(def.name(), this);
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
   static <K, V> ChronicleMapStore<K, V> createOrRecoverStore(
-      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config) throws IOException {
+      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, MetricMaker metricMaker)
+      throws IOException {
     CacheSerializers.registerCacheDef(def);
 
     final Class<KeyWrapper<K>> keyWrapperClass = (Class<KeyWrapper<K>>) (Class) KeyWrapper.class;
@@ -136,45 +138,25 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    return new ChronicleMapStore<>(store, config);
+    return new ChronicleMapStore<>(store, config, metricMaker);
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
     return cacheDefinition;
   }
 
-  private static class ChronicleMapStorageMetrics {
+  private static class ChronicleMapCacheMetrics {
 
     private final MetricMaker metricMaker;
 
-    ChronicleMapStorageMetrics(MetricMaker metricMaker) {
+    ChronicleMapCacheMetrics(MetricMaker metricMaker) {
       this.metricMaker = metricMaker;
     }
 
     <K, V> void registerCallBackMetrics(String name, ChronicleMapCacheImpl<K, V> cache) {
       String sanitizedName = metricMaker.sanitizeMetricName(name);
-      String PERCENTAGE_FREE_SPACE_METRIC =
-          "cache/chroniclemap/percentage_free_space_" + sanitizedName;
-      String REMAINING_AUTORESIZES_METRIC =
-          "cache/chroniclemap/remaining_autoresizes_" + sanitizedName;
-      String MAX_AUTORESIZES_METRIC = "cache/chroniclemap/max_autoresizes_" + sanitizedName;
       String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + sanitizedName;
       String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + sanitizedName;
-
-      metricMaker.newCallbackMetric(
-          PERCENTAGE_FREE_SPACE_METRIC,
-          Long.class,
-          new Description(
-              String.format("The amount of free space in the %s cache as a percentage", name)),
-          () -> (long) cache.store.percentageFreeSpace());
-
-      metricMaker.newCallbackMetric(
-          REMAINING_AUTORESIZES_METRIC,
-          Integer.class,
-          new Description(
-              String.format(
-                  "The number of times the %s cache can automatically expand its capacity", name)),
-          cache.store::remainingAutoResizes);
 
       metricMaker.newConstantMetric(
           HOT_KEYS_CAPACITY_METRIC,
@@ -190,14 +172,6 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
               String.format(
                   "The number of hot cache keys for %s cache that are currently in memory", name)),
           cache.hotEntries::size);
-
-      metricMaker.newConstantMetric(
-          MAX_AUTORESIZES_METRIC,
-          cache.store.maxAutoResizes(),
-          new Description(
-              String.format(
-                  "The maximum number of times the %s cache can automatically expand its capacity",
-                  name)));
     }
   }
 
