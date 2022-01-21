@@ -120,7 +120,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
 
     ChronicleMapCacheImpl<K, V> cache;
     try {
-      ChronicleMapStore<K, V> store = ChronicleMapCacheImpl.createOrRecoverStore(in, config);
+      ChronicleMapStore<K, V> store =
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -184,7 +185,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
 
     try {
-      ChronicleMapStore<K, V> store = ChronicleMapCacheImpl.createOrRecoverStore(in, config);
+      ChronicleMapStore<K, V> store =
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
