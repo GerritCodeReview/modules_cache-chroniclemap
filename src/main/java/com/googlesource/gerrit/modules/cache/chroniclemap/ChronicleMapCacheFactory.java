@@ -44,7 +44,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import net.openhft.chronicle.map.ChronicleMap;
 import org.eclipse.jgit.lib.Config;
 
 @Singleton
@@ -121,8 +120,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
 
     ChronicleMapCacheImpl<K, V> cache;
     try {
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config);
+      ChronicleMapStore<K, V> store = ChronicleMapCacheImpl.createOrRecoverStore(in, config);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -186,8 +184,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
 
     try {
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config);
+      ChronicleMapStore<K, V> store = ChronicleMapCacheImpl.createOrRecoverStore(in, config);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(

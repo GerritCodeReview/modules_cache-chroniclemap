@@ -33,14 +33,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.LongAdder;
-import net.openhft.chronicle.map.ChronicleMap;
 
 class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Executor storePersistenceExecutor;
   private final Optional<CacheLoader<K, V>> loader;
-  private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
+  private final ChronicleMapStore<K, V> store;
   private final LongAdder loadSuccessCount = new LongAdder();
   private final LongAdder loadExceptionCount = new LongAdder();
   private final LongAdder totalLoadTime = new LongAdder();
@@ -58,7 +57,7 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
    */
   ChronicleMapCacheLoader(
       Executor storePersistenceExecutor,
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
+      ChronicleMapStore<K, V> store,
       CacheLoader<K, V> loader,
       Duration expireAfterWrite) {
     this.storePersistenceExecutor = storePersistenceExecutor;
@@ -75,9 +74,7 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
    * @param expireAfterWrite maximum lifetime of the data loaded into ChronicleMap
    */
   ChronicleMapCacheLoader(
-      Executor storePersistenceExecutor,
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
-      Duration expireAfterWrite) {
+      Executor storePersistenceExecutor, ChronicleMapStore<K, V> store, Duration expireAfterWrite) {
     this.storePersistenceExecutor = storePersistenceExecutor;
     this.store = store;
     this.loader = Optional.empty();
@@ -119,7 +116,7 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
     }
   }
 
-  public ChronicleMap<KeyWrapper<K>, TimedValue<V>> getStore() {
+  public ChronicleMapStore<K, V> getStore() {
     return store;
   }
 
