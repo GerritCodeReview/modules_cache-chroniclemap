@@ -22,6 +22,30 @@
       },
       "revId": "80009d74750327da3f60dd1c374df814bcb914c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963fc08a_f38401af",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStorage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-27T10:03:36Z",
+      "side": 1,
+      "message": "This is the cumulative number of errors, isn\u0027t this already the total?",
+      "parentUuid": "fcc609da_d26779cf",
+      "range": {
+        "startLine": 344,
+        "startChar": 14,
+        "endLine": 344,
+        "endChar": 72
+      },
+      "revId": "80009d74750327da3f60dd1c374df814bcb914c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
