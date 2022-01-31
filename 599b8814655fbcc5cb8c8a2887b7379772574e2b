@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "521597b4_200ea24f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-31T22:20:56Z",
+      "side": 1,
+      "message": "What do you mean __at Gerrit level__? You could do at consumer level as Tony pointed out, however, that would require the definition of a new metric in Prometheus which is the result of the aggregation of the other metrics.\n\nThat would work of course in Prometheus, however, it may or may not be possible with other reporters.\n\nAlso, with Prometheus there are two issues:\n- The Gerrit admin may not have the permissions to define the aggregated metric\n- The aggregated metric could be expensive for Prometheus to calculate\n\nP.S. The JGit cache also has a total metric value (e.g. jgit_block_cache_cache_used) and the specific metric value (e.g. jgit_block_cache_cache_used_per_repository_foo_bar).",
+      "parentUuid": "5a52bf5d_a2a43bc7",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 41
+      },
+      "revId": "599b8814655fbcc5cb8c8a2887b7379772574e2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5b4caf2_80c114bf",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-31T22:09:59Z",
       "side": 1,
       "message": "why we need to pass injector instead of passing ChronicleMapStoreTotalMetrics instance?",
+      "range": {
+        "startLine": 147,
+        "startChar": 35,
+        "endLine": 147,
+        "endChar": 93
+      },
+      "revId": "599b8814655fbcc5cb8c8a2887b7379772574e2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddfda276_e6702b65",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-31T22:20:56Z",
+      "side": 1,
+      "message": "Because it would imply to know what ChronicleMapStore needs to get instantiated.\nThe issue here is that ChronicleMapStore should NOT be created directly but through an injected Factory. Let me see if fixing that problem would make this change easier.",
+      "parentUuid": "c5b4caf2_80c114bf",
       "range": {
         "startLine": 147,
         "startChar": 35,
