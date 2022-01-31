@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9be838f0_8de15a64",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-31T08:19:42Z",
+      "side": 1,
+      "message": "This is not just used in tests.\nThis constructor is called by the AutoAdjust cache and the MigrationServlet, which do not export metrics during their execution.",
+      "parentUuid": "d4206cc7_bebf26b1",
+      "range": {
+        "startLine": 62,
+        "startChar": 23,
+        "endLine": 62,
+        "endChar": 49
+      },
+      "revId": "8b809b13b9da1ab366cc89af0482f922d19a638e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dca10a54_8f78b3c1",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-27T09:38:36Z",
       "side": 1,
       "message": "do we really need to store the metricMaker in a instance field?",
+      "range": {
+        "startLine": 88,
+        "startChar": 9,
+        "endLine": 88,
+        "endChar": 20
+      },
+      "revId": "8b809b13b9da1ab366cc89af0482f922d19a638e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9043694b_e42e363d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-31T08:19:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dca10a54_8f78b3c1",
       "range": {
         "startLine": 88,
         "startChar": 9,
