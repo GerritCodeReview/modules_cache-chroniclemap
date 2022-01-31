@@ -25,7 +25,6 @@ import com.google.gerrit.acceptance.WaitUtil;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
-import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
@@ -562,11 +561,10 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     if (withLoader) {
       return (ChronicleMapCacheImpl<String, String>)
-          cacheFactory.build(
-              cacheDef, cacheDef.loader(), CacheBackend.CAFFEINE, config, metricMaker);
+          cacheFactory.build(cacheDef, cacheDef.loader(), config, metricMaker);
     }
     return (ChronicleMapCacheImpl<String, String>)
-        cacheFactory.build(cacheDef, CacheBackend.CAFFEINE, config, metricMaker);
+        cacheFactory.build(cacheDef, config, metricMaker);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String loadedValue) {

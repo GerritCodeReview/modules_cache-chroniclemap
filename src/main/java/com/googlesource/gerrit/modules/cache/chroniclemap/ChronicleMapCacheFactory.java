@@ -21,7 +21,6 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.metrics.MetricMaker;
-import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.PersistentCacheBaseFactory;
 import com.google.gerrit.server.cache.PersistentCacheDef;
@@ -83,24 +82,20 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
   }
 
   @Override
-  public <K, V> Cache<K, V> buildImpl(
-      PersistentCacheDef<K, V> in, long limit, CacheBackend backend) {
+  public <K, V> Cache<K, V> buildImpl(PersistentCacheDef<K, V> in, long limit) {
     ChronicleMapCacheConfig config =
         configFactory.create(
             in.configKey(),
             fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
             in.refreshAfterWrite());
-    return build(in, backend, config, metricMaker);
+    return build(in, config, metricMaker);
   }
 
   @SuppressWarnings("unchecked")
   @VisibleForTesting
   <K, V> Cache<K, V> build(
-      PersistentCacheDef<K, V> in,
-      CacheBackend backend,
-      ChronicleMapCacheConfig config,
-      MetricMaker metricMaker) {
+      PersistentCacheDef<K, V> in, ChronicleMapCacheConfig config, MetricMaker metricMaker) {
     ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
 
     ChronicleMapCacheImpl<K, V> cache;
@@ -114,7 +109,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
       LoadingCache<K, TimedValue<V>> mem =
           (LoadingCache<K, TimedValue<V>>)
-              memCacheFactory.build(def, (CacheLoader<K, V>) memLoader, backend);
+              memCacheFactory.build(def, (CacheLoader<K, V>) memLoader);
 
       cache =
           new ChronicleMapCacheImpl<>(
@@ -136,14 +131,14 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
   @Override
   public <K, V> LoadingCache<K, V> buildImpl(
-      PersistentCacheDef<K, V> in, CacheLoader<K, V> loader, long limit, CacheBackend backend) {
+      PersistentCacheDef<K, V> in, CacheLoader<K, V> loader, long limit) {
     ChronicleMapCacheConfig config =
         configFactory.create(
             in.configKey(),
             fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
             in.refreshAfterWrite());
-    return build(in, loader, backend, config, metricMaker);
+    return build(in, loader, config, metricMaker);
   }
 
   @SuppressWarnings("unchecked")
@@ -151,7 +146,6 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
   public <K, V> LoadingCache<K, V> build(
       PersistentCacheDef<K, V> in,
       CacheLoader<K, V> loader,
-      CacheBackend backend,
       ChronicleMapCacheConfig config,
       MetricMaker metricMaker) {
     ChronicleMapCacheImpl<K, V> cache;
@@ -167,7 +161,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
       LoadingCache<K, TimedValue<V>> mem =
           (LoadingCache<K, TimedValue<V>>)
-              memCacheFactory.build(def, (CacheLoader<K, V>) memLoader, backend);
+              memCacheFactory.build(def, (CacheLoader<K, V>) memLoader);
 
       cache =
           new ChronicleMapCacheImpl<>(
