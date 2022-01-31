@@ -23,6 +23,7 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
+import com.google.inject.Injector;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -50,7 +51,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final ChronicleMapCacheLoader<K, V> memLoader;
   private final InMemoryCache<K, V> mem;
 
-  ChronicleMapCacheImpl(PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config)
+  ChronicleMapCacheImpl(
+      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, Injector injector)
       throws IOException {
     DisabledMetricMaker metricMaker = new DisabledMetricMaker();
 
@@ -59,7 +61,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.hotEntries =
         new InMemoryLRU<>(
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
-    this.store = createOrRecoverStore(def, config, metricMaker);
+    this.store = createOrRecoverStore(def, config, metricMaker, injector);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
             MoreExecutors.directExecutor(), store, config.getExpireAfterWrite());
@@ -91,7 +93,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
   static <K, V> ChronicleMapStore<K, V> createOrRecoverStore(
-      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, MetricMaker metricMaker)
+      PersistentCacheDef<K, V> def,
+      ChronicleMapCacheConfig config,
+      MetricMaker metricMaker,
+      Injector injector)
       throws IOException {
     CacheSerializers.registerCacheDef(def);
 
@@ -138,7 +143,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    return new ChronicleMapStore<>(store, config, metricMaker);
+    return new ChronicleMapStore<>(
+        store, config, metricMaker, injector.getInstance(ChronicleMapStoreTotalMetrics.class));
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {

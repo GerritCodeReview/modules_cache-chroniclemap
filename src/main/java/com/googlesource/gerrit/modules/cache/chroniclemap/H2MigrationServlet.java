@@ -45,6 +45,7 @@ import com.google.gerrit.server.patch.PatchList;
 import com.google.gerrit.server.patch.PatchListKey;
 import com.google.gerrit.server.query.change.ConflictKey;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
@@ -83,6 +84,7 @@ public class H2MigrationServlet extends HttpServlet {
   public static final String SIZE_MULTIPLIER_PARAM = "size-multiplier";
 
   private final Set<PersistentCacheDef<?, ?>> persistentCacheDefs;
+  private final Injector injector;
 
   @Inject
   H2MigrationServlet(
@@ -90,6 +92,7 @@ public class H2MigrationServlet extends HttpServlet {
       SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
       AdministerCachePermission permissionBackend,
+      Injector injector,
       @Named("web_sessions") PersistentCacheDef<String, WebSessionManager.Val> webSessionsCacheDef,
       @Named("accounts")
           PersistentCacheDef<CachedAccountDetails.Key, CachedAccountDetails> accountsCacheDef,
@@ -131,6 +134,7 @@ public class H2MigrationServlet extends HttpServlet {
                 persistedProjectsCacheDef,
                 conflictsCacheDef)
             .collect(Collectors.toSet());
+    this.injector = injector;
   }
 
   @Override
@@ -217,7 +221,7 @@ public class H2MigrationServlet extends HttpServlet {
           if (chronicleMapConfig.isPresent()) {
             ChronicleMapCacheConfig cacheConfig = chronicleMapConfig.get();
             ChronicleMapCacheImpl<?, ?> chronicleMapCache =
-                new ChronicleMapCacheImpl<>(in, cacheConfig);
+                new ChronicleMapCacheImpl<>(in, cacheConfig, injector);
 
             doMigrate(h2CacheFile.get(), in, chronicleMapCache);
             chronicleMapCache.close();
