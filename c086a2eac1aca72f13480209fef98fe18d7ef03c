@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b4eb425_70df2cd7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-31T21:20:17Z",
+      "side": 1,
+      "message": "Optional: Mention also original issue 11900, why the alternative cache backend was added and removed in the end.",
+      "revId": "c086a2eac1aca72f13480209fef98fe18d7ef03c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
