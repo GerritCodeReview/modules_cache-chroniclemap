@@ -31,6 +31,7 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.logging.LoggingContextAwareExecutorService;
 import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorService;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.io.File;
@@ -58,6 +59,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   private final List<ChronicleMapCacheImpl<?, ?>> caches;
   private final ScheduledExecutorService cleanup;
   private final Path cacheDir;
+  private final Injector injector;
 
   private final LoggingContextAwareExecutorService storePersistenceExecutor;
 
@@ -68,7 +70,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
       SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
       DynamicMap<Cache<?, ?>> cacheMap,
-      MetricMaker metricMaker) {
+      MetricMaker metricMaker,
+      Injector injector) {
     this.memCacheFactory = memCacheFactory;
     this.config = cfg;
     this.configFactory = configFactory;
@@ -88,6 +91,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
         new LoggingContextAwareExecutorService(
             Executors.newFixedThreadPool(
                 1, new ThreadFactoryBuilder().setNameFormat("ChronicleMap-Store-%d").build()));
+    this.injector = injector;
   }
 
   @Override
@@ -121,7 +125,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
     ChronicleMapCacheImpl<K, V> cache;
     try {
       ChronicleMapStore<K, V> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker, injector);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -186,7 +190,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
 
     try {
       ChronicleMapStore<K, V> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker, injector);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(

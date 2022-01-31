@@ -39,16 +39,19 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
 
   private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
   private final ChronicleMapCacheConfig config;
-  private final ChronicleMapStoreMetrics metrics;
+  private final ChronicleMapStoreSingleMetrics metrics;
+  private final ChronicleMapStoreTotalMetrics totalMetrics;
 
   ChronicleMapStore(
       ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
       ChronicleMapCacheConfig config,
-      MetricMaker metricMaker) {
+      MetricMaker metricMaker,
+      ChronicleMapStoreTotalMetrics totalMetrics) {
 
     this.store = store;
     this.config = config;
-    this.metrics = new ChronicleMapStoreMetrics(store.name(), metricMaker);
+    this.metrics = new ChronicleMapStoreSingleMetrics(store.name(), metricMaker);
+    this.totalMetrics = totalMetrics;
     metrics.registerCallBackMetrics(this);
   }
 
@@ -65,6 +68,7 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
       store.put(wrappedKey, timedVal);
     } catch (IllegalArgumentException | IllegalStateException e) {
       metrics.incrementPutFailures();
+      totalMetrics.incrementPutFailures();
       logger.atWarning().withCause(e).log(
           "[cache %s] Caught exception when inserting entry '%s' in chronicle-map",
           store.name(), wrappedKey.getValue());
