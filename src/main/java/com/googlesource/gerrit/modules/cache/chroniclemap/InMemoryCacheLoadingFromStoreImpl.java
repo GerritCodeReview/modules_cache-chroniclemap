@@ -59,13 +59,13 @@ class InMemoryCacheLoadingFromStoreImpl<K, V> implements InMemoryCache<K, V> {
 
   @Override
   public TimedValue<V> get(K key) throws ExecutionException {
-    if (loadingFromSource) {
-      return ((LoadingCache<K, TimedValue<V>>) loadingFromStoreCache).get(key);
-    }
-
     TimedValue<V> cachedValue = getIfPresent(key);
     if (cachedValue != null) {
       return cachedValue;
+    }
+
+    if (loadingFromSource) {
+      return ((LoadingCache<K, TimedValue<V>>) loadingFromStoreCache).get(key);
     }
 
     throw new UnsupportedOperationException(
