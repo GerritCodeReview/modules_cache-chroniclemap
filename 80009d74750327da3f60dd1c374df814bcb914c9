@@ -70,6 +70,30 @@
       },
       "revId": "80009d74750327da3f60dd1c374df814bcb914c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124581d8_bae68b5c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStorage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-31T18:28:48Z",
+      "side": 1,
+      "message": "Not sure I have the permission to create that metric though, as it is not the responsibility of the Gerrit team.\n\nLet me address this in a follow-up change.",
+      "parentUuid": "5ed64eba_87345449",
+      "range": {
+        "startLine": 344,
+        "startChar": 14,
+        "endLine": 344,
+        "endChar": 72
+      },
+      "revId": "80009d74750327da3f60dd1c374df814bcb914c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
