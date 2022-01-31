@@ -46,6 +46,30 @@
       },
       "revId": "80009d74750327da3f60dd1c374df814bcb914c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed64eba_87345449",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStorage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-31T09:17:02Z",
+      "side": 1,
+      "message": "oh, I understand what you mean, you mean a _global_ counter, that spans across all caches right?\n\nNot sure this is easily achievable to be honest because ChronicleMapStoreMetrics is *per cache*, so such metric should be emitted elsewhere.\n\nHowever, I don\u0027t believe an additional metric is required, since the same result is achievable by aggregating the metrics at the consumer level.\n\nFor example, in prometheus, one could simply do:\n\n```\n{__name__\u003d~\"cache_chroniclemap_store_put_failures_.*\"}\n```",
+      "parentUuid": "963fc08a_f38401af",
+      "range": {
+        "startLine": 344,
+        "startChar": 14,
+        "endLine": 344,
+        "endChar": 72
+      },
+      "revId": "80009d74750327da3f60dd1c374df814bcb914c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
