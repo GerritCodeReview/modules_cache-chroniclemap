@@ -322,7 +322,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
-    return new ChronicleMapCacheImpl<>(persistentDef, config);
+    return new ChronicleMapCacheImpl<>(persistentDef, config, server.getTestInjector());
   }
 
   private void waitForCacheToLoad(String cacheName) throws InterruptedException {

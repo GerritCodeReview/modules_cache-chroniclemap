@@ -26,5 +26,8 @@ to monitor the state of the cache:
 * cache/chroniclemap/hot_keys_size_<cache-name>
   : The number of hot keys for the cache that are currently in memory.
 
-* "cache/chroniclemap/store_put_failures_<cache-name>
-  : The number of errors caught when inserting entries in chronicle-map store
+* cache/chroniclemap/store_put_failures_<cache-name>
+  : The number of errors caught when inserting entries in one chronicle-map store
+
+* cache/chroniclemap/store_put_failures
+  : The total number of errors caught when inserting entries across all chronicle-map stores

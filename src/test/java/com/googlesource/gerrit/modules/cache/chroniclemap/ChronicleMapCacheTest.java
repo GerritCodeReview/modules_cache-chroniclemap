@@ -48,6 +48,8 @@ import org.junit.runner.Description;
 
 @UseLocalDisk // Needed to have Gerrit with DropWizardMetricMaker enabled
 public class ChronicleMapCacheTest extends AbstractDaemonTest {
+  private static final String CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC =
+      "cache/chroniclemap/store_put_failures";
   private static final DisabledMetricMaker WITHOUT_METRICS = new DisabledMetricMaker();
   @Inject MetricMaker metricMaker;
   @Inject MetricRegistry metricRegistry;
@@ -371,12 +373,17 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, value);
 
+    long currentTotalFailures = getCounter(CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC).getCount();
     cache.put(key, value);
 
     assertThat(cache.getStore().size()).isEqualTo(0);
     assertThat(cache.getIfPresent(key)).isNull();
-    assertThat(getCounter("cache/chroniclemap/store_put_failures_" + testCacheName).getCount())
+    assertThat(
+            getCounter(CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC + "_" + testCacheName)
+                .getCount())
         .isEqualTo(1L);
+    assertThat(getCounter(CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC).getCount())
+        .isEqualTo(currentTotalFailures + 1L);
   }
 
   @Test
@@ -392,14 +399,20 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithoutLoader();
 
+    long currentTotalFailures = getCounter(CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC).getCount();
+
     cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     cache.put(key, value);
 
     assertThat(cache.getStore().size()).isEqualTo(2);
     assertThat(cache.getIfPresent(key)).isNull();
-    assertThat(getCounter("cache/chroniclemap/store_put_failures_" + testCacheName).getCount())
+    assertThat(
+            getCounter(CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC + "_" + testCacheName)
+                .getCount())
         .isEqualTo(1L);
+    assertThat(getCounter(CACHE_CHRONICLEMAP_STORE_PUT_FAILURES_METRIC).getCount())
+        .isEqualTo(currentTotalFailures + 1L);
   }
 
   @Test
@@ -615,7 +628,13 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     ChronicleMapCacheFactory cacheFactory =
         new ChronicleMapCacheFactory(
-            memCacheFactory, new Config(), sitePaths, null, null, metricMaker);
+            memCacheFactory,
+            new Config(),
+            sitePaths,
+            null,
+            null,
+            metricMaker,
+            server.getTestInjector());
 
     if (withLoader) {
       return (ChronicleMapCacheImpl<String, String>)

@@ -17,6 +17,7 @@ import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.ModuleImpl;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
+import com.google.inject.Scopes;
 
 @ModuleImpl(name = CacheModule.PERSISTENT_MODULE)
 public class ChronicleMapCacheModule extends LifecycleModule {
@@ -25,6 +26,7 @@ public class ChronicleMapCacheModule extends LifecycleModule {
   protected void configure() {
     factory(ChronicleMapCacheConfig.Factory.class);
     bind(PersistentCacheFactory.class).to(ChronicleMapCacheFactory.class);
+    bind(ChronicleMapStoreTotalMetrics.class).in(Scopes.SINGLETON);
     listener().to(ChronicleMapCacheFactory.class);
   }
 }
