@@ -294,7 +294,7 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
 
   @Override
   public ExternalMapQueryContext<KeyWrapper<K>, TimedValue<V>, ?> queryContext(
-      BytesStore keyBytes, long offset, long size) {
+      @SuppressWarnings("rawtypes") BytesStore keyBytes, long offset, long size) {
     return store.queryContext(keyBytes, offset, size);
   }
 
