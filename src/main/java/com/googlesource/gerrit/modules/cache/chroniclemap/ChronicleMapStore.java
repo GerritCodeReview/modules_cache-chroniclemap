@@ -15,8 +15,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.metrics.Counter0;
-import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
 import java.io.File;
 import java.io.IOException;
@@ -327,62 +325,5 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
   @Override
   public boolean isOpen() {
     return store.isOpen();
-  }
-
-  private static class ChronicleMapStoreMetrics {
-    private final String sanitizedName;
-    private final MetricMaker metricMaker;
-    private final String name;
-    private final Counter0 storePutFailures;
-
-    ChronicleMapStoreMetrics(String name, MetricMaker metricMaker) {
-      this.name = name;
-      this.sanitizedName = metricMaker.sanitizeMetricName(name);
-      this.metricMaker = metricMaker;
-
-      this.storePutFailures =
-          metricMaker.newCounter(
-              "cache/chroniclemap/store_put_failures_" + sanitizedName,
-              new Description(
-                      "The number of errors caught when inserting entries in chronicle-map store: "
-                          + name)
-                  .setCumulative()
-                  .setUnit("errors"));
-    }
-
-    void incrementPutFailures() {
-      storePutFailures.increment();
-    }
-
-    <K, V> void registerCallBackMetrics(ChronicleMapStore<K, V> store) {
-      String PERCENTAGE_FREE_SPACE_METRIC =
-          "cache/chroniclemap/percentage_free_space_" + sanitizedName;
-      String REMAINING_AUTORESIZES_METRIC =
-          "cache/chroniclemap/remaining_autoresizes_" + sanitizedName;
-      String MAX_AUTORESIZES_METRIC = "cache/chroniclemap/max_autoresizes_" + sanitizedName;
-
-      metricMaker.newCallbackMetric(
-          PERCENTAGE_FREE_SPACE_METRIC,
-          Long.class,
-          new Description(
-              String.format("The amount of free space in the %s cache as a percentage", name)),
-          () -> (long) store.percentageFreeSpace());
-
-      metricMaker.newCallbackMetric(
-          REMAINING_AUTORESIZES_METRIC,
-          Integer.class,
-          new Description(
-              String.format(
-                  "The number of times the %s cache can automatically expand its capacity", name)),
-          store::remainingAutoResizes);
-
-      metricMaker.newConstantMetric(
-          MAX_AUTORESIZES_METRIC,
-          store.maxAutoResizes(),
-          new Description(
-              String.format(
-                  "The maximum number of times the %s cache can automatically expand its capacity",
-                  name)));
-    }
   }
 }
