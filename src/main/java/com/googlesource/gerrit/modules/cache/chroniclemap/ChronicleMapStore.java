@@ -16,6 +16,8 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.MetricMaker;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -41,12 +43,18 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
   private final ChronicleMapCacheConfig config;
   private final ChronicleMapStoreMetrics metrics;
 
+  interface Factory {
+    ChronicleMapStore<?, ?> create(ChronicleMap<?, ?> store, ChronicleMapCacheConfig config);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Inject
   ChronicleMapStore(
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store,
-      ChronicleMapCacheConfig config,
+      @Assisted ChronicleMap<?, ?> store,
+      @Assisted ChronicleMapCacheConfig config,
       MetricMaker metricMaker) {
 
-    this.store = store;
+    this.store = (ChronicleMap<KeyWrapper<K>, TimedValue<V>>) store;
     this.config = config;
     this.metrics = new ChronicleMapStoreMetrics(store.name(), metricMaker);
     metrics.registerCallBackMetrics(this);

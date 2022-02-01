@@ -24,6 +24,7 @@ import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheImpl.Factory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -56,6 +57,7 @@ public class AutoAdjustCaches {
   private boolean dryRun;
   private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
+  private final Factory chronicleMapCacheFactory;
 
   @Inject
   AutoAdjustCaches(
@@ -63,11 +65,13 @@ public class AutoAdjustCaches {
       SitePaths site,
       DynamicMap<Cache<?, ?>> cacheMap,
       ChronicleMapCacheConfig.Factory configFactory,
-      AdministerCachePermission adminCachePermission) {
+      AdministerCachePermission adminCachePermission,
+      ChronicleMapCacheImpl.Factory chronicleMapCacheFactory) {
     this.cacheMap = cacheMap;
     this.configFactory = configFactory;
     this.cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.adminCachePermission = adminCachePermission;
+    this.chronicleMapCacheFactory = chronicleMapCacheFactory;
   }
 
   public boolean isDryRun() {
@@ -140,8 +144,8 @@ public class AutoAdjustCaches {
             currCache.getConfig().getMaxBloatFactor());
 
         if (!dryRun) {
-          ChronicleMapCacheImpl<Object, Object> newCache =
-              new ChronicleMapCacheImpl<>(
+          ChronicleMapCacheImpl<?, ?> newCache =
+              chronicleMapCacheFactory.createWithoutLoader(
                   currCache.getCacheDefinition(), newChronicleMapCacheConfig);
 
           progressMonitor.beginTask(

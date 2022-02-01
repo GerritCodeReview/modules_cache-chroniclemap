@@ -25,6 +25,7 @@ import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
+import com.google.inject.Module;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -41,6 +42,11 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   @Inject private SitePaths sitePaths;
 
   private String cmd = Joiner.on(" ").join("cache-chroniclemap", "analyze-h2-caches");
+
+  @Override
+  public Module createModule() {
+    return new ChronicleMapCacheModule();
+  }
 
   @Test
   public void shouldAnalyzeH2Cache() throws Exception {

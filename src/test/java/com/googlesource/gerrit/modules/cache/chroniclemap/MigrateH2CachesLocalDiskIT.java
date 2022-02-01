@@ -73,11 +73,14 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   @Inject private ProjectOperations projectOperations;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
+  private ChronicleMapCacheImpl.Factory chronicleMapCacheFactory;
 
   @Before
   public void setUp() {
     chronicleMapCacheConfigFactory =
         plugin.getHttpInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
+    chronicleMapCacheFactory =
+        plugin.getHttpInjector().getInstance(ChronicleMapCacheImpl.Factory.class);
   }
 
   /** Override to bind an additional Guice module */
@@ -308,6 +311,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
         && annotation.toString().endsWith(String.format("Named(value=\"%s\")", named));
   }
 
+  @SuppressWarnings("unchecked")
   private <K, V> ChronicleMapCacheImpl<K, V> chronicleCacheFor(String cacheName) throws Exception {
     Path cacheDirectory = sitePaths.resolve(cfg.getString("cache", null, "directory"));
 
@@ -322,7 +326,8 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
-    return new ChronicleMapCacheImpl<>(persistentDef, config);
+    return (ChronicleMapCacheImpl<K, V>)
+        chronicleMapCacheFactory.createWithoutLoader(persistentDef, config);
   }
 
   private void waitForCacheToLoad(String cacheName) throws InterruptedException {

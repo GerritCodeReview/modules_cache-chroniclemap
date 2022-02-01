@@ -23,6 +23,8 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.util.time.TimeUtil;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -50,7 +52,22 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final ChronicleMapCacheLoader<K, V> memLoader;
   private final InMemoryCache<K, V> mem;
 
-  ChronicleMapCacheImpl(PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config)
+  public interface Factory {
+    ChronicleMapCacheImpl<?, ?> create(
+        PersistentCacheDef<?, ?> def,
+        ChronicleMapCacheConfig config,
+        ChronicleMapCacheLoader<?, ?> memLoader,
+        InMemoryCache<?, ?> mem);
+
+    ChronicleMapCacheImpl<?, ?> createWithoutLoader(
+        PersistentCacheDef<?, ?> def, ChronicleMapCacheConfig config);
+  }
+
+  @AssistedInject
+  ChronicleMapCacheImpl(
+      @Assisted PersistentCacheDef<K, V> def,
+      @Assisted ChronicleMapCacheConfig config,
+      ChronicleMapStore.Factory storeFactory)
       throws IOException {
     DisabledMetricMaker metricMaker = new DisabledMetricMaker();
 
@@ -59,7 +76,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.hotEntries =
         new InMemoryLRU<>(
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
-    this.store = createOrRecoverStore(def, config, metricMaker);
+    this.store = createOrRecoverStore(def, config, storeFactory);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
             MoreExecutors.directExecutor(), store, config.getExpireAfterWrite());
@@ -69,12 +86,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     metrics.registerCallBackMetrics(def.name(), this);
   }
 
+  @AssistedInject
   ChronicleMapCacheImpl(
-      PersistentCacheDef<K, V> def,
-      ChronicleMapCacheConfig config,
-      MetricMaker metricMaker,
-      ChronicleMapCacheLoader<K, V> memLoader,
-      InMemoryCache<K, V> mem) {
+      @Assisted PersistentCacheDef<K, V> def,
+      @Assisted ChronicleMapCacheConfig config,
+      @Assisted ChronicleMapCacheLoader<K, V> memLoader,
+      @Assisted InMemoryCache<K, V> mem,
+      MetricMaker metricMaker) {
 
     this.cacheDefinition = def;
     this.config = config;
@@ -91,7 +109,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
   static <K, V> ChronicleMapStore<K, V> createOrRecoverStore(
-      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, MetricMaker metricMaker)
+      PersistentCacheDef<K, V> def,
+      ChronicleMapCacheConfig config,
+      ChronicleMapStore.Factory chronicleMapStoreFactory)
       throws IOException {
     CacheSerializers.registerCacheDef(def);
 
@@ -122,8 +142,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             + "cache, since the file size is pre-allocated rather than being "
             + "a function of the number of entries in the cache",
         def.diskLimit(), def.name());
-    ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-        mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
+    ChronicleMap<?, ?> store = mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
 
     logger.atInfo().log(
         "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
@@ -138,7 +157,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    return new ChronicleMapStore<>(store, config, metricMaker);
+    return (ChronicleMapStore<K, V>) chronicleMapStoreFactory.create(store, config);
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
