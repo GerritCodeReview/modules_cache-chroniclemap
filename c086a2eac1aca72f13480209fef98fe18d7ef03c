@@ -16,6 +16,24 @@
       "message": "Optional: Mention also original issue 11900, why the alternative cache backend was added and removed in the end.",
       "revId": "c086a2eac1aca72f13480209fef98fe18d7ef03c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "122f4d88_b2243f65",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-02-01T12:29:24Z",
+      "side": 1,
+      "message": "I think this information can be found in the linked changeId, should anyone want to dig deeper.\n\nThanks for the review @davido! 😊",
+      "parentUuid": "1b4eb425_70df2cd7",
+      "revId": "c086a2eac1aca72f13480209fef98fe18d7ef03c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
