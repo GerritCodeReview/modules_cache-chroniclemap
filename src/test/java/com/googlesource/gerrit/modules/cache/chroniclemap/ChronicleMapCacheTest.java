@@ -615,15 +615,14 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     ChronicleMapCacheFactory cacheFactory =
         new ChronicleMapCacheFactory(
-            memCacheFactory, new Config(), sitePaths, null, null, metricMaker);
+            memCacheFactory, new Config(), sitePaths, null, null, null, null);
 
     if (withLoader) {
       return (ChronicleMapCacheImpl<String, String>)
-          cacheFactory.build(
-              cacheDef, cacheDef.loader(), CacheBackend.CAFFEINE, config, metricMaker);
+          cacheFactory.build(cacheDef, cacheDef.loader(), CacheBackend.CAFFEINE, config);
     }
     return (ChronicleMapCacheImpl<String, String>)
-        cacheFactory.build(cacheDef, CacheBackend.CAFFEINE, config, metricMaker);
+        cacheFactory.build(cacheDef, CacheBackend.CAFFEINE, config);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String loadedValue) {

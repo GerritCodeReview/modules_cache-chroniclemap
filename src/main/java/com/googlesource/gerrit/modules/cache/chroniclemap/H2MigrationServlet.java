@@ -83,6 +83,7 @@ public class H2MigrationServlet extends HttpServlet {
   public static final String SIZE_MULTIPLIER_PARAM = "size-multiplier";
 
   private final Set<PersistentCacheDef<?, ?>> persistentCacheDefs;
+  private final ChronicleMapCacheImpl.Factory chronicleMapCacheFactory;
 
   @Inject
   H2MigrationServlet(
@@ -110,7 +111,8 @@ public class H2MigrationServlet extends HttpServlet {
       @Named("persisted_projects")
           PersistentCacheDef<Cache.ProjectCacheKeyProto, CachedProjectConfig>
               persistedProjectsCacheDef,
-      @Named("conflicts") PersistentCacheDef<ConflictKey, Boolean> conflictsCacheDef) {
+      @Named("conflicts") PersistentCacheDef<ConflictKey, Boolean> conflictsCacheDef,
+      ChronicleMapCacheImpl.Factory chronicleMapCacheFactory) {
     this.configFactory = configFactory;
     this.site = site;
     this.gerritConfig = cfg;
@@ -131,6 +133,7 @@ public class H2MigrationServlet extends HttpServlet {
                 persistedProjectsCacheDef,
                 conflictsCacheDef)
             .collect(Collectors.toSet());
+    this.chronicleMapCacheFactory = chronicleMapCacheFactory;
   }
 
   @Override
@@ -217,7 +220,7 @@ public class H2MigrationServlet extends HttpServlet {
           if (chronicleMapConfig.isPresent()) {
             ChronicleMapCacheConfig cacheConfig = chronicleMapConfig.get();
             ChronicleMapCacheImpl<?, ?> chronicleMapCache =
-                new ChronicleMapCacheImpl<>(in, cacheConfig);
+                chronicleMapCacheFactory.createWithoutLoader(in, cacheConfig);
 
             doMigrate(h2CacheFile.get(), in, chronicleMapCache);
             chronicleMapCache.close();

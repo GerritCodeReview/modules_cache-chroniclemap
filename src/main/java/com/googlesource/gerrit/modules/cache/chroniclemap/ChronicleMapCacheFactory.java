@@ -21,7 +21,6 @@ import com.google.common.flogger.FluentLogger;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicMap;
-import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.CacheBackend;
 import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.PersistentCacheDef;
@@ -33,6 +32,7 @@ import com.google.gerrit.server.logging.LoggingContextAwareScheduledExecutorServ
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheImpl.Factory;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -53,13 +53,13 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   private final MemoryCacheFactory memCacheFactory;
   private final Config config;
   private final ChronicleMapCacheConfig.Factory configFactory;
-  private final MetricMaker metricMaker;
   private final DynamicMap<Cache<?, ?>> cacheMap;
   private final List<ChronicleMapCacheImpl<?, ?>> caches;
   private final ScheduledExecutorService cleanup;
   private final Path cacheDir;
-
   private final LoggingContextAwareExecutorService storePersistenceExecutor;
+  private final Factory chronicleMapImplFactory;
+  private final ChronicleMapStore.Factory chronicleMapStoreFactory;
 
   @Inject
   ChronicleMapCacheFactory(
@@ -68,11 +68,11 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
       SitePaths site,
       ChronicleMapCacheConfig.Factory configFactory,
       DynamicMap<Cache<?, ?>> cacheMap,
-      MetricMaker metricMaker) {
+      ChronicleMapCacheImpl.Factory chronicleMapImplFactory,
+      ChronicleMapStore.Factory chronicleMapStoreFactory) {
     this.memCacheFactory = memCacheFactory;
     this.config = cfg;
     this.configFactory = configFactory;
-    this.metricMaker = metricMaker;
     this.caches = new LinkedList<>();
     this.cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.cacheMap = cacheMap;
@@ -88,15 +88,14 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
         new LoggingContextAwareExecutorService(
             Executors.newFixedThreadPool(
                 1, new ThreadFactoryBuilder().setNameFormat("ChronicleMap-Store-%d").build()));
+    this.chronicleMapImplFactory = chronicleMapImplFactory;
+    this.chronicleMapStoreFactory = chronicleMapStoreFactory;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public <K, V> Cache<K, V> build(PersistentCacheDef<K, V> in, CacheBackend backend) {
-    return build(in, backend, metricMaker);
-  }
 
-  public <K, V> Cache<K, V> build(
-      PersistentCacheDef<K, V> in, CacheBackend backend, MetricMaker metricMaker) {
     if (isInMemoryCache(in)) {
       return memCacheFactory.build(in, backend);
     }
@@ -106,22 +105,19 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
             in.refreshAfterWrite());
-    return build(in, backend, config, metricMaker);
+    return (Cache<K, V>) build(in, backend, config);
   }
 
   @SuppressWarnings("unchecked")
   @VisibleForTesting
-  <K, V> Cache<K, V> build(
-      PersistentCacheDef<K, V> in,
-      CacheBackend backend,
-      ChronicleMapCacheConfig config,
-      MetricMaker metricMaker) {
+  <K, V> Cache<?, ?> build(
+      PersistentCacheDef<K, V> in, CacheBackend backend, ChronicleMapCacheConfig config) {
     ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
 
-    ChronicleMapCacheImpl<K, V> cache;
+    ChronicleMapCacheImpl<?, ?> cache;
     try {
       ChronicleMapStore<K, V> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, chronicleMapStoreFactory);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -132,13 +128,8 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
               memCacheFactory.build(def, (CacheLoader<K, V>) memLoader, backend);
 
       cache =
-          new ChronicleMapCacheImpl<>(
-              in,
-              config,
-              metricMaker,
-              memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, false));
-
+          chronicleMapImplFactory.create(
+              in, config, memLoader, new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -149,17 +140,9 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
   }
 
   @Override
-  public <K, V> LoadingCache<K, V> build(
-      PersistentCacheDef<K, V> in, CacheLoader<K, V> loader, CacheBackend backend) {
-    return build(in, loader, backend, metricMaker);
-  }
-
   @VisibleForTesting
   public <K, V> LoadingCache<K, V> build(
-      PersistentCacheDef<K, V> in,
-      CacheLoader<K, V> loader,
-      CacheBackend backend,
-      MetricMaker metricMaker) {
+      PersistentCacheDef<K, V> in, CacheLoader<K, V> loader, CacheBackend backend) {
 
     if (isInMemoryCache(in)) {
       return memCacheFactory.build(in, loader, backend);
@@ -170,7 +153,7 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
             fileName(cacheDir, in.name(), in.version()),
             in.expireAfterWrite(),
             in.refreshAfterWrite());
-    return build(in, loader, backend, config, metricMaker);
+    return build(in, loader, backend, config);
   }
 
   @SuppressWarnings("unchecked")
@@ -179,14 +162,13 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
       PersistentCacheDef<K, V> in,
       CacheLoader<K, V> loader,
       CacheBackend backend,
-      ChronicleMapCacheConfig config,
-      MetricMaker metricMaker) {
-    ChronicleMapCacheImpl<K, V> cache;
+      ChronicleMapCacheConfig config) {
+    ChronicleMapCacheImpl<?, ?> cache;
     ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
 
     try {
       ChronicleMapStore<K, V> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, chronicleMapStoreFactory);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -197,19 +179,15 @@ class ChronicleMapCacheFactory implements PersistentCacheFactory, LifecycleListe
               memCacheFactory.build(def, (CacheLoader<K, V>) memLoader, backend);
 
       cache =
-          new ChronicleMapCacheImpl<>(
-              in,
-              config,
-              metricMaker,
-              memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
+          chronicleMapImplFactory.create(
+              in, config, memLoader, new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
     synchronized (caches) {
       caches.add(cache);
     }
-    return cache;
+    return (LoadingCache<K, V>) cache;
   }
 
   @Override
