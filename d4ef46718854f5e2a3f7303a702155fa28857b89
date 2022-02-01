@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa5b2c28_a45f7916",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStore.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-02-01T09:01:01Z",
+      "side": 1,
+      "message": "I think `metrics` is now too generic, since there is more than one metric object involved.\nconsider renaming: singleMetrics? perCacheMetrics?",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 16
+      },
+      "revId": "d4ef46718854f5e2a3f7303a702155fa28857b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d06aab73_aa03f7f3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStore.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-02-01T09:01:01Z",
+      "side": 1,
+      "message": "Should this be also injected via an assistedfactory in the ChronicleMapStore constructor?\n\nCan also be done as a follow up change",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 81
+      },
+      "revId": "d4ef46718854f5e2a3f7303a702155fa28857b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6695fd70_d1587ecb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStoreMetrics.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-02-01T09:01:01Z",
+      "side": 1,
+      "message": "name is now optional, I think we should deal with it when logging its value, as we do when generating the metric name.",
+      "range": {
+        "startLine": 48,
+        "startChar": 94,
+        "endLine": 49,
+        "endChar": 30
+      },
+      "revId": "d4ef46718854f5e2a3f7303a702155fa28857b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
