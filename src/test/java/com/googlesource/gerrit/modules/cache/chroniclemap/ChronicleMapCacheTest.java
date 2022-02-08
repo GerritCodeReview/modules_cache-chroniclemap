@@ -17,6 +17,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
+import com.codahale.metrics.Counter;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
@@ -355,11 +356,50 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     while (!cache.runningOutOfFreeSpace()) {
       cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
-    assertThat(cache.runningOutOfFreeSpace()).isTrue();
+  }
 
-    cache.prune();
+  @Test
+  public void shouldRecoverWhenPutFailsBecauseEntryIsTooBig() throws Exception {
+    String key = UUID.randomUUID().toString();
+    String value = UUID.randomUUID().toString();
+    int uuidSize = valueSize(value);
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 1);
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 1);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", uuidSize / 2);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize / 2);
+    gerritConfig.save();
 
-    assertThat(cache.runningOutOfFreeSpace()).isFalse();
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, value);
+
+    cache.put(key, value);
+
+    assertThat(cache.getStore().size()).isEqualTo(0);
+    assertThat(cache.getIfPresent(key)).isNull();
+    assertThat(getCounter("cache/chroniclemap/store_put_failures_" + testCacheName).getCount())
+        .isEqualTo(1L);
+  }
+
+  @Test
+  public void shouldRecoverWhenPutFailsBecauseCacheCannotExpand() throws Exception {
+    String key = UUID.randomUUID().toString();
+    String value = UUID.randomUUID().toString();
+    int uuidSize = valueSize(value);
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 1);
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 1);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", uuidSize);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithoutLoader();
+
+    cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    cache.put(key, value);
+
+    assertThat(cache.getStore().size()).isEqualTo(2);
+    assertThat(cache.getIfPresent(key)).isNull();
+    assertThat(getCounter("cache/chroniclemap/store_put_failures_" + testCacheName).getCount())
+        .isEqualTo(1L);
   }
 
   @Test
@@ -400,6 +440,21 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     WaitUtil.waitUntil(
         () -> (int) getMetric(autoResizeMetricName).getValue() == 0, Duration.ofSeconds(2));
+  }
+
+  @Test
+  public void shouldTriggerMaxAutoResizeMetric() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + testCacheName;
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 2);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", cachedValue.getBytes().length);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", valueSize(cachedValue));
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 3);
+    gerritConfig.save();
+
+    newCacheWithMetrics(testCacheName, cachedValue);
+
+    assertThat(getMetric(maxAutoResizeMetricName).getValue()).isEqualTo(3);
   }
 
   @Test
@@ -487,6 +542,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     String hotKeySizeMetricName = "cache/chroniclemap/hot_keys_size_" + sanitized;
     String percentageFreeMetricName = "cache/chroniclemap/percentage_free_space_" + sanitized;
     String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
+    String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + sanitized;
     String hotKeyCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + sanitized;
 
     newCacheWithMetrics(cacheName, null);
@@ -494,6 +550,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     getMetric(hotKeySizeMetricName);
     getMetric(percentageFreeMetricName);
     getMetric(autoResizeMetricName);
+    getMetric(maxAutoResizeMetricName);
     getMetric(hotKeyCapacityMetricName);
   }
 
@@ -590,5 +647,11 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     Gauge<V> gauge = (Gauge<V>) metricRegistry.getMetrics().get(name);
     assertWithMessage(name).that(gauge).isNotNull();
     return gauge;
+  }
+
+  private Counter getCounter(String name) {
+    Counter counter = (Counter) metricRegistry.getMetrics().get(name);
+    assertWithMessage(name).that(counter).isNotNull();
+    return counter;
   }
 }

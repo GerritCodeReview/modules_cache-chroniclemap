@@ -14,8 +14,8 @@ Example:
 git clone https://gerrit.googlesource.com/gerrit
 git clone https://gerrit.googlesource.com/modules/cache-chroniclemap
 cd gerrit/plugins
-ln -s ../../cache-chroniclemap cache-chroniclemap
-ln -sf ../../external_plugin_deps.bzl .
+ln -s ../../cache-chroniclemap .
+ln -sf ../../cache-chroniclemap/external_plugin_deps.bzl .
 ```
 
 From the Gerrit source tree issue the command `bazelsk build plugins/cache-chroniclemap`.
