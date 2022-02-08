@@ -39,7 +39,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ChronicleMapCacheConfig config;
-  private final ChronicleMap<KeyWrapper<K>, TimedValue<V>> store;
+  private final ChronicleMapStore<K, V> store;
   private final LongAdder hitCount = new LongAdder();
   private final LongAdder missCount = new LongAdder();
   private final LongAdder loadSuccessCount = new LongAdder();
@@ -52,20 +52,21 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   ChronicleMapCacheImpl(PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config)
       throws IOException {
+    DisabledMetricMaker metricMaker = new DisabledMetricMaker();
 
     this.cacheDefinition = def;
     this.config = config;
     this.hotEntries =
         new InMemoryLRU<>(
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
-    this.store = createOrRecoverStore(def, config);
+    this.store = createOrRecoverStore(def, config, metricMaker);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
             MoreExecutors.directExecutor(), store, config.getExpireAfterWrite());
     this.mem = memLoader.asInMemoryCacheBypass();
 
-    ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(new DisabledMetricMaker());
-    metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+    ChronicleMapCacheMetrics metrics = new ChronicleMapCacheMetrics(metricMaker);
+    metrics.registerCallBackMetrics(def.name(), this);
   }
 
   ChronicleMapCacheImpl(
@@ -73,8 +74,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       ChronicleMapCacheConfig config,
       MetricMaker metricMaker,
       ChronicleMapCacheLoader<K, V> memLoader,
-      InMemoryCache<K, V> mem,
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store) {
+      InMemoryCache<K, V> mem) {
 
     this.cacheDefinition = def;
     this.config = config;
@@ -83,15 +83,16 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
     this.memLoader = memLoader;
     this.mem = mem;
-    this.store = store;
+    this.store = memLoader.getStore();
 
-    ChronicleMapStorageMetrics metrics = new ChronicleMapStorageMetrics(metricMaker);
-    metrics.registerCallBackMetrics(def.name(), store, hotEntries);
+    ChronicleMapCacheMetrics metrics = new ChronicleMapCacheMetrics(metricMaker);
+    metrics.registerCallBackMetrics(def.name(), this);
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
-  static <K, V> ChronicleMap<KeyWrapper<K>, TimedValue<V>> createOrRecoverStore(
-      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config) throws IOException {
+  static <K, V> ChronicleMapStore<K, V> createOrRecoverStore(
+      PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config, MetricMaker metricMaker)
+      throws IOException {
     CacheSerializers.registerCacheDef(def);
 
     final Class<KeyWrapper<K>> keyWrapperClass = (Class<KeyWrapper<K>>) (Class) KeyWrapper.class;
@@ -137,49 +138,29 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.remainingAutoResizes(),
         store.percentageFreeSpace());
 
-    return store;
+    return new ChronicleMapStore<>(store, config, metricMaker);
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
     return cacheDefinition;
   }
 
-  private static class ChronicleMapStorageMetrics {
+  private static class ChronicleMapCacheMetrics {
 
     private final MetricMaker metricMaker;
 
-    ChronicleMapStorageMetrics(MetricMaker metricMaker) {
+    ChronicleMapCacheMetrics(MetricMaker metricMaker) {
       this.metricMaker = metricMaker;
     }
 
-    <K, V> void registerCallBackMetrics(
-        String name, ChronicleMap<KeyWrapper<K>, TimedValue<V>> store, InMemoryLRU<K> hotEntries) {
+    <K, V> void registerCallBackMetrics(String name, ChronicleMapCacheImpl<K, V> cache) {
       String sanitizedName = metricMaker.sanitizeMetricName(name);
-      String PERCENTAGE_FREE_SPACE_METRIC =
-          "cache/chroniclemap/percentage_free_space_" + sanitizedName;
-      String REMAINING_AUTORESIZES_METRIC =
-          "cache/chroniclemap/remaining_autoresizes_" + sanitizedName;
       String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + sanitizedName;
       String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + sanitizedName;
 
-      metricMaker.newCallbackMetric(
-          PERCENTAGE_FREE_SPACE_METRIC,
-          Long.class,
-          new Description(
-              String.format("The amount of free space in the %s cache as a percentage", name)),
-          () -> (long) store.percentageFreeSpace());
-
-      metricMaker.newCallbackMetric(
-          REMAINING_AUTORESIZES_METRIC,
-          Integer.class,
-          new Description(
-              String.format(
-                  "The number of times the %s cache can automatically expand its capacity", name)),
-          store::remainingAutoResizes);
-
       metricMaker.newConstantMetric(
           HOT_KEYS_CAPACITY_METRIC,
-          hotEntries.getCapacity(),
+          cache.hotEntries.getCapacity(),
           new Description(
               String.format(
                   "The number of hot cache keys for %s cache that can be kept in memory", name)));
@@ -190,7 +171,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
           new Description(
               String.format(
                   "The number of hot cache keys for %s cache that are currently in memory", name)),
-          hotEntries::size);
+          cache.hotEntries::size);
     }
   }
 
@@ -276,8 +257,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void putUnchecked(Object key, Object value, Timestamp created) {
     TimedValue<?> wrappedValue = new TimedValue<>(value, created.toInstant().toEpochMilli());
     KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
-    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
-    mem.put((K) key, (TimedValue<V>) wrappedValue);
+    if (store.tryPut((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
+      mem.put((K) key, (TimedValue<V>) wrappedValue);
+    }
   }
 
   /**
@@ -292,21 +274,26 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
    */
   @SuppressWarnings("unchecked")
   public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
-    store.put((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue);
-    mem.put((K) wrappedKey.getValue(), (TimedValue<V>) wrappedValue);
+    if (store.tryPut((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
+      mem.put((K) wrappedKey.getValue(), (TimedValue<V>) wrappedValue);
+    }
   }
 
   @Override
   public void put(K key, V val) {
     TimedValue<V> timedVal = new TimedValue<>(val);
-    mem.put(key, timedVal);
-    putTimedToStore(key, timedVal);
+    if (putTimedToStore(key, timedVal)) {
+      mem.put(key, timedVal);
+    }
   }
 
-  void putTimedToStore(K key, TimedValue<V> timedVal) {
+  boolean putTimedToStore(K key, TimedValue<V> timedVal) {
     KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
-    store.put(wrappedKey, timedVal);
-    hotEntries.add(key);
+    boolean putSuccess = store.tryPut(wrappedKey, timedVal);
+    if (putSuccess) {
+      hotEntries.add(key);
+    }
+    return putSuccess;
   }
 
   public void prune() {
@@ -391,5 +378,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public void close() {
     store.close();
+  }
+
+  public double percentageUsedAutoResizes() {
+    return store.percentageUsedAutoResizes();
+  }
+
+  public String name() {
+    return store.name();
   }
 }
