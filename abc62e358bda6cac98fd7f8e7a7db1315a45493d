@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61944e03_0b2ad602",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-03-04T07:27:04Z",
+      "side": 1,
+      "message": "@Marcin here errorprone complains about wron usage of flogger\n```\nplugins/cache-chroniclemap/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java:89: error: [FloggerFormatString] extra format arguments: used 0, provided 1\n      logger.atSevere().log(\"Could not create new cache\", e);\n                           ^\n    (see https://errorprone.info/bugpattern/FloggerFormatString)\n  Did you mean \u0027logger.atSevere().withCause(e).log(\"Could not create new cache\");\u0027?\n```",
+      "revId": "abc62e358bda6cac98fd7f8e7a7db1315a45493d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
