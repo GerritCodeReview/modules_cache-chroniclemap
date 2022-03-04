@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77a3173e_57f5346f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-03-04T07:25:53Z",
+      "side": 1,
+      "message": "@Marcin it fails to compile in CI with the following error\n\n```\nplugins/cache-chroniclemap/src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java:269: error: cannot find symbol\n    RestResponse resp \u003d adminRestSession.put(REST_CMD + \"?CACHE_NAME\u003d\" + DIFF);\n                                                                         ^\n  symbol:   variable DIFF\n  location: class AutoAdjustCachesIT\n```",
+      "revId": "01c3e07090207874323a5d72356203f1c073df11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
