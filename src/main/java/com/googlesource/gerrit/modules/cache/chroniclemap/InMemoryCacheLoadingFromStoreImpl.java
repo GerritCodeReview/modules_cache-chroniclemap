@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
 import com.google.common.cache.LoadingCache;
 import com.google.gerrit.common.Nullable;
@@ -22,7 +21,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 class InMemoryCacheLoadingFromStoreImpl<K, V> implements InMemoryCache<K, V> {
-  private final Cache<K, TimedValue<V>> loadingFromStoreCache;
+  private final LoadingCache<K, TimedValue<V>> loadingFromStoreCache;
   private final boolean loadingFromSource;
 
   /**
@@ -59,13 +58,13 @@ class InMemoryCacheLoadingFromStoreImpl<K, V> implements InMemoryCache<K, V> {
 
   @Override
   public TimedValue<V> get(K key) throws ExecutionException {
-    if (loadingFromSource) {
-      return ((LoadingCache<K, TimedValue<V>>) loadingFromStoreCache).get(key);
-    }
-
     TimedValue<V> cachedValue = getIfPresent(key);
     if (cachedValue != null) {
       return cachedValue;
+    }
+
+    if (loadingFromSource) {
+      return loadingFromStoreCache.get(key);
     }
 
     throw new UnsupportedOperationException(
@@ -75,7 +74,7 @@ class InMemoryCacheLoadingFromStoreImpl<K, V> implements InMemoryCache<K, V> {
   @Override
   public void refresh(K key) {
     if (loadingFromSource) {
-      ((LoadingCache<K, TimedValue<V>>) loadingFromStoreCache).refresh(key);
+      loadingFromStoreCache.refresh(key);
     }
   }
 

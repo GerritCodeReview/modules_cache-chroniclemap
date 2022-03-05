@@ -41,7 +41,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import net.openhft.chronicle.map.ChronicleMap;
 import org.eclipse.jgit.lib.Config;
 
 @Singleton
@@ -100,8 +99,8 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
     ChronicleMapCacheImpl<K, V> cache;
     try {
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config);
+      ChronicleMapStore<K, V> store =
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -117,8 +116,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
               config,
               metricMaker,
               memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, false),
-              store);
+              new InMemoryCacheLoadingFromStoreImpl<>(mem, false));
 
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -152,8 +150,8 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
     ChronicleMapCacheDefProxy<K, V> def = new ChronicleMapCacheDefProxy<>(in);
 
     try {
-      ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-          ChronicleMapCacheImpl.createOrRecoverStore(in, config);
+      ChronicleMapStore<K, V> store =
+          ChronicleMapCacheImpl.createOrRecoverStore(in, config, metricMaker);
 
       ChronicleMapCacheLoader<K, V> memLoader =
           new ChronicleMapCacheLoader<>(
@@ -169,8 +167,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
               config,
               metricMaker,
               memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, true),
-              store);
+              new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
