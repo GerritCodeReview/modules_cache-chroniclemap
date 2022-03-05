@@ -19,8 +19,11 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.sshd.SshCommand;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.TextProgressMonitor;
+import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 public class AutoAdjustCachesCommand extends SshCommand {
@@ -36,6 +39,24 @@ public class AutoAdjustCachesCommand extends SshCommand {
       usage = "Calculate the average key and value size, but do not migrate the data.")
   public void setDryRun(boolean dryRun) {
     autoAdjustCachesEngine.setDryRun(dryRun);
+  }
+
+  @Option(
+      name = "--max-entries",
+      aliases = {"-m"},
+      usage = "The number of entries that the new tuned cache is going to hold.")
+  public void setMaxEntries(long maxEntries) {
+    autoAdjustCachesEngine.setOptionalMaxEntries(Optional.of(maxEntries));
+  }
+
+  @Argument(
+      index = 0,
+      required = false,
+      multiValued = true,
+      metaVar = "CACHE_NAME",
+      usage = "name of cache to be adjusted")
+  public void setCacheName(String cacheName) {
+    autoAdjustCachesEngine.addCacheNames(Arrays.asList(cacheName));
   }
 
   @Inject
@@ -65,7 +86,7 @@ public class AutoAdjustCachesCommand extends SshCommand {
       stderr.println(e.getLocalizedMessage());
       throw e;
     } catch (IOException e) {
-      logger.atSevere().log("Could not create new cache", e);
+      logger.atSevere().withCause(e).log("Could not create new cache");
       stderr.println(String.format("Could not create new cache : %s", e.getLocalizedMessage()));
     }
   }
