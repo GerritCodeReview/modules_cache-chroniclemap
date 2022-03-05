@@ -51,6 +51,29 @@
       "parentUuid": "61944e03_0b2ad602",
       "revId": "abc62e358bda6cac98fd7f8e7a7db1315a45493d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef00374a_405d5719",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-03-05T11:07:38Z",
+      "side": 1,
+      "message": "The \"diff\" cache has been removed in stable-3.5 (I52738c85), in favour\nof two new caches, the git_file_diff cache (introduced in  Ia278881c0f)\nand the gerrit_file_diff cache (introduced in I23f616d1).",
+      "range": {
+        "startLine": 185,
+        "startChar": 47,
+        "endLine": 185,
+        "endChar": 56
+      },
+      "revId": "abc62e358bda6cac98fd7f8e7a7db1315a45493d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
