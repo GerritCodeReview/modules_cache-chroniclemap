@@ -86,7 +86,7 @@ public class AutoAdjustCachesCommand extends SshCommand {
       stderr.println(e.getLocalizedMessage());
       throw e;
     } catch (IOException e) {
-      logger.atSevere().log("Could not create new cache", e);
+      logger.withCause(e).atSevere().log("Could not create new cache");
       stderr.println(String.format("Could not create new cache : %s", e.getLocalizedMessage()));
     }
   }
