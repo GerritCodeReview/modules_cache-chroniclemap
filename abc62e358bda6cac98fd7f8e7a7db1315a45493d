@@ -16,6 +16,41 @@
       "message": "@Marcin here errorprone complains about wron usage of flogger\n```\nplugins/cache-chroniclemap/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java:89: error: [FloggerFormatString] extra format arguments: used 0, provided 1\n      logger.atSevere().log(\"Could not create new cache\", e);\n                           ^\n    (see https://errorprone.info/bugpattern/FloggerFormatString)\n  Did you mean \u0027logger.atSevere().withCause(e).log(\"Could not create new cache\");\u0027?\n```",
       "revId": "abc62e358bda6cac98fd7f8e7a7db1315a45493d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b89919_afbc251e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-03-05T10:35:55Z",
+      "side": 1,
+      "message": "We need first to merge Change-Id: I1b971e57a, merge that up and then re-merge to this.",
+      "revId": "abc62e358bda6cac98fd7f8e7a7db1315a45493d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ac6380_103f0025",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-03-05T10:35:55Z",
+      "side": 1,
+      "message": "Fixed with Change-Id: I1b971e57a",
+      "parentUuid": "61944e03_0b2ad602",
+      "revId": "abc62e358bda6cac98fd7f8e7a7db1315a45493d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
