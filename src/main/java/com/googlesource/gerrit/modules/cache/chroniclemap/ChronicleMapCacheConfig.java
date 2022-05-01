@@ -35,7 +35,6 @@ public class ChronicleMapCacheConfig {
   private final Duration refreshAfterWrite;
   private final int maxBloatFactor;
   private final int percentageFreeSpaceEvictionThreshold;
-  private final int percentageHotKeys;
   private final String configKey;
 
   public interface Factory {
@@ -115,21 +114,10 @@ public class ChronicleMapCacheConfig {
             configKey,
             "percentageFreeSpaceEvictionThreshold",
             Defaults.percentageFreeSpaceEvictionThreshold());
-
-    this.percentageHotKeys =
-        cfg.getInt("cache", configKey, "percentageHotKeys", Defaults.percentageHotKeys());
-
-    if (percentageHotKeys <= 0 || percentageHotKeys >= 100) {
-      throw new IllegalArgumentException("Invalid 'percentageHotKeys': should be in range [1-99]");
-    }
   }
 
   public int getPercentageFreeSpaceEvictionThreshold() {
     return percentageFreeSpaceEvictionThreshold;
-  }
-
-  public int getpercentageHotKeys() {
-    return percentageHotKeys;
   }
 
   public Duration getExpireAfterWrite() {
@@ -178,7 +166,6 @@ public class ChronicleMapCacheConfig {
     public static final int DEFAULT_MAX_BLOAT_FACTOR = 1;
 
     public static final int DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD = 90;
-    public static final int DEFAULT_PERCENTAGE_HOT_KEYS = 50;
 
     private static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
@@ -223,10 +210,6 @@ public class ChronicleMapCacheConfig {
 
     public static int percentageFreeSpaceEvictionThreshold() {
       return DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
-    }
-
-    public static int percentageHotKeys() {
-      return DEFAULT_PERCENTAGE_HOT_KEYS;
     }
   }
 }

@@ -128,24 +128,6 @@ and it will not be able to take more entries, failing with a `IllegalStateExcept
  If the cache expands you will see an increase in the available free space.
 [official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#percentageFreeSpace--)
 
-* `percentageHotKeys`
-: The percentage of _hot_ keys that can be kept in-memory.
-When performing evictions, _hot_ keys will be preserved and only _cold_ keys
-will be evicted from chronicle-map, in random order.
-
-This value implies a trade-off between eviction speed and eviction accuracy.
-
-The smaller the number of hotKeys allocated, the quicker the eviction phase
-will be. However, this will increase the chance of evicting entries that were
-recently accessed.
-
-Conversely, the higher the number of hotKeys allocated, the higher will be the
-accuracy in evicting only recently accessed keys, at the price of a longer
-time spent doing evictions.
-
-In order to ensure there is always a cold entry to be evicted, the number of
-`percentageHotKeys` always needs to be less than `maxEntries`.
-
 *Constraints*: [1-99]
 *Default*: 50
 

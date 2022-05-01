@@ -14,13 +14,11 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_KEY_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_VALUE_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_ENTRIES;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_HOT_KEYS;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.File;
@@ -175,37 +173,6 @@ public class ChronicleMapCacheConfigTest {
   public void shouldProvidePercentageFreeSpaceEvictionThresholdDefault() throws Exception {
     assertThat(configUnderTest(gerritConfig).getPercentageFreeSpaceEvictionThreshold())
         .isEqualTo(DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD);
-  }
-
-  @Test
-  public void shouldProvidePercentageHotKeysDefault() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getpercentageHotKeys())
-        .isEqualTo(DEFAULT_PERCENTAGE_HOT_KEYS);
-  }
-
-  @Test
-  public void shouldProvidePercentageHotKeysWhenConfigured() throws Exception {
-    int percentageHotKeys = 20;
-    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", percentageHotKeys);
-    gerritConfig.save();
-
-    assertThat(configUnderTest(gerritConfig).getpercentageHotKeys()).isEqualTo(percentageHotKeys);
-  }
-
-  @Test
-  public void shouldThrowWhenPercentageHotKeysIs100() throws Exception {
-    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", 100);
-    gerritConfig.save();
-
-    assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
-  }
-
-  @Test
-  public void shouldThrowWhenPercentageHotKeysIs0() throws Exception {
-    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", 0);
-    gerritConfig.save();
-
-    assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
   }
 
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {

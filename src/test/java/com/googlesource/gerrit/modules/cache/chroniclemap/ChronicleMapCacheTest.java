@@ -306,7 +306,6 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     final String fooValue = "foo";
 
     gerritConfig.setInt("cache", testCacheName, "maxEntries", 2);
-    gerritConfig.setInt("cache", testCacheName, "percentageHotKeys", 10);
     gerritConfig.setInt("cache", testCacheName, "avgKeySize", "foo1".getBytes().length);
     gerritConfig.setInt("cache", testCacheName, "avgValueSize", valueSize(fooValue));
     gerritConfig.save();
@@ -326,7 +325,6 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
       throws Exception {
     final String fooValue = "foo";
     gerritConfig.setInt("cache", testCacheName, "maxEntries", 2);
-    gerritConfig.setInt("cache", testCacheName, "percentageHotKeys", 10);
     gerritConfig.setInt("cache", testCacheName, "avgKeySize", "foo1".getBytes().length);
     gerritConfig.setInt("cache", testCacheName, "avgValueSize", valueSize(fooValue));
     gerritConfig.save();
@@ -347,7 +345,6 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   public void shouldEvictEntriesUntilFreeSpaceIsRecovered() throws Exception {
     final int uuidSize = valueSize(UUID.randomUUID().toString());
     gerritConfig.setInt("cache", "foo", "maxEntries", 50);
-    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
     gerritConfig.setInt("cache", "foo", "avgKeySize", uuidSize);
     gerritConfig.setInt("cache", "foo", "avgValueSize", uuidSize);
     gerritConfig.save();
@@ -458,65 +455,11 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   @Test
-  public void shouldTriggerHotKeysCapacityCacheMetric() throws Exception {
+  public void shouldResetKeysIndexWhenInvalidateAll() throws Exception {
     String cachedValue = UUID.randomUUID().toString();
-    int percentageHotKeys = 60;
-    int maxEntries = 10;
-    int expectedCapacity = 6;
-    String hotKeysCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + testCacheName;
-    gerritConfig.setInt("cache", testCacheName, "maxEntries", maxEntries);
-    gerritConfig.setInt("cache", testCacheName, "percentageHotKeys", percentageHotKeys);
-    gerritConfig.save();
-
-    newCacheWithMetrics(testCacheName, cachedValue);
-
-    assertThat(getMetric(hotKeysCapacityMetricName).getValue()).isEqualTo(expectedCapacity);
-  }
-
-  @Test
-  public void shouldTriggerHotKeysSizeCacheMetric() throws Exception {
-    String cachedValue = UUID.randomUUID().toString();
-    int percentageHotKeys = 30;
     int maxEntries = 10;
     int maxHotKeyCapacity = 3;
-    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
-    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + testCacheName;
     gerritConfig.setInt("cache", testCacheName, "maxEntries", maxEntries);
-    gerritConfig.setInt("cache", testCacheName, "percentageHotKeys", percentageHotKeys);
-    gerritConfig.save();
-
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, cachedValue);
-
-    assertThat(getMetric(hotKeysSizeMetricName).getValue()).isEqualTo(0);
-
-    for (int i = 0; i < maxHotKeyCapacity; i++) {
-      cache.put(cachedValue + i, cachedValue);
-    }
-
-    WaitUtil.waitUntil(
-        () -> (int) getMetric(hotKeysSizeMetricName).getValue() == maxHotKeyCapacity,
-        METRIC_TRIGGER_TIMEOUT);
-
-    cache.put(cachedValue + maxHotKeyCapacity + 1, cachedValue);
-
-    assertThrows(
-        InterruptedException.class,
-        () ->
-            WaitUtil.waitUntil(
-                () -> (int) getMetric(hotKeysSizeMetricName).getValue() > maxHotKeyCapacity,
-                METRIC_TRIGGER_TIMEOUT));
-  }
-
-  @Test
-  public void shouldResetHotKeysWhenInvalidateAll() throws Exception {
-    String cachedValue = UUID.randomUUID().toString();
-    int percentageHotKeys = 30;
-    int maxEntries = 10;
-    int maxHotKeyCapacity = 3;
-    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
-    String hotKeysSizeMetricName = "cache/chroniclemap/hot_keys_size_" + testCacheName;
-    gerritConfig.setInt("cache", testCacheName, "maxEntries", maxEntries);
-    gerritConfig.setInt("cache", testCacheName, "percentageHotKeys", percentageHotKeys);
     gerritConfig.save();
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, cachedValue);
@@ -525,33 +468,24 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
       cache.put(cachedValue + i, cachedValue);
     }
 
-    WaitUtil.waitUntil(
-        () -> (int) getMetric(hotKeysSizeMetricName).getValue() == maxHotKeyCapacity,
-        METRIC_TRIGGER_TIMEOUT);
-
+    assertThat(cache.keys()).isNotEmpty();
     cache.invalidateAll();
-
-    WaitUtil.waitUntil(
-        () -> (int) getMetric(hotKeysSizeMetricName).getValue() == 0, METRIC_TRIGGER_TIMEOUT);
+    assertThat(cache.keys()).isEmpty();
   }
 
   @Test
   public void shouldSanitizeUnwantedCharsInMetricNames() throws Exception {
     String cacheName = "very+confusing.cache#name";
     String sanitized = "very_confusing_cache_name";
-    String hotKeySizeMetricName = "cache/chroniclemap/hot_keys_size_" + sanitized;
     String percentageFreeMetricName = "cache/chroniclemap/percentage_free_space_" + sanitized;
     String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
     String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + sanitized;
-    String hotKeyCapacityMetricName = "cache/chroniclemap/hot_keys_capacity_" + sanitized;
 
     newCacheWithMetrics(cacheName, null);
 
-    getMetric(hotKeySizeMetricName);
     getMetric(percentageFreeMetricName);
     getMetric(autoResizeMetricName);
     getMetric(maxAutoResizeMetricName);
-    getMetric(hotKeyCapacityMetricName);
   }
 
   private int valueSize(String value) {
