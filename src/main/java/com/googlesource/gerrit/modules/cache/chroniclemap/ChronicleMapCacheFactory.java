@@ -117,11 +117,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
       cache =
           new ChronicleMapCacheImpl<>(
-              in,
-              config,
-              metricMaker,
-              memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, false));
+              in, config, memLoader, new InMemoryCacheLoadingFromStoreImpl<>(mem, false));
 
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -169,11 +165,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
 
       cache =
           new ChronicleMapCacheImpl<>(
-              in,
-              config,
-              metricMaker,
-              memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
+              in, config, memLoader, new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
