@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0fbeb8c_c975e2d8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-10T15:45:06Z",
+      "side": 1,
+      "message": "problem with `ConcurrentLinkedQueue` is that neither contains nor remove are `O(1)` operations but `O(n)` hence it is not really suitable to maintain `LRU` (which requires constant collection order updates).\n\nThe closest one that maintains the order and in the same time is quick to contain/update is `LinkedHashSet` but it is slow on getting tail object...",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 37
+      },
+      "revId": "9be7b336a5306b97afe05736975bfa953e2e4ccb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
