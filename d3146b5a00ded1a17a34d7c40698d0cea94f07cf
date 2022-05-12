@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b936a640_40b6ba69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-12T15:26:02Z",
+      "side": 1,
+      "message": "This is still the case - there is no persistency however let\u0027s review the idea and see how it resonates with you guys before investing too much in it ;)",
+      "parentUuid": "874d2ad3_e9eca6b1",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9eebbf52_6c2ebd1d",
@@ -198,6 +222,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9efe426a_9caaaf08",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-12T15:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9e81ed9_7b2f25e1",
+      "range": {
+        "startLine": 36,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 19
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7aa0cc7_87fe6a72",
@@ -211,6 +259,30 @@
       "writtenOn": "2021-10-11T18:38:43Z",
       "side": 1,
       "message": "Do we need to unconditionally instantiate a ChronicleMapStoreWithHistory.\n\nIf maxAge (expireAfterWrite) was negative we wouldn\u0027t need the additional FIFO queue, and no pruning would be required.\n\nShould we fall back to return the vanilla ChronicleMap, in such case?",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 53
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ebc515_f0489606",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-12T15:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7aa0cc7_87fe6a72",
       "range": {
         "startLine": 140,
         "startChar": 4,

@@ -22,6 +22,30 @@
       },
       "revId": "9be7b336a5306b97afe05736975bfa953e2e4ccb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c18e1daf_38d5ae6e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-12T15:26:02Z",
+      "side": 1,
+      "message": "I was wrong in assessing how `LinkedHashSet` works - actually `Iterator.next()` offers the oldest entry that was put to it so removing by LRU is very cheap.",
+      "parentUuid": "b0fbeb8c_c975e2d8",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 37
+      },
+      "revId": "9be7b336a5306b97afe05736975bfa953e2e4ccb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
