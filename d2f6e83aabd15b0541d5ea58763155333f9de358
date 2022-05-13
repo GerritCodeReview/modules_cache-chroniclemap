@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cfdce4b_a1d87e2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "Good stuff @Jacek,\nminor things to fix and then I think we should try to get some benchmarks?\nWDYT?",
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f27ce07_fe4b4f76",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "as opposed to",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 20
+      },
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ed5f8c_3bd4078c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "do we need to synchronize here? keys is already a synchronized set",
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b72ba94c_a540a681",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "nit: use getKey() getter instead?",
+      "range": {
+        "startLine": 90,
+        "startChar": 36,
+        "endLine": 90,
+        "endChar": 39
+      },
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2828aa44_274bb533",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "I think this could be rewritten more succinctly as:\n\n```\n  boolean removeAndConsumeLruKey(Consumer\u003cT\u003e consumer) {\n    return keys.stream().findFirst().map( key -\u003e {\n      consumer.accept(key.getKey());\n      return keys.remove(key);\n    }).orElse(false);\n  }\n```",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 3
+      },
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baad550b_e92d16b4",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "Nit: I would personally remove the given/when/then comments.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 12
+      },
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bddb896_91e8d2b1",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T14:49:24Z",
+      "side": 1,
+      "message": "Why not passing a mocked consumer here and then assert that it was called with the right argument?\n\nIf `removeAndConsumeKeysOlderThan` never called Consumer that failing assertion would never be executed.\nWe would fail only at L93, whilst we could have failed already earlier.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 9
+      },
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
