@@ -83,6 +83,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a847df28_65e01f1f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-13T15:34:14Z",
+      "side": 1,
+      "message": "This unfortuntely is not working (and some tests are failing because of it).\nkey.getKey() returns a T, but the consumer that wants to remove the element from chronicleMap needs a `KeyWrapper`.\n\nI think evictColEntries needs to be something like:\n\n```\n  private void evictColdEntries() {\n    while (runningOutOfFreeSpace() \u0026\u0026 keysIndex.removeAndConsumeLruKey(kValue -\u003e store.remove(new KeyWrapper\u003c\u003e(kValue)))) {}\n  }\n  ```",
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2828aa44_274bb533",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
         "patchSetId": 3
