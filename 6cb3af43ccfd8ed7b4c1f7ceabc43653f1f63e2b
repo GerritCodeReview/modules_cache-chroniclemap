@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61cb06af_a0447d65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:07:29Z",
+      "side": 1,
+      "message": "@jacek what\u0027s the plan for testing this.\nShould we prepare a benchmark script that is able to trigger pruning and collect some metrics?",
+      "revId": "6cb3af43ccfd8ed7b4c1f7ceabc43653f1f63e2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c888879_0cec281b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:07:29Z",
+      "side": 1,
+      "message": "I think we would be interested in understanding the latency of these operations, to confirm that our O(1) expectations are met.\n\nShould we (even as a follow up change) expose latency metrics about these?",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 23
+      },
+      "revId": "6cb3af43ccfd8ed7b4c1f7ceabc43653f1f63e2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
