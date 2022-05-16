@@ -52,6 +52,24 @@
       "parentUuid": "3384c8f6_3ab81d80",
       "revId": "24cd9eb4707e324bf8eef9280c59fa20eee09421",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7383704e_b0b7962a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-16T13:54:49Z",
+      "side": 1,
+      "message": "it is version `1.7` - pretty old but I will reformat to it ;)",
+      "parentUuid": "54b71531_a1032985",
+      "revId": "24cd9eb4707e324bf8eef9280c59fa20eee09421",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
