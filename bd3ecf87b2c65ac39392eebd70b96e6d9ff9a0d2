@@ -81,6 +81,29 @@
       "parentUuid": "b89a084b_ed261b3f",
       "revId": "bd3ecf87b2c65ac39392eebd70b96e6d9ff9a0d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2392a16_c0931333",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:03:51Z",
+      "side": 0,
+      "message": "There is a bunch of configuration still left over from the concept of hot entries that has been removed.\n\nSearch for DEFAULT_PERCENTAGE_HOT_KEYS and for related comments/documentation",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 19
+      },
+      "revId": "bd3ecf87b2c65ac39392eebd70b96e6d9ff9a0d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
