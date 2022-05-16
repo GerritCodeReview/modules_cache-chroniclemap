@@ -74,6 +74,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cb05d4a6_24ff3b92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b936a640_40b6ba69",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9eebbf52_6c2ebd1d",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -153,6 +177,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37cd1692_0a92c644",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "63d37ac3_1c163cff",
+      "range": {
+        "startLine": 22,
+        "startChar": 53,
+        "endLine": 22,
+        "endChar": 62
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76d5ab6a_5a5c10c5",
@@ -176,6 +224,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea4108a_9039eb1e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76d5ab6a_5a5c10c5",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 3
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9b20127_5ea1630c",
@@ -189,6 +261,30 @@
       "writtenOn": "2021-10-11T18:38:43Z",
       "side": 1,
       "message": "nit: this is unused, consider removing",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ef695b_bb8f94a2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9b20127_5ea1630c",
       "range": {
         "startLine": 32,
         "startChar": 0,
@@ -316,6 +412,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe44711c_d5108dcb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStoreWithHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d527ba05_6c033930",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a59a27e2_0d2f40e8",
@@ -329,6 +449,30 @@
       "writtenOn": "2021-10-11T18:38:43Z",
       "side": 1,
       "message": "This is not taking care of removing the relevant entry from the history, which makes sense, because we cannot afford to scan it and updating, just for removal.\n\nDoes this mean however, that we will end up with potential stale entries in the history that just rely on prune() to be removed?\n\nit will take up to ($expireAfterWrite + $pruneScheduleFrequency) for such entry to be removed from history.\n\nIs this acceptable? I believe this should at least be documented.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 36
+      },
+      "revId": "d3146b5a00ded1a17a34d7c40698d0cea94f07cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce89e36_2b83d13e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapStoreWithHistory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a59a27e2_0d2f40e8",
       "range": {
         "startLine": 154,
         "startChar": 0,

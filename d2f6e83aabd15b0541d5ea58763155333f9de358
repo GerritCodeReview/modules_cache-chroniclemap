@@ -100,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc21be06_37f71d26",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "23fbd669_f0019e7f",
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b72ba94c_a540a681",
@@ -219,6 +237,30 @@
       "side": 1,
       "message": "it still needs the `synchronized` block (for the reason mentioned above), but I have used fluent Optional interface as suggested with the exception of not relying on `remove` operation result but result with `true` if first element was found at the time of searching",
       "parentUuid": "2828aa44_274bb533",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 3
+      },
+      "revId": "d2f6e83aabd15b0541d5ea58763155333f9de358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c102d11_fe94f0ef",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-05-16T17:02:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1b802915_05a6401c",
       "range": {
         "startLine": 95,
         "startChar": 0,
