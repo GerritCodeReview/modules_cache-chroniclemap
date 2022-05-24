@@ -104,6 +104,30 @@
       },
       "revId": "bd3ecf87b2c65ac39392eebd70b96e6d9ff9a0d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d61c8ba_770046fa",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-05-24T06:41:38Z",
+      "side": 0,
+      "message": "searched for both `DEFAULT_PERCENTAGE_HOT_KEYS` and `percentageHotKeys` and we should be good now.",
+      "parentUuid": "a2392a16_c0931333",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 19
+      },
+      "revId": "bd3ecf87b2c65ac39392eebd70b96e6d9ff9a0d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
