@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee0c6db3_1c94c43b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-06-28T07:55:52Z",
+      "side": 1,
+      "message": "Tested E2E and the systemload is much lower than before. @Tony can you review and +2 if you agree to merge?",
+      "revId": "e0ca3d1a804c8cf8463eff1671032745ba66fb5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
