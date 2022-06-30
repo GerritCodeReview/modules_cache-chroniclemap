@@ -18,6 +18,10 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.errorprone.annotations.CompatibleWith;
+import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.Description.Units;
+import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.metrics.Timer0;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -63,10 +67,37 @@ class CacheKeysIndex<T> {
     }
   }
 
-  private final Set<TimedKey> keys;
+  private class Metrics {
+    private final Timer0 addLatency;
 
-  CacheKeysIndex() {
+    private Metrics(MetricMaker metricMaker, String name) {
+      String sanitizedName = metricMaker.sanitizeMetricName(name);
+
+      metricMaker.newCallbackMetric(
+          "cache/chroniclemap/keys_index_size_" + sanitizedName,
+          Integer.class,
+          new Description(
+              String.format(
+                  "The number of cache index keys for %s cache that are currently in memory",
+                  name)),
+          keys::size);
+
+      addLatency =
+          metricMaker.newTimer(
+              "cache/chroniclemap/keys_index_add_latency_" + sanitizedName,
+              new Description(
+                      String.format("The latency of adding key to the index for %s cache", name))
+                  .setCumulative()
+                  .setUnit(Units.NANOSECONDS));
+    }
+  }
+
+  private final Set<TimedKey> keys;
+  private final Metrics metrics;
+
+  CacheKeysIndex(MetricMaker metricMaker, String name) {
     this.keys = Collections.synchronizedSet(new LinkedHashSet<>());
+    this.metrics = new Metrics(metricMaker, name);
   }
 
   @SuppressWarnings("unchecked")
@@ -75,8 +106,10 @@ class CacheKeysIndex<T> {
     TimedKey timedKey = new TimedKey((T) key, created);
 
     // bubble up MRU key by re-adding it to a set
-    keys.remove(timedKey);
-    keys.add(timedKey);
+    try (Timer0.Context timer = metrics.addLatency.start()) {
+      keys.remove(timedKey);
+      keys.add(timedKey);
+    }
   }
 
   void refresh(T key) {

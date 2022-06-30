@@ -13,7 +13,6 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheStats;
 import com.google.common.flogger.FluentLogger;
@@ -27,7 +26,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
@@ -57,7 +55,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     this.cacheDefinition = def;
     this.config = config;
-    this.keysIndex = new CacheKeysIndex<>();
+    this.keysIndex = new CacheKeysIndex<>(metricMaker, def.name());
     this.store = createOrRecoverStore(def, config, metricMaker);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
@@ -68,12 +66,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   ChronicleMapCacheImpl(
       PersistentCacheDef<K, V> def,
       ChronicleMapCacheConfig config,
+      MetricMaker metricMaker,
       ChronicleMapCacheLoader<K, V> memLoader,
       InMemoryCache<K, V> mem) {
 
     this.cacheDefinition = def;
     this.config = config;
-    this.keysIndex = new CacheKeysIndex<>();
+    this.keysIndex = new CacheKeysIndex<>(metricMaker, def.name());
     this.memLoader = memLoader;
     this.mem = mem;
     this.store = memLoader.getStore();
@@ -341,10 +340,5 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public String name() {
     return store.name();
-  }
-
-  @VisibleForTesting
-  Set<CacheKeysIndex<K>.TimedKey> keys() {
-    return keysIndex.keys();
   }
 }

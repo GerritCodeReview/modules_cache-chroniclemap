@@ -20,5 +20,11 @@ to monitor the state of the cache:
 * cache/chroniclemap/max_autoresizes_<cache-name>
   : The maximum number of times the cache can automatically expand its capacity.
 
+* cache/chroniclemap/keys_index_size_<cache-name>
+  : The number of index keys for the cache that are currently in memory.
+
+* cache/chroniclemap/keys_index_add_latency_<cache-name>
+  : The latency of adding cache key to an index.
+
 * "cache/chroniclemap/store_put_failures_<cache-name>
   : The number of errors caught when inserting entries in chronicle-map store
