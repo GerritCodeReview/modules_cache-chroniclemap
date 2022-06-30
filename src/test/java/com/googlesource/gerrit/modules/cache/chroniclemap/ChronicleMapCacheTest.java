@@ -20,6 +20,7 @@ import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.WaitUtil;
@@ -455,22 +456,69 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   @Test
-  public void shouldResetKeysIndexWhenInvalidateAll() throws Exception {
+  public void shouldTriggerKeysIndexSizeCacheMetric() throws Exception {
     String cachedValue = UUID.randomUUID().toString();
     int maxEntries = 10;
-    int maxHotKeyCapacity = 3;
+    int expectedKeysSize = 3;
+    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
+    String keysIndexSizeMetricName = "cache/chroniclemap/keys_index_size_" + testCacheName;
     gerritConfig.setInt("cache", testCacheName, "maxEntries", maxEntries);
     gerritConfig.save();
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, cachedValue);
 
-    for (int i = 0; i < maxHotKeyCapacity; i++) {
+    assertThat(getMetric(keysIndexSizeMetricName).getValue()).isEqualTo(0);
+
+    for (int i = 0; i < expectedKeysSize; i++) {
       cache.put(cachedValue + i, cachedValue);
     }
 
-    assertThat(cache.keys()).isNotEmpty();
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(keysIndexSizeMetricName).getValue() == expectedKeysSize,
+        METRIC_TRIGGER_TIMEOUT);
+  }
+
+  @Test
+  public void shouldTriggerKeysIndexAddLatencyCacheMetric() throws Exception {
+    int maxEntries = 10;
+    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
+    String keysIndexAddLatencyMetricName =
+        "cache/chroniclemap/keys_index_add_latency_" + testCacheName;
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", maxEntries);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, null);
+    assertThat(getTimer(keysIndexAddLatencyMetricName).getCount()).isEqualTo(0L);
+
+    String cachedValue = UUID.randomUUID().toString();
+    cache.put(cachedValue, cachedValue);
+
+    WaitUtil.waitUntil(
+        () -> getTimer(keysIndexAddLatencyMetricName).getCount() == 1L, METRIC_TRIGGER_TIMEOUT);
+  }
+
+  @Test
+  public void shouldResetKeysIndexWhenInvalidateAll() throws Exception {
+    String cachedValue = UUID.randomUUID().toString();
+    int maxEntries = 10;
+    int expectedKeysSize = 3;
+    final Duration METRIC_TRIGGER_TIMEOUT = Duration.ofSeconds(2);
+    String keysIndexSizeMetricName = "cache/chroniclemap/keys_index_size_" + testCacheName;
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", maxEntries);
+    gerritConfig.save();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithMetrics(testCacheName, cachedValue);
+
+    for (int i = 0; i < expectedKeysSize; i++) {
+      cache.put(cachedValue + i, cachedValue);
+    }
+
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(keysIndexSizeMetricName).getValue() == expectedKeysSize,
+        METRIC_TRIGGER_TIMEOUT);
     cache.invalidateAll();
-    assertThat(cache.keys()).isEmpty();
+    WaitUtil.waitUntil(
+        () -> (int) getMetric(keysIndexSizeMetricName).getValue() == 0, METRIC_TRIGGER_TIMEOUT);
   }
 
   @Test
@@ -480,12 +528,22 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     String percentageFreeMetricName = "cache/chroniclemap/percentage_free_space_" + sanitized;
     String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
     String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + sanitized;
+    String keysIndexSizeMetricName = "cache/chroniclemap/keys_index_size_" + sanitized;
+    String keysIndexAddLatencyMetricName = "cache/chroniclemap/keys_index_add_latency_" + sanitized;
+    String keysIndexRemoveOlderThanLatencyMetricName =
+        "cache/chroniclemap/keys_index_remove_and_consume_older_than_latency_" + sanitized;
+    String keysIndexRemoveLruLatencyMetricName =
+        "cache/chroniclemap/keys_index_remove_lru_key_latency_" + sanitized;
 
     newCacheWithMetrics(cacheName, null);
 
     getMetric(percentageFreeMetricName);
     getMetric(autoResizeMetricName);
     getMetric(maxAutoResizeMetricName);
+    getMetric(keysIndexSizeMetricName);
+    getTimer(keysIndexAddLatencyMetricName);
+    getTimer(keysIndexRemoveOlderThanLatencyMetricName);
+    getTimer(keysIndexRemoveLruLatencyMetricName);
   }
 
   private int valueSize(String value) {
@@ -587,5 +645,11 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     Counter counter = (Counter) metricRegistry.getMetrics().get(name);
     assertWithMessage(name).that(counter).isNotNull();
     return counter;
+  }
+
+  private Timer getTimer(String name) {
+    Timer timer = (Timer) metricRegistry.getMetrics().get(name);
+    assertWithMessage(name).that(timer).isNotNull();
+    return timer;
   }
 }

@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import java.util.List;
 import java.util.function.Consumer;
 import org.junit.Before;
@@ -30,7 +31,7 @@ public class CacheKeysIndexTest {
 
   @Before
   public void setup() {
-    index = new CacheKeysIndex<>();
+    index = new CacheKeysIndex<>(new DisabledMetricMaker(), "test-cache");
   }
 
   @Test
