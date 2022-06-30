@@ -63,6 +63,30 @@
       },
       "revId": "6cb3af43ccfd8ed7b4c1f7ceabc43653f1f63e2b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78b2c1a1_a9548425",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-06-30T09:04:51Z",
+      "side": 1,
+      "message": "Done - see https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/340130 for details",
+      "parentUuid": "df25c6b1_e567ffec",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 23
+      },
+      "revId": "6cb3af43ccfd8ed7b4c1f7ceabc43653f1f63e2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
