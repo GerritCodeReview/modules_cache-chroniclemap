@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d64209e1_31bc19a8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-08T17:55:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6000541c_3ad2d968",
+      "revId": "096e334e3669a7dd603253aa4308d486d81576b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dd42f92_e26b0c19",
@@ -41,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03470f1a_0dd0a368",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-08T17:55:15Z",
+      "side": 1,
+      "message": "As discussed it will stay like that for the consistency with the other methods but will get addressed as a follow up.",
+      "parentUuid": "0dd42f92_e26b0c19",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 488,
+        "endChar": 24
+      },
+      "revId": "096e334e3669a7dd603253aa4308d486d81576b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e97e2ce1_899d57b0",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-07-07T10:31:04Z",
       "side": 1,
       "message": "Same as above.",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 508,
+        "endChar": 24
+      },
+      "revId": "096e334e3669a7dd603253aa4308d486d81576b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27beab4f_12b51ede",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-08T17:55:15Z",
+      "side": 1,
+      "message": "As discussed it will stay like that for the consistency with the other methods but will get addressed as a follow up.",
+      "parentUuid": "e97e2ce1_899d57b0",
       "range": {
         "startLine": 507,
         "startChar": 0,
