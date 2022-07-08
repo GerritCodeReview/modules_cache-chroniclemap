@@ -22,12 +22,15 @@ import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import java.io.File;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Optional;
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jgit.lib.Config;
 
 public class ChronicleMapCacheConfig {
-  private final File persistedFile;
+  private final File cacheFile;
+  private final File indexFile;
   private final long maxEntries;
   private final long averageKeySize;
   private final long averageValueSize;
@@ -40,13 +43,13 @@ public class ChronicleMapCacheConfig {
   public interface Factory {
     ChronicleMapCacheConfig create(
         @Assisted("ConfigKey") String configKey,
-        @Assisted File persistedFile,
+        @Assisted File cacheFile,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
         @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite);
 
     ChronicleMapCacheConfig createWithValues(
         @Assisted("ConfigKey") String configKey,
-        @Assisted File persistedFile,
+        @Assisted File cacheFile,
         @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
         @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
         @Assisted("maxEntries") long maxEntries,
@@ -59,14 +62,14 @@ public class ChronicleMapCacheConfig {
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
       @Assisted("ConfigKey") String configKey,
-      @Assisted File persistedFile,
+      @Assisted File cacheFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
       @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite) {
 
     this(
         cfg,
         configKey,
-        persistedFile,
+        cacheFile,
         expireAfterWrite,
         refreshAfterWrite,
         cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey)),
@@ -79,14 +82,15 @@ public class ChronicleMapCacheConfig {
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
       @Assisted("ConfigKey") String configKey,
-      @Assisted File persistedFile,
+      @Assisted File cacheFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
       @Nullable @Assisted("RefreshAfterWrite") Duration refreshAfterWrite,
       @Assisted("maxEntries") long maxEntries,
       @Assisted("avgKeySize") long avgKeySize,
       @Assisted("avgValueSize") long avgValueSize,
       @Assisted("maxBloatFactor") int maxBloatFactor) {
-    this.persistedFile = persistedFile;
+    this.cacheFile = cacheFile;
+    this.indexFile = resolveIndexFile(cacheFile);
     this.configKey = configKey;
 
     this.maxEntries = maxEntries;
@@ -132,8 +136,12 @@ public class ChronicleMapCacheConfig {
     return maxEntries;
   }
 
-  public File getPersistedFile() {
-    return persistedFile;
+  public File getCacheFile() {
+    return cacheFile;
+  }
+
+  public File getIndexFile() {
+    return indexFile;
   }
 
   public long getAverageKeySize() {
@@ -150,6 +158,13 @@ public class ChronicleMapCacheConfig {
 
   public String getConfigKey() {
     return configKey;
+  }
+
+  private static File resolveIndexFile(File persistedCacheFile) {
+    String cacheFileName = persistedCacheFile.getName();
+    String indexFileName = String.format("%s.index", FilenameUtils.getBaseName(cacheFileName));
+
+    return Path.of(persistedCacheFile.getParent()).resolve(indexFileName).toFile();
   }
 
   private static long toSeconds(@Nullable Duration duration) {

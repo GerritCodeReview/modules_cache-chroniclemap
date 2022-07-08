@@ -21,17 +21,29 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class CacheKeysIndexTest {
+  private static final String CACHE_NAME = "test-cache";
+  @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
   private CacheKeysIndex<String> index;
+  private File indexFile;
 
   @Before
-  public void setup() {
-    index = new CacheKeysIndex<>(new DisabledMetricMaker(), "test-cache");
+  public void setup() throws IOException {
+    CacheSerializers.registerCacheKeySerializer(CACHE_NAME, StringCacheSerializer.INSTANCE);
+    indexFile = temporaryFolder.newFolder().toPath().resolve("cache.index").toFile();
+    indexFile.createNewFile();
+    index = new CacheKeysIndex<>(new DisabledMetricMaker(), CACHE_NAME, indexFile);
   }
 
   @Test
@@ -101,6 +113,31 @@ public class CacheKeysIndexTest {
     assertThat(actual).isEqualTo(true);
     verify(consumer).accept("older");
     assertThat(keys(index)).containsExactly("newer");
+  }
+
+  @Test
+  public void persist_shouldPersistAndRestoreKeys() {
+    index.add("older", 1L);
+    index.add("newer", 1L);
+
+    index.persist();
+    index.clear();
+    assertThat(keys(index)).isEmpty();
+
+    index.restore();
+    assertThat(keys(index)).containsExactly("newer", "older");
+  }
+
+  @Test
+  public void restore_shouldDeleteExistingTemporaryIndexStorageFileDuringRestore()
+      throws IOException {
+    File indexTempFile = new File(indexFile.getPath() + ".tmp");
+    indexTempFile.createNewFile();
+    assertThat(indexTempFile.isFile()).isTrue();
+
+    index.restore();
+
+    assertThat(indexTempFile.exists()).isFalse();
   }
 
   private static List<String> keys(CacheKeysIndex<String> index) {
