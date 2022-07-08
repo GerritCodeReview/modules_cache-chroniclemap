@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "921170c9_5c2a4b05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-08T16:24:49Z",
+      "side": 1,
+      "message": "it times out on tests\n```\n//plugins/cache-chroniclemap:cache-chroniclemap_tests                   TIMEOUT in 300.4s\n```\nsame happens locally so I will try to extend it and see what happens...",
+      "revId": "0cc577e556c99075bb565333bbbe693ae144e67c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
