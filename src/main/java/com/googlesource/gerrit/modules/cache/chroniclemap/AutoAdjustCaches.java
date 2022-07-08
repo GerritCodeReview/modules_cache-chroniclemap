@@ -206,7 +206,7 @@ public class AutoAdjustCaches {
 
     return configFactory.createWithValues(
         currentChronicleMapConfig.getConfigKey(),
-        resolveNewFile(currentChronicleMapConfig.getPersistedFile().getName()),
+        resolveNewFile(currentChronicleMapConfig.getCacheFile().getName()),
         currentChronicleMapConfig.getExpireAfterWrite(),
         currentChronicleMapConfig.getRefreshAfterWrite(),
         newMaxEntries,

@@ -55,7 +55,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     this.cacheDefinition = def;
     this.config = config;
-    this.keysIndex = new CacheKeysIndex<>(metricMaker, def.name());
+    this.keysIndex =
+        new CacheKeysIndex<>(
+            metricMaker, def.name(), config.getIndexFile(), config.getCacheFileExists());
     this.store = createOrRecoverStore(def, config, metricMaker);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
@@ -72,7 +74,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     this.cacheDefinition = def;
     this.config = config;
-    this.keysIndex = new CacheKeysIndex<>(metricMaker, def.name());
+    this.keysIndex =
+        new CacheKeysIndex<>(
+            metricMaker, def.name(), config.getIndexFile(), config.getCacheFileExists());
     this.memLoader = memLoader;
     this.mem = mem;
     this.store = memLoader.getStore();
@@ -112,7 +116,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             + "a function of the number of entries in the cache",
         def.diskLimit(), def.name());
     ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-        mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
+        mapBuilder.createOrRecoverPersistedTo(config.getCacheFile());
 
     logger.atInfo().log(
         "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
@@ -269,6 +273,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     if (runningOutOfFreeSpace()) {
       evictColdEntries();
     }
+
+    keysIndex.persist();
   }
 
   private boolean needsRefresh(long created) {
@@ -321,7 +327,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public DiskStats diskStats() {
     return new DiskStats(
         store.longSize(),
-        config.getPersistedFile().length(),
+        config.getCacheFile().length(),
         hitCount.longValue(),
         missCount.longValue());
   }
@@ -332,6 +338,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public void close() {
     store.close();
+    keysIndex.persist();
   }
 
   public double percentageUsedAutoResizes() {
