@@ -345,10 +345,10 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   @Test
   public void shouldEvictEntriesUntilFreeSpaceIsRecovered() throws Exception {
     final int uuidSize = valueSize(UUID.randomUUID().toString());
-    gerritConfig.setInt("cache", "foo", "maxEntries", 50);
-    gerritConfig.setInt("cache", "foo", "percentageHotKeys", 10);
-    gerritConfig.setInt("cache", "foo", "avgKeySize", uuidSize);
-    gerritConfig.setInt("cache", "foo", "avgValueSize", uuidSize);
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 50);
+    gerritConfig.setInt("cache", testCacheName, "percentageHotKeys", 10);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", uuidSize);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize);
     gerritConfig.save();
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader();
