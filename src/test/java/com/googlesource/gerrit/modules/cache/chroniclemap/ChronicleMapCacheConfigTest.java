@@ -59,15 +59,31 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvidePersistedFile() throws Exception {
+  public void shouldProvideCacheFile() throws Exception {
     assertThat(
             configUnderTest(gerritConfig)
-                .getPersistedFile()
+                .getCacheFile()
                 .toPath()
                 .getParent()
                 .toRealPath()
                 .toString())
         .isEqualTo(sitePaths.resolve(cacheDirectory).toRealPath().toString());
+  }
+
+  @Test
+  public void shouldProvideIndexFileThatIsRelatedToCacheFile() {
+    ChronicleMapCacheConfig config = configUnderTest(gerritConfig);
+    File cacheFile = config.getCacheFile();
+    File indexFile = config.getIndexFile();
+
+    assertThat(indexFile.getParentFile()).isEqualTo(cacheFile.getParentFile());
+    String cacheFileName = cacheFile.getName();
+    String cacheFileExt = ".dat";
+    assertThat(indexFile.getName())
+        .isEqualTo(
+            String.format(
+                "%s_idx%s",
+                cacheFileName.substring(0, cacheFileName.indexOf(cacheFileExt)), cacheFileExt));
   }
 
   @Test
@@ -176,7 +192,7 @@ public class ChronicleMapCacheConfigTest {
   }
 
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
-    File persistentFile =
+    File cacheFile =
         ChronicleMapCacheFactory.fileName(
             sitePaths.site_path.resolve(cacheDirectory), cacheName, version);
     sitePaths
@@ -185,6 +201,6 @@ public class ChronicleMapCacheConfigTest {
         .toFile();
 
     return new ChronicleMapCacheConfig(
-        gerritConfig, cacheKey, persistentFile, expireAfterWrite, refreshAfterWrite);
+        gerritConfig, cacheKey, cacheFile, expireAfterWrite, refreshAfterWrite);
   }
 }
