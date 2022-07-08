@@ -1,48 +1,48 @@
 load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
 # Ensure artifacts compatibility by selecting them from the Bill Of Materials
-# https://search.maven.org/artifact/net.openhft/chronicle-bom/2.20.191/pom
+# https://search.maven.org/artifact/net.openhft/chronicle-bom/2.22.150/pom
 def external_plugin_deps():
     maven_jar(
         name = "chronicle-map",
-        artifact = "net.openhft:chronicle-map:3.20.84",
-        sha1 = "a4549f64d41e7f379d48cfee432f210c0ed563e1",
+        artifact = "net.openhft:chronicle-map:3.22.8",
+        sha1 = "8fcedc5fdefb925fb9f5d955bc0998d6adb973b2",
     )
 
     maven_jar(
         name = "chronicle-core",
-        artifact = "net.openhft:chronicle-core:2.20.122",
-        sha1 = "aa9dcde008938f5c845b98a6b8f74b25a4689c7c",
+        artifact = "net.openhft:chronicle-core:2.22.34",
+        sha1 = "c8832c23dd3524838bce9b699fb5db396a5ea1b5",
     )
 
     maven_jar(
         name = "chronicle-wire",
-        artifact = "net.openhft:chronicle-wire:2.20.111",
-        sha1 = "4002820daefe5694ecd73b640afd26fa32534959",
+        artifact = "net.openhft:chronicle-wire:2.22.21",
+        sha1 = "181187a617c8cee763a930e666b0406f0f48ddb9",
     )
 
     maven_jar(
         name = "chronicle-bytes",
-        artifact = "net.openhft:chronicle-bytes:2.20.106",
-        sha1 = "6e4c01ea06ec005ca79ee694efa0a90634b6169e",
+        artifact = "net.openhft:chronicle-bytes:2.22.24",
+        sha1 = "0869cc065566e2072c07d6afeff0e9e04ebb8bb8",
     )
 
     maven_jar(
         name = "chronicle-algo",
-        artifact = "net.openhft:chronicle-algorithms:2.20.80",
-        sha1 = "60b86a584d272aae6b7a80f6c7859c689a7199be",
+        artifact = "net.openhft:chronicle-algorithms:2.22.3",
+        sha1 = "046a64262fa2ded35160e4ae36a3b7cdb6bd2e04",
     )
 
     maven_jar(
         name = "chronicle-values",
-        artifact = "net.openhft:chronicle-values:2.20.80",
-        sha1 = "2cd2bceaa3f0bcdd4470311c05daafbc188b57e2",
+        artifact = "net.openhft:chronicle-values:2.22.2",
+        sha1 = "cce7f3d9b7c7f5d87b4d1bfd9a4b8183b598637d",
     )
 
     maven_jar(
         name = "chronicle-threads",
-        artifact = "net.openhft:chronicle-threads:2.20.104",
-        sha1 = "53295d10b1eb63c1f6bb1a8a58e6889567ae6355",
+        artifact = "net.openhft:chronicle-threads:2.22.15",
+        sha1 = "f475b5a414c8010d187e6f1e4570fa566dbc0067",
     )
 
     maven_jar(
@@ -53,12 +53,13 @@ def external_plugin_deps():
 
     maven_jar(
         name = "jna-platform",
-        artifact = "net.java.dev.jna:jna-platform:5.6.0",
-        sha1 = "d18424ffb8bbfd036d71bcaab9b546858f2ef986",
+        artifact = "net.java.dev.jna:jna-platform:5.12.1",
+        sha1 = "097406a297c852f4a41e688a176ec675f72e8329",
     )
 
     maven_jar(
         name = "dev-jna",
-        artifact = "net.java.dev.jna:jna:5.6.0",
-        sha1 = "330f2244e9030119ab3030fc3fededc86713d9cc",
+        artifact = "net.java.dev.jna:jna:5.12.1",
+        sha1 = "b1e93a735caea94f503e95e6fe79bf9cdc1e985d",
     )
+
