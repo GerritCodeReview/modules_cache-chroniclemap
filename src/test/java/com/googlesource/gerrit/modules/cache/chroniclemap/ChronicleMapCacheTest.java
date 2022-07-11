@@ -534,6 +534,8 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
         "cache/chroniclemap/keys_index_remove_and_consume_older_than_latency_" + sanitized;
     String keysIndexRemoveLruLatencyMetricName =
         "cache/chroniclemap/keys_index_remove_lru_key_latency_" + sanitized;
+    String keysIndexRestoreName = "cache/chroniclemap/keys_index_restore_latency_" + sanitized;
+    String keysIndexPersistName = "cache/chroniclemap/keys_index_persist_latency_" + sanitized;
 
     newCacheWithMetrics(cacheName, null);
 
@@ -544,6 +546,8 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     getTimer(keysIndexAddLatencyMetricName);
     getTimer(keysIndexRemoveOlderThanLatencyMetricName);
     getTimer(keysIndexRemoveLruLatencyMetricName);
+    getTimer(keysIndexRestoreName);
+    getTimer(keysIndexPersistName);
   }
 
   private int valueSize(String value) {

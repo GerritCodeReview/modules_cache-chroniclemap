@@ -83,6 +83,8 @@ class CacheKeysIndex<T> {
     private final Timer0 addLatency;
     private final Timer0 removeAndConsumeOlderThanLatency;
     private final Timer0 removeAndConsumeLruKeyLatency;
+    private final Timer0 restoreLatency;
+    private final Timer0 persistLatency;
 
     private Metrics(MetricMaker metricMaker, String name) {
       String sanitizedName = metricMaker.sanitizeMetricName(name);
@@ -126,6 +128,22 @@ class CacheKeysIndex<T> {
                           name))
                   .setCumulative()
                   .setUnit(Units.NANOSECONDS));
+
+      restoreLatency =
+          metricMaker.newTimer(
+              "cache/chroniclemap/keys_index_restore_latency_" + sanitizedName,
+              new Description(
+                      String.format("The latency of restoring %s cache's index from file", name))
+                  .setCumulative()
+                  .setUnit(Units.MICROSECONDS));
+
+      persistLatency =
+          metricMaker.newTimer(
+              "cache/chroniclemap/keys_index_persist_latency_" + sanitizedName,
+              new Description(
+                      String.format("The latency of perststing %s cache's index to file", name))
+                  .setCumulative()
+                  .setUnit(Units.MICROSECONDS));
     }
   }
 
@@ -210,26 +228,29 @@ class CacheKeysIndex<T> {
 
   void persist() {
     logger.atInfo().log("Persisting cache keys index %s to %s file", name, indexFile);
-    Set<TimedKey> toPersist;
-    synchronized (keys) {
-      toPersist = new LinkedHashSet<>(keys.size(), 1.0F);
-      toPersist.addAll(keys);
-    }
-    CacheSerializer<T> serializer = CacheSerializers.getKeySerializer(name);
-    try (DataOutputStream dos =
-        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(tempIndexFile)))) {
-      for (TimedKey key : toPersist) {
-        writeKey(serializer, dos, key);
+    try (Timer0.Context timer = metrics.persistLatency.start()) {
+      Set<TimedKey> toPersist;
+      synchronized (keys) {
+        toPersist = new LinkedHashSet<>(keys.size(), 1.0F);
+        toPersist.addAll(keys);
       }
-      dos.flush();
-      indexFile.delete();
-      if (!tempIndexFile.renameTo(indexFile)) {
-        logger.atWarning().log(
-            "Renaming temporary index file %s to %s was not successful", tempIndexFile, indexFile);
+      CacheSerializer<T> serializer = CacheSerializers.getKeySerializer(name);
+      try (DataOutputStream dos =
+          new DataOutputStream(new BufferedOutputStream(new FileOutputStream(tempIndexFile)))) {
+        for (TimedKey key : toPersist) {
+          writeKey(serializer, dos, key);
+        }
+        dos.flush();
+        indexFile.delete();
+        if (!tempIndexFile.renameTo(indexFile)) {
+          logger.atWarning().log(
+              "Renaming temporary index file %s to %s was not successful",
+              tempIndexFile, indexFile);
+        }
+        logger.atInfo().log("Cache keys index %s was persisted to %s file", name, indexFile);
+      } catch (IOException e) {
+        logger.atSevere().withCause(e).log("Persisting cache keys index %s failed", name);
       }
-      logger.atInfo().log("Cache keys index %s was persisted to %s file", name, indexFile);
-    } catch (IOException e) {
-      logger.atSevere().withCause(e).log("Persisting cache keys index %s failed", name);
     }
   }
 
@@ -251,15 +272,17 @@ class CacheKeysIndex<T> {
     }
 
     logger.atInfo().log("Restoring cache keys index %s from %s file", name, indexFile);
-    CacheSerializer<T> serializer = CacheSerializers.getKeySerializer(name);
-    try (DataInputStream dis =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(indexFile)))) {
-      while (dis.available() > 0) {
-        keys.add(readKey(serializer, dis));
+    try (Timer0.Context timer = metrics.restoreLatency.start()) {
+      CacheSerializer<T> serializer = CacheSerializers.getKeySerializer(name);
+      try (DataInputStream dis =
+          new DataInputStream(new BufferedInputStream(new FileInputStream(indexFile)))) {
+        while (dis.available() > 0) {
+          keys.add(readKey(serializer, dis));
+        }
+        logger.atInfo().log("Cache keys index %s was restored from %s file", name, indexFile);
+      } catch (IOException e) {
+        logger.atSevere().withCause(e).log("Restoring cache keys index %s failed", name);
       }
-      logger.atInfo().log("Cache keys index %s was restored from %s file", name, indexFile);
-    } catch (IOException e) {
-      logger.atSevere().withCause(e).log("Restoring cache keys index %s failed", name);
     }
   }
 
