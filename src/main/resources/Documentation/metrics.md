@@ -32,5 +32,11 @@ to monitor the state of the cache:
 * cache/chroniclemap/keys_index_remove_lru_key_latency_<cache-name>
   : The latency of removing and consuming LRU key from an index.
 
+* cache/chroniclemap/keys_index_restore_latency_<cache-name>
+  : The latency of restoring an index from a file (performed once during the plugin start).
+
+* cache/chroniclemap/keys_index_persist_latency_<cache-name>
+  : The latency of persisting an index to a file.
+
 * "cache/chroniclemap/store_put_failures_<cache-name>
   : The number of errors caught when inserting entries in chronicle-map store
