@@ -557,7 +557,8 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   private int valueSize(String value) {
-    final TimedValueMarshaller<String> marshaller = new TimedValueMarshaller<>(testCacheName);
+    final TimedValueMarshaller<String> marshaller =
+        new TimedValueMarshaller<>(metricMaker, testCacheName);
 
     Bytes<ByteBuffer> out = Bytes.elasticByteBuffer();
     marshaller.write(out, new TimedValue<>(value));
