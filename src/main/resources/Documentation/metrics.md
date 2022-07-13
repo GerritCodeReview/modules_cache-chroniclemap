@@ -38,6 +38,12 @@ to monitor the state of the cache:
 * cache/chroniclemap/keys_index_persist_latency_<cache-name>
   : The latency of persisting an index to a file.
 
+* cache/chroniclemap/store_serialize_latency_<cache-name>
+  : The latency of serializing entries in chronicle-map store
+
+* cache/chroniclemap/store_deserialize_latency_<cache-name>
+  : The latency of deserializing entries from chronicle-map store
+
 * cache/chroniclemap/store_put_failures_<cache-name>
   : The number of errors caught when inserting entries in chronicle-map store
 

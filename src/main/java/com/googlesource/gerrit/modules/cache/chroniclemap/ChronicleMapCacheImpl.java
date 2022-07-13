@@ -110,7 +110,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
 
     mapBuilder.averageValueSize(config.getAverageValueSize());
-    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.name()));
+    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(metricMaker, def.name()));
 
     mapBuilder.entries(config.getMaxEntries());
 
