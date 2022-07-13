@@ -16,7 +16,6 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.metrics.Timer0;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
-import java.nio.ByteBuffer;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.util.ReadResolvable;
 import net.openhft.chronicle.hash.serialization.BytesReader;
@@ -48,29 +47,23 @@ public class TimedValueMarshaller<V> extends SerializationMetricsForCache
   @Override
   public TimedValue<V> read(Bytes in, TimedValue<V> using) {
     try (Timer0.Context timer = metrics.deserializeLatency.start()) {
-      long initialPosition = in.readPosition();
-
       // Deserialize the creation timestamp (first 8 bytes)
-      byte[] serializedLong = new byte[Long.BYTES];
-      in.read(serializedLong, 0, Long.BYTES);
-      ByteBuffer buffer = ByteBuffer.wrap(serializedLong);
-      long created = buffer.getLong(0);
-      in.readPosition(initialPosition + Long.BYTES);
+      long created = in.readLong();
 
-      // Deserialize the length of the serialized value (second 8 bytes)
-      byte[] serializedInt = new byte[Integer.BYTES];
-      in.read(serializedInt, 0, Integer.BYTES);
-      ByteBuffer buffer2 = ByteBuffer.wrap(serializedInt);
-      int vLength = buffer2.getInt(0);
-      in.readPosition(initialPosition + Long.BYTES + Integer.BYTES);
+      // Deserialize the length of the serialized value (second 4 bytes)
+      int vLength = (int) in.readUnsignedInt();
 
       // Deserialize object V (remaining bytes)
       byte[] serializedV = new byte[vLength];
       in.read(serializedV, 0, vLength);
       V v = cacheSerializer.deserialize(serializedV);
 
-      using = new TimedValue<>(v, created);
-
+      if (using == null) {
+        using = new TimedValue<>(v, created);
+      } else {
+        using.setCreated(created);
+        using.setValue(v);
+      }
       return using;
     }
   }
@@ -84,20 +77,9 @@ public class TimedValueMarshaller<V> extends SerializationMetricsForCache
       // Serialize as follows:
       // created | length of serialized V | serialized value V
       // 8 bytes |       4 bytes          | serialized_length bytes
-
-      int capacity = Long.BYTES + Integer.BYTES + serialized.length;
-      ByteBuffer buffer = ByteBuffer.allocate(capacity);
-
-      long timestamp = toWrite.getCreated();
-      buffer.putLong(0, timestamp);
-
-      buffer.position(Long.BYTES);
-      buffer.putInt(serialized.length);
-
-      buffer.position(Long.BYTES + Integer.BYTES);
-      buffer.put(serialized);
-
-      out.write(buffer.array());
+      out.writeLong(toWrite.getCreated());
+      out.writeUnsignedInt(serialized.length);
+      out.write(serialized);
     }
   }
 }
