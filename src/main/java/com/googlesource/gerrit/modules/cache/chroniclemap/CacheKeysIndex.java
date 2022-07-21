@@ -41,6 +41,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 class CacheKeysIndex<T> {
@@ -178,6 +179,7 @@ class CacheKeysIndex<T> {
   private final String name;
   private final File indexFile;
   private final File tempIndexFile;
+  private final AtomicBoolean persistInProgress;
 
   CacheKeysIndex(MetricMaker metricMaker, String name, File indexFile, boolean cacheFileExists) {
     this.keys = Collections.synchronizedSet(new LinkedHashSet<>());
@@ -185,6 +187,7 @@ class CacheKeysIndex<T> {
     this.name = name;
     this.indexFile = indexFile;
     this.tempIndexFile = tempIndexFile(indexFile);
+    this.persistInProgress = new AtomicBoolean(false);
     restore(cacheFileExists);
   }
 
@@ -251,6 +254,14 @@ class CacheKeysIndex<T> {
   }
 
   void persist() {
+    if (!persistInProgress.compareAndSet(false, true)) {
+      logger.atWarning().log(
+          "Persist cache keys index %s to %s file is already in progress. This persist request was"
+              + " skipped.",
+          name, indexFile);
+      return;
+    }
+
     logger.atInfo().log("Persisting cache keys index %s to %s file", name, indexFile);
     try (Timer0.Context timer = metrics.persistLatency.start()) {
       ArrayList<TimedKey> toPersist;
@@ -277,6 +288,8 @@ class CacheKeysIndex<T> {
         logger.atSevere().withCause(e).log("Persisting cache keys index %s failed", name);
         metrics.persistFailures.increment();
       }
+    } finally {
+      persistInProgress.set(false);
     }
   }
 

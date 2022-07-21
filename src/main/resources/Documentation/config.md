@@ -90,6 +90,26 @@ vice-versa.
 
 Default: *90*
 
+* `cache.persistIndexEvery`
+: Duration (in seconds if not specified) between caches keys index persist
+operations.
+
+Note that in order to avoid race condition between evict and persist operations
+the latter is performed after the former is finished. Therefore the lowest
+persist resolution is 30s. Smaller values will be rounded up to 30s whereas
+higher values will be rounded down (if needed) to the closest multiple of 30s.
+From practical point of view it means that persist operation will be performed
+after every n-th evict operation is finished.
+For instance if `cache.persistIndexEvery = 2m` then persist will be called
+after every 4th eviction is finished.
+
+Notes:
+* regardless of `cache.persistIndexEvery` persist will be called on
+  Gerrit termination unless there is one already in progress.
+* persist operation is scheduled in a dedicated thread ('ChronicleMap-Index-0')
+
+Default: *15m*
+
 ### Defaults
 
 Unless overridden by configuration, sensible default values are be provided for

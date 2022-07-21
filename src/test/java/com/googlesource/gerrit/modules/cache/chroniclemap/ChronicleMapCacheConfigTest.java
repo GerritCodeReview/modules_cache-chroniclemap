@@ -19,6 +19,8 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_ENTRIES;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERSIST_INDEX_EVERY;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.PRUNE_DELAY;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.File;
@@ -186,6 +188,32 @@ public class ChronicleMapCacheConfigTest {
   public void shouldProvidePercentageFreeSpaceEvictionThresholdDefault() throws Exception {
     assertThat(configUnderTest(gerritConfig).getPercentageFreeSpaceEvictionThreshold())
         .isEqualTo(DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD);
+  }
+
+  @Test
+  public void shouldProvideDefaultIndexPersistEveryValuesWhenNotConfigured() {
+    ChronicleMapCacheConfig configUnderTest = configUnderTest(gerritConfig);
+    assertThat(configUnderTest.getPersistIndexEvery()).isEqualTo(DEFAULT_PERSIST_INDEX_EVERY);
+    assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(30L);
+  }
+
+  @Test
+  public void shouldPersistIndexEveryBePruneDelayWhenPersistIndexEveryIsLowerThanPruneDelay() {
+    gerritConfig.setString(
+        "cache", null, "persistIndexEvery", String.format("%ds", PRUNE_DELAY - 1L));
+    ChronicleMapCacheConfig configUnderTest = configUnderTest(gerritConfig);
+    assertThat(configUnderTest.getPersistIndexEvery()).isEqualTo(Duration.ofSeconds(PRUNE_DELAY));
+    assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(1L);
+  }
+
+  @Test
+  public void shouldPersistIndexEveryBeRoundedDownToAMultiplyOfPruneDelay() {
+    gerritConfig.setString(
+        "cache", null, "persistIndexEvery", String.format("%ds", 2L * PRUNE_DELAY + 1L));
+    ChronicleMapCacheConfig configUnderTest = configUnderTest(gerritConfig);
+    assertThat(configUnderTest.getPersistIndexEvery())
+        .isEqualTo(Duration.ofSeconds(2L * PRUNE_DELAY));
+    assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(2L);
   }
 
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
