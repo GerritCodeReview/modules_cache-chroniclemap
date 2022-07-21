@@ -212,7 +212,8 @@ public class AutoAdjustCaches {
         newMaxEntries,
         averageKeySize,
         averageValueSize,
-        currentChronicleMapConfig.getMaxBloatFactor());
+        currentChronicleMapConfig.getMaxBloatFactor(),
+        currentChronicleMapConfig.getPersistIndexEvery());
   }
 
   private long newMaxEntries(ChronicleMapCacheImpl<Object, Object> currentCache) {
