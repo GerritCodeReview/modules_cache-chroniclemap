@@ -46,6 +46,8 @@ import org.eclipse.jgit.lib.Config;
 
 @Singleton
 class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements LifecycleListener {
+  static final long PRUNE_DELAY = 30;
+
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final MetricMaker metricMaker;
   private final DynamicMap<Cache<?, ?>> cacheMap;
@@ -53,6 +55,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
   private final ScheduledExecutorService cleanup;
 
   private final LoggingContextAwareExecutorService storePersistenceExecutor;
+  private final LoggingContextAwareExecutorService indexPersistenceExecutor;
 
   @Inject
   ChronicleMapCacheFactory(
@@ -79,6 +82,10 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
         new LoggingContextAwareExecutorService(
             Executors.newFixedThreadPool(
                 1, new ThreadFactoryBuilder().setNameFormat("ChronicleMap-Store-%d").build()));
+    this.indexPersistenceExecutor =
+        new LoggingContextAwareExecutorService(
+            Executors.newFixedThreadPool(
+                1, new ThreadFactoryBuilder().setNameFormat("ChronicleMap-Index-%d").build()));
   }
 
   @Override
@@ -121,7 +128,8 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
               config,
               metricMaker,
               memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, false));
+              new InMemoryCacheLoadingFromStoreImpl<>(mem, false),
+              indexPersistenceExecutor);
 
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -173,7 +181,8 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
               config,
               metricMaker,
               memLoader,
-              new InMemoryCacheLoadingFromStoreImpl<>(mem, true));
+              new InMemoryCacheLoadingFromStoreImpl<>(mem, true),
+              indexPersistenceExecutor);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -198,7 +207,7 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
   @Override
   public void start() {
     for (ChronicleMapCacheImpl<?, ?> cache : caches) {
-      cleanup.scheduleWithFixedDelay(cache::prune, 30, 30, TimeUnit.SECONDS);
+      cleanup.scheduleWithFixedDelay(cache::prune, PRUNE_DELAY, PRUNE_DELAY, TimeUnit.SECONDS);
     }
   }
 

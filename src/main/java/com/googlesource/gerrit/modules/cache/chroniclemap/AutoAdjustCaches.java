@@ -212,7 +212,8 @@ public class AutoAdjustCaches {
         newMaxEntries,
         averageKeySize,
         averageValueSize,
-        currentChronicleMapConfig.getMaxBloatFactor());
+        currentChronicleMapConfig.getMaxBloatFactor(),
+        currentChronicleMapConfig.getPersistIndexEvery());
   }
 
   private long newMaxEntries(ChronicleMapCacheImpl<Object, Object> currentCache) {
@@ -227,7 +228,8 @@ public class AutoAdjustCaches {
                 newMaxEntries = currMaxEntries * MAX_ENTRIES_MULTIPLIER;
               }
               logger.atInfo().log(
-                  "Cache '%s' (maxEntries: %s) used %s%% of available space. new maxEntries will be: %s",
+                  "Cache '%s' (maxEntries: %s) used %s%% of available space. new maxEntries will"
+                      + " be: %s",
                   currentCache.name(), currMaxEntries, percentageUsedAutoResizes, newMaxEntries);
               return newMaxEntries;
             });
