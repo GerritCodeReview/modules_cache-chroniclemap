@@ -13,9 +13,11 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.PRUNE_DELAY;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.GerritServerConfig;
@@ -29,6 +31,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jgit.lib.Config;
 
 public class ChronicleMapCacheConfig {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
   private final File cacheFile;
   private final boolean cacheFileExists;
   private final File indexFile;
@@ -40,6 +44,8 @@ public class ChronicleMapCacheConfig {
   private final int maxBloatFactor;
   private final int percentageFreeSpaceEvictionThreshold;
   private final String configKey;
+  private final Duration persistIndexEvery;
+  private final long persistIndexEveryNthPrune;
 
   public interface Factory {
     ChronicleMapCacheConfig create(
@@ -56,7 +62,8 @@ public class ChronicleMapCacheConfig {
         @Assisted("maxEntries") long maxEntries,
         @Assisted("avgKeySize") long avgKeySize,
         @Assisted("avgValueSize") long avgValueSize,
-        @Assisted("maxBloatFactor") int maxBloatFactor);
+        @Assisted("maxBloatFactor") int maxBloatFactor,
+        @Assisted("PersistIndexEvery") Duration persistIndexEver);
   }
 
   @AssistedInject
@@ -76,7 +83,14 @@ public class ChronicleMapCacheConfig {
         cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey)),
         cfg.getLong("cache", configKey, "avgKeySize", Defaults.averageKeySizeFor(configKey)),
         cfg.getLong("cache", configKey, "avgValueSize", Defaults.avgValueSizeFor(configKey)),
-        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey)));
+        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey)),
+        Duration.ofSeconds(
+            cfg.getTimeUnit(
+                "cache",
+                null,
+                "persistIndexEvery",
+                Defaults.persistIndexEvery().toSeconds(),
+                SECONDS)));
   }
 
   @AssistedInject
@@ -89,7 +103,8 @@ public class ChronicleMapCacheConfig {
       @Assisted("maxEntries") long maxEntries,
       @Assisted("avgKeySize") long avgKeySize,
       @Assisted("avgValueSize") long avgValueSize,
-      @Assisted("maxBloatFactor") int maxBloatFactor) {
+      @Assisted("maxBloatFactor") int maxBloatFactor,
+      @Assisted("PersistIndexEvery") Duration persistIndexEvery) {
     this.cacheFile = cacheFile;
     this.cacheFileExists = cacheFile.exists();
     this.indexFile = resolveIndexFile(cacheFile);
@@ -120,6 +135,23 @@ public class ChronicleMapCacheConfig {
             configKey,
             "percentageFreeSpaceEvictionThreshold",
             Defaults.percentageFreeSpaceEvictionThreshold());
+
+    long persistIndexEverySeconds = persistIndexEvery.getSeconds();
+    if (persistIndexEverySeconds < PRUNE_DELAY) {
+      logger.atWarning().log(
+          "Configured 'persistIndexEvery' duration [%ds] is lower than minimal threshold [%ds]."
+              + " Minimal threshold will be used.",
+          persistIndexEverySeconds, PRUNE_DELAY);
+      persistIndexEverySeconds = PRUNE_DELAY;
+    } else if (persistIndexEverySeconds % PRUNE_DELAY != 0L) {
+      logger.atWarning().log(
+          "Configured 'persistIndexEvery' duration [%ds] will be rounded down to a multiple of"
+              + " [%ds]. [%ds] is the minimal 'persistIndexEvery' resolution.",
+          persistIndexEverySeconds, PRUNE_DELAY, PRUNE_DELAY);
+      persistIndexEverySeconds = (persistIndexEverySeconds / PRUNE_DELAY) * PRUNE_DELAY;
+    }
+    this.persistIndexEvery = Duration.ofSeconds(persistIndexEverySeconds);
+    this.persistIndexEveryNthPrune = persistIndexEverySeconds / PRUNE_DELAY;
   }
 
   public int getPercentageFreeSpaceEvictionThreshold() {
@@ -132,6 +164,14 @@ public class ChronicleMapCacheConfig {
 
   public Duration getRefreshAfterWrite() {
     return refreshAfterWrite;
+  }
+
+  public Duration getPersistIndexEvery() {
+    return persistIndexEvery;
+  }
+
+  public long getPersistIndexEveryNthPrune() {
+    return persistIndexEveryNthPrune;
   }
 
   public long getMaxEntries() {
@@ -188,6 +228,8 @@ public class ChronicleMapCacheConfig {
 
     public static final int DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD = 90;
 
+    public static final Duration DEFAULT_PERSIST_INDEX_EVERY = Duration.ofMinutes(15);
+
     private static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
             .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
@@ -231,6 +273,10 @@ public class ChronicleMapCacheConfig {
 
     public static int percentageFreeSpaceEvictionThreshold() {
       return DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
+    }
+
+    public static Duration persistIndexEvery() {
+      return DEFAULT_PERSIST_INDEX_EVERY;
     }
   }
 }
