@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89633b0b_66379be6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-21T06:10:55Z",
+      "side": 1,
+      "message": "nit: change not related",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 34
+      },
+      "revId": "4a915691901baf8d0afecc9ab6a50acda7b684c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0edaf8c7_06e44d81",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-21T06:10:55Z",
+      "side": 1,
+      "message": "nit: not related change",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 46
+      },
+      "revId": "4a915691901baf8d0afecc9ab6a50acda7b684c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
