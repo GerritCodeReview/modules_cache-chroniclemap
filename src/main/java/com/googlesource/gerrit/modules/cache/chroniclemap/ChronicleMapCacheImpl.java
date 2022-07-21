@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
@@ -48,6 +49,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final PersistentCacheDef<K, V> cacheDefinition;
   private final ChronicleMapCacheLoader<K, V> memLoader;
   private final InMemoryCache<K, V> mem;
+  private final Executor indexPersistenceExecutor;
+  private long pruneCount;
 
   ChronicleMapCacheImpl(PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config)
       throws IOException {
@@ -61,6 +64,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         new ChronicleMapCacheLoader<>(
             MoreExecutors.directExecutor(), store, config.getExpireAfterWrite());
     this.mem = memLoader.asInMemoryCacheBypass();
+    this.indexPersistenceExecutor = MoreExecutors.directExecutor();
   }
 
   ChronicleMapCacheImpl(
@@ -68,7 +72,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       ChronicleMapCacheConfig config,
       MetricMaker metricMaker,
       ChronicleMapCacheLoader<K, V> memLoader,
-      InMemoryCache<K, V> mem) {
+      InMemoryCache<K, V> mem,
+      Executor indexPersistenceExecutor) {
 
     this.cacheDefinition = def;
     this.config = config;
@@ -76,6 +81,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     this.memLoader = memLoader;
     this.mem = mem;
     this.store = memLoader.getStore();
+    this.indexPersistenceExecutor = indexPersistenceExecutor;
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
@@ -117,7 +123,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     logger.atInfo().log(
         "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
             + " %s bytes|entries: %s|maxBloatFactor: %s|remainingAutoResizes:"
-            + " %s|percentageFreeSpace: %s",
+            + " %s|percentageFreeSpace: %s|persistIndexEvery: %s",
         def.name(),
         def.version(),
         mapBuilder.constantlySizedKeys() ? "CONSTANT" : config.getAverageKeySize(),
@@ -125,7 +131,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         config.getMaxEntries(),
         config.getMaxBloatFactor(),
         store.remainingAutoResizes(),
-        store.percentageFreeSpace());
+        store.percentageFreeSpace(),
+        config.getPersistIndexEvery());
 
     return new ChronicleMapStore<>(store, config, metricMaker);
   }
@@ -271,7 +278,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
 
     // once pruning is done periodically persist keys index
-    keysIndex.persist();
+    if (++pruneCount % config.getPersistIndexEveryNthPrune() == 0L) {
+      indexPersistenceExecutor.execute(keysIndex::persist);
+    }
   }
 
   private boolean needsRefresh(long created) {
