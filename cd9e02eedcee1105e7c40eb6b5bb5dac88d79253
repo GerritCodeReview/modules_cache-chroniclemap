@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf5b7204_6f666cd0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "latter",
+      "range": {
+        "startLine": 13,
+        "startChar": 6,
+        "endLine": 13,
+        "endChar": 11
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca82df9_aefe0ba7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "multiple",
+      "range": {
+        "startLine": 17,
+        "startChar": 60,
+        "endLine": 17,
+        "endChar": 68
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f32f5fc_1d32ebd9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "exit",
+      "range": {
+        "startLine": 19,
+        "startChar": 53,
+        "endLine": 19,
+        "endChar": 58
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c4df9d2_beae6cfa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "I am not sure I fully understand the meaning of:\n\n```\nbut it will be skipped on a particular index level when configured one will be in progress\n```\n\nCould you consider rephrasing this?",
+      "range": {
+        "startLine": 20,
+        "startChar": 29,
+        "endLine": 21,
+        "endChar": 53
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2c9a3dc_471d43b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "Why setting this to 4 minutes is related to 4 evictions?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 65
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90c8caed_3159f8c3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "latter",
+      "range": {
+        "startLine": 98,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 9
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b12aa0f1_7cf09c0b",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "The commit message says this is true for persistIndexEvery 4m.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 104,
+        "endChar": 37
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "641bb1b4_96dd3204",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:31:19Z",
+      "side": 1,
+      "message": "termination?",
+      "range": {
+        "startLine": 106,
+        "startChar": 7,
+        "endLine": 106,
+        "endChar": 12
+      },
+      "revId": "cd9e02eedcee1105e7c40eb6b5bb5dac88d79253",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
