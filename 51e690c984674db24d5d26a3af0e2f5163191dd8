@@ -1,0 +1,187 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1143f996_560dd877",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "Why setting the load factor to 1?\nIs this to say that we never want to do expand the hashset?\n\nIf this is the intent however, isn\u0027t this exactly what is going to happen when the hashset is full?\n\nOnce we reach its full capacity we are going to let it expand even though we know that no more entries can be stored into it.\n\nDo I understand this correctly?",
+      "range": {
+        "startLine": 215,
+        "startChar": 50,
+        "endLine": 215,
+        "endChar": 55
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bcc67e6_adc41138",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "nit: I think this should be logged at the same level as L232, since the effect is the same (i.e. it was impossible to persist the file).\n\nI would log atSevere(), also explicitly catching the runtime exceptions (\nSecurityException, NullPointerException, etc), so that it can help understand why the renaming failed.",
+      "range": {
+        "startLine": 227,
+        "startChar": 15,
+        "endLine": 227,
+        "endChar": 24
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57fab3a4_c5382f6f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "I am not sure we should advise this.\nThere could be loads of reasons why the temp file still exists and suggesting this might be misleading in my opinion.\n\nThe Gerrit admin should be able to find the real reason in the error_log.",
+      "range": {
+        "startLine": 240,
+        "startChar": 47,
+        "endLine": 240,
+        "endChar": 88
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48a644b_914be28f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "I think here we should make it clear whaat happens when gerrit starts in this mode.\nWhat is the consequence of this?\n\nPruning ops will fail, correct? anything else?",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 37
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1df2e87a_9243cf0b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "I am reading from the docs:\n\n```\nReturns an estimate of the number of bytes that can be read (or skipped over) from this input stream without blocking by the next caller of a method for this input stream. The next caller might be the same thread or another thread. A single read or skip of this many bytes will not block, but may read or skip fewer bytes.\n```\n\nLooks like this is an estimate.\nIs it going to be good enough to check whether we read everything?",
+      "range": {
+        "startLine": 257,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 35
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e914702_93c9fb9f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "imho, this comment can be removed",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b1a372f_b4f228b0",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "Do we have any test checking the index file is persisted during pruning?",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf91bc1_d2fa8eec",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "Should we not use `resolveIndexFile()` to do this?",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b20cc01_697aff7a",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-23T12:17:45Z",
+      "side": 1,
+      "message": "I think this test breaks encapsulation on how the tmp file name is generated.\nIn CacheKeysIndex we generate this in the constructor, repeating the same logic here.\n\nAny chance to DRY this out in a static method that can be used by CacheKeysIndex and by this test?",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
