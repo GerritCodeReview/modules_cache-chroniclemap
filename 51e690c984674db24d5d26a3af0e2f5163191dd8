@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "544836bc_ff470aa4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "It is the memory optimisation. There are two aspects of Set\u0027s capacity:\n1. it is rounded to power of 2 regardless of the initial size\n2. by default it has load factor 0.75\n\nWe can\u0027t do much about the first one as this is the optimization.\nIn case of the second one consider the following example:\n* let\u0027s assume that keys size is 31\n* `new LinkedHashSet(31)` results in capacity 32\n* while entries are put into `toPersist` they reach `0.75` load factor (24) and it will result in capacity expansion operation which will be 64 (not to mention that it will take some time)\n\nConsidering that we have 2 options:\n1. create `toPersist` with double the size of current entries to avoid capacity expansion but at the expense of memory\n2. we know that between line `#215` and `#216` won\u0027t be any modification operation (it is in synchronized block) therefore we can create `toPersist` with load factor `1.0` so that it can be fully loaded without capacity expansion. Note that it is only used to persist keys to a file since then.",
+      "parentUuid": "1143f996_560dd877",
+      "range": {
+        "startLine": 215,
+        "startChar": 50,
+        "endLine": 215,
+        "endChar": 55
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bcc67e6_adc41138",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-23T12:17:45Z",
       "side": 1,
       "message": "nit: I think this should be logged at the same level as L232, since the effect is the same (i.e. it was impossible to persist the file).\n\nI would log atSevere(), also explicitly catching the runtime exceptions (\nSecurityException, NullPointerException, etc), so that it can help understand why the renaming failed.",
+      "range": {
+        "startLine": 227,
+        "startChar": 15,
+        "endLine": 227,
+        "endChar": 24
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4c719dd_0270bf2a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "logged at `severe` and actually exited from `persist` function so that no false-positive information about success is logged.\n\nIOException was turned to Exception so that all of them are caught but I wouldn\u0027t expect NPE there.",
+      "parentUuid": "4bcc67e6_adc41138",
       "range": {
         "startLine": 227,
         "startChar": 15,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76339fc4_8a7cafd9",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "57fab3a4_c5382f6f",
+      "range": {
+        "startLine": 240,
+        "startChar": 47,
+        "endLine": 240,
+        "endChar": 88
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d48a644b_914be28f",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-07-23T12:17:45Z",
       "side": 1,
       "message": "I think here we should make it clear whaat happens when gerrit starts in this mode.\nWhat is the consequence of this?\n\nPruning ops will fail, correct? anything else?",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 37
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23757ca4_d29b3f03",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "Pruning of existing entries will not be possible. New entries will be pruned.",
+      "parentUuid": "d48a644b_914be28f",
       "range": {
         "startLine": 247,
         "startChar": 0,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a927b37_3bd870d6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "IMHO yes. The nature of storage (file) means that its content was created in the past and we are now reading from it IOW as long as some bytes left to be read (and actual number doesn\u0027t matter) we should be fine to read keys from it.\nIn fact by storing in temp file and renaming it to index file we assure that it is not corrupted. I can\u0027t see other alternative but reading until failure or storing the size upfront and reading it first. The former would be messy and the later is IMHO not needed. WDYT?",
+      "parentUuid": "1df2e87a_9243cf0b",
+      "range": {
+        "startLine": 257,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 35
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e914702_93c9fb9f",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
         "patchSetId": 2
@@ -129,6 +249,24 @@
       "writtenOn": "2022-07-23T12:17:45Z",
       "side": 1,
       "message": "imho, this comment can be removed",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed8256f6_26c326bc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e914702_93c9fb9f",
       "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -146,6 +284,24 @@
       "writtenOn": "2022-07-23T12:17:45Z",
       "side": 1,
       "message": "Do we have any test checking the index file is persisted during pruning?",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33d180c_dd9eb6ad",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "it is implicitly tested in `persist_shouldPersistAndRestoreKeys` but I have added implicit asserts to verify it.",
+      "parentUuid": "8b1a372f_b4f228b0",
       "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -169,6 +325,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65d3b6e7_0605d4a3",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "IMHO not really. It is an internal part of `ChronicleMapCacheConfig` and a such is tested there. The `CacheKeysIndex` expects that file name is given to it (the same way that storage gets it).",
+      "parentUuid": "dbf91bc1_d2fa8eec",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b20cc01_697aff7a",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
         "patchSetId": 2
@@ -180,6 +354,24 @@
       "writtenOn": "2022-07-23T12:17:45Z",
       "side": 1,
       "message": "I think this test breaks encapsulation on how the tmp file name is generated.\nIn CacheKeysIndex we generate this in the constructor, repeating the same logic here.\n\nAny chance to DRY this out in a static method that can be used by CacheKeysIndex and by this test?",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e818411_3fc5c1ed",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b20cc01_697aff7a",
       "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
