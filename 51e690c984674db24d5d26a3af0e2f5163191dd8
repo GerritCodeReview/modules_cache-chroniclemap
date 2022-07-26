@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd127d58_7d3d8156",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-26T11:59:58Z",
+      "side": 1,
+      "message": "\u003e It is the memory optimisation. There are two aspects of Set\u0027s capacity:\n\u003e 1. it is rounded to power of 2 regardless of the initial size\n\u003e 2. by default it has load factor 0.75\n\u003e \n\u003e We can\u0027t do much about the first one as this is the optimization.\n\u003e In case of the second one consider the following example:\n\u003e * let\u0027s assume that keys size is 31\n\u003e * `new LinkedHashSet(31)` results in capacity 32\n\u003e * while entries are put into `toPersist` they reach `0.75` load factor (24) and it will result in capacity expansion operation which will be 64 (not to mention that it will take some time)\n\u003e \n\u003e Considering that we have 2 options:\n\u003e 1. create `toPersist` with double the size of current entries to avoid capacity expansion but at the expense of memory\n\u003e 2. we know that between line `#215` and `#216` won\u0027t be any modification operation (it is in synchronized block) therefore we can create `toPersist` with load factor `1.0` so that it can be fully loaded without capacity expansion.\n\nSorry if I am completely missing the point here, but wouldn\u0027t it expand _as soon as_ it is fully loaded?\ni.e. assume we have size 32.\n\n- while entries are put into `toPersist` they reach `1.0` load factor (32) and it will result in capacity expansion operation which will be 64.\n\nWhat happens if we set it to a load factor greater than 1?\nWouldn\u0027t that prevent the set to _ever_ expand?\n\nNote that it is only used to persist keys to a file since then.",
+      "parentUuid": "544836bc_ff470aa4",
+      "range": {
+        "startLine": 215,
+        "startChar": 50,
+        "endLine": 215,
+        "endChar": 55
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bcc67e6_adc41138",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
         "patchSetId": 2
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "logged at `severe` and actually exited from `persist` function so that no false-positive information about success is logged.\n\nIOException was turned to Exception so that all of them are caught but I wouldn\u0027t expect NPE there.",
       "parentUuid": "4bcc67e6_adc41138",
+      "range": {
+        "startLine": 227,
+        "startChar": 15,
+        "endLine": 227,
+        "endChar": 24
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88487de8_979b2727",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-26T11:59:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f4c719dd_0270bf2a",
       "range": {
         "startLine": 227,
         "startChar": 15,
@@ -236,6 +284,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29cfcc87_b686c6b4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-26T11:59:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0a927b37_3bd870d6",
+      "range": {
+        "startLine": 257,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 35
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e914702_93c9fb9f",
@@ -337,6 +409,24 @@
       "side": 1,
       "message": "IMHO not really. It is an internal part of `ChronicleMapCacheConfig` and a such is tested there. The `CacheKeysIndex` expects that file name is given to it (the same way that storage gets it).",
       "parentUuid": "dbf91bc1_d2fa8eec",
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f331f4_64921e1a",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndexTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-26T11:59:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "65d3b6e7_0605d4a3",
       "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
