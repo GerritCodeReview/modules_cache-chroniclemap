@@ -16,6 +16,24 @@
       "message": "Should we also add a metric to surface _failures_ of restoring/persisting cache index files?\n\nIt might be useful to set alerts on and to advise the gerrit admin that something is off.",
       "revId": "43baf1efdb779c4dd50aeca17450d145d484a7d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b255eaa6_2b2c9858",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-26T06:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba1e4f71_31b211bc",
+      "revId": "43baf1efdb779c4dd50aeca17450d145d484a7d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
