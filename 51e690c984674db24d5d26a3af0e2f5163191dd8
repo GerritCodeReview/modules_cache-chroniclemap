@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bf37eb5_cd1cc51d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-27T07:55:35Z",
+      "side": 1,
+      "message": "\u003e If size is `32` then capacity will be `32` and it will not be resized until new entry comes (which is not likely as size is known).\n\nCool, it makes sense then.\nI thought it was going to resize _when_ the size reached 32, but if that\u0027s not the case it is fine.\n\n\u003e \n\u003e I did a bit of testing prior proposing this optimisation (see [1]). Now added also the case for load factor `2.0F` - initial capacity stays the same like for factor `1.0F` but it will not grow if more entries get added but size and content remains as expected.\n\nSuper interesting! Thanks for sharing this.\n\n\u003e The reason is that LinkedHashSet is backed by HashMap which has more capable buckets in this case at the expense of lookup performance (which we don\u0027t care about at this point). Now it is tempting to get `toPersist \u003d new LinkedHashSet\u003c\u003e(keys.size(), 1.0F);` out of the `synchronized` section so that only `toPersist.addAll(keys);` stays there and even if couple entries more will be added prior the call they will fit in...\n\u003e WDYT?\n\nIt would be nice to see how long it takes for the new LinkedHashSet to be created.\nIn theory, creating this outside the synchronized block should be fine and even if more entries will be added in the meanwhile they should fit it.\n\nHaving said that I would not perform too many premature optimizations [1] at this point.\n\n[1] http://wiki.c2.com/?PrematureOptimization",
+      "parentUuid": "fd48edd0_1d5244f5",
+      "range": {
+        "startLine": 215,
+        "startChar": 50,
+        "endLine": 215,
+        "endChar": 55
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bcc67e6_adc41138",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
         "patchSetId": 2
