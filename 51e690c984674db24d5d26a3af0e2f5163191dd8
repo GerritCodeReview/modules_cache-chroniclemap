@@ -168,6 +168,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76a2ec58_a9125c1b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-07-27T12:19:01Z",
+      "side": 1,
+      "message": "Good stuff!\nFeel free to merge this whole chain 😊",
+      "parentUuid": "9e09df12_286eeccf",
+      "range": {
+        "startLine": 215,
+        "startChar": 50,
+        "endLine": 215,
+        "endChar": 55
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bcc67e6_adc41138",
