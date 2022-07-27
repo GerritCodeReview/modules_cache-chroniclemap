@@ -144,6 +144,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e09df12_286eeccf",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-07-27T09:17:36Z",
+      "side": 1,
+      "message": "@Tony I have just added `ArrayList` (see the snippet) to the picture and I believe that we should have the best answer now - `synchronize` will be reduced to a single operation `list \u003d new ArrayList\u003c\u003e(keys.size());` and both order and capacity will stay as desired.",
+      "parentUuid": "42b19c98_fd600a92",
+      "range": {
+        "startLine": 215,
+        "startChar": 50,
+        "endLine": 215,
+        "endChar": 55
+      },
+      "revId": "51e690c984674db24d5d26a3af0e2f5163191dd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bcc67e6_adc41138",
