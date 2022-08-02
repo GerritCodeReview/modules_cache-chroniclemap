@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a8a85ea_c1c5ef60",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-02T06:59:20Z",
+      "side": 1,
+      "message": "nit: cacheName?",
+      "range": {
+        "startLine": 38,
+        "startChar": 52,
+        "endLine": 38,
+        "endChar": 56
+      },
+      "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05beb505_8eb8b103",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-02T06:59:20Z",
+      "side": 1,
+      "message": "I am not sure I understand why metrics need to be `transient`.\nDoes the `TimedValueMarshaller` ever need to be serialized?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 42
+      },
+      "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
