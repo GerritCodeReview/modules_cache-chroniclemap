@@ -93,6 +93,30 @@
       },
       "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c5c8e1c_96657cb1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-02T20:46:10Z",
+      "side": 1,
+      "message": "mmm, interesting problem!\nLooking at the stacktrace looks that this is triggered when trying to load a previously stored chronicle-map file (and hence to deserialize the marshaller stored in the header):\n\n```\ncom.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheImpl.createOrRecoverStore(ChronicleMapCacheImpl.java:126)\n```\n\nI would expect this to blow also outside the tests when restoring a .dat file, is this not the case?\n\nI feel that using `DisabledMetricMaker` in production is quite leaky and wrong, we should probably try to come up with a different solution.\n\nAt first I thought that this is happening because `Metrics` does not implement `Serializable`, but on a second thought I think it is caused by the `Timer0` fields.\n\nWould it be a possible approach to make those `timers` transient, rather than the the `Metrics` object?\n\nWe could get those metrics via a getter, which checks first for `null` and in such case creates the metric again?\n\nIf this works we wouldn\u0027t need to use `DisabledMetricMaker` at all.\n\nDo you think it is worth giving it a try?",
+      "parentUuid": "7ccee80f_118fdd6c",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 42
+      },
+      "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
