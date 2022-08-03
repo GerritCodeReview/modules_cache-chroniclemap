@@ -117,6 +117,30 @@
       },
       "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf135d6_78a0cfcb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-03T06:42:51Z",
+      "side": 1,
+      "message": "| I  would expect this to blow also outside the tests when restoring a .dat file, is this not the case?\n\nThat is precisely the case but I was not restarting Gerrit when I was capturing the metrics hence it wasn\u0027t the problem ;)\n\n`DisabledMetricMaker` is wrong approach but the only one that I could quickly came up with :/.\n\n| Would it be a possible approach to make those  timers  transient, rather than the the  Metrics  object?\n\nThat is just moving the problem from one place to another without solving it hence it will not help here ;). The problem is that we need the proper MetricMaker (the current instance of PluginMetricMaker to be more precise) to have metrics initialised properly and I can\u0027t see the way to pass it to TimedValueMarshaller that is being deserialized...",
+      "parentUuid": "7c5c8e1c_96657cb1",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 42
+      },
+      "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
