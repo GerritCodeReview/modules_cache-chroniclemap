@@ -141,6 +141,30 @@
       },
       "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e203e14_c4a7fe21",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-03T10:30:04Z",
+      "side": 1,
+      "message": "\u003e The problem is that we need the proper MetricMaker (the current instance of PluginMetricMaker to be more precise) to have metrics initialised properly and I can\u0027t see the way to pass it to TimedValueMarshaller that is being deserialized...\n\nI have found the solution with static being pre-filled prior store creation and IMHO it should do. WDYT @Tony?",
+      "parentUuid": "faf135d6_78a0cfcb",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 42
+      },
+      "revId": "7c7314475b59d6336fa79c0ae00527b253b295e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
