@@ -1,11 +1,12 @@
 {
   "checks": {
     "gerritforge:cache-chroniclemap-build-test": {
-      "state": "RUNNING",
+      "state": "SUCCESSFUL",
       "url": "https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/74%252F342174%252F4/1/console",
       "started": "2022-08-03T10:46:57Z",
+      "finished": "2022-08-03T10:53:47Z",
       "created": "2022-08-03T10:42:11Z",
-      "updated": "2022-08-03T10:42:11Z"
+      "updated": "2022-08-03T10:49:01Z"
     },
     "gerritforge:cache-chroniclemap-code-style": {
       "state": "SUCCESSFUL",
