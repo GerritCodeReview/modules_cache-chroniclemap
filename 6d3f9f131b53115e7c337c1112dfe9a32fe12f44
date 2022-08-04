@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f5fb02_1189a279",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-04T06:59:34Z",
+      "side": 1,
+      "message": "nit: this is unused",
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68265263_929b44aa",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-04T06:59:34Z",
+      "side": 1,
+      "message": "This TimedValueMarshaller can be associated only to one `Metrics` object and `createMetrics` is only called once.\n\nSeems to me that this hashMap can ever only contain one (key, value) pair.\nIf so, what\u0027s the point or having a map, is it just to work around having to deal with null?",
+      "range": {
+        "startLine": 66,
+        "startChar": 23,
+        "endLine": 66,
+        "endChar": 56
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5aae14a_e043ea23",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-04T06:59:34Z",
+      "side": 1,
+      "message": "We should probably add a comment here explaining why this needs to be transient.\nEven though I am not sure we fully understood that yet.\nAt least, I didn\u0027t 😊\n\nP.S. Have you read [1]?\n\n\n[1]https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc",
+      "range": {
+        "startLine": 69,
+        "startChar": 16,
+        "endLine": 69,
+        "endChar": 25
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec5b6261_2b5a7ae7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-04T06:59:34Z",
+      "side": 1,
+      "message": "this can still return null if (for some reason) metrics have not been populated.",
+      "range": {
+        "startLine": 82,
+        "startChar": 66,
+        "endLine": 82,
+        "endChar": 88
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b67cf7bc_8e1af22b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-04T06:59:34Z",
+      "side": 1,
+      "message": "in what case metrics will be null here?\nis `readResolve` always called after `TimedValueMarshaller` instantiation?",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 48
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa256eda_77c03365",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-04T06:59:34Z",
+      "side": 1,
+      "message": "nit: private methods do not need to be final as they are not overridable",
+      "range": {
+        "startLine": 143,
+        "startChar": 17,
+        "endLine": 143,
+        "endChar": 22
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
