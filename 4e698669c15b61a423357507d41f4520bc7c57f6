@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29965c91_578d624a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d45214a_19dedd95",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "4e698669c15b61a423357507d41f4520bc7c57f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0d7421b_d40d86b8",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3e4e5e0_bb7018bd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0d7421b_d40d86b8",
+      "range": {
+        "startLine": 64,
+        "startChar": 2,
+        "endLine": 64,
+        "endChar": 12
+      },
+      "revId": "4e698669c15b61a423357507d41f4520bc7c57f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccadd31d_36acd3e2",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-05T07:37:31Z",
       "side": 1,
       "message": "should be private",
+      "range": {
+        "startLine": 78,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 12
+      },
+      "revId": "4e698669c15b61a423357507d41f4520bc7c57f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b13899_dd3be6dd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccadd31d_36acd3e2",
       "range": {
         "startLine": 78,
         "startChar": 2,
