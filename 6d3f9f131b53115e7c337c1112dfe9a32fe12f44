@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90a9b472_a1cc0044",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:34:11Z",
+      "side": 1,
+      "message": "`CommonValueMarshaller` was introduced to improve it.",
+      "parentUuid": "b3a61a55_1524301f",
+      "range": {
+        "startLine": 66,
+        "startChar": 23,
+        "endLine": 66,
+        "endChar": 56
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5aae14a_e043ea23",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 4
@@ -214,6 +238,30 @@
       "side": 1,
       "message": "well in such case it means that we have broken the implementation and it should IMHO fails fast",
       "parentUuid": "ec5b6261_2b5a7ae7",
+      "range": {
+        "startLine": 82,
+        "startChar": 66,
+        "endLine": 82,
+        "endChar": 88
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "262a9cce_e33abca6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:34:11Z",
+      "side": 1,
+      "message": "WDYT?",
+      "parentUuid": "49f31f95_6f3a1caf",
       "range": {
         "startLine": 82,
         "startChar": 66,
