@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bcd92fd_8e3038a5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:13:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03f5fb02_1189a279",
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68265263_929b44aa",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b3a61a55_1524301f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:13:47Z",
+      "side": 1,
+      "message": "I need a static to contain this instance metrics definition per cache. Now I can imagine that the same \u0027V\u0027 (e.g. String) in TimeValueMarshaller can be used in different caches (haven\u0027t checked if that is the case but why should we block it for plugins etc...). Putting these two together it means that I need a static per cache value type and name so that each one of the caches has its own metrics accessible by name.\n\nIt is not to deal with `null`. It is to deal with a problem of deserialised Marshaller with transient members.\n\nHaving said that I believe that it might be further improved to a single static map as for now it will be created per each `V` type.",
+      "parentUuid": "68265263_929b44aa",
+      "range": {
+        "startLine": 66,
+        "startChar": 23,
+        "endLine": 66,
+        "endChar": 56
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5aae14a_e043ea23",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 4
@@ -54,6 +96,30 @@
       "writtenOn": "2022-08-04T06:59:34Z",
       "side": 1,
       "message": "We should probably add a comment here explaining why this needs to be transient.\nEven though I am not sure we fully understood that yet.\nAt least, I didn\u0027t 😊\n\nP.S. Have you read [1]?\n\n\n[1]https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc",
+      "range": {
+        "startLine": 69,
+        "startChar": 16,
+        "endLine": 69,
+        "endChar": 25
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b2238b0_3afc615c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:13:47Z",
+      "side": 1,
+      "message": "I haven\u0027t debugged it fully but I can imagine that it is related to the way that metrics get created and relation/connection between various objects there (e.g. `com.codahale.metrics.Timer.Timer` needs a Reservoir and I\u0027m not sure if that whole hierarchy could/should be serialized).\nHowever regardless of the reason the fact is that we cannot serialize/deserialize it :/.\n\nI did read [1] and also played with `StatefulCopyable` before realising that it will not solve the problem we face ;)\n\nI will add the explanation about why it has to be done this way",
+      "parentUuid": "a5aae14a_e043ea23",
       "range": {
         "startLine": 69,
         "startChar": 16,
@@ -112,6 +178,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10731028_d0564aac",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:13:47Z",
+      "side": 1,
+      "message": "Metrics are null when restore from persistent file is called and Marshaller is de-serialised.",
+      "parentUuid": "b67cf7bc_8e1af22b",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 48
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f31f95_6f3a1caf",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:13:47Z",
+      "side": 1,
+      "message": "well in such case it means that we have broken the implementation and it should IMHO fails fast",
+      "parentUuid": "ec5b6261_2b5a7ae7",
+      "range": {
+        "startLine": 82,
+        "startChar": 66,
+        "endLine": 82,
+        "endChar": 88
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa256eda_77c03365",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
         "patchSetId": 4
@@ -123,6 +237,30 @@
       "writtenOn": "2022-08-04T06:59:34Z",
       "side": 1,
       "message": "nit: private methods do not need to be final as they are not overridable",
+      "range": {
+        "startLine": 143,
+        "startChar": 17,
+        "endLine": 143,
+        "endChar": 22
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b386d84_e414807c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-05T07:13:47Z",
+      "side": 1,
+      "message": "muscle memory for preparing JIT for method inlining - doesn\u0027t make sense here ;)",
+      "parentUuid": "aa256eda_77c03365",
       "range": {
         "startLine": 143,
         "startChar": 17,
