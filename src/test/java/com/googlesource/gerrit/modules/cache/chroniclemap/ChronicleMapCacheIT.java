@@ -17,7 +17,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 
 import com.google.common.cache.Cache;
-import com.google.common.truth.Truth8;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.entities.Project;
@@ -68,7 +67,7 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
     String newProjectName = name("newProject");
     adminRestSession.put("/projects/" + newProjectName).assertCreated();
 
-    Truth8.assertThat(projectCache.get(Project.nameKey(newProjectName))).isPresent();
+    assertThat(projectCache.get(Project.nameKey(newProjectName))).isPresent();
   }
 
   @Test
