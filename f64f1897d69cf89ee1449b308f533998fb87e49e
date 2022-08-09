@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bca37fa_df90d27f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/KeyWrapperMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-09T16:39:29Z",
+      "side": 1,
+      "message": "`CacheSerializers.getKeySerializer(name)` throws when the serializer is not defined for `name`.\n\nThis used to throw when attempting to read the value.\nWhat\u0027s the implication of doing this in the constructor?\n\nDoes it mean that gerrit won\u0027t start?\n\n\nIf so,this should be documented as a behavioural change",
+      "revId": "f64f1897d69cf89ee1449b308f533998fb87e49e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
