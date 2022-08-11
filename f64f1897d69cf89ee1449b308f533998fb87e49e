@@ -57,6 +57,24 @@
       "parentUuid": "0bca37fa_df90d27f",
       "revId": "f64f1897d69cf89ee1449b308f533998fb87e49e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e7862ee_28d6ded7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/KeyWrapperMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:03:42Z",
+      "side": 1,
+      "message": "Yes I agree, this _should_ never happen.\nIt also should have never happened with the previous implementation.\n\nMy concern was about \"do we want to stop gerrit if such a case arise?\", as opposed to \"do we want to stop using that cache if such a case arise?\" (which was the case in the previous implementation).\n\nThinking twice about this I believe stopping gerrit is probably the safest thing to do, as something very strange is happening.\n\nThis is a change of behaviour, but given the previous behaviour was not documented, I think we are good to go with this.\n\nThanks Jacek",
+      "parentUuid": "219cfb74_c4105563",
+      "revId": "f64f1897d69cf89ee1449b308f533998fb87e49e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
