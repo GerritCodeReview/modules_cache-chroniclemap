@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b35a25_300f0ef1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:12:47Z",
+      "side": 1,
+      "message": "Looking at the `read` interface documentation (the same applies to `write`):\n\n```\nshould attempt to reuse the given using object, i. e. to read the deserialized data into the given object. If it is possible, this object then returned from this method back. If it is impossible for any reason, a new object should be created and returned\n```\n\nWhat\u0027s the thinking behind not using this at all now?",
+      "revId": "60aae6de956ac7161f049382bffdc4234fb3dfd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
