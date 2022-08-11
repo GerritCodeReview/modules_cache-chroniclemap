@@ -107,6 +107,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0722186d_b23636b8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:20:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "90a9b472_a1cc0044",
+      "range": {
+        "startLine": 66,
+        "startChar": 23,
+        "endLine": 66,
+        "endChar": 56
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5aae14a_e043ea23",
@@ -144,6 +168,30 @@
       "side": 1,
       "message": "I haven\u0027t debugged it fully but I can imagine that it is related to the way that metrics get created and relation/connection between various objects there (e.g. `com.codahale.metrics.Timer.Timer` needs a Reservoir and I\u0027m not sure if that whole hierarchy could/should be serialized).\nHowever regardless of the reason the fact is that we cannot serialize/deserialize it :/.\n\nI did read [1] and also played with `StatefulCopyable` before realising that it will not solve the problem we face ;)\n\nI will add the explanation about why it has to be done this way",
       "parentUuid": "a5aae14a_e043ea23",
+      "range": {
+        "startLine": 69,
+        "startChar": 16,
+        "endLine": 69,
+        "endChar": 25
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfa81bd0_5d95084a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:20:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4b2238b0_3afc615c",
       "range": {
         "startLine": 69,
         "startChar": 16,
@@ -272,6 +320,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abc4b8d6_7fc625b7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:20:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "262a9cce_e33abca6",
+      "range": {
+        "startLine": 82,
+        "startChar": 66,
+        "endLine": 82,
+        "endChar": 88
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47540136_079c96f0",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:20:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "10731028_d0564aac",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 48
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa256eda_77c03365",
@@ -309,6 +405,30 @@
       "side": 1,
       "message": "muscle memory for preparing JIT for method inlining - doesn\u0027t make sense here ;)",
       "parentUuid": "aa256eda_77c03365",
+      "range": {
+        "startLine": 143,
+        "startChar": 17,
+        "endLine": 143,
+        "endChar": 22
+      },
+      "revId": "6d3f9f131b53115e7c337c1112dfe9a32fe12f44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfa54d18_2de2dde7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-11T07:20:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3b386d84_e414807c",
       "range": {
         "startLine": 143,
         "startChar": 17,
