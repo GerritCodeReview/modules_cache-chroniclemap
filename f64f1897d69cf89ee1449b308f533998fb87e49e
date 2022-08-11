@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a7765b_03caff48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-11T06:27:05Z",
+      "side": 1,
+      "message": "nit: typo, should be \u0027CacheSerializer\u0027",
+      "range": {
+        "startLine": 7,
+        "startChar": 17,
+        "endLine": 7,
+        "endChar": 31
+      },
+      "revId": "f64f1897d69cf89ee1449b308f533998fb87e49e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bca37fa_df90d27f",
@@ -14,6 +37,24 @@
       "writtenOn": "2022-08-09T16:39:29Z",
       "side": 1,
       "message": "`CacheSerializers.getKeySerializer(name)` throws when the serializer is not defined for `name`.\n\nThis used to throw when attempting to read the value.\nWhat\u0027s the implication of doing this in the constructor?\n\nDoes it mean that gerrit won\u0027t start?\n\n\nIf so,this should be documented as a behavioural change",
+      "revId": "f64f1897d69cf89ee1449b308f533998fb87e49e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "219cfb74_c4105563",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/KeyWrapperMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-11T06:27:05Z",
+      "side": 1,
+      "message": "Yeap this will be the case.\nHaving said that I don\u0027t believe that this is the case that can happen under any circumstances:\n* if `PersistentCacheFactory` implementation is available (if not then it doesn\u0027t matter as that would mean that neither H2 nor Chroniclemap modules were loaded) then `PersistentCacheProvider.get()` ensures that serializers are part of persistent cache definition IOW if persistency is available then serializers are defined or Gerrit will not start\n* serializers\u0027 registration is part of `ChronicleMapCacheImpl.createOrRecoverStore` step IOW if cache is defined then it has its serializers registered\n* considering above being `true` IMHO there is no chance for defined persistent cache to NOT have\n\n@Tony would that makes sense for you? I can\u0027t actually imagine the scenario that it would currently happen unless there are changes in Gerrit core that would allow persistent caches without serializers (double checked `master` that this is not the case ;)) ...",
+      "parentUuid": "0bca37fa_df90d27f",
       "revId": "f64f1897d69cf89ee1449b308f533998fb87e49e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
