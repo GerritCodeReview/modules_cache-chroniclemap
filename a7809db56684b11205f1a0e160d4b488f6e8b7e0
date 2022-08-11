@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09f4f5b6_8adfc341",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-11T07:58:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4ca274b3_17064fce",
+      "revId": "a7809db56684b11205f1a0e160d4b488f6e8b7e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3cad0e6b_574afa4c",
@@ -64,6 +82,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5ff2aa8_300bf278",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-11T07:58:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "92330737_994581ea",
+      "range": {
+        "startLine": 60,
+        "startChar": 80,
+        "endLine": 60,
+        "endChar": 83
+      },
+      "revId": "a7809db56684b11205f1a0e160d4b488f6e8b7e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb889dbb_d6f96b67",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-11T07:58:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3cad0e6b_574afa4c",
+      "range": {
+        "startLine": 60,
+        "startChar": 29,
+        "endLine": 60,
+        "endChar": 38
+      },
+      "revId": "a7809db56684b11205f1a0e160d4b488f6e8b7e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20342548_c3a2e957",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-08-11T07:20:19Z",
       "side": 1,
       "message": "How about moving this to be the class javadoc description?\n\nI think we owe the reader an explanation about what `CommonValueMarshaller` is and why it has a reason to exist.\n\nWDYT?",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 63,
+        "endChar": 5
+      },
+      "revId": "a7809db56684b11205f1a0e160d4b488f6e8b7e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46464ebf_4e18a9c2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CommonValueMarshaller.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-08-11T07:58:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "20342548_c3a2e957",
       "range": {
         "startLine": 56,
         "startChar": 1,
