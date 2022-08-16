@@ -34,6 +34,24 @@
       "parentUuid": "44b35a25_300f0ef1",
       "revId": "60aae6de956ac7161f049382bffdc4234fb3dfd5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5e96d02_dd66e197",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/TimedValueMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-16T07:10:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5d8405f4_1b2b607f",
+      "revId": "60aae6de956ac7161f049382bffdc4234fb3dfd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
