@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.errorprone.annotations.CompatibleWith;
+import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.metrics.Counter0;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.Description.Units;
@@ -83,6 +84,7 @@ class CacheKeysIndex<T> {
   }
 
   private class Metrics {
+    private final RegistrationHandle indexSize;
     private final Timer0 addLatency;
     private final Timer0 removeAndConsumeOlderThanLatency;
     private final Timer0 removeAndConsumeLruKeyLatency;
@@ -94,14 +96,15 @@ class CacheKeysIndex<T> {
     private Metrics(MetricMaker metricMaker, String name) {
       String sanitizedName = metricMaker.sanitizeMetricName(name);
 
-      metricMaker.newCallbackMetric(
-          "cache/chroniclemap/keys_index_size_" + sanitizedName,
-          Integer.class,
-          new Description(
-              String.format(
-                  "The number of cache index keys for %s cache that are currently in memory",
-                  name)),
-          keys::size);
+      indexSize =
+          metricMaker.newCallbackMetric(
+              "cache/chroniclemap/keys_index_size_" + sanitizedName,
+              Integer.class,
+              new Description(
+                  String.format(
+                      "The number of cache index keys for %s cache that are currently in memory",
+                      name)),
+              keys::size);
 
       addLatency =
           metricMaker.newTimer(
@@ -169,6 +172,17 @@ class CacheKeysIndex<T> {
                           name))
                   .setCumulative()
                   .setUnit("errors"));
+    }
+
+    private void close() {
+      indexSize.remove();
+      addLatency.remove();
+      removeAndConsumeOlderThanLatency.remove();
+      removeAndConsumeLruKeyLatency.remove();
+      restoreLatency.remove();
+      persistLatency.remove();
+      restoreFailures.remove();
+      persistFailures.remove();
     }
   }
 
@@ -335,6 +349,11 @@ class CacheKeysIndex<T> {
       logger.atSevere().withCause(e).log("Restoring cache keys index %s failed", name);
       metrics.restoreFailures.increment();
     }
+  }
+
+  void close() {
+    persist();
+    metrics.close();
   }
 
   static final File tempIndexFile(File indexFile) {

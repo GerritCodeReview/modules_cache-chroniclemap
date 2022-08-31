@@ -79,4 +79,10 @@ class SerializationMetricsForCache {
     metricsCache.put(name, metrics);
     return metrics;
   }
+
+  void close() {
+    metrics.deserializeLatency.remove();
+    metrics.serializeLatency.remove();
+    metricsCache.remove(name);
+  }
 }
