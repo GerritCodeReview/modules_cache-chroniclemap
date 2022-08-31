@@ -110,7 +110,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
 
     mapBuilder.averageValueSize(config.getAverageValueSize());
-    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(metricMaker, def.name()));
+
+    TimedValueMarshaller<V> valueMarshaller = new TimedValueMarshaller<>(metricMaker, def.name());
+    mapBuilder.valueMarshaller(valueMarshaller);
 
     mapBuilder.entries(config.getMaxEntries());
 
@@ -138,7 +140,13 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.percentageFreeSpace(),
         config.getPersistIndexEvery());
 
-    return new ChronicleMapStore<>(store, config, metricMaker);
+    return new ChronicleMapStore<K, V>(store, config, metricMaker) {
+      @Override
+      public void close() {
+        super.close();
+        valueMarshaller.close();
+      }
+    };
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
@@ -347,7 +355,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public void close() {
     store.close();
-    keysIndex.persist();
+    keysIndex.close();
   }
 
   public double percentageUsedAutoResizes() {
