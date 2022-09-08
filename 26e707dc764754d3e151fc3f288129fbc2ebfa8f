@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe0a98e_f49af0a9",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T07:58:53Z",
+      "side": 1,
+      "message": "Another option is just to keep the persistent caches opened, isn\u0027t it?\n\nBear in mind that a persistent cache is on disk anyway, so it won\u0027t get removed when a plugin is reloaded or restarted.\n\nThe advantage of keeping the persistent caches opened is that we could be transparent to the plugin\u0027s reloading mechanism.",
+      "range": {
+        "startLine": 111,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 33
+      },
+      "revId": "26e707dc764754d3e151fc3f288129fbc2ebfa8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
