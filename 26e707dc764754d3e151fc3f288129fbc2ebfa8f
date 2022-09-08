@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e57e9c_6f6c730e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-08T07:59:33Z",
+      "side": 1,
+      "message": "@geminica.programs@gmail.com consider squashing this into its predecessor as they are part of the same solution IMHO",
+      "revId": "26e707dc764754d3e151fc3f288129fbc2ebfa8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fe0a98e_f49af0a9",
