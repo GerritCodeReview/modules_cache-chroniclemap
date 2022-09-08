@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39649661_18cc601d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "78bb6519_b6f81ef2",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 6
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57140479_3c378531",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-08T07:53:52Z",
       "side": 1,
       "message": "What do you mean in this context?",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 27
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "993d87b7_f1f4e772",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Typo: I meant `persistent` :/",
+      "parentUuid": "57140479_3c378531",
       "range": {
         "startLine": 10,
         "startChar": 17,
@@ -93,6 +141,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ac85f39_6d0ae426",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "84123b5f_72fc4b5d",
+      "range": {
+        "startLine": 16,
+        "startChar": 59,
+        "endLine": 16,
+        "endChar": 67
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab3fa80a_670ad771",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ea28ccb2_24703856",
+      "range": {
+        "startLine": 16,
+        "startChar": 33,
+        "endLine": 16,
+        "endChar": 45
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "987915e5_eda401b2",
@@ -116,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b1209f5_add2c4ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "987915e5_eda401b2",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 17
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adef687a_a192e505",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-09-08T07:53:52Z",
       "side": 1,
       "message": "Redundant IMHO: this is a change so it clearly is the solution to the issue",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 9
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36cda16e_4a1d13c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "adef687a_a192e505",
       "range": {
         "startLine": 19,
         "startChar": 0,
@@ -164,6 +308,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7466b96d_cf9a358c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "\u003e Is this an issue with the chronicle-map library or with the Gerrit metrics in general?\n\nIt is an issue of using `cache-chroniclemap` backed persistent caches that register their own metrics upon creation with plugin that happens to have persistent caches. In this aspect I would say it is `cache-chroniclemap` specific issue.\n\n\u003e Any plugin that register metrics would have the same issue, isn\u0027t it?\n\nPlugin\u0027s metrics (de)registration is handled through the plugin\u0027s lifecycle but in this case it cannot work as metrics are registered by Gerrit\u0027s core for plugin\u0027s caches...\n\n\u003e Another way to resolve the problem is just to manage the metrics registration: if they are already there then avoid registering them again.\n\nI was thinking about it but there is a problem with callback metrics - they use a specific instance to get metric value from it hence they have to be re-created upon cache creation...\n\nAnother solution (which I have planned for step two before we have decided that it would require too much effort) would be to _create or re-use cache_ and the keep reference counting. It would allow for `reload` operation without restart but there is one problem that would have to be taken care off: `cache name` is unique but not enough to determine if upon plugin reload existing cache should be re-used or new version of it created as key/value definitions could have been modified (would probably tight it to version or class signature, etc.).",
+      "parentUuid": "85109cfb_81e9eb1e",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 70
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be5ceaf9_fdf39523",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -175,6 +343,30 @@
       "writtenOn": "2022-09-08T07:53:52Z",
       "side": 1,
       "message": "cache-chroniclemap isn\u0027t a plugin, so this comment is more about other plugins registering metrics.",
+      "range": {
+        "startLine": 25,
+        "startChar": 9,
+        "endLine": 25,
+        "endChar": 30
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0602d3c9_97ddc58b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "be5ceaf9_fdf39523",
       "range": {
         "startLine": 25,
         "startChar": 9,
@@ -210,6 +402,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "332dff9a_a2649404",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "AFAIU it will not work for `callback metrics`",
+      "parentUuid": "d500a69a_ecfd348f",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 26
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da2edd1c_24e6e7ed",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
         "patchSetId": 1
@@ -221,6 +437,30 @@
       "writtenOn": "2022-09-08T07:53:52Z",
       "side": 1,
       "message": "Would it make sense to make Metrics an AutoCloseable then?",
+      "range": {
+        "startLine": 354,
+        "startChar": 7,
+        "endLine": 354,
+        "endChar": 12
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86d1abc3_6df246cd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-08T11:32:10Z",
+      "side": 1,
+      "message": "Was considering that too but wasn\u0027t sure if it makes sense in the context of long lived objects like caches/metrics.\nAFAIU `AutoCloseable` is useful for `try-with-resource` constructions which is not the case here...",
+      "parentUuid": "da2edd1c_24e6e7ed",
       "range": {
         "startLine": 354,
         "startChar": 7,
