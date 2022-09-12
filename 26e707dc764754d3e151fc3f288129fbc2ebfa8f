@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0936ead2_3fa25f1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-12T06:59:01Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "74e57e9c_6f6c730e",
+      "revId": "26e707dc764754d3e151fc3f288129fbc2ebfa8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fe0a98e_f49af0a9",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-08T07:58:53Z",
       "side": 1,
       "message": "Another option is just to keep the persistent caches opened, isn\u0027t it?\n\nBear in mind that a persistent cache is on disk anyway, so it won\u0027t get removed when a plugin is reloaded or restarted.\n\nThe advantage of keeping the persistent caches opened is that we could be transparent to the plugin\u0027s reloading mechanism.",
+      "range": {
+        "startLine": 111,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 33
+      },
+      "revId": "26e707dc764754d3e151fc3f288129fbc2ebfa8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ce03c9_6707bd25",
+        "filename": "src/main/resources/Documentation/migration.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-12T06:59:01Z",
+      "side": 1,
+      "message": "\u003e Another option is just to keep the persistent caches opened, isn\u0027t it?\n\nYeap, it is. Would IMHO require the reference counting cuz we would like to close it once/when plugin gets unloaded IOW when it is no longer needed...",
+      "parentUuid": "3fe0a98e_f49af0a9",
       "range": {
         "startLine": 111,
         "startChar": 1,
