@@ -13,10 +13,12 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.server.cache.PersistentCacheDef;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.inject.Singleton;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
@@ -28,16 +30,6 @@ public class CacheSerializers {
     String cacheName = def.name();
     registerCacheKeySerializer(cacheName, def.keySerializer());
     registerCacheValueSerializer(cacheName, def.valueSerializer());
-  }
-
-  static <K, V> void registerCacheKeySerializer(
-      String cacheName, CacheSerializer<K> keySerializer) {
-    keySerializers.computeIfAbsent(cacheName, (name) -> keySerializer);
-  }
-
-  static <K, V> void registerCacheValueSerializer(
-      String cacheName, CacheSerializer<V> valueSerializer) {
-    valueSerializers.computeIfAbsent(cacheName, (name) -> valueSerializer);
   }
 
   @SuppressWarnings("unchecked")
@@ -54,5 +46,24 @@ public class CacheSerializers {
       return (CacheSerializer<V>) valueSerializers.get(name);
     }
     throw new IllegalStateException("Could not find value serializer for " + name);
+  }
+
+  @VisibleForTesting
+  static <K, V> void registerCacheKeySerializer(
+      String cacheName, CacheSerializer<K> keySerializer) {
+    keySerializers.computeIfAbsent(cacheName, (name) -> keySerializer);
+  }
+
+  @VisibleForTesting
+  static <K, V> void registerCacheValueSerializer(
+      String cacheName, CacheSerializer<V> valueSerializer) {
+    valueSerializers.computeIfAbsent(cacheName, (name) -> valueSerializer);
+  }
+
+  @VisibleForTesting
+  static Set<String> getSerializersNames() {
+    // caches registration during Gerrit's start is performed through registerCacheDef hence there
+    // is no need to check both maps for all serializers names
+    return keySerializers.keySet();
   }
 }

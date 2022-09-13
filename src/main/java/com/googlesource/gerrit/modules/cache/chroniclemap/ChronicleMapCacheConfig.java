@@ -16,6 +16,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.PRUNE_DELAY;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
@@ -217,7 +218,7 @@ public class ChronicleMapCacheConfig {
     return duration != null ? duration.getSeconds() : 0;
   }
 
-  protected static class Defaults {
+  static class Defaults {
 
     public static final long DEFAULT_MAX_ENTRIES = 1000;
 
@@ -230,7 +231,8 @@ public class ChronicleMapCacheConfig {
 
     public static final Duration DEFAULT_PERSIST_INDEX_EVERY = Duration.ofMinutes(15);
 
-    private static final ImmutableMap<String, DefaultConfig> defaultMap =
+    @VisibleForTesting
+    static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
             .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
             .put("change_notes", DefaultConfig.create(36, 10240, 1000, 3))
