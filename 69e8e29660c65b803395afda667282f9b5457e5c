@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5594eeda_ed059e33",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-13T07:15:16Z",
+      "side": 1,
+      "message": "This is unrelated to this CR, but as a follow up I think we should warn in the logs if the generic `default` is applied.\n\nThis CR will cover adding defaults for all core caches, but we have no visibility on the ones introduced by plugins.\n\nWe should find a way to tell the gerrit admin that those need tuning.\n\nWDYT?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "303b25ba_09957440",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-13T07:15:16Z",
+      "side": 1,
+      "message": "Why setting `diskLimit`? AFAIR this is ignored by chroniclemap, no?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 67
+      },
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e64b70e_009fa25a",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-13T07:15:16Z",
+      "side": 1,
+      "message": "aren\u0027t `dat` files created as soon as the chronicle-map store comes into existance?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a218554b_f4f9b38c",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-13T07:15:16Z",
+      "side": 1,
+      "message": "Are you planning to add the defaults for these missing ones as part of this CR then?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2221125f_be0dedad",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-13T07:15:16Z",
+      "side": 1,
+      "message": "If this method returns an empty set, the test will pass because `containsExactlyElementsIn` will always return `true`.\n\nHow about `fail` or `throw` instead to signal that our expectations have not been met?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4f2e87_6d2e60d9",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-13T07:15:16Z",
+      "side": 1,
+      "message": "nit: have you considered using `FilenameUtils.removeExtension`?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
