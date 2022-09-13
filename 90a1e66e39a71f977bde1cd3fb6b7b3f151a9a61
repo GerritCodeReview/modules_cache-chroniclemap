@@ -330,6 +330,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c89da9_127da175",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:56:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7466b96d_cf9a358c",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 70
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be5ceaf9_fdf39523",
@@ -373,6 +397,23 @@
         "endLine": 25,
         "endChar": 30
       },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ef72ca_0c0c1ec5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:56:35Z",
+      "side": 1,
+      "message": "Feel free to merge once the typo is fixed :-)",
       "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -424,6 +465,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "301519ac_9de6ffc0",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:56:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "332dff9a_a2649404",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 26
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da2edd1c_24e6e7ed",
@@ -461,6 +526,30 @@
       "side": 1,
       "message": "Was considering that too but wasn\u0027t sure if it makes sense in the context of long lived objects like caches/metrics.\nAFAIU `AutoCloseable` is useful for `try-with-resource` constructions which is not the case here...",
       "parentUuid": "da2edd1c_24e6e7ed",
+      "range": {
+        "startLine": 354,
+        "startChar": 7,
+        "endLine": 354,
+        "endChar": 12
+      },
+      "revId": "90a1e66e39a71f977bde1cd3fb6b7b3f151a9a61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05eb6fcc_d75ae7ee",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheKeysIndex.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-13T23:56:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "86d1abc3_6df246cd",
       "range": {
         "startLine": 354,
         "startChar": 7,
