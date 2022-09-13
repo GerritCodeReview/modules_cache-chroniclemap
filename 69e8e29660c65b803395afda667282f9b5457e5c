@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d696896_786ecf1e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-13T12:45:06Z",
+      "side": 1,
+      "message": "Good point that we discussed too ;) I will address that in a dedicated CR.",
+      "parentUuid": "5594eeda_ed059e33",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "303b25ba_09957440",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-13T07:15:16Z",
       "side": 1,
       "message": "Why setting `diskLimit`? AFAIR this is ignored by chroniclemap, no?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 67
+      },
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09155552_6c390615",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-13T12:45:06Z",
+      "side": 1,
+      "message": "That is correct. It gets ignored but AFAIU it is the only way to enable in Gerrit persistency/caches in question",
+      "parentUuid": "303b25ba_09957440",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -60,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3aee0c1_3b9316c4",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-13T12:45:06Z",
+      "side": 1,
+      "message": "they mostly are, but `web_sessions` isn\u0027t",
+      "parentUuid": "8e64b70e_009fa25a",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a218554b_f4f9b38c",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
         "patchSetId": 1
@@ -71,6 +131,24 @@
       "writtenOn": "2022-09-13T07:15:16Z",
       "side": 1,
       "message": "Are you planning to add the defaults for these missing ones as part of this CR then?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cc86c2d_b8721d38",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-13T12:45:06Z",
+      "side": 1,
+      "message": "I wanted to split it up as it may take some time to actually find it. Lets see if/when I will get those defaults ;)",
+      "parentUuid": "a218554b_f4f9b38c",
       "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +170,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33206d5f_980c69cc",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-13T12:45:06Z",
+      "side": 1,
+      "message": "The test will not pass as `Defaults.defaultMap` contains entries and `containsExactlyElementsIn` as per definition:\n\n```\n(...) Checks that a subject contains exactly the provided objects or fails.\n```\n\nIOW when `value` has entries and `expected` is empty it will fail with\n```\nvalue of: keySet()\nexpected to be empty\nbut was : [web_sessions, change_notes, accounts, diff, diff_intraline, diff_summary, external_ids_map, oauth_tokens, change_kind, mergeability, pure_revert, persisted_projects, conflicts]\n\tat com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfigDefaultsIT.shouldAllPersistentCachesHaveDefaultConfiguration(ChronicleMapCacheConfigDefaultsIT.java:64)\n\n```",
+      "parentUuid": "2221125f_be0dedad",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db4f2e87_6d2e60d9",
@@ -105,6 +201,24 @@
       "writtenOn": "2022-09-13T07:15:16Z",
       "side": 1,
       "message": "nit: have you considered using `FilenameUtils.removeExtension`?",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eba189f3_4f7e8f7a",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-13T12:45:06Z",
+      "side": 1,
+      "message": "I did, but the problem is that it shaves off the last extension and `H2_SUFFIX` has two IOW cache file looks like `web_sessions.h2.db` and after `removeExtension` application it results in `web_sessions.h2` which is not desired from test perspecitve ;) Alternative would be to call it 2 times but my eyes would bleed on that 😊",
+      "parentUuid": "db4f2e87_6d2e60d9",
       "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
