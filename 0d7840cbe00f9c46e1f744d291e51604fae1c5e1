@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e297770_41d1d05f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T07:07:27Z",
+      "side": 1,
+      "message": "I was thinking that, as an alternative method, we should be able to inspect the registered `CacheSerializers` to browse all existing caches.\n\nIn this way we don\u0027t have to go to disk and we already have the cache name, so we don\u0027t need to remove the file extension, and _all_ caches should be visible immediately (even web_sessions).\n\nHad you already thought about it? Do you think it\u0027s worth it?",
+      "revId": "0d7840cbe00f9c46e1f744d291e51604fae1c5e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9186894_5a4e35c9",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T07:07:27Z",
+      "side": 1,
+      "message": "this method is only coping with .dat files and does not behave generically for any other type of file, should we rename it?\n\n`getCacheFileNameWithoutExtension`, perhaps?",
+      "range": {
+        "startLine": 87,
+        "startChar": 30,
+        "endLine": 87,
+        "endChar": 57
+      },
+      "revId": "0d7840cbe00f9c46e1f744d291e51604fae1c5e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

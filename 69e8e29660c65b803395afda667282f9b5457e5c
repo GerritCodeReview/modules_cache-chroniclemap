@@ -103,6 +103,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5eeac0b6_918a866c",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T07:07:27Z",
+      "side": 1,
+      "message": "Oh I see, good point!\nCould we perhaps add a comment to explain that those caches are not persistent by default and thus this is done to ensure a `.dat` file is created for traversal?",
+      "parentUuid": "09155552_6c390615",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 67
+      },
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e64b70e_009fa25a",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
         "patchSetId": 1
@@ -132,6 +156,24 @@
       "side": 1,
       "message": "they mostly are, but `web_sessions` isn\u0027t",
       "parentUuid": "8e64b70e_009fa25a",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e6e87ef_f92d3102",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T07:07:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f3aee0c1_3b9316c4",
       "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -167,6 +209,24 @@
       "side": 1,
       "message": "I wanted to split it up as it may take some time to actually find it. Lets see if/when I will get those defaults ;)",
       "parentUuid": "a218554b_f4f9b38c",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eadd194c_0fac70f1",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T07:07:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4cc86c2d_b8721d38",
       "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
