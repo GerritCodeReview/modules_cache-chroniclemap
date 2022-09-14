@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,10 @@ public class AutoAdjustCaches {
   private final ChronicleMapCacheConfig.Factory configFactory;
   private final Path cacheDir;
   private final AdministerCachePermission adminCachePermission;
+  private final CachesWithoutChronicleMapConfigMetric metric;
 
   private boolean dryRun;
+  private boolean adjustCachesOnDefaults;
   private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
 
@@ -63,11 +66,13 @@ public class AutoAdjustCaches {
       SitePaths site,
       DynamicMap<Cache<?, ?>> cacheMap,
       ChronicleMapCacheConfig.Factory configFactory,
-      AdministerCachePermission adminCachePermission) {
+      AdministerCachePermission adminCachePermission,
+      CachesWithoutChronicleMapConfigMetric metric) {
     this.cacheMap = cacheMap;
     this.configFactory = configFactory;
     this.cacheDir = getCacheDir(site, cfg.getString("cache", null, "directory"));
     this.adminCachePermission = adminCachePermission;
+    this.metric = metric;
   }
 
   public boolean isDryRun() {
@@ -76,6 +81,14 @@ public class AutoAdjustCaches {
 
   public void setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
+  }
+
+  public boolean isAdjustCachesOnDefaults() {
+    return adjustCachesOnDefaults;
+  }
+
+  public void setAdjustCachesOnDefaults(boolean adjustCachesOnDefaults) {
+    this.adjustCachesOnDefaults = adjustCachesOnDefaults;
   }
 
   public Optional<Long> getOptionalMaxEntries() {
@@ -262,6 +275,13 @@ public class AutoAdjustCaches {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   private Map<String, ChronicleMapCacheImpl<Object, Object>> getChronicleMapCaches() {
+    if (isAdjustCachesOnDefaults()) {
+      if (metric.cachesOnDefaults().isEmpty()) {
+        return Collections.emptyMap();
+      }
+      cacheNames.addAll(metric.cachesOnDefaults());
+    }
+
     return cacheMap.plugins().stream()
         .map(cacheMap::byPlugin)
         .flatMap(

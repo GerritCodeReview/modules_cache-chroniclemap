@@ -52,3 +52,6 @@ to monitor the state of the cache:
 
 * cache/chroniclemap/keys_index_persist_failures_<cache-name>
   : The number of errors caught when persist cache index to file operation was performed
+
+* cache/chroniclemap/caches_without_configuration
+  : The number of caches that have no chronicle map configuration provided and fall back to defaults
