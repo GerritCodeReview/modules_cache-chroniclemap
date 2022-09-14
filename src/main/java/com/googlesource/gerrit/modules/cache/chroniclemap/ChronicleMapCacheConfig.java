@@ -22,6 +22,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.GerritServerConfig;
+import com.google.inject.Singleton;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import java.io.File;
@@ -70,6 +71,7 @@ public class ChronicleMapCacheConfig {
   @AssistedInject
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
+      CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetric,
       @Assisted("ConfigKey") String configKey,
       @Assisted File cacheFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
@@ -81,10 +83,32 @@ public class ChronicleMapCacheConfig {
         cacheFile,
         expireAfterWrite,
         refreshAfterWrite,
-        cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey)),
-        cfg.getLong("cache", configKey, "avgKeySize", Defaults.averageKeySizeFor(configKey)),
-        cfg.getLong("cache", configKey, "avgValueSize", Defaults.avgValueSizeFor(configKey)),
-        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey)),
+        // In the following lines Config.getString method is used so that 'null' is returned when no
+        // value is configured and only then fallback value is taken from Defaults (which results
+        // in the corresponding metric being incremented). Note that Config.get[Long|Int] cannot be
+        // used as it requires the primitive value (IOW would be eagerly calculated resulting in
+        // metric emission).
+        Optional.ofNullable(cfg.getString("cache", configKey, "maxEntries"))
+            .map(Long::valueOf)
+            .orElseGet(
+                () -> emitMetricForMissingConfig(configKey, cachesWithoutConfigMetric).entries()),
+        Optional.ofNullable(cfg.getString("cache", configKey, "avgKeySize"))
+            .map(Long::valueOf)
+            .orElseGet(
+                () ->
+                    emitMetricForMissingConfig(configKey, cachesWithoutConfigMetric).averageKey()),
+        Optional.ofNullable(cfg.getString("cache", configKey, "avgValueSize"))
+            .map(Long::valueOf)
+            .orElseGet(
+                () ->
+                    emitMetricForMissingConfig(configKey, cachesWithoutConfigMetric)
+                        .averageValue()),
+        Optional.ofNullable(cfg.getString("cache", configKey, "maxBloatFactor"))
+            .map(Integer::valueOf)
+            .orElseGet(
+                () ->
+                    emitMetricForMissingConfig(configKey, cachesWithoutConfigMetric)
+                        .maxBloatFactor()),
         Duration.ofSeconds(
             cfg.getTimeUnit(
                 "cache",
@@ -207,6 +231,16 @@ public class ChronicleMapCacheConfig {
     return configKey;
   }
 
+  static DefaultConfig emitMetricForMissingConfig(
+      String configKey, CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetric) {
+    return Defaults.configFor(configKey)
+        .orElseGet(
+            () -> {
+              cachesWithoutConfigMetric.incrementForCache(configKey);
+              return Defaults.defaultConfig;
+            });
+  }
+
   private static File resolveIndexFile(File persistedCacheFile) {
     String cacheFileName = persistedCacheFile.getName();
     String indexFileName = String.format("%s.index", FilenameUtils.getBaseName(cacheFileName));
@@ -218,6 +252,7 @@ public class ChronicleMapCacheConfig {
     return duration != null ? duration.getSeconds() : 0;
   }
 
+  @Singleton
   static class Defaults {
 
     public static final long DEFAULT_MAX_ENTRIES = 1000;
@@ -249,28 +284,15 @@ public class ChronicleMapCacheConfig {
             .put("conflicts", DefaultConfig.create(70, 16, 1000, 1))
             .build();
 
-    public static long averageKeySizeFor(String configKey) {
-      return Optional.ofNullable(defaultMap.get(configKey))
-          .map(DefaultConfig::averageKey)
-          .orElse(DEFAULT_AVG_KEY_SIZE);
-    }
+    static final DefaultConfig defaultConfig =
+        DefaultConfig.create(
+            DEFAULT_AVG_KEY_SIZE,
+            DEFAULT_AVG_VALUE_SIZE,
+            DEFAULT_MAX_ENTRIES,
+            DEFAULT_MAX_BLOAT_FACTOR);
 
-    public static long avgValueSizeFor(String configKey) {
-      return Optional.ofNullable(defaultMap.get(configKey))
-          .map(DefaultConfig::averageValue)
-          .orElse(DEFAULT_AVG_VALUE_SIZE);
-    }
-
-    public static long maxEntriesFor(String configKey) {
-      return Optional.ofNullable(defaultMap.get(configKey))
-          .map(DefaultConfig::entries)
-          .orElse(DEFAULT_MAX_ENTRIES);
-    }
-
-    public static int maxBloatFactorFor(String configKey) {
-      return Optional.ofNullable(defaultMap.get(configKey))
-          .map(DefaultConfig::maxBloatFactor)
-          .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+    static Optional<DefaultConfig> configFor(String configKey) {
+      return Optional.ofNullable(defaultMap.get(configKey));
     }
 
     public static int percentageFreeSpaceEvictionThreshold() {
