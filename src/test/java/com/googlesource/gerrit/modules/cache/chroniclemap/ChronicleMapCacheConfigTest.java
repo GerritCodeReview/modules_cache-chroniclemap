@@ -21,6 +21,9 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERSIST_INDEX_EVERY;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.PRUNE_DELAY;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.File;
@@ -33,7 +36,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ChronicleMapCacheConfigTest {
 
   private final String cacheDirectory = ".";
@@ -46,6 +53,8 @@ public class ChronicleMapCacheConfigTest {
   @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
   private SitePaths sitePaths;
   private StoredConfig gerritConfig;
+
+  @Mock CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetricMock;
 
   @Before
   public void setUp() throws Exception {
@@ -216,16 +225,38 @@ public class ChronicleMapCacheConfigTest {
     assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(2L);
   }
 
+  @Test
+  public void shouldIncrementCacheMetricWhenNoDefaultsAreAvailable() {
+    configUnderTest(gerritConfig);
+
+    verify(cachesWithoutConfigMetricMock, atLeastOnce()).incrementForCache(cacheKey);
+  }
+
+  @Test
+  public void shouldNotIncrementCacheMetricWhenDefaultsAreAvailable() {
+    String configuredCache = "web_sessions";
+    configUnderTest(gerritConfig, configuredCache, configuredCache);
+
+    verify(cachesWithoutConfigMetricMock, never()).incrementForCache(configuredCache);
+  }
+
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
+    return configUnderTest(gerritConfig, cacheName, cacheKey);
+  }
+
+  private ChronicleMapCacheConfig configUnderTest(
+      StoredConfig gerritConfig, String name, String key) {
     File cacheFile =
         ChronicleMapCacheFactory.fileName(
-            sitePaths.site_path.resolve(cacheDirectory), cacheName, version);
-    sitePaths
-        .resolve(cacheDirectory)
-        .resolve(String.format("%s_%s.dat", cacheName, version))
-        .toFile();
+            sitePaths.site_path.resolve(cacheDirectory), name, version);
+    sitePaths.resolve(cacheDirectory).resolve(String.format("%s_%s.dat", name, version)).toFile();
 
     return new ChronicleMapCacheConfig(
-        gerritConfig, cacheKey, cacheFile, expireAfterWrite, refreshAfterWrite);
+        gerritConfig,
+        new ChronicleMapCacheConfig.Defaults(cachesWithoutConfigMetricMock),
+        key,
+        cacheFile,
+        expireAfterWrite,
+        refreshAfterWrite);
   }
 }
