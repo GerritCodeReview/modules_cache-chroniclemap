@@ -250,25 +250,45 @@ public class ChronicleMapCacheConfig {
     public static long averageKeySizeFor(String configKey) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::averageKey)
-          .orElse(DEFAULT_AVG_KEY_SIZE);
+          .orElseGet(
+              () -> {
+                logger.atWarning().log(
+                    "Fallback average key size value is used for '%s' cache", configKey);
+                return DEFAULT_AVG_KEY_SIZE;
+              });
     }
 
     public static long avgValueSizeFor(String configKey) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::averageValue)
-          .orElse(DEFAULT_AVG_VALUE_SIZE);
+          .orElseGet(
+              () -> {
+                logger.atWarning().log(
+                    "Fallback average value size value is used for '%s' cache", configKey);
+                return DEFAULT_AVG_VALUE_SIZE;
+              });
     }
 
     public static long maxEntriesFor(String configKey) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::entries)
-          .orElse(DEFAULT_MAX_ENTRIES);
+          .orElseGet(
+              () -> {
+                logger.atWarning().log(
+                    "Fallback max entries value is used for '%s' cache", configKey);
+                return DEFAULT_MAX_ENTRIES;
+              });
     }
 
     public static int maxBloatFactorFor(String configKey) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::maxBloatFactor)
-          .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+          .orElseGet(
+              () -> {
+                logger.atWarning().log(
+                    "Fallback max bloat factor value is used for '%s' cache", configKey);
+                return DEFAULT_MAX_BLOAT_FACTOR;
+              });
     }
 
     public static int percentageFreeSpaceEvictionThreshold() {
