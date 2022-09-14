@@ -70,6 +70,7 @@ public class ChronicleMapCacheConfig {
   @AssistedInject
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
+      CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetric,
       @Assisted("ConfigKey") String configKey,
       @Assisted File cacheFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
@@ -81,10 +82,18 @@ public class ChronicleMapCacheConfig {
         cacheFile,
         expireAfterWrite,
         refreshAfterWrite,
-        cfg.getLong("cache", configKey, "maxEntries", Defaults.maxEntriesFor(configKey)),
-        cfg.getLong("cache", configKey, "avgKeySize", Defaults.averageKeySizeFor(configKey)),
-        cfg.getLong("cache", configKey, "avgValueSize", Defaults.avgValueSizeFor(configKey)),
-        cfg.getInt("cache", configKey, "maxBloatFactor", Defaults.maxBloatFactorFor(configKey)),
+        Optional.ofNullable(cfg.getString("cache", configKey, "maxEntries"))
+            .map(Long::valueOf)
+            .orElseGet(() -> Defaults.maxEntriesFor(configKey, cachesWithoutConfigMetric)),
+        Optional.ofNullable(cfg.getString("cache", configKey, "avgKeySize"))
+            .map(Long::valueOf)
+            .orElseGet(() -> Defaults.averageKeySizeFor(configKey, cachesWithoutConfigMetric)),
+        Optional.ofNullable(cfg.getString("cache", configKey, "avgValueSize"))
+            .map(Long::valueOf)
+            .orElseGet(() -> Defaults.avgValueSizeFor(configKey, cachesWithoutConfigMetric)),
+        Optional.ofNullable(cfg.getString("cache", configKey, "maxBloatFactor"))
+            .map(Integer::valueOf)
+            .orElseGet(() -> Defaults.maxBloatFactorFor(configKey, cachesWithoutConfigMetric)),
         Duration.ofSeconds(
             cfg.getTimeUnit(
                 "cache",
@@ -249,28 +258,48 @@ public class ChronicleMapCacheConfig {
             .put("conflicts", DefaultConfig.create(70, 16, 1000, 1))
             .build();
 
-    public static long averageKeySizeFor(String configKey) {
+    public static long averageKeySizeFor(
+        String configKey, CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetrics) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::averageKey)
-          .orElse(DEFAULT_AVG_KEY_SIZE);
+          .orElseGet(
+              () -> {
+                cachesWithoutConfigMetrics.incrementForCache(configKey);
+                return DEFAULT_AVG_KEY_SIZE;
+              });
     }
 
-    public static long avgValueSizeFor(String configKey) {
+    public static long avgValueSizeFor(
+        String configKey, CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetrics) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::averageValue)
-          .orElse(DEFAULT_AVG_VALUE_SIZE);
+          .orElseGet(
+              () -> {
+                cachesWithoutConfigMetrics.incrementForCache(configKey);
+                return DEFAULT_AVG_VALUE_SIZE;
+              });
     }
 
-    public static long maxEntriesFor(String configKey) {
+    public static long maxEntriesFor(
+        String configKey, CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetrics) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::entries)
-          .orElse(DEFAULT_MAX_ENTRIES);
+          .orElseGet(
+              () -> {
+                cachesWithoutConfigMetrics.incrementForCache(configKey);
+                return DEFAULT_MAX_ENTRIES;
+              });
     }
 
-    public static int maxBloatFactorFor(String configKey) {
+    public static int maxBloatFactorFor(
+        String configKey, CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetrics) {
       return Optional.ofNullable(defaultMap.get(configKey))
           .map(DefaultConfig::maxBloatFactor)
-          .orElse(DEFAULT_MAX_BLOAT_FACTOR);
+          .orElseGet(
+              () -> {
+                cachesWithoutConfigMetrics.incrementForCache(configKey);
+                return DEFAULT_MAX_BLOAT_FACTOR;
+              });
     }
 
     public static int percentageFreeSpaceEvictionThreshold() {
