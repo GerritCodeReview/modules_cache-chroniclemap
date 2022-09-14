@@ -54,6 +54,7 @@ public class AutoAdjustCaches {
   private final AdministerCachePermission adminCachePermission;
 
   private boolean dryRun;
+  private boolean adjustCachesOnDefaults;
   private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
 
@@ -76,6 +77,14 @@ public class AutoAdjustCaches {
 
   public void setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
+  }
+
+  public boolean isAdjustCachesOnDefaults() {
+    return adjustCachesOnDefaults;
+  }
+
+  public void setAdjustCachesOnDefaults(boolean adjustCachesOnDefaults) {
+    this.adjustCachesOnDefaults = adjustCachesOnDefaults;
   }
 
   public Optional<Long> getOptionalMaxEntries() {
@@ -262,6 +271,10 @@ public class AutoAdjustCaches {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   private Map<String, ChronicleMapCacheImpl<Object, Object>> getChronicleMapCaches() {
+    if (isAdjustCachesOnDefaults()) {
+      cacheNames.addAll(CacheSerializers.getSerializersNames());
+    }
+
     return cacheMap.plugins().stream()
         .map(cacheMap::byPlugin)
         .flatMap(
