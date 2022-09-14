@@ -268,6 +268,23 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
         .hasSize(1);
   }
 
+  @Test
+  public void shouldAdjustCachesOnDefaultsWhenSelected() throws Exception {
+    assertThat(
+            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+        .isEmpty();
+
+    testCache.get(TEST_CACHE_KEY_100_CHARS);
+    String tuneResult = adminSshSession.exec(SSH_CMD + " --adjust-caches-on-defaults");
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+        .contains(TEST_CACHE_NAME);
+    assertThat(
+            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+        .isNotEmpty();
+  }
+
   private Config configResult(String result, @Nullable String configHeader)
       throws ConfigInvalidException {
     Config configResult = new Config();
