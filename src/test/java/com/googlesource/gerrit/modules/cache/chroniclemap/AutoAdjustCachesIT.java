@@ -19,8 +19,6 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCache
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.PERCENTAGE_SIZE_INCREASE_THRESHOLD;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.TUNED_INFIX;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
 
 import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
@@ -82,6 +80,8 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   @Named(TEST_CACHE_NAME)
   LoadingCache<String, String> testCache;
 
+  @Inject ChronicleMapCacheConfig.Defaults defaults;
+
   @ModuleImpl(name = CacheModule.PERSISTENT_MODULE)
   public static class TestPersistentCacheModule extends CacheModule {
 
@@ -118,9 +118,9 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     for (String cache : EXPECTED_CACHES) {
       assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
-          .isEqualTo(maxEntriesFor(cache));
+          .isEqualTo(defaults.maxEntriesFor(cache));
       assertThat(configResult.getLong("cache", cache, "maxBloatFactor", 0))
-          .isEqualTo(maxBloatFactorFor(cache));
+          .isEqualTo(defaults.maxBloatFactorFor(cache));
     }
   }
 
@@ -196,8 +196,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     String tuneResult =
         adminSshSession.exec(
             String.format(
-                "%s --max-entries %s",
-                SSH_CMD, ChronicleMapCacheConfig.Defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
+                "%s --max-entries %s", SSH_CMD, defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
     adminSshSession.assertSuccess();
 
     assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
@@ -266,6 +265,23 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     assertThat(configResult(resp.getEntityContent(), null).getSubsections("cache")).isNotEmpty();
     assertThat(tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*")))
         .hasSize(1);
+  }
+
+  @Test
+  public void shouldAdjustCachesOnDefaultsWhenSelected() throws Exception {
+    assertThat(
+            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+        .isEmpty();
+
+    testCache.get(TEST_CACHE_KEY_100_CHARS);
+    String tuneResult = adminSshSession.exec(SSH_CMD + " --adjust-caches-on-defaults");
+    adminSshSession.assertSuccess();
+
+    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+        .contains(TEST_CACHE_NAME);
+    assertThat(
+            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+        .isNotEmpty();
   }
 
   private Config configResult(String result, @Nullable String configHeader)
