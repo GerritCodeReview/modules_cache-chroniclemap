@@ -148,7 +148,7 @@ INFO  com.google.gerrit.server.plugins.PluginLoader : Loaded plugin cache-chroni
 * You can now run an the tuning command:
 
 ```bash
-ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run] [cache-name]
+ssh -p 29418 admin@<gerrit-server> cache-chroniclemap auto-adjust-caches [--dry-run] [--adjust-caches-on-defaults] [cache-name]
 ```
 
 * You can also use the REST-API:
@@ -179,6 +179,12 @@ value should be passed _explicitly_.
 Note that this parameter will be used globally across all caches, so if you want
 to increase the size of a particular cache only you should be using this
 together with the `cache-name` parameter.
+
+* `--adjust-caches-on-defaults` or `-a` (SSH), `?adjust-caches-on-defaults` or `?a` (REST-API)
+  optional parameter
+
+The alternative to `cache-name` parameter that allows to tune all caches that are
+currently falling back to sub-optimal defaults.
 
 * `cache-name` (SSH), `?CACHE_NAME=cache-name` (REST-API) optional restriction of the caches
   to analyze and auto-tune. The parameter can be repeated multiple times for analyzing
@@ -317,3 +323,17 @@ For each cache `foo` you want to install/replace do:
 
 Once you have tested gerrit-2 and you are happy with the results you can perform
 steps *1.* to *4.* for `gerrit-1`.
+
+## Detect caches that rely on fallback configuration
+
+Gerrit increments `cache/chroniclemap/caches_without_chroniclemap_configuration`
+metric when persistent cache that relies on fallback configuration is
+instantiated.
+
+*Notes:*
+* Additionally a warning is issued to the `error_log` but Gerrit's
+  core caches are initiated earlier than logging subsystem hence seeing them
+  requires starting the server in `run` mode.
+* One can use `auto-adjust-caches` command with `adjust-caches-on-defaults` option
+  (see the `Auto-adjust Chronicle-map caches` section for details) in order to
+  provide reasonable defaults for caches in question.

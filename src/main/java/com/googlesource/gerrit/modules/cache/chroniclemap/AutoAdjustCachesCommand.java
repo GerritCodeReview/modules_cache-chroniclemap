@@ -49,6 +49,14 @@ public class AutoAdjustCachesCommand extends SshCommand {
     autoAdjustCachesEngine.setOptionalMaxEntries(Optional.of(maxEntries));
   }
 
+  @Option(
+      name = "--adjust-caches-on-defaults",
+      aliases = {"-a"},
+      usage = "Adjust caches that fall back to default configuration.")
+  public void setAdjustCachesOnDefaults(boolean adjustCachesOnDefaults) {
+    autoAdjustCachesEngine.setAdjustCachesOnDefaults(adjustCachesOnDefaults);
+  }
+
   @Argument(
       index = 0,
       required = false,
