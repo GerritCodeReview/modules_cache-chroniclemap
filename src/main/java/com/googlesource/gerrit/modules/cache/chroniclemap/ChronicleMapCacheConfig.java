@@ -22,6 +22,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.GerritServerConfig;
+import com.google.inject.Singleton;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import java.io.File;
@@ -70,6 +71,7 @@ public class ChronicleMapCacheConfig {
   @AssistedInject
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
+      CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetric,
       @Assisted("ConfigKey") String configKey,
       @Assisted File cacheFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
@@ -77,6 +79,7 @@ public class ChronicleMapCacheConfig {
 
     this(
         cfg,
+        cachesWithoutConfigMetric,
         configKey,
         cacheFile,
         expireAfterWrite,
@@ -97,6 +100,7 @@ public class ChronicleMapCacheConfig {
   @AssistedInject
   ChronicleMapCacheConfig(
       @GerritServerConfig Config cfg,
+      CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetric,
       @Assisted("ConfigKey") String configKey,
       @Assisted File cacheFile,
       @Nullable @Assisted("ExpireAfterWrite") Duration expireAfterWrite,
@@ -153,6 +157,8 @@ public class ChronicleMapCacheConfig {
     }
     this.persistIndexEvery = Duration.ofSeconds(persistIndexEverySeconds);
     this.persistIndexEveryNthPrune = persistIndexEverySeconds / PRUNE_DELAY;
+
+    emitMetricForMissingConfig(cfg, cachesWithoutConfigMetric, configKey);
   }
 
   public int getPercentageFreeSpaceEvictionThreshold() {
@@ -207,6 +213,28 @@ public class ChronicleMapCacheConfig {
     return configKey;
   }
 
+  private static void emitMetricForMissingConfig(
+      Config cfg,
+      CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetric,
+      String configKey) {
+    if (!cfg.getSubsections("cache").stream()
+        .filter(cache -> cache.equalsIgnoreCase(configKey))
+        .filter(
+            cache ->
+                isConfigured(cfg, cache, "maxEntries")
+                    && isConfigured(cfg, cache, "avgKeySize")
+                    && isConfigured(cfg, cache, "avgValueSize")
+                    && isConfigured(cfg, cache, "maxBloatFactor"))
+        .findAny()
+        .isPresent()) {
+      cachesWithoutConfigMetric.incrementForCache(configKey);
+    }
+  }
+
+  private static boolean isConfigured(Config cfg, String configKey, String name) {
+    return cfg.getString("cache", configKey, name) != null;
+  }
+
   private static File resolveIndexFile(File persistedCacheFile) {
     String cacheFileName = persistedCacheFile.getName();
     String indexFileName = String.format("%s.index", FilenameUtils.getBaseName(cacheFileName));
@@ -218,6 +246,7 @@ public class ChronicleMapCacheConfig {
     return duration != null ? duration.getSeconds() : 0;
   }
 
+  @Singleton
   static class Defaults {
 
     public static final long DEFAULT_MAX_ENTRIES = 1000;
