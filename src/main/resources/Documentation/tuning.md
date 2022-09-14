@@ -317,3 +317,16 @@ For each cache `foo` you want to install/replace do:
 
 Once you have tested gerrit-2 and you are happy with the results you can perform
 steps *1.* to *4.* for `gerrit-1`.
+
+## Detect caches that rely on fallback configuration
+
+Gerrit increments `cache/chroniclemap/caches_without_chroniclemap_configuration`
+metric when persistent cache that relies on fallback configuration is
+instantiated. One can narrow down all not configured caches by searching for
+metrics prefixed with
+`cache/chroniclemap/cache_without_chroniclemap_configuration_` (they are
+created only for caches in question).
+
+Note that additionally a warning is issued to the `error_log` but Gerrit's
+core caches are initiated earlier than logging subsystem hence seeing them
+requires starting the server in `run` mode.

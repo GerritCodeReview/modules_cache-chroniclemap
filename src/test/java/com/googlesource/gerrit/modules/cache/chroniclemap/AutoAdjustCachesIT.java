@@ -21,6 +21,7 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCache
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.TUNED_INFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxEntriesFor;
+import static org.mockito.Mockito.mock;
 
 import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
@@ -110,6 +111,8 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   @Test
   public void shouldUseDefaultsWhenCachesAreNotConfigured() throws Exception {
     createChange();
+    CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetricMock =
+        mock(CachesWithoutChronicleMapConfigMetric.class);
 
     String result = adminSshSession.exec(SSH_CMD);
 
@@ -118,9 +121,9 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     for (String cache : EXPECTED_CACHES) {
       assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
-          .isEqualTo(maxEntriesFor(cache));
+          .isEqualTo(maxEntriesFor(cache, cachesWithoutConfigMetricMock));
       assertThat(configResult.getLong("cache", cache, "maxBloatFactor", 0))
-          .isEqualTo(maxBloatFactorFor(cache));
+          .isEqualTo(maxBloatFactorFor(cache, cachesWithoutConfigMetricMock));
     }
   }
 
@@ -197,7 +200,9 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
         adminSshSession.exec(
             String.format(
                 "%s --max-entries %s",
-                SSH_CMD, ChronicleMapCacheConfig.Defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
+                SSH_CMD,
+                ChronicleMapCacheConfig.Defaults.maxEntriesFor(
+                    TEST_CACHE_KEY_100_CHARS, mock(CachesWithoutChronicleMapConfigMetric.class))));
     adminSshSession.assertSuccess();
 
     assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
