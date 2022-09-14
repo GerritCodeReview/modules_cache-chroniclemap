@@ -317,3 +317,23 @@ For each cache `foo` you want to install/replace do:
 
 Once you have tested gerrit-2 and you are happy with the results you can perform
 steps *1.* to *4.* for `gerrit-1`.
+
+## Detect caches that rely on default configuration
+
+Gerrit issues a warning message when persistent cache that relies on fallback
+configuration is instantiated. One should scan the `error_log` for entries like:
+
+```
+[2022-09-14 08:19:56,063] [main] WARN  com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig : Fallback max entries value is used for 'gerrit_file_diff' cache
+```
+
+Note that Gerrit's core caches are instantiated at very early stage (often
+prior logging subsystem is initiated) therefore in order to detect if any
+of them relies on fallback it is advised to `run` it instead of starting it as
+a service e.g.:
+
+```
+gerrit.sh run 2>&1
+```
+
+In this case console should scanned for the warning in question.

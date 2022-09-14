@@ -348,6 +348,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void close() {
     store.close();
     keysIndex.persist();
+    config.closeCacheWithoutConfigMetric();
   }
 
   public double percentageUsedAutoResizes() {
