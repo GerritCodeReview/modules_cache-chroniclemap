@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a288da2e_278bfb5c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T06:52:56Z",
+      "side": 1,
+      "message": "I have been thinking about it.\nDo you think issuing a metric would give better visibility?\n\nAlso, if this is noticeable by running `./bin/gerrit.sh run` only, I fear it could really still go unnoticed.\n\nThoughts?",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 44
+      },
+      "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
