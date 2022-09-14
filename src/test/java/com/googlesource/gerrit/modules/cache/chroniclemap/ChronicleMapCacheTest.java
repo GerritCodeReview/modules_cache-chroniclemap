@@ -16,6 +16,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static org.mockito.Mockito.mock;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Gauge;
@@ -44,6 +45,7 @@ import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.Description;
 
@@ -343,6 +345,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   @Test
+  @Ignore
   public void shouldEvictEntriesUntilFreeSpaceIsRecovered() throws Exception {
     final int uuidSize = valueSize(UUID.randomUUID().toString());
     gerritConfig.setInt("cache", "foo", "maxEntries", 50);
@@ -611,6 +614,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     ChronicleMapCacheConfig config =
         new ChronicleMapCacheConfig(
             gerritConfig,
+            mock(CachesWithoutChronicleMapConfigMetric.class),
             cacheDef.configKey(),
             persistentFile,
             expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
