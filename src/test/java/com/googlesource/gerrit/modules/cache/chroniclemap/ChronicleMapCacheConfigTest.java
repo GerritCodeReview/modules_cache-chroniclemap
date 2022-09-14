@@ -21,6 +21,9 @@ import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCac
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERSIST_INDEX_EVERY;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.PRUNE_DELAY;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.File;
@@ -33,7 +36,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ChronicleMapCacheConfigTest {
 
   private final String cacheDirectory = ".";
@@ -46,6 +53,8 @@ public class ChronicleMapCacheConfigTest {
   @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
   private SitePaths sitePaths;
   private StoredConfig gerritConfig;
+
+  @Mock CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetricMock;
 
   @Before
   public void setUp() throws Exception {
@@ -216,6 +225,21 @@ public class ChronicleMapCacheConfigTest {
     assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(2L);
   }
 
+  @Test
+  public void shouldIncrementCacheMetricWhenCacheHasNoDedicatedConfiguration() {
+    configUnderTest(gerritConfig);
+
+    verify(cachesWithoutConfigMetricMock, atLeastOnce()).incrementForCache(cacheKey);
+  }
+
+  @Test
+  public void shouldNotIncrementCacheMetricWhenCacheHasAtLeastSingleParameterConfigured() {
+    gerritConfig.setLong("cache", cacheKey, "maxEntries", 1L);
+    configUnderTest(gerritConfig);
+
+    verify(cachesWithoutConfigMetricMock, never()).incrementForCache(cacheName);
+  }
+
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
     File cacheFile =
         ChronicleMapCacheFactory.fileName(
@@ -226,6 +250,11 @@ public class ChronicleMapCacheConfigTest {
         .toFile();
 
     return new ChronicleMapCacheConfig(
-        gerritConfig, cacheKey, cacheFile, expireAfterWrite, refreshAfterWrite);
+        gerritConfig,
+        cachesWithoutConfigMetricMock,
+        cacheKey,
+        cacheFile,
+        expireAfterWrite,
+        refreshAfterWrite);
   }
 }
