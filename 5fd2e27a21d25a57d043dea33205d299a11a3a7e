@@ -16,6 +16,24 @@
       "message": "Is this still valid?",
       "revId": "5fd2e27a21d25a57d043dea33205d299a11a3a7e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "705ecc00_7b0e6559",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-14T07:10:33Z",
+      "side": 1,
+      "message": "It was an idea I wanted to explore.\nI think we diverged a log from it, so I will abandon it for now.\n\nI am still curious to hear if you had any thoughts on this approach though?",
+      "parentUuid": "7b3f9854_e7496450",
+      "revId": "5fd2e27a21d25a57d043dea33205d299a11a3a7e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
