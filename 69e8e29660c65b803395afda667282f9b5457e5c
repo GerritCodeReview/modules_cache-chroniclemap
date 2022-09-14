@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "209de557_21043419",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-14T06:42:29Z",
+      "side": 1,
+      "message": "Addressed in `I8b0835c6d8` that this change was rebased over.",
+      "parentUuid": "5d696896_786ecf1e",
+      "revId": "69e8e29660c65b803395afda667282f9b5457e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "303b25ba_09957440",
