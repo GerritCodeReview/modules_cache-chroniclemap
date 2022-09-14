@@ -16,6 +16,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static org.mockito.Mockito.mock;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Gauge;
@@ -611,6 +612,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
     ChronicleMapCacheConfig config =
         new ChronicleMapCacheConfig(
             gerritConfig,
+            mock(CachesWithoutChronicleMapConfigMetric.class),
             cacheDef.configKey(),
             persistentFile,
             expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
