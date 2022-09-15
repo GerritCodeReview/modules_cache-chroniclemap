@@ -70,6 +70,30 @@
       },
       "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33dab392_ac17161e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-15T08:16:43Z",
+      "side": 1,
+      "message": "Do you mean that we would create the cache postfixed metric only for those that miss the config or for all?\nHow about having one that collects all so that it could be easily tracked with alarm etc and having those offending ones post-fixed with a cache name?",
+      "parentUuid": "1a50a25c_b531ff24",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 44
+      },
+      "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
