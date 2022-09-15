@@ -46,6 +46,30 @@
       },
       "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a50a25c_b531ff24",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-15T07:13:48Z",
+      "side": 1,
+      "message": "Yep this would already be an improvement I think.\nPersonally, since we are already exposing the metric I would consider suffixing them with the _cache_name_ (since labels are not an option here).\n\nWe should be fine because the number of caches is bounded so we are not risking an explosion of metrics here.\n\nHaving said that, I think the current implementation also does the trick (and arguably it is slightly easier to setup a grafana dashboard).\n\nIf you want to explore this option that\u0027d be cool, otherwise I am happy to +2 this already.",
+      "parentUuid": "405345f8_630cfab1",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 44
+      },
+      "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
