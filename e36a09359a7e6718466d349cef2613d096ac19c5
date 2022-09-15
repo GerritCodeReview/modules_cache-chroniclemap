@@ -22,6 +22,30 @@
       },
       "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "405345f8_630cfab1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-15T06:21:58Z",
+      "side": 1,
+      "message": "Metric would work (I have just confirmed that). I was thinking about single metric for all caches e.g. `cache/chroniclemap/caches_without_dedicated_chroniclemap_configuration` and it would show the cumulative number of caches that miss the dedicated config. We would still keep the log entries and describe how to check it in `tuning.md` as it is now. WDYT?",
+      "parentUuid": "a288da2e_278bfb5c",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 44
+      },
+      "revId": "e36a09359a7e6718466d349cef2613d096ac19c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
