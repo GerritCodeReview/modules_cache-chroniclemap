@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f48c17eb_4cb1ceab",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheSerializers.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-20T07:58:02Z",
+      "side": 1,
+      "message": "Why should this be visible for",
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a0d554_57557d02",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheSerializers.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-20T07:58:02Z",
+      "side": 1,
+      "message": "Why should this be visible for testing?\nI don\u0027t see this used in the IT test\n\n(same applies for `registerCacheKeySerializer`)",
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc29de63_124eb9d7",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-20T07:58:02Z",
+      "side": 1,
+      "message": "by",
+      "range": {
+        "startLine": 37,
+        "startChar": 44,
+        "endLine": 37,
+        "endChar": 46
+      },
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
