@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd0a4d38_4fba80fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-20T07:52:22Z",
+      "side": 1,
+      "message": "Issuing",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 8
+      },
+      "revId": "efdcc83847fddf9f8fc33bbe258c63470609295a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "befb888f_acff116f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -14,6 +37,30 @@
       "writtenOn": "2022-09-20T07:44:59Z",
       "side": 1,
       "message": "Not sure we need this second one: if the first one is \u003e 0 then the Gerrit admin should look at the caches and tune them all anyway.\n\nGerrit has already way too many metrics IMHO and we should avoid the ones that has a cardinality associated with it.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "efdcc83847fddf9f8fc33bbe258c63470609295a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2531f884_f3c8f39a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-20T07:52:22Z",
+      "side": 1,
+      "message": "I agree we shouldn\u0027t have both (I think Jacek left both just so that we can decide which one is the preferred way forward).\n\nPersonally, I thought we _only_ need these ones rather than the global one.\n\nThe idea is the cardinality of these caches is limited to the number of unconfigured caches (1? 2? 10?), which is limited and does not cause an explosion of metrics anyway.\n\nThe benefit is that it is immediately obvious which caches should be looked at.",
+      "parentUuid": "befb888f_acff116f",
       "range": {
         "startLine": 23,
         "startChar": 0,
