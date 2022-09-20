@@ -9,12 +9,12 @@
       "updated": "2022-09-20T09:18:00Z"
     },
     "gerritforge:cache-chroniclemap-code-style": {
-      "state": "SUCCESSFUL",
-      "url": "https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/19%252F345319%252F4/5/console",
-      "started": "2022-09-20T09:12:25Z",
+      "state": "RUNNING",
+      "url": "https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/19%252F345319%252F4/6/console",
+      "started": "2022-09-20T09:28:38Z",
       "finished": "2022-09-20T09:12:34Z",
       "created": "2022-09-20T07:14:00Z",
-      "updated": "2022-09-20T09:12:35Z"
+      "updated": "2022-09-20T09:28:38Z"
     }
   }
 }
