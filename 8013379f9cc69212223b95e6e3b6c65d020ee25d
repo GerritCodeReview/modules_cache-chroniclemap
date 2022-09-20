@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "275050b6_8addbe03",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-20T06:29:55Z",
+      "side": 1,
+      "message": "alter `tuning` description and mention metrics",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 64
+      },
+      "revId": "8013379f9cc69212223b95e6e3b6c65d020ee25d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
