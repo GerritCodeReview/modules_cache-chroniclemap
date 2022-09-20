@@ -16,6 +16,24 @@
       "message": "@luca.milanesio@gmail.com we don\u0027t have the policy that keeps `maintainer-for-maintainer` +2 hence I need your `+2` again ;)",
       "revId": "310060ed9230d24261752728a9b3bd04f2bf8d62",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1cf7dcf_9b18b38e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-20T07:06:35Z",
+      "side": 1,
+      "message": "@luca ping...",
+      "parentUuid": "47dc4292_06e80ef4",
+      "revId": "310060ed9230d24261752728a9b3bd04f2bf8d62",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
