@@ -37,6 +37,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23539090_ce817006",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheSerializers.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-22T06:15:10Z",
+      "side": 1,
+      "message": "similarly as above but `registerCacheValueSerializer` is used only in 2 tests:\n* ChronicleMapCacheTest\n* TimedValueMarshallerTest",
+      "parentUuid": "f48c17eb_4cb1ceab",
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9665df8_400618f7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheSerializers.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-22T06:15:10Z",
+      "side": 1,
+      "message": "production code uses `registerCacheDef` whereas `registerCacheKeySerializer` is used in 3 tests:\n* CacheKeysIndexTest\n* ChronicleMapCacheTest\n* KeyWrapperMarshallerTest",
+      "parentUuid": "d5a0d554_57557d02",
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc29de63_124eb9d7",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
         "patchSetId": 4
@@ -48,6 +84,30 @@
       "writtenOn": "2022-09-20T07:58:02Z",
       "side": 1,
       "message": "by",
+      "range": {
+        "startLine": 37,
+        "startChar": 44,
+        "endLine": 37,
+        "endChar": 46
+      },
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfabb708_d4cfca97",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-22T06:15:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc29de63_124eb9d7",
       "range": {
         "startLine": 37,
         "startChar": 44,
