@@ -69,6 +69,30 @@
       },
       "revId": "efdcc83847fddf9f8fc33bbe258c63470609295a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde38f6a_23c40f05",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-09-23T06:32:38Z",
+      "side": 1,
+      "message": "@syntonyze@gmail.com how about different approach suggested by @luca.milanesio@gmail.com:\n* we keep the global metric so that alarm can be created for it\n* we introduce SSH/REST command (and document it) to get the list of caches that rely on fallback defaults so that admin can easily discover which should be the subject of tuning\n\nIMHO it combines both: caches-with-fallback are not silently unnoticed and list of them can be obtained anytime without tedious log scan ;)",
+      "parentUuid": "2531f884_f3c8f39a",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "efdcc83847fddf9f8fc33bbe258c63470609295a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
