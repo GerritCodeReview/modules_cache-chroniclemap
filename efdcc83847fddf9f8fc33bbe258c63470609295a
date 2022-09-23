@@ -93,6 +93,30 @@
       },
       "revId": "efdcc83847fddf9f8fc33bbe258c63470609295a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19b3b6e6_c3ff1fb5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-23T12:04:23Z",
+      "side": 1,
+      "message": "\u003e @syntonyze@gmail.com how about different approach suggested by @luca.milanesio@gmail.com:\n\u003e * we keep the global metric so that alarm can be created for it\n\nSounds good\n\n\u003e * we introduce SSH/REST command (and document it) to get the list of caches that rely on fallback defaults so that admin can easily discover which should be the subject of tuning\n\nGood idea!\n\nRather than introducing a new SSH/REST command though, we could use the pre-exsting `auto-adjust-caches` command.\n\nYou can find the command here [1] and as you can see it works in two modes:\n- No CACHE_NAME arg: all caches are tuned\n- List of CACHE_NAMEs: _just_ those caches are tuned\n\nwe could just add an argument to deal with caches that are relying on defaults.\n\n\u003e \n\u003e IMHO it combines both: caches-with-fallback are not silently unnoticed and list of them can be obtained anytime without tedious log scan ;)\n\nYep sounds good 👍\n\n\n[1]https://gerrit.googlesource.com/modules/cache-chroniclemap/+/refs/heads/master/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java#52",
+      "parentUuid": "bde38f6a_23c40f05",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "efdcc83847fddf9f8fc33bbe258c63470609295a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
