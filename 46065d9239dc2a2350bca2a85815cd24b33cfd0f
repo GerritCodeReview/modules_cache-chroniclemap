@@ -71,6 +71,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7064dec6_b3719dd7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheSerializers.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-23T11:57:29Z",
+      "side": 1,
+      "message": "oh sorry, I realize now that you only added the `@VisibleForTesting` annotation without actually changing the visibility of the method.\n\nResolving.",
+      "parentUuid": "d9665df8_400618f7",
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d181d560_16cde697",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheSerializers.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-09-23T11:57:29Z",
+      "side": 1,
+      "message": "oh sorry, I realize now that you only added the `@VisibleForTesting` annotation without actually changing the visibility of the method.\n\nResolving.",
+      "parentUuid": "23539090_ce817006",
+      "revId": "46065d9239dc2a2350bca2a85815cd24b33cfd0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc29de63_124eb9d7",
