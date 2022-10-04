@@ -81,6 +81,30 @@
       },
       "revId": "c66180ead0c1003d688a89f533bae9f41b665428",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3d7d269_0f74497f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigDefaultsIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-10-04T18:34:54Z",
+      "side": 1,
+      "message": "It didn\u0027t help hence I will keep the logic.",
+      "parentUuid": "19b6a456_b8485f1b",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 44
+      },
+      "revId": "c66180ead0c1003d688a89f533bae9f41b665428",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
