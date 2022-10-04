@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94f9459f_069c0132",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-10-04T10:14:51Z",
+      "side": 1,
+      "message": "I have rebased wrong version of change hence CI failed. New PS will be the correct one. Sorry for the trouble.",
+      "revId": "0019240135b8886459dd7aa864fb550ff026584d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
