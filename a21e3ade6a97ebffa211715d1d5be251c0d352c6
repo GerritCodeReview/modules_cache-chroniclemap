@@ -39,6 +39,30 @@
       },
       "revId": "a21e3ade6a97ebffa211715d1d5be251c0d352c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "466d37a1_3740025c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-10-05T07:07:46Z",
+      "side": 1,
+      "message": "Good question ;) I have oversimplified it here.",
+      "parentUuid": "20bc4ce8_0caf9421",
+      "range": {
+        "startLine": 275,
+        "startChar": 25,
+        "endLine": 275,
+        "endChar": 62
+      },
+      "revId": "a21e3ade6a97ebffa211715d1d5be251c0d352c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
