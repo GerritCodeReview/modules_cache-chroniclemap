@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da95199f_8c7c96e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-13T07:36:25Z",
+      "side": 1,
+      "message": "additionally",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 14
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06726c5a_ffed6140",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-13T07:36:25Z",
+      "side": 1,
+      "message": "nit: this is redundant imho, since it is already scoped by `cache/chroniclemap`",
+      "range": {
+        "startLine": 38,
+        "startChar": 59,
+        "endLine": 38,
+        "endChar": 72
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bb61b92_d28b9e85",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-13T07:36:25Z",
+      "side": 1,
+      "message": "Not sure we want this to be cumulative.\nAt every point in time, we\u0027d like to see an absolute value of how many caches (at that point in time) are not configured, rather than the cumulated value of how many caches were not configured in the past.\n\nWDYT?",
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82aaf8df_46e9e266",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-13T07:36:25Z",
+      "side": 1,
+      "message": "Passing CachesWithoutChronicleMapConfigMetric as an argument seems a bit suboptimal.\n\nHave you considered creating a constructor for `Defaults` which gets injected a `CachesWithoutChronicleMapConfigMetric` argument?\n\nWe can then bind a singleton instance of `Defaults` to injected it where necessary.",
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff9af977_7c242bb8",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-13T07:36:25Z",
+      "side": 1,
+      "message": "how about\n\n```\n...not configured in `gerrit.config` and thus are relying on sub-optimal defaults.\n```\n\nAlso, should we explain when this is typically useful (i.e. when the gerrit admin observes metrics/log entries suggesting that some caches are running on defaults)",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 43
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4b766bc_f60f4a3f",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-13T07:36:25Z",
+      "side": 1,
+      "message": "shall we actually link the relevant section?",
+      "range": {
+        "startLine": 339,
+        "startChar": 3,
+        "endLine": 339,
+        "endChar": 65
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
