@@ -263,19 +263,26 @@ public class ChronicleMapCacheConfig {
     @VisibleForTesting
     static final ImmutableMap<String, DefaultConfig> defaultMap =
         new ImmutableMap.Builder<String, DefaultConfig>()
-            .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
-            .put("change_notes", DefaultConfig.create(36, 10240, 1000, 3))
             .put("accounts", DefaultConfig.create(30, 256, 1000, 1))
+            .put("change_kind", DefaultConfig.create(59, 26, 1000, 1))
+            .put("change_notes", DefaultConfig.create(36, 10240, 1000, 3))
+            .put("comment_context", DefaultConfig.create(80, 662, 2000, 3))
+            .put("conflicts", DefaultConfig.create(70, 16, 1000, 1))
             .put("diff", DefaultConfig.create(98, 10240, 1000, 2))
             .put("diff_intraline", DefaultConfig.create(512, 2048, 1000, 2))
             .put("diff_summary", DefaultConfig.create(128, 2048, 1000, 1))
             .put("external_ids_map", DefaultConfig.create(128, 204800, 2, 1))
-            .put("oauth_tokens", DefaultConfig.create(8, 2048, 1000, 1))
-            .put("change_kind", DefaultConfig.create(59, 26, 1000, 1))
+            .put("gerrit_file_diff", DefaultConfig.create(342, 883, 1000, 1))
+            .put("git_file_diff", DefaultConfig.create(349, 943, 1000, 1))
+            .put("git_modified_files", DefaultConfig.create(349, 943, 1000, 1))
+            .put("git_tags", DefaultConfig.create(43, 6673, 1000, 3))
+            .put("groups_byuuid_persisted", DefaultConfig.create(64, 182, 1000, 1))
             .put("mergeability", DefaultConfig.create(79, 16, 65000, 2))
-            .put("pure_revert", DefaultConfig.create(55, 16, 1000, 1))
+            .put("modified_files", DefaultConfig.create(138, 2600, 1000, 1))
+            .put("oauth_tokens", DefaultConfig.create(8, 2048, 1000, 1))
             .put("persisted_projects", DefaultConfig.create(128, 1024, 250, 2))
-            .put("conflicts", DefaultConfig.create(70, 16, 1000, 1))
+            .put("pure_revert", DefaultConfig.create(55, 16, 1000, 1))
+            .put("web_sessions", DefaultConfig.create(45, 221, 1000, 1))
             .build();
 
     public static long averageKeySizeFor(String configKey) {
