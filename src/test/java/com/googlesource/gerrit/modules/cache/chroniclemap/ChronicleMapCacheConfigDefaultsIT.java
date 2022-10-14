@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static java.util.stream.Collectors.toSet;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.UseLocalDisk;
@@ -43,19 +42,6 @@ public class ChronicleMapCacheConfigDefaultsIT extends AbstractDaemonTest {
   @GerritConfig(name = "cache.external_ids_map.diskLimit", value = "1")
   public void shouldAllPersistentCachesHaveDefaultConfiguration() throws Exception {
     Set<String> allCaches = CacheSerializers.getSerializersNames();
-
-    // for the time being filter out all caches that have no defaults so that the test passes
-    Set<String> missingDefaults =
-        Set.of(
-            "comment_context",
-            "gerrit_file_diff",
-            "git_file_diff",
-            "git_modified_files",
-            "git_tags",
-            "groups_byuuid_persisted",
-            "modified_files");
-    Set<String> expected =
-        allCaches.stream().filter(cache -> !missingDefaults.contains(cache)).collect(toSet());
-    assertThat(Defaults.defaultMap.keySet()).containsExactlyElementsIn(expected);
+    assertThat(Defaults.defaultMap.keySet()).containsExactlyElementsIn(allCaches);
   }
 }
