@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4687449_71b19121",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-20T15:28:01Z",
+      "side": 1,
+      "message": "use",
+      "range": {
+        "startLine": 11,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 63
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "858956c8_9eb72379",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-20T15:28:01Z",
+      "side": 1,
+      "message": "contains",
+      "range": {
+        "startLine": 21,
+        "startChar": 27,
+        "endLine": 21,
+        "endChar": 35
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35c49255_8bc68fff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-20T15:28:01Z",
+      "side": 1,
+      "message": "I think this comment might be misleading.\nConfiguring a cache doesn\u0027t necessarily mean that it is the best configuration for it.\n\nThe average of different key and value sizes might change with time.\nThis is the reason why auto-tuning exists.\n\nI think perhaps we should not address configurations as optimal/sub-optimal at all in the code base/comments/commit message.\n\nWhat about `explicit/default` configuration instead?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 23
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddf1176e_bd3f47a8",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-20T15:28:01Z",
+      "side": 1,
+      "message": "What\u0027s the reason behind refactoring this configuration reading?",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6c2c78b_1100a126",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-20T15:28:01Z",
+      "side": 1,
+      "message": "Shouldn\u0027t also `Defaults` be bound as `singleton`?",
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fd3f84c_19baeb85",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-20T15:28:01Z",
+      "side": 1,
+      "message": "This needs to be removed",
+      "range": {
+        "startLine": 188,
+        "startChar": 60,
+        "endLine": 188,
+        "endChar": 73
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
