@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca7daf2c_91cdc1b0",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-26T16:51:29Z",
+      "side": 1,
+      "message": "Have you considered having `null` as default value?\n\n```\n Optional.ofNullable(cfg.getLong(\"cache\", configKey, \"avgValueSize\", null))\n .orElseGet(() -\u003e defaults.maxEntriesFor(configKey))\n```\n\nI also think we should explain with a small comment the reason of not using the default directly (that is, to avoid the side effect of emitting a metric).\n\nWDYT?",
+      "parentUuid": "7eafc7e2_7f714f7b",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6c2c78b_1100a126",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheModule.java",
         "patchSetId": 10
