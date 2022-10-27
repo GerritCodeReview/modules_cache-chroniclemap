@@ -263,6 +263,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8d9983f_50f43292",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-10-27T08:00:03Z",
+      "side": 1,
+      "message": "Regardless of what we decide it will not change this refactoring as one needs to provide the primitive value to `get[Long|Int]` methods IOW only when value is not provided in the `gerrit.config` defaults should be used together with the metrics emission so if that is the driver here it doesn\u0027t count.\n\nHaving said that my original intention was to encapsulate it within the `Defaults` class so that one doesn\u0027t have to think about it metrics emission... I can separate it from defaults but I\u0027m afraid that the logic has to stay somewhere anyway WDYT?",
+      "parentUuid": "9798c0db_c1259334",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6c2c78b_1100a126",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheModule.java",
         "patchSetId": 10
