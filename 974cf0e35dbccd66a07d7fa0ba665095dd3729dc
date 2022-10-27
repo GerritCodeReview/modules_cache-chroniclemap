@@ -213,6 +213,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c126141_6ea3e58a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-10-27T07:21:53Z",
+      "side": 1,
+      "message": "Nice try ;) however `get[Long|Int]` operate on primitives e.g.:\n```\npublic long getLong(String section, String name, long defaultValue)\n```\n\nIOW one cannot use `null` for primitive value :/\n\nwith regards to\n\u003e (...) I also think we should explain with a small comment the reason (...)\n\nThat makes sene and I will add some description",
+      "parentUuid": "ca7daf2c_91cdc1b0",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6c2c78b_1100a126",
