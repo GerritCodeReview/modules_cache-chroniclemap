@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b17cd5f_40138b4d",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-10-29T09:47:29Z",
+      "side": 1,
+      "message": "that shouldn\u0027t be changed :/",
+      "range": {
+        "startLine": 348,
+        "startChar": 1,
+        "endLine": 348,
+        "endChar": 9
+      },
+      "revId": "cea6ee5f39cbb74d815472a6cbbee6da64b33c5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
