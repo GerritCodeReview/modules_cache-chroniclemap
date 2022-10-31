@@ -335,6 +335,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4cca7fc7_916422a4",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-10-31T10:13:49Z",
+      "side": 1,
+      "message": "\u003e Unfortunately they can\u0027t as metric is emitted only in case when fallback value is provided\n\nIf I understand your comment, this is exactly the bit I am suggesting to change:\n- We stop emitting the metric when the fallback value is provided\n\nJust to be clear, we don\u0027t do anymore:\n\n```\n.orElseGet(\n   () -\u003e emitMetricForMissingConfig(configKey, cachesWithoutConfigMetric).entries()\n )\n```\n\nWe keep doing:\n\n```\ncfg.getLong(\"cache\", configKey, \"maxEntries\", Defaults.maxEntriesFor(configKey))\n```\n\n- We address the concern of emitting the metric, byt doing so explicitly\n\n```\nemitMetricForMissingConfig(configKey, cachesWithoutConfigMetric)\n```\n\nBut we do this outside the scope of _reading_ those values.\n\nIf still doesn\u0027t make sense what I am saying let\u0027s have a catch up, I would really like not to block you on this",
+      "parentUuid": "7a739547_33c8c2cf",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6c2c78b_1100a126",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheModule.java",
         "patchSetId": 10
