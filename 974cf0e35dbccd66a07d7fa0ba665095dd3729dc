@@ -359,6 +359,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4cc3d5d_08e883eb",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-02T14:03:06Z",
+      "side": 1,
+      "message": "As we discussed I will:\n1. emit metric when `gerrit.config` configuration is missing for any of the above parameters\n2. go back to previous defaults getting and detect missing config with a dedicated methods\n\nwe will see how that works and take from there then 😄",
+      "parentUuid": "4cca7fc7_916422a4",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6c2c78b_1100a126",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheModule.java",
         "patchSetId": 10
