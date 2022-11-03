@@ -81,6 +81,24 @@
       "parentUuid": "93ad7198_3c8904a2",
       "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86b7ee7c_4864454c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-11-03T11:07:09Z",
+      "side": 1,
+      "message": "yeah probably that\u0027s safer",
+      "parentUuid": "b483b412_58b340bd",
+      "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
