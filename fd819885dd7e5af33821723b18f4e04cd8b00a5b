@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ab77b1_ac91d17e",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-03T10:15:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4bf622c_b2e548bd",
+      "range": {
+        "startLine": 43,
+        "startChar": 119,
+        "endLine": 43,
+        "endChar": 153
+      },
+      "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93ad7198_3c8904a2",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-11-03T10:02:06Z",
       "side": 1,
       "message": "With the current implementation we will emit a metric if the configuration relies on _any_ defaults.\n\nFor example, if the Gerrit admin decides to rely on the `maxBloatFactor`, but configure all other fields, a metric will be emitted anyway.\n\nI think the Gerrit admin should still be allowed to configure only the fields he finds necessary (i.e. avgKeySize, avgValueSize, for example).\n\nHow about we just check for the _existence_ of the configuration subsection, without assuming that the complete set of configuration _has_ to be provided.\n\nWDYT?",
+      "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b483b412_58b340bd",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-03T10:15:46Z",
+      "side": 1,
+      "message": "Ok, yet at least one needs to be configured to be considered configured, right?",
+      "parentUuid": "93ad7198_3c8904a2",
       "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
