@@ -99,6 +99,24 @@
       "parentUuid": "b483b412_58b340bd",
       "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7822e882_e82df432",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-03T11:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86b7ee7c_4864454c",
+      "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
