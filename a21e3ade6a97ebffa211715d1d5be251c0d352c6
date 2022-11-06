@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4c21de2_0a6017cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Leaving to Tony the final validation, as he has more context on the plugin :-)",
+      "parentUuid": "3d901065_657c3337",
+      "revId": "a21e3ade6a97ebffa211715d1d5be251c0d352c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20bc4ce8_0caf9421",
@@ -79,6 +97,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "466d37a1_3740025c",
+      "range": {
+        "startLine": 275,
+        "startChar": 25,
+        "endLine": 275,
+        "endChar": 62
+      },
+      "revId": "a21e3ade6a97ebffa211715d1d5be251c0d352c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc87db87_a7175ffc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "mention others with @anhelinam@google.com",
+      "parentUuid": "9fa0c69a_a1e15952",
       "range": {
         "startLine": 275,
         "startChar": 25,

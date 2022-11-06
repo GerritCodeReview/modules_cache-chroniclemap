@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f654afa_0e416e16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "c843cfd1_f626a96b",
+      "range": {
+        "startLine": 11,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 63
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "858956c8_9eb72379",
@@ -95,6 +119,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86200301_18e653ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "08b03821_851f72c3",
+      "range": {
+        "startLine": 21,
+        "startChar": 27,
+        "endLine": 21,
+        "endChar": 35
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35c49255_8bc68fff",
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "35c49255_8bc68fff",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 23
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32bbbb4b_930b5c40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "a1c72c32_8b543bab",
       "range": {
         "startLine": 25,
         "startChar": 0,
@@ -405,6 +477,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "548b8ff9_1f397e66",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "8e59f0fe_0cddc5a5",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6c2c78b_1100a126",
@@ -436,6 +532,24 @@
       "side": 1,
       "message": "It doesn\u0027t matter as long as metric is a singleton but it could be from the memory consumption perspective ;)",
       "parentUuid": "b6c2c78b_1100a126",
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0dd4d04_7010ca47",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e It doesn\u0027t matter as long as metric is a singleton but it could be from the memory consumption perspective ;)",
+      "parentUuid": "8050ff75_1e1e4662",
       "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -477,6 +591,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "7fd3f84c_19baeb85",
+      "range": {
+        "startLine": 188,
+        "startChar": 60,
+        "endLine": 188,
+        "endChar": 73
+      },
+      "revId": "974cf0e35dbccd66a07d7fa0ba665095dd3729dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d4e5c27_5237a670",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "b9f21ea2_2bfbd6d0",
       "range": {
         "startLine": 188,
         "startChar": 60,

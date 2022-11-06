@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf6bdfa2_dca77ccc",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "48ab77b1_ac91d17e",
+      "range": {
+        "startLine": 43,
+        "startChar": 119,
+        "endLine": 43,
+        "endChar": 153
+      },
+      "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93ad7198_3c8904a2",
@@ -115,6 +139,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "86b7ee7c_4864454c",
+      "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c6c54f9_de90c886",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "7822e882_e82df432",
       "revId": "fd819885dd7e5af33821723b18f4e04cd8b00a5b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

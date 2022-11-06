@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "da281816_ffb1ba9c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e rephrase it to `The number of caches that have no chronicle map configuration provided in \u0027gerrit.config\u0027 and use default or fall-back configuration`",
+      "parentUuid": "73bcd6e4_d7c2706d",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 117
+      },
+      "revId": "209e634332a9f20849fa8c769ee4bead2e9376e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0749cdc9_f4c7e498",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
         "patchSetId": 15
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-03T08:18:28Z",
       "side": 1,
       "message": "cover more cases in unit tests",
+      "range": {
+        "startLine": 216,
+        "startChar": 2,
+        "endLine": 232,
+        "endChar": 3
+      },
+      "revId": "209e634332a9f20849fa8c769ee4bead2e9376e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54a13a72_0a3da901",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e cover more cases in unit tests",
+      "parentUuid": "0749cdc9_f4c7e498",
       "range": {
         "startLine": 216,
         "startChar": 2,
@@ -72,6 +120,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b11f1e66_268a0911",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e nit: give names reflecting of what is being tested",
+      "parentUuid": "690209c5_c8e5a1a5",
+      "range": {
+        "startLine": 229,
+        "startChar": 1,
+        "endLine": 246,
+        "endChar": 0
+      },
+      "revId": "209e634332a9f20849fa8c769ee4bead2e9376e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "75483d0b_daeba3d8",
         "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigTest.java",
         "patchSetId": 15
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-03T08:18:28Z",
       "side": 1,
       "message": "dedicated function is not needed anymore",
+      "range": {
+        "startLine": 251,
+        "startChar": 2,
+        "endLine": 252,
+        "endChar": 59
+      },
+      "revId": "209e634332a9f20849fa8c769ee4bead2e9376e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6761733_38f24c9e",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfigTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e dedicated function is not needed anymore",
+      "parentUuid": "75483d0b_daeba3d8",
       "range": {
         "startLine": 251,
         "startChar": 2,

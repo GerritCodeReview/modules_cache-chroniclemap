@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c79ccb2e_67a63c9c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "45b163af_72be3015",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 14
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06726c5a_ffed6140",
@@ -95,6 +119,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fd5ee63_504a1837",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "5ebd3d35_f1c340f7",
+      "range": {
+        "startLine": 38,
+        "startChar": 59,
+        "endLine": 38,
+        "endChar": 72
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bb61b92_d28b9e85",
@@ -130,6 +178,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bf16cd1_a5858ba7",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CachesWithoutChronicleMapConfigMetric.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Right, good catch 😊",
+      "parentUuid": "eeda57aa_53618ff9",
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82aaf8df_46e9e266",
@@ -161,6 +227,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "82aaf8df_46e9e266",
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c367a40d_e0bf1fd1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "0eb666d9_fe8c3a26",
       "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -212,6 +296,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c937339_f4438984",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "7993e505_9a6d47e7",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 43
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4b766bc_f60f4a3f",
@@ -249,6 +357,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "c4b766bc_f60f4a3f",
+      "range": {
+        "startLine": 339,
+        "startChar": 3,
+        "endLine": 339,
+        "endChar": 65
+      },
+      "revId": "d3522b3a25a2e1c180c74c02280b9870f87cec87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ef2ca8_94bead20",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1153643
+      },
+      "writtenOn": "2022-11-06T19:42:00Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "37970cd4_fbc94f9f",
       "range": {
         "startLine": 339,
         "startChar": 3,
