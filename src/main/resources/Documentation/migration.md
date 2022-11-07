@@ -104,3 +104,44 @@ maximum number of times chronicle-map cache is allowed to grow in size.
 * size-multiplier=MULTIPLIER
 Multiplicative factor for the number of entries allowed in chronicle-map.
 *default:3*
+
+
+### Reloading plugins with persistent caches backed by chroniclemap
+
+When chroniclemap store is initiated for a cache it locks exclusively the
+underlying file and keeps it until store is closed. Store is closed when Gerrit
+is stopped (for core caches) or when plugin is unloaded through either REST or
+SSH command. The later is problematic from the plugin `reload` command
+perspective as by default it unloads old version of plugin once new version is
+successfully loaded. Considering that old version holds the lock until it gets
+unloaded new version load will not succeed. As a result the following (or
+similar) error is visible in the log:
+
+```
+[2022-08-31T17:37:56.481+02:00] [SSH gerrit plugin reload test-cache-plugin (admin)] WARN  com.google.gerrit.server.plugins.PluginLoader : Cannot reload plugin test-cache-plugin
+com.google.inject.CreationException: Unable to create injector, see the following errors:
+
+1) [Guice/ErrorInCustomProvider]: ChronicleHashRecoveryFailedException: ChronicleFileLockException: Unable to acquire an exclusive file lock for gerrit/cache/test-cache-plugin.test_cache_0.dat. Make sure no other process is using the map.
+  at CacheModule.bindCache(CacheModule.java:188)
+      \_ installed by: Module -> TestCache$1
+  while locating Cache<String, String> annotated with @Named(value="test_cache")
+
+Learn more:
+  https://github.com/google/guice/wiki/ERROR_IN_CUSTOM_PROVIDER
+Caused by: ChronicleHashRecoveryFailedException: ChronicleFileLockException: Unable to acquire an exclusive file lock for gerrit/cache/test-cache-plugin.test_cache_0.dat. Make sure no other process is using the map.
+  at ChronicleMapBuilder.openWithExistingFile(ChronicleMapBuilder.java:1937)
+  at ChronicleMapBuilder.createWithFile(ChronicleMapBuilder.java:1706)
+  at ChronicleMapBuilder.recoverPersistedTo(ChronicleMapBuilder.java:1622)
+  ...
+```
+
+The following steps can be used in order to perform reload operation:
+
+1. perform the plugin `reload` in two steps by calling `remove` first and
+   following it with `add` command - the easiest way that doesn't require any
+   code modification
+
+2. add `Gerrit-ReloadMode: restart` to plugin's manifest so the when the plugin
+   `reload` command is called Gerrit unloads the old version prior loading the
+   new one - requires plugin's sources modification and build which might be
+   not an option in certain cases

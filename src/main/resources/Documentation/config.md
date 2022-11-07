@@ -90,6 +90,26 @@ vice-versa.
 
 Default: *90*
 
+* `cache.persistIndexEvery`
+: Duration (in seconds if not specified) between caches keys index persist
+operations.
+
+Note that in order to avoid race condition between evict and persist operations
+the latter is performed after the former is finished. Therefore the lowest
+persist resolution is 30s. Smaller values will be rounded up to 30s whereas
+higher values will be rounded down (if needed) to the closest multiple of 30s.
+From practical point of view it means that persist operation will be performed
+after every n-th evict operation is finished.
+For instance if `cache.persistIndexEvery = 2m` then persist will be called
+after every 4th eviction is finished.
+
+Notes:
+* regardless of `cache.persistIndexEvery` persist will be called on
+  Gerrit termination unless there is one already in progress.
+* persist operation is scheduled in a dedicated thread ('ChronicleMap-Index-0')
+
+Default: *15m*
+
 ### Defaults
 
 Unless overridden by configuration, sensible default values are be provided for
@@ -127,24 +147,6 @@ and it will not be able to take more entries, failing with a `IllegalStateExcept
  low ( around 5% ) the cache will automatically expand (see `remainingAutoResizes`).
  If the cache expands you will see an increase in the available free space.
 [official documentation](https://javadoc.io/static/net.openhft/chronicle-map/3.20.83/net/openhft/chronicle/map/ChronicleMap.html#percentageFreeSpace--)
-
-* `percentageHotKeys`
-: The percentage of _hot_ keys that can be kept in-memory.
-When performing evictions, _hot_ keys will be preserved and only _cold_ keys
-will be evicted from chronicle-map, in random order.
-
-This value implies a trade-off between eviction speed and eviction accuracy.
-
-The smaller the number of hotKeys allocated, the quicker the eviction phase
-will be. However, this will increase the chance of evicting entries that were
-recently accessed.
-
-Conversely, the higher the number of hotKeys allocated, the higher will be the
-accuracy in evicting only recently accessed keys, at the price of a longer
-time spent doing evictions.
-
-In order to ensure there is always a cold entry to be evicted, the number of
-`percentageHotKeys` always needs to be less than `maxEntries`.
 
 *Constraints*: [1-99]
 *Default*: 50
