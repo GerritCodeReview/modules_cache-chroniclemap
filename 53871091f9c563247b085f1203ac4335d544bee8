@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d678f4_f6ba9c65",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-07T12:42:59Z",
+      "side": 1,
+      "message": "`approvals` cache was introduced in `stable-3.5` and all defaults but `entries` were taken from review.gerrithub.io and `entries` were adjusted to be more into the other defaults.",
+      "range": {
+        "startLine": 267,
+        "startChar": 12,
+        "endLine": 267,
+        "endChar": 70
+      },
+      "revId": "53871091f9c563247b085f1203ac4335d544bee8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e333706_90d4ec24",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-07T12:42:59Z",
+      "side": 1,
+      "message": "There is no longer the `diff` cache in `stable-3.5` hence the configuration was removed.",
+      "revId": "53871091f9c563247b085f1203ac4335d544bee8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
