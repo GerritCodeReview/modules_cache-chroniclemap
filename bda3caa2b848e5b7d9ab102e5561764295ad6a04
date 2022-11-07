@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae13585_149d8798",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-07T12:48:39Z",
+      "side": 1,
+      "message": "There is no `approvals` cache anymore hence it was removed again.",
+      "revId": "bda3caa2b848e5b7d9ab102e5561764295ad6a04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
