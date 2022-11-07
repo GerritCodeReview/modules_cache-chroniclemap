@@ -26,5 +26,6 @@ public class ChronicleMapCacheModule extends LifecycleModule {
     factory(ChronicleMapCacheConfig.Factory.class);
     bind(PersistentCacheFactory.class).to(ChronicleMapCacheFactory.class);
     listener().to(ChronicleMapCacheFactory.class);
+    bind(CachesWithoutChronicleMapConfigMetric.class).asEagerSingleton();
   }
 }

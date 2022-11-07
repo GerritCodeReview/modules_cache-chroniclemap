@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.util.ReadResolvable;
 import net.openhft.chronicle.hash.serialization.BytesReader;
@@ -24,9 +25,11 @@ public class KeyWrapperMarshaller<V>
         ReadResolvable<KeyWrapperMarshaller<V>> {
 
   private final String name;
+  private final CacheSerializer<V> cacheSerializer;
 
   KeyWrapperMarshaller(String name) {
     this.name = name;
+    this.cacheSerializer = CacheSerializers.getKeySerializer(name);
   }
 
   @Override
@@ -34,13 +37,13 @@ public class KeyWrapperMarshaller<V>
     return new KeyWrapperMarshaller<>(name);
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings("rawtypes")
   @Override
   public KeyWrapper<V> read(Bytes in, KeyWrapper<V> using) {
     int serializedLength = (int) in.readUnsignedInt();
     byte[] serialized = new byte[serializedLength];
     in.read(serialized, 0, serializedLength);
-    V v = (V) CacheSerializers.getKeySerializer(name).deserialize(serialized);
+    V v = cacheSerializer.deserialize(serialized);
     using = new KeyWrapper<>(v);
 
     return using;
@@ -49,7 +52,7 @@ public class KeyWrapperMarshaller<V>
   @SuppressWarnings("rawtypes")
   @Override
   public void write(Bytes out, KeyWrapper<V> toWrite) {
-    final byte[] serialized = CacheSerializers.getKeySerializer(name).serialize(toWrite.getValue());
+    final byte[] serialized = cacheSerializer.serialize(toWrite.getValue());
     out.writeUnsignedInt(serialized.length);
     out.write(serialized);
   }

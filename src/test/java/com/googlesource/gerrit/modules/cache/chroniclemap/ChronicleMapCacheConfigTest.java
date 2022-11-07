@@ -14,13 +14,16 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_KEY_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_AVG_VALUE_SIZE;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_MAX_ENTRIES;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_FREE_SPACE_EVICTION_THRESHOLD;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERCENTAGE_HOT_KEYS;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.DEFAULT_PERSIST_INDEX_EVERY;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.PRUNE_DELAY;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.server.config.SitePaths;
 import java.io.File;
@@ -33,7 +36,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ChronicleMapCacheConfigTest {
 
   private final String cacheDirectory = ".";
@@ -46,6 +53,8 @@ public class ChronicleMapCacheConfigTest {
   @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
   private SitePaths sitePaths;
   private StoredConfig gerritConfig;
+
+  @Mock CachesWithoutChronicleMapConfigMetric cachesWithoutConfigMetricMock;
 
   @Before
   public void setUp() throws Exception {
@@ -61,15 +70,28 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvidePersistedFile() throws Exception {
+  public void shouldProvideCacheFile() throws Exception {
     assertThat(
             configUnderTest(gerritConfig)
-                .getPersistedFile()
+                .getCacheFile()
                 .toPath()
                 .getParent()
                 .toRealPath()
                 .toString())
         .isEqualTo(sitePaths.resolve(cacheDirectory).toRealPath().toString());
+  }
+
+  @Test
+  public void shouldProvideIndexFileThatIsRelatedToCacheFile() {
+    ChronicleMapCacheConfig config = configUnderTest(gerritConfig);
+    File cacheFile = config.getCacheFile();
+    File indexFile = config.getIndexFile();
+
+    assertThat(indexFile.getParentFile()).isEqualTo(cacheFile.getParentFile());
+    String cacheFileName = cacheFile.getName();
+    assertThat(indexFile.getName())
+        .isEqualTo(
+            String.format("%s.index", cacheFileName.substring(0, cacheFileName.indexOf(".dat"))));
   }
 
   @Test
@@ -178,38 +200,48 @@ public class ChronicleMapCacheConfigTest {
   }
 
   @Test
-  public void shouldProvidePercentageHotKeysDefault() throws Exception {
-    assertThat(configUnderTest(gerritConfig).getpercentageHotKeys())
-        .isEqualTo(DEFAULT_PERCENTAGE_HOT_KEYS);
+  public void shouldProvideDefaultIndexPersistEveryValuesWhenNotConfigured() {
+    ChronicleMapCacheConfig configUnderTest = configUnderTest(gerritConfig);
+    assertThat(configUnderTest.getPersistIndexEvery()).isEqualTo(DEFAULT_PERSIST_INDEX_EVERY);
+    assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(30L);
   }
 
   @Test
-  public void shouldProvidePercentageHotKeysWhenConfigured() throws Exception {
-    int percentageHotKeys = 20;
-    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", percentageHotKeys);
-    gerritConfig.save();
-
-    assertThat(configUnderTest(gerritConfig).getpercentageHotKeys()).isEqualTo(percentageHotKeys);
+  public void shouldPersistIndexEveryBePruneDelayWhenPersistIndexEveryIsLowerThanPruneDelay() {
+    gerritConfig.setString(
+        "cache", null, "persistIndexEvery", String.format("%ds", PRUNE_DELAY - 1L));
+    ChronicleMapCacheConfig configUnderTest = configUnderTest(gerritConfig);
+    assertThat(configUnderTest.getPersistIndexEvery()).isEqualTo(Duration.ofSeconds(PRUNE_DELAY));
+    assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(1L);
   }
 
   @Test
-  public void shouldThrowWhenPercentageHotKeysIs100() throws Exception {
-    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", 100);
-    gerritConfig.save();
-
-    assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
+  public void shouldPersistIndexEveryBeRoundedDownToAMultiplyOfPruneDelay() {
+    gerritConfig.setString(
+        "cache", null, "persistIndexEvery", String.format("%ds", 2L * PRUNE_DELAY + 1L));
+    ChronicleMapCacheConfig configUnderTest = configUnderTest(gerritConfig);
+    assertThat(configUnderTest.getPersistIndexEvery())
+        .isEqualTo(Duration.ofSeconds(2L * PRUNE_DELAY));
+    assertThat(configUnderTest.getPersistIndexEveryNthPrune()).isEqualTo(2L);
   }
 
   @Test
-  public void shouldThrowWhenPercentageHotKeysIs0() throws Exception {
-    gerritConfig.setInt("cache", cacheKey, "percentageHotKeys", 0);
-    gerritConfig.save();
+  public void shouldIncrementCacheMetricWhenCacheHasNoDedicatedConfiguration() {
+    configUnderTest(gerritConfig);
 
-    assertThrows(IllegalArgumentException.class, () -> configUnderTest(gerritConfig));
+    verify(cachesWithoutConfigMetricMock, atLeastOnce()).incrementForCache(cacheKey);
+  }
+
+  @Test
+  public void shouldNotIncrementCacheMetricWhenCacheHasAtLeastSingleParameterConfigured() {
+    gerritConfig.setLong("cache", cacheKey, "maxEntries", 1L);
+    configUnderTest(gerritConfig);
+
+    verify(cachesWithoutConfigMetricMock, never()).incrementForCache(cacheName);
   }
 
   private ChronicleMapCacheConfig configUnderTest(StoredConfig gerritConfig) {
-    File persistentFile =
+    File cacheFile =
         ChronicleMapCacheFactory.fileName(
             sitePaths.site_path.resolve(cacheDirectory), cacheName, version);
     sitePaths
@@ -218,6 +250,11 @@ public class ChronicleMapCacheConfigTest {
         .toFile();
 
     return new ChronicleMapCacheConfig(
-        gerritConfig, cacheKey, persistentFile, expireAfterWrite, refreshAfterWrite);
+        gerritConfig,
+        cachesWithoutConfigMetricMock,
+        cacheKey,
+        cacheFile,
+        expireAfterWrite,
+        refreshAfterWrite);
   }
 }
