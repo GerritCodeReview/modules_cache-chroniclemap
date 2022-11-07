@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.persistIndexEvery;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.jdbcUrl;
@@ -300,7 +301,8 @@ public class H2MigrationServlet extends HttpServlet {
         stats.size() * sizeMultiplier,
         stats.avgKeySize(),
         stats.avgValueSize(),
-        maxBloatFactor);
+        maxBloatFactor,
+        persistIndexEvery());
   }
 
   private void doMigrate(

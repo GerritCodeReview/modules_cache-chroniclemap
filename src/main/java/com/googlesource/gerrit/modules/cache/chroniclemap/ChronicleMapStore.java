@@ -320,6 +320,7 @@ class ChronicleMapStore<K, V> implements ChronicleMap<KeyWrapper<K>, TimedValue<
   @Override
   public void close() {
     store.close();
+    metrics.close();
   }
 
   @Override

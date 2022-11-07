@@ -15,6 +15,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.gerrit.acceptance.TestMetricMaker;
 import com.google.gerrit.server.cache.serialize.ObjectIdCacheSerializer;
 import java.nio.ByteBuffer;
 import net.openhft.chronicle.bytes.Bytes;
@@ -35,7 +36,8 @@ public class TimedValueMarshallerTest {
   public void shouldSerializeAndDeserializeBack() {
     ObjectId id = ObjectId.fromString("1234567890123456789012345678901234567890");
     long timestamp = 1600329018L;
-    TimedValueMarshaller<ObjectId> marshaller = new TimedValueMarshaller<>(TEST_CACHE_NAME);
+    TimedValueMarshaller<ObjectId> marshaller =
+        new TimedValueMarshaller<>(new TestMetricMaker(), TEST_CACHE_NAME);
 
     final TimedValue<ObjectId> wrapped = new TimedValue<>(id, timestamp);
 
