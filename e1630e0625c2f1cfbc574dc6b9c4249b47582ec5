@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0115df68_54a3f8d3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-07T14:14:15Z",
+      "side": 1,
+      "message": "Were modified to silence the the errors related to stricter errorprone checks:\n```\nArguments to log(String) must be compile-time constants or parameters annotated with @CompileTimeConstant.\n```",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 66
+      },
+      "revId": "e1630e0625c2f1cfbc574dc6b9c4249b47582ec5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5057583f_79964c0d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-11-07T14:14:15Z",
+      "side": 1,
+      "message": "Were modified to silence the the errors related to stricter errorprone checks:\n```\nArguments to log(String) must be compile-time constants or parameters annotated with @CompileTimeConstant.\n```",
+      "range": {
+        "startLine": 335,
+        "startChar": 6,
+        "endLine": 335,
+        "endChar": 56
+      },
+      "revId": "e1630e0625c2f1cfbc574dc6b9c4249b47582ec5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
