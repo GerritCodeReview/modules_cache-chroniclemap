@@ -16,9 +16,8 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import com.google.common.base.Objects;
 
 public class TimedValue<V> {
-
-  private final V value;
-  private final long created;
+  private V value;
+  private long created;
 
   TimedValue(V value) {
     this.created = System.currentTimeMillis();
@@ -34,8 +33,16 @@ public class TimedValue<V> {
     return created;
   }
 
+  void setCreated(long created) {
+    this.created = created;
+  }
+
   public V getValue() {
     return value;
+  }
+
+  void setValue(V value) {
+    this.value = value;
   }
 
   @Override

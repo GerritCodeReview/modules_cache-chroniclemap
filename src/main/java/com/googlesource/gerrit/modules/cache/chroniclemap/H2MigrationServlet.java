@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.persistIndexEvery;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.getStats;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.jdbcUrl;
@@ -170,8 +171,8 @@ public class H2MigrationServlet extends HttpServlet {
     }
 
     logger.atInfo().log("Migrating H2 caches to Chronicle-Map...");
-    logger.atInfo().log("* Size multiplier: " + sizeMultiplier);
-    logger.atInfo().log("* Max Bloat Factor: " + maxBloatFactor);
+    logger.atInfo().log("* Size multiplier: %s", sizeMultiplier);
+    logger.atInfo().log("* Max Bloat Factor: %s", maxBloatFactor);
 
     Config outputChronicleMapConfig = new Config();
 
@@ -300,7 +301,8 @@ public class H2MigrationServlet extends HttpServlet {
         stats.size() * sizeMultiplier,
         stats.avgKeySize(),
         stats.avgValueSize(),
-        maxBloatFactor);
+        maxBloatFactor,
+        persistIndexEvery());
   }
 
   private void doMigrate(
@@ -330,7 +332,7 @@ public class H2MigrationServlet extends HttpServlet {
 
     } catch (Exception e) {
       String message = String.format("FATAL: error migrating %s H2 cache", in.name());
-      logger.atSevere().withCause(e).log(message);
+      logger.atSevere().withCause(e).log("%s", message);
       throw RestApiException.wrap(message, e);
     }
   }
