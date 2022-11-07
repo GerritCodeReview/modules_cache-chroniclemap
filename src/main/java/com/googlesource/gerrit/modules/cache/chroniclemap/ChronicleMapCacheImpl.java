@@ -17,7 +17,6 @@ import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheStats;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.util.concurrent.MoreExecutors;
-import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.PersistentCache;
@@ -29,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.LongAdder;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
@@ -45,10 +45,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   private final LongAdder loadSuccessCount = new LongAdder();
   private final LongAdder loadExceptionCount = new LongAdder();
   private final LongAdder totalLoadTime = new LongAdder();
-  private final InMemoryLRU<K> hotEntries;
+  private final CacheKeysIndex<K> keysIndex;
   private final PersistentCacheDef<K, V> cacheDefinition;
   private final ChronicleMapCacheLoader<K, V> memLoader;
   private final InMemoryCache<K, V> mem;
+  private final Executor indexPersistenceExecutor;
+  private long pruneCount;
 
   ChronicleMapCacheImpl(PersistentCacheDef<K, V> def, ChronicleMapCacheConfig config)
       throws IOException {
@@ -56,17 +58,15 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
     this.cacheDefinition = def;
     this.config = config;
-    this.hotEntries =
-        new InMemoryLRU<>(
-            (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
+    this.keysIndex =
+        new CacheKeysIndex<>(
+            metricMaker, def.name(), config.getIndexFile(), config.getCacheFileExists());
     this.store = createOrRecoverStore(def, config, metricMaker);
     this.memLoader =
         new ChronicleMapCacheLoader<>(
             MoreExecutors.directExecutor(), store, config.getExpireAfterWrite());
     this.mem = memLoader.asInMemoryCacheBypass();
-
-    ChronicleMapCacheMetrics metrics = new ChronicleMapCacheMetrics(metricMaker);
-    metrics.registerCallBackMetrics(def.name(), this);
+    this.indexPersistenceExecutor = MoreExecutors.directExecutor();
   }
 
   ChronicleMapCacheImpl(
@@ -74,19 +74,18 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       ChronicleMapCacheConfig config,
       MetricMaker metricMaker,
       ChronicleMapCacheLoader<K, V> memLoader,
-      InMemoryCache<K, V> mem) {
+      InMemoryCache<K, V> mem,
+      Executor indexPersistenceExecutor) {
 
     this.cacheDefinition = def;
     this.config = config;
-    this.hotEntries =
-        new InMemoryLRU<>(
-            (int) Math.max(config.getMaxEntries() * config.getpercentageHotKeys() / 100, 1));
+    this.keysIndex =
+        new CacheKeysIndex<>(
+            metricMaker, def.name(), config.getIndexFile(), config.getCacheFileExists());
     this.memLoader = memLoader;
     this.mem = mem;
     this.store = memLoader.getStore();
-
-    ChronicleMapCacheMetrics metrics = new ChronicleMapCacheMetrics(metricMaker);
-    metrics.registerCallBackMetrics(def.name(), this);
+    this.indexPersistenceExecutor = indexPersistenceExecutor;
   }
 
   @SuppressWarnings({"unchecked", "cast", "rawtypes"})
@@ -111,7 +110,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     }
 
     mapBuilder.averageValueSize(config.getAverageValueSize());
-    mapBuilder.valueMarshaller(new TimedValueMarshaller<>(def.name()));
+
+    TimedValueMarshaller<V> valueMarshaller = new TimedValueMarshaller<>(metricMaker, def.name());
+    mapBuilder.valueMarshaller(valueMarshaller);
 
     mapBuilder.entries(config.getMaxEntries());
 
@@ -123,12 +124,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
             + "a function of the number of entries in the cache",
         def.diskLimit(), def.name());
     ChronicleMap<KeyWrapper<K>, TimedValue<V>> store =
-        mapBuilder.createOrRecoverPersistedTo(config.getPersistedFile());
+        mapBuilder.createOrRecoverPersistedTo(config.getCacheFile());
 
     logger.atInfo().log(
         "Initialized '%s'|version: %s|avgKeySize: %s bytes|avgValueSize:"
             + " %s bytes|entries: %s|maxBloatFactor: %s|remainingAutoResizes:"
-            + " %s|percentageFreeSpace: %s",
+            + " %s|percentageFreeSpace: %s|persistIndexEvery: %s",
         def.name(),
         def.version(),
         mapBuilder.constantlySizedKeys() ? "CONSTANT" : config.getAverageKeySize(),
@@ -136,43 +137,20 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         config.getMaxEntries(),
         config.getMaxBloatFactor(),
         store.remainingAutoResizes(),
-        store.percentageFreeSpace());
+        store.percentageFreeSpace(),
+        config.getPersistIndexEvery());
 
-    return new ChronicleMapStore<>(store, config, metricMaker);
+    return new ChronicleMapStore<K, V>(store, config, metricMaker) {
+      @Override
+      public void close() {
+        super.close();
+        valueMarshaller.close();
+      }
+    };
   }
 
   protected PersistentCacheDef<K, V> getCacheDefinition() {
     return cacheDefinition;
-  }
-
-  private static class ChronicleMapCacheMetrics {
-
-    private final MetricMaker metricMaker;
-
-    ChronicleMapCacheMetrics(MetricMaker metricMaker) {
-      this.metricMaker = metricMaker;
-    }
-
-    <K, V> void registerCallBackMetrics(String name, ChronicleMapCacheImpl<K, V> cache) {
-      String sanitizedName = metricMaker.sanitizeMetricName(name);
-      String HOT_KEYS_CAPACITY_METRIC = "cache/chroniclemap/hot_keys_capacity_" + sanitizedName;
-      String HOT_KEYS_SIZE_METRIC = "cache/chroniclemap/hot_keys_size_" + sanitizedName;
-
-      metricMaker.newConstantMetric(
-          HOT_KEYS_CAPACITY_METRIC,
-          cache.hotEntries.getCapacity(),
-          new Description(
-              String.format(
-                  "The number of hot cache keys for %s cache that can be kept in memory", name)));
-
-      metricMaker.newCallbackMetric(
-          HOT_KEYS_SIZE_METRIC,
-          Integer.class,
-          new Description(
-              String.format(
-                  "The number of hot cache keys for %s cache that are currently in memory", name)),
-          cache.hotEntries::size);
-    }
   }
 
   public ChronicleMapCacheConfig getConfig() {
@@ -187,6 +165,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       return null;
     }
 
+    keysIndex.add(objKey, timedValue.getCreated());
     return timedValue.getValue();
   }
 
@@ -199,6 +178,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
       if (needsRefresh(valueHolder.getCreated())) {
         store.remove(keyWrapper);
         mem.refresh(key);
+        keysIndex.refresh(key);
+      } else {
+        keysIndex.add(key, valueHolder.getCreated());
       }
       return valueHolder.getValue();
     }
@@ -211,11 +193,12 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   @Override
   public V get(K key, Callable<? extends V> valueLoader) throws ExecutionException {
     try {
-      return mem.get(key, () -> getFromStore(key, valueLoader)).getValue();
+      TimedValue<V> value = mem.get(key, () -> getFromStore(key, valueLoader));
+      keysIndex.add(key, value.getCreated());
+      return value.getValue();
+    } catch (ExecutionException e) {
+      throw e;
     } catch (Exception e) {
-      if (e instanceof ExecutionException) {
-        throw (ExecutionException) e;
-      }
       throw new ExecutionException(e);
     }
   }
@@ -259,6 +242,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     KeyWrapper<?> wrappedKey = new KeyWrapper<>(key);
     if (store.tryPut((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
       mem.put((K) key, (TimedValue<V>) wrappedValue);
+      keysIndex.add(key, wrappedValue.getCreated());
     }
   }
 
@@ -276,6 +260,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public void putUnchecked(KeyWrapper<Object> wrappedKey, TimedValue<Object> wrappedValue) {
     if (store.tryPut((KeyWrapper<K>) wrappedKey, (TimedValue<V>) wrappedValue)) {
       mem.put((K) wrappedKey.getValue(), (TimedValue<V>) wrappedValue);
+      keysIndex.add(wrappedKey.getValue(), wrappedValue.getCreated());
     }
   }
 
@@ -284,31 +269,28 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     TimedValue<V> timedVal = new TimedValue<>(val);
     if (putTimedToStore(key, timedVal)) {
       mem.put(key, timedVal);
+      keysIndex.add(key, timedVal.getCreated());
     }
   }
 
   boolean putTimedToStore(K key, TimedValue<V> timedVal) {
     KeyWrapper<K> wrappedKey = new KeyWrapper<>(key);
-    boolean putSuccess = store.tryPut(wrappedKey, timedVal);
-    if (putSuccess) {
-      hotEntries.add(key);
-    }
-    return putSuccess;
+    return store.tryPut(wrappedKey, timedVal);
   }
 
   public void prune() {
     if (!config.getExpireAfterWrite().isZero()) {
-      store.forEachEntry(
-          c -> {
-            if (memLoader.expired(c.value().get().getCreated())) {
-              hotEntries.remove(c.key().get().getValue());
-              c.context().remove(c);
-            }
-          });
+      long expirationTime = System.currentTimeMillis() - config.getExpireAfterWrite().toMillis();
+      keysIndex.removeAndConsumeKeysOlderThan(
+          expirationTime, key -> store.remove(new KeyWrapper<>(key)));
     }
 
     if (runningOutOfFreeSpace()) {
       evictColdEntries();
+    }
+
+    if (++pruneCount % config.getPersistIndexEveryNthPrune() == 0L) {
+      indexPersistenceExecutor.execute(keysIndex::persist);
     }
   }
 
@@ -324,13 +306,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   }
 
   private void evictColdEntries() {
-    store.forEachEntryWhile(
-        e -> {
-          if (!hotEntries.contains(e.key().get().getValue())) {
-            e.doRemove();
-          }
-          return runningOutOfFreeSpace();
-        });
+    while (runningOutOfFreeSpace()
+        && keysIndex.removeAndConsumeLruKey(key -> store.remove(new KeyWrapper<>(key)))) ;
   }
 
   @SuppressWarnings("unchecked")
@@ -339,14 +316,14 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     KeyWrapper<K> wrappedKey = (KeyWrapper<K>) new KeyWrapper<>(key);
     store.remove(wrappedKey);
     mem.invalidate(key);
-    hotEntries.remove((K) key);
+    keysIndex.invalidate(key);
   }
 
   @Override
   public void invalidateAll() {
     store.clear();
-    hotEntries.invalidateAll();
     mem.invalidateAll();
+    keysIndex.clear();
   }
 
   ChronicleMap<KeyWrapper<K>, TimedValue<V>> getStore() {
@@ -367,7 +344,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public DiskStats diskStats() {
     return new DiskStats(
         store.longSize(),
-        config.getPersistedFile().length(),
+        config.getCacheFile().length(),
         hitCount.longValue(),
         missCount.longValue());
   }
@@ -378,6 +355,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   public void close() {
     store.close();
+    keysIndex.close();
   }
 
   public double percentageUsedAutoResizes() {
