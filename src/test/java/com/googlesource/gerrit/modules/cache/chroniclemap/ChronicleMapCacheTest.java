@@ -235,7 +235,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   @Test
   public void getIfPresentShouldReturnNullWhenValueIsExpired() throws Exception {
     ChronicleMapCacheImpl<String, String> cache =
-        newCache(true, testCacheName, null, Duration.ofSeconds(1), null, 1, WITHOUT_METRICS);
+        newCache(true, testCacheName, null, Duration.ofSeconds(1), null, 1, WITHOUT_METRICS, null);
     cache.put("foo", "some-stale-value");
     Thread.sleep(1010); // Allow cache entry to expire
     assertThat(cache.getIfPresent("foo")).isNull();
@@ -248,7 +248,14 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
     ChronicleMapCacheImpl<String, String> cache =
         newCache(
-            true, testCacheName, newCachedValue, null, Duration.ofSeconds(1), 1, WITHOUT_METRICS);
+            true,
+            testCacheName,
+            newCachedValue,
+            null,
+            Duration.ofSeconds(1),
+            1,
+            WITHOUT_METRICS,
+            null);
     cache.put("foo", staleValue);
     assertThat(cache.get("foo")).isEqualTo(staleValue);
 
@@ -268,7 +275,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   @Test
   public void shouldPruneExpiredValues() throws Exception {
     ChronicleMapCacheImpl<String, String> cache =
-        newCache(true, testCacheName, null, Duration.ofSeconds(1), null, 1, WITHOUT_METRICS);
+        newCache(true, testCacheName, null, Duration.ofSeconds(1), null, 1, WITHOUT_METRICS, null);
     cache.put("foo1", "some-stale-value1");
     cache.put("foo2", "some-stale-value1");
     Thread.sleep(1010); // Allow cache entries to expire
@@ -306,55 +313,92 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   @Test
   public void shouldEvictOldestElementInCacheWhenIsNeverAccessed() throws Exception {
     final String fooValue = "foo";
+    final String fooReloaded = "foo-reloaded";
 
-    gerritConfig.setInt("cache", testCacheName, "maxEntries", 2);
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 3);
     gerritConfig.setInt("cache", testCacheName, "avgKeySize", "foo1".getBytes().length);
     gerritConfig.setInt("cache", testCacheName, "avgValueSize", valueSize(fooValue));
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 1);
+    gerritConfig.setInt("cache", testCacheName, "percentageFreeSpaceEvictionThreshold", 90);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(fooValue);
+    ChronicleMapCacheImpl<String, String> cache = newPersistentOnlyCacheWithLoader(fooReloaded);
     cache.put("foo1", fooValue);
     cache.put("foo2", fooValue);
+    cache.put("foo3", fooValue);
+    cache.put("foo4", fooValue);
 
     cache.prune();
-
     assertThat(cache.diskStats().size()).isEqualTo(1);
-    assertThat(cache.get("foo2")).isNotNull();
+
+    assertThat(cache.get("foo4")).isEqualTo(fooValue);
+    assertThat(cache.get("foo1")).isEqualTo(fooReloaded);
+    assertThat(cache.get("foo2")).isEqualTo(fooReloaded);
+    assertThat(cache.get("foo3")).isEqualTo(fooReloaded);
   }
 
   @Test
   public void shouldEvictRecentlyInsertedElementInCacheWhenOldestElementIsAccessed()
       throws Exception {
     final String fooValue = "foo";
-    gerritConfig.setInt("cache", testCacheName, "maxEntries", 2);
+    final String fooReloaded = "foo-reloaded";
+
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", 3);
     gerritConfig.setInt("cache", testCacheName, "avgKeySize", "foo1".getBytes().length);
     gerritConfig.setInt("cache", testCacheName, "avgValueSize", valueSize(fooValue));
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", 1);
+    gerritConfig.setInt("cache", testCacheName, "percentageFreeSpaceEvictionThreshold", 90);
     gerritConfig.save();
 
-    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(fooValue);
+    ChronicleMapCacheImpl<String, String> cache = newPersistentOnlyCacheWithLoader(fooReloaded);
     cache.put("foo1", fooValue);
     cache.put("foo2", fooValue);
+    cache.put("foo3", fooValue);
+    cache.put("foo4", fooValue);
 
     cache.get("foo1");
 
     cache.prune();
-
     assertThat(cache.diskStats().size()).isEqualTo(1);
+
     assertThat(cache.get("foo1")).isEqualTo(fooValue);
+    assertThat(cache.get("foo2")).isEqualTo(fooReloaded);
+    assertThat(cache.get("foo3")).isEqualTo(fooReloaded);
+    assertThat(cache.get("foo4")).isEqualTo(fooReloaded);
   }
 
   @Test
   public void shouldEvictEntriesUntilFreeSpaceIsRecovered() throws Exception {
     final int uuidSize = valueSize(UUID.randomUUID().toString());
-    gerritConfig.setInt("cache", "foo", "maxEntries", 50);
-    gerritConfig.setInt("cache", "foo", "avgKeySize", uuidSize);
-    gerritConfig.setInt("cache", "foo", "avgValueSize", uuidSize);
+    int cacheMaxEntries = 100;
+    int cachePruneThreshold = 10;
+    int maxBloatFactor = 1;
+    int cacheTotEntries = cacheMaxEntries * (maxBloatFactor + 1);
+
+    gerritConfig.setInt("cache", testCacheName, "maxEntries", cacheMaxEntries);
+    gerritConfig.setInt("cache", testCacheName, "avgKeySize", uuidSize);
+    gerritConfig.setInt("cache", testCacheName, "avgValueSize", uuidSize);
+    gerritConfig.setInt("cache", testCacheName, "maxBloatFactor", maxBloatFactor);
+    gerritConfig.setInt(
+        "cache", testCacheName, "percentageFreeSpaceEvictionThreshold", cachePruneThreshold);
+
     gerritConfig.save();
 
     ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader();
-    while (!cache.runningOutOfFreeSpace()) {
+
+    assertThat(cache.runningOutOfFreeSpace()).isFalse();
+    for (int i = 0; i < cacheTotEntries * 2; i++) {
       cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
+    assertThat(cache.runningOutOfFreeSpace()).isTrue();
+
+    long cacheSize = cache.diskStats().size();
+    cache.prune();
+    assertThat(cache.runningOutOfFreeSpace()).isFalse();
+
+    long cachePrunedSize = cache.diskStats().size();
+    assertThat(cachePrunedSize).isLessThan(cacheSize);
+    assertThat(cachePrunedSize).isGreaterThan((100 - cachePruneThreshold) * cacheSize / 100);
   }
 
   @Test
@@ -568,7 +612,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
   private ChronicleMapCacheImpl<String, String> newCacheWithMetrics(
       String cacheName, @Nullable String cachedValue) {
-    return newCache(true, cacheName, cachedValue, null, null, null, null, 1, metricMaker);
+    return newCache(true, cacheName, cachedValue, null, null, null, null, 1, metricMaker, null);
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
@@ -578,7 +622,8 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
       @Nullable Duration expireAfterWrite,
       @Nullable Duration refreshAfterWrite,
       Integer version,
-      MetricMaker metricMaker) {
+      MetricMaker metricMaker,
+      @Nullable Integer memoryLimit) {
     return newCache(
         withLoader,
         cacheName,
@@ -588,7 +633,8 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
         null,
         null,
         version,
-        metricMaker);
+        metricMaker,
+        memoryLimit);
   }
 
   private ChronicleMapCacheImpl<String, String> newCache(
@@ -600,10 +646,17 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
       @Nullable CacheSerializer<String> keySerializer,
       @Nullable CacheSerializer<String> valueSerializer,
       Integer version,
-      MetricMaker metricMaker) {
+      MetricMaker metricMaker,
+      @Nullable Integer memoryLimit) {
     TestPersistentCacheDef cacheDef =
         new TestPersistentCacheDef(
-            cacheName, cachedValue, keySerializer, valueSerializer, withLoader, expireAfterWrite);
+            cacheName,
+            cachedValue,
+            keySerializer,
+            valueSerializer,
+            withLoader,
+            expireAfterWrite,
+            memoryLimit);
 
     File persistentFile =
         ChronicleMapCacheFactory.fileName(
@@ -632,19 +685,24 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader(@Nullable String loadedValue) {
-    return newCache(true, testCacheName, loadedValue, null, null, 1, metricMaker);
+    return newCache(true, testCacheName, loadedValue, null, null, 1, metricMaker, null);
+  }
+
+  private ChronicleMapCacheImpl<String, String> newPersistentOnlyCacheWithLoader(
+      @Nullable String loadedValue) {
+    return newCache(true, testCacheName, loadedValue, null, null, 1, metricMaker, 0);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithLoader() {
-    return newCache(true, testCacheName, null, null, null, 1, metricMaker);
+    return newCache(true, testCacheName, null, null, null, 1, metricMaker, null);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheVersion(int version) {
-    return newCache(true, testCacheName, null, null, null, version, WITHOUT_METRICS);
+    return newCache(true, testCacheName, null, null, null, version, WITHOUT_METRICS, null);
   }
 
   private ChronicleMapCacheImpl<String, String> newCacheWithoutLoader() {
-    return newCache(false, testCacheName, null, null, null, 1, metricMaker);
+    return newCache(false, testCacheName, null, null, null, 1, metricMaker, null);
   }
 
   private <V> Gauge<V> getMetric(String name) {
