@@ -302,7 +302,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   protected boolean runningOutOfFreeSpace() {
     return store.remainingAutoResizes() == 0
-        && store.percentageFreeSpace() <= config.getPercentageFreeSpaceEvictionThreshold();
+        && store.percentageFreeSpace() <= (100 - config.getPercentageFreeSpaceEvictionThreshold());
   }
 
   private void evictColdEntries() {
