@@ -70,6 +70,24 @@
       "parentUuid": "77861ca5_c8a39c05",
       "revId": "07b1effd074c109e6ec4d494bf51c81ba436af6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "819368ba_f270b7c8",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AnalyzeH2CachesIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-30T19:52:39Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "882187d7_a301fd77",
+      "revId": "07b1effd074c109e6ec4d494bf51c81ba436af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
