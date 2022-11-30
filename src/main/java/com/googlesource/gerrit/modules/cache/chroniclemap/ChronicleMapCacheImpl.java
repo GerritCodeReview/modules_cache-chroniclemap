@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -160,13 +161,18 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   @SuppressWarnings("unchecked")
   @Override
   public V getIfPresent(Object objKey) {
-    try {
-      return get((K) objKey, () -> null);
-    } catch (ExecutionException e) {
-      // This can never happen because the above lambda is empty
-      throw new IllegalStateException(
-          "Impossible condition: an empty lambda cannot throw any exception", e);
+    K key = (K) objKey;
+
+    TimedValue<V> timedValue =
+        Optional.ofNullable(mem.getIfPresent(key)).orElse(memLoader.loadIfPresent(key));
+    if (timedValue == null) {
+      missCount.increment();
+      return null;
     }
+
+    mem.put(key, timedValue);
+    keysIndex.add(objKey, timedValue.getCreated());
+    return timedValue.getValue();
   }
 
   @Override
@@ -194,6 +200,10 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
   public V get(K key, Callable<? extends V> valueLoader) throws ExecutionException {
     try {
       TimedValue<V> value = mem.get(key, () -> getFromStore(key, valueLoader));
+      if (value == null) {
+        return null;
+      }
+
       keysIndex.add(key, value.getCreated());
       return value.getValue();
     } catch (ExecutionException e) {
