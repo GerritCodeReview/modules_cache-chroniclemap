@@ -16,6 +16,24 @@
       "message": "Can we somehow get the list of available caches from Gerrit? So this check will be independent from the branch?",
       "revId": "07b1effd074c109e6ec4d494bf51c81ba436af6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a6a798_ba958bfe",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AnalyzeH2CachesIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-11-30T12:19:56Z",
+      "side": 0,
+      "message": "Or maybe can we somehow use this `defaultMap` [1] keys to build this assertion?\n\n[1]: https://gerrit.googlesource.com/modules/cache-chroniclemap/+/e1630e0625c2f1cfbc574dc6b9c4249b47582ec5/src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheConfig.java#264",
+      "parentUuid": "768a4cfc_4594d107",
+      "revId": "07b1effd074c109e6ec4d494bf51c81ba436af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
