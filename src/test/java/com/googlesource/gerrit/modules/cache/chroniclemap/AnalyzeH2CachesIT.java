@@ -65,7 +65,6 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   public void shouldProduceWarningWhenCacheFileIsEmpty() throws Exception {
     List<String> expected =
         ImmutableList.of(
-            "WARN: Cache diff_intraline is empty, skipping.",
             "WARN: Cache change_kind is empty, skipping.",
             "WARN: Cache diff_summary is empty, skipping.",
             "WARN: Cache diff is empty, skipping.",
@@ -87,7 +86,6 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
             "WARN: Cache diff_intraline is empty, skipping.",
             "WARN: Cache change_kind is empty, skipping.",
             "WARN: Cache diff_summary is empty, skipping.",
-            "WARN: Cache diff is empty, skipping.",
             "WARN: Cache pure_revert is empty, skipping.",
             "WARN: Cache git_tags is empty, skipping.");
     String result = adminSshSession.exec(cmd);
