@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.cache.AbstractLoadingCache;
 import com.google.common.cache.CacheStats;
 import com.google.common.flogger.FluentLogger;
@@ -159,7 +160,9 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   @Override
   public V getIfPresent(Object objKey) {
-    TimedValue<V> timedValue = mem.getIfPresent(objKey);
+    @SuppressWarnings("unchecked")
+    TimedValue<V> timedValue =
+        MoreObjects.firstNonNull(mem.getIfPresent(objKey), memLoader.loadIfPresent((K) objKey));
     if (timedValue == null) {
       missCount.increment();
       return null;
