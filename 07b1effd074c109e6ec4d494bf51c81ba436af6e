@@ -111,6 +111,30 @@
       },
       "revId": "07b1effd074c109e6ec4d494bf51c81ba436af6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fcdbfc4_eda60b6f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AnalyzeH2CachesIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-12-02T19:32:22Z",
+      "side": 0,
+      "message": "Nope, because that isn\u0027t relevant to this test. This was a leftover of the copy\u0026paste from the previous test.",
+      "parentUuid": "e7b64920_af4ec992",
+      "range": {
+        "startLine": 96,
+        "startChar": 4,
+        "endLine": 97,
+        "endChar": 3
+      },
+      "revId": "07b1effd074c109e6ec4d494bf51c81ba436af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
