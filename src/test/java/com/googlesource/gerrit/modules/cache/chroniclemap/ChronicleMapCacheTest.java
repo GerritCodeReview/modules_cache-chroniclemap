@@ -87,6 +87,30 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   }
 
   @Test
+  public void getIfPresentShouldReturnValueWhenKeyIsPresentInMemory() throws Exception {
+    String key = "fookey";
+    String value = "foovalue";
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(null);
+
+    cache.put(key, value);
+    assertThat(cache.getIfPresent(key)).isEqualTo(value);
+  }
+
+  @Test
+  public void getIfPresentShouldReturnValueWhenKeyIsPresentOnDisk() throws Exception {
+    String key = "fookey";
+    String value = "foovalue";
+
+    // Store the key-value pair and clone/release of the in-memory copy
+    ChronicleMapCacheImpl<String, String> cacheInMemory = newCacheWithLoader(null);
+    cacheInMemory.put(key, value);
+    cacheInMemory.close();
+
+    ChronicleMapCacheImpl<String, String> cache = newCacheWithLoader(null);
+    assertThat(cache.getIfPresent(key)).isEqualTo(value);
+  }
+
+  @Test
   public void getIfPresentShouldReturnNullWhenThereCacheHasADifferentVersion() throws Exception {
     gerritConfig.setString("cache", null, "directory", "cache");
     gerritConfig.save();
