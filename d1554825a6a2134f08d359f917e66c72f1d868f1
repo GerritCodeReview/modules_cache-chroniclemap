@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35fde63c_3d214a6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-12-02T20:19:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25f5f856_9e2c408c",
+      "range": {
+        "startLine": 10,
+        "startChar": 52,
+        "endLine": 10,
+        "endChar": 58
+      },
+      "revId": "d1554825a6a2134f08d359f917e66c72f1d868f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21f68d69_d0c60941",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-02T19:43:16Z",
       "side": 1,
       "message": "should we still do missCount.increment when we cannot find the value?",
+      "range": {
+        "startLine": 164,
+        "startChar": 5,
+        "endLine": 164,
+        "endChar": 41
+      },
+      "revId": "d1554825a6a2134f08d359f917e66c72f1d868f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8b0d001_63515a89",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-12-02T20:19:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21f68d69_d0c60941",
       "range": {
         "startLine": 164,
         "startChar": 5,
