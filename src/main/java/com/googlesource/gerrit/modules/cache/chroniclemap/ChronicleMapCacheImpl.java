@@ -157,16 +157,16 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return config;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public V getIfPresent(Object objKey) {
-    TimedValue<V> timedValue = mem.getIfPresent(objKey);
-    if (timedValue == null) {
-      missCount.increment();
-      return null;
+    try {
+      return get((K) objKey, () -> null);
+    } catch (ExecutionException e) {
+      // This can never happen because the above lambda is empty
+      throw new IllegalStateException(
+          "Impossible condition: an empty lambda cannot throw any exception", e);
     }
-
-    keysIndex.add(objKey, timedValue.getCreated());
-    return timedValue.getValue();
   }
 
   @Override
