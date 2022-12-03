@@ -79,8 +79,9 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
       @Nullable String loadedValue,
       @Nullable CacheSerializer<String> keySerializer,
       @Nullable CacheSerializer<String> valueSerializer,
-      boolean withLoader) {
-    this(name, loadedValue, keySerializer, valueSerializer, withLoader, null);
+      boolean withLoader,
+      @Nullable Integer memoryLimit) {
+    this(name, loadedValue, keySerializer, valueSerializer, withLoader, null, memoryLimit);
   }
 
   public TestPersistentCacheDef(
@@ -89,7 +90,8 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
       @Nullable CacheSerializer<String> keySerializer,
       @Nullable CacheSerializer<String> valueSerializer,
       boolean withLoader,
-      @Nullable Duration maxAge) {
+      @Nullable Duration maxAge,
+      @Nullable Integer memoryLimit) {
 
     this.name = name;
     this.loadedValue = loadedValue;
@@ -97,7 +99,7 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
     this.refreshAfterWrite = withLoader ? ONE_YEAR : null;
     this.expireFromMemoryAfterAccess = maxAge == null ? DEFAULT_EXPIRY_AFTER_MEMORY_ACCESS : maxAge;
     this.diskLimit = DEFAULT_DISK_LIMIT;
-    this.maximumWeight = DEFAULT_MEMORY_LIMIT;
+    this.maximumWeight = memoryLimit == null ? DEFAULT_MEMORY_LIMIT : memoryLimit;
     this.keySerializer = Optional.ofNullable(keySerializer).orElse(StringCacheSerializer.INSTANCE);
     this.valueSerializer =
         Optional.ofNullable(valueSerializer).orElse(StringCacheSerializer.INSTANCE);

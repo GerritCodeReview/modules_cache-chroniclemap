@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -157,14 +158,19 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     return config;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public V getIfPresent(Object objKey) {
-    TimedValue<V> timedValue = mem.getIfPresent(objKey);
+    K key = (K) objKey;
+
+    TimedValue<V> timedValue =
+        Optional.ofNullable(mem.getIfPresent(key)).orElse(memLoader.loadIfPresent(key));
     if (timedValue == null) {
       missCount.increment();
       return null;
     }
 
+    mem.put(key, timedValue);
     keysIndex.add(objKey, timedValue.getCreated());
     return timedValue.getValue();
   }
