@@ -171,8 +171,8 @@ public class H2MigrationServlet extends HttpServlet {
     }
 
     logger.atInfo().log("Migrating H2 caches to Chronicle-Map...");
-    logger.atInfo().log("* Size multiplier: %s", sizeMultiplier);
-    logger.atInfo().log("* Max Bloat Factor: %s", maxBloatFactor);
+    logger.atInfo().log("* Size multiplier: %d", sizeMultiplier);
+    logger.atInfo().log("* Max Bloat Factor: %d", maxBloatFactor);
 
     Config outputChronicleMapConfig = new Config();
 
