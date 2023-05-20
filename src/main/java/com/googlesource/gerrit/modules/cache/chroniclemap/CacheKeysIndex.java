@@ -297,7 +297,7 @@ class CacheKeysIndex<T> {
           metrics.persistFailures.increment();
           return;
         }
-        logger.atInfo().log("Cache keys index %s was persisted to %s file", name, indexFile);
+        logger.atFine().log("Cache keys index %s was persisted to %s file", name, indexFile);
       } catch (Exception e) {
         logger.atSevere().withCause(e).log("Persisting cache keys index %s failed", name);
         metrics.persistFailures.increment();
