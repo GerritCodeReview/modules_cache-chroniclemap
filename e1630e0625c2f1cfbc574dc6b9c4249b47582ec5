@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "61f52cb0_3c39cda9",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-02T07:56:11Z",
+      "side": 1,
+      "message": "Retrospectively, it would have been best to apply these as separate change on stable-3.5 and then merge the whole thing up.\n\nDone in I90356c62d, could you please review?",
+      "parentUuid": "0115df68_54a3f8d3",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 66
+      },
+      "revId": "e1630e0625c2f1cfbc574dc6b9c4249b47582ec5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5057583f_79964c0d",
