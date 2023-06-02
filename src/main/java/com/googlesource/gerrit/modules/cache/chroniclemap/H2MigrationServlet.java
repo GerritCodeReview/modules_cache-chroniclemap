@@ -171,8 +171,8 @@ public class H2MigrationServlet extends HttpServlet {
     }
 
     logger.atInfo().log("Migrating H2 caches to Chronicle-Map...");
-    logger.atInfo().log("* Size multiplier: " + sizeMultiplier);
-    logger.atInfo().log("* Max Bloat Factor: " + maxBloatFactor);
+    logger.atInfo().log("* Size multiplier: %s", sizeMultiplier);
+    logger.atInfo().log("* Max Bloat Factor: %s", maxBloatFactor);
 
     Config outputChronicleMapConfig = new Config();
 
@@ -332,7 +332,7 @@ public class H2MigrationServlet extends HttpServlet {
 
     } catch (Exception e) {
       String message = String.format("FATAL: error migrating %s H2 cache", in.name());
-      logger.atSevere().withCause(e).log(message);
+      logger.atSevere().withCause(e).log("%s", message);
       throw RestApiException.wrap(message, e);
     }
   }
