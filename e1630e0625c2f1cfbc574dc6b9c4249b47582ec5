@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6095594f_67e1fb36",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-06-03T06:12:02Z",
+      "side": 1,
+      "message": "You are retrospectively right 😄 applying this approach to other plugins and thanks for fixing it!",
+      "parentUuid": "61f52cb0_3c39cda9",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 66
+      },
+      "revId": "e1630e0625c2f1cfbc574dc6b9c4249b47582ec5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5057583f_79964c0d",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/H2MigrationServlet.java",
         "patchSetId": 2
