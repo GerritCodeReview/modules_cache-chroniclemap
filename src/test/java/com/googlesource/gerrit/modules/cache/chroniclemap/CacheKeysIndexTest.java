@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.CacheKeysIndex.tempIndexFile;
 import static java.util.stream.Collectors.toList;
 import static org.mockito.Mockito.mock;
@@ -41,6 +42,7 @@ public class CacheKeysIndexTest {
 
   @Before
   public void setup() throws IOException {
+    assumeJava11();
     CacheSerializers.registerCacheKeySerializer(CACHE_NAME, StringCacheSerializer.INSTANCE);
     indexFile = temporaryFolder.newFolder().toPath().resolve("cache.index").toFile();
     index = new CacheKeysIndex<>(new DisabledMetricMaker(), CACHE_NAME, indexFile, false);

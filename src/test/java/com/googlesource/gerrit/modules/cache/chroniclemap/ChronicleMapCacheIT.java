@@ -15,6 +15,8 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.isJava11;
 
 import com.google.common.cache.Cache;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
@@ -23,6 +25,7 @@ import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.api.accounts.AccountInput;
 import com.google.gerrit.server.cache.PersistentCacheFactory;
 import com.google.inject.Inject;
+import org.junit.Before;
 import org.junit.Test;
 
 @UseLocalDisk
@@ -31,9 +34,14 @@ public class ChronicleMapCacheIT extends AbstractDaemonTest {
   private static final int ZERO_INMEMORY_CACHE = 0;
   @Inject PersistentCacheFactory persistentCacheFactory;
 
+  @Before
+  public void setup() {
+    assumeJava11();
+  }
+
   @Override
   public com.google.inject.Module createModule() {
-    return new ChronicleMapCacheModule();
+    return isJava11() ? new ChronicleMapCacheModule() : null;
   }
 
   @Test

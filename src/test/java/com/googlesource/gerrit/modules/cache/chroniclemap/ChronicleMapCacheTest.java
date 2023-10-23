@@ -16,6 +16,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 import static org.mockito.Mockito.mock;
 
 import com.codahale.metrics.Counter;
@@ -63,6 +64,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
 
   @Before
   public void setUp() throws Exception {
+    assumeJava11();
     CacheSerializers.registerCacheKeySerializer(testCacheName, StringCacheSerializer.INSTANCE);
     CacheSerializers.registerCacheValueSerializer(testCacheName, StringCacheSerializer.INSTANCE);
 

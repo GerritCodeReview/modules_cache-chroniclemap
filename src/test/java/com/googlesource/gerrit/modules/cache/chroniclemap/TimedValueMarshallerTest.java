@@ -14,6 +14,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 
 import com.google.gerrit.acceptance.TestMetricMaker;
 import com.google.gerrit.server.cache.serialize.ObjectIdCacheSerializer;
@@ -28,6 +29,7 @@ public class TimedValueMarshallerTest {
 
   @Before
   public void setup() {
+    assumeJava11();
     CacheSerializers.registerCacheValueSerializer(
         TEST_CACHE_NAME, ObjectIdCacheSerializer.INSTANCE);
   }
