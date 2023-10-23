@@ -48,6 +48,7 @@ import com.google.inject.Binding;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.name.Named;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
@@ -305,7 +306,8 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
     Annotation annotation = entry.getKey().getAnnotation();
     return className.equals(classNameMatch)
         && annotation != null
-        && annotation.toString().endsWith(String.format("Named(value=\"%s\")", named));
+        && annotation instanceof Named
+        && annotation.toString().contains(String.format("\"%s\"", named));
   }
 
   private <K, V> ChronicleMapCacheImpl<K, V> chronicleCacheFor(String cacheName) throws Exception {
