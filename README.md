@@ -22,6 +22,21 @@ Add the cache-chroniclemap module to `$GERRIT_SITE/etc/gerrit.config` as follows
   installModule = com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheModule
 ```
 
+Note that in order to run on JDK 17 the following parameters needs to be added
+
+```
+[container]
+  javaOptions = --add-exports=java.base/jdk.internal.ref=ALL-UNNAMED
+  javaOptions = --add-exports=java.base/sun.nio.ch=ALL-UNNAMED
+  javaOptions = --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED
+  javaOptions = --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+  javaOptions = --add-opens=jdk.compiler/com.sun.tools.javac=ALL-UNNAMED
+  javaOptions = --add-opens=java.base/java.lang=ALL-UNNAMED
+  javaOptions = --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+  javaOptions = --add-opens=java.base/java.io=ALL-UNNAMED
+  javaOptions = --add-opens=java.base/java.util=ALL-UNNAMED
+```
+
 For further information and supported options, refer to [config](src/main/resources/Documentation/config.md)
 documentation.
 
