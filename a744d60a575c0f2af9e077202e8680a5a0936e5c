@@ -16,6 +16,23 @@
       "message": "All IT tests are failing under JDK 17 (with the same reason as starting fails). Will work on fixing them...",
       "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92781e48_56f7bb38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-23T23:10:24Z",
+      "side": 1,
+      "message": "Adding the extra config options to `gerrit.config` it works as expected.",
+      "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
