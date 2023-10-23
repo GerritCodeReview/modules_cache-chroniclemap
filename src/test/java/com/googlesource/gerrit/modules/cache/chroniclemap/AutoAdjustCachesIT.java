@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.MAX_ENTRIES_MULTIPLIER;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.PERCENTAGE_SIZE_INCREASE_THRESHOLD;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
@@ -49,6 +50,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
+import org.junit.Before;
 import org.junit.Test;
 
 @Sandboxed
@@ -91,6 +93,11 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
   @ModuleImpl(name = CacheModule.PERSISTENT_MODULE)
   public static class TestPersistentCacheModule extends CacheModule {
+
+    @Before
+    public void setup() {
+      assumeJava11();
+    }
 
     @Override
     protected void configure() {
