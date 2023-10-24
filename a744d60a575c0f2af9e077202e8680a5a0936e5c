@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d74194a_5889e5e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-24T07:03:20Z",
+      "side": 1,
+      "message": "nit: add `Bug: Issue 306464780` to commit footer",
+      "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7acbcc03_19143f74",
@@ -31,6 +48,23 @@
       "writtenOn": "2023-10-23T23:10:24Z",
       "side": 1,
       "message": "Adding the extra config options to `gerrit.config` it works as expected.",
+      "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503fe638_bfff0028",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-24T07:03:20Z",
+      "side": 1,
+      "message": "CI fails with tests already in `stable-3.6` - will step down there to fix it",
       "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
