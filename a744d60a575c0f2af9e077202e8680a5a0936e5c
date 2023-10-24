@@ -67,6 +67,23 @@
       "message": "CI fails with tests already in `stable-3.6` - will step down there to fix it",
       "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ba709d5_6d38aeb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-24T21:01:04Z",
+      "side": 1,
+      "message": "What si the plan for this change? Are you adding a predecessor that fixes also the execution of the tests with the extra variables? (otherwise the change will never be verified)",
+      "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
