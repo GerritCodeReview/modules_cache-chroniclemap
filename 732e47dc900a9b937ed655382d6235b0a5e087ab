@@ -8,12 +8,12 @@
       "updated": "2023-10-25T20:07:18Z"
     },
     "gerritforge:cache-chroniclemap-code-style": {
-      "state": "RUNNING",
+      "state": "SUCCESSFUL",
       "url": "https://gerrit-ci.gerritforge.com/job/module-cache-chroniclemap-verifier/job/58%252F391058%252F2/3/console",
       "started": "2023-10-25T20:09:49Z",
-      "finished": "2023-10-25T20:07:14Z",
+      "finished": "2023-10-25T20:09:56Z",
       "created": "2023-10-25T20:07:06Z",
-      "updated": "2023-10-25T20:09:49Z"
+      "updated": "2023-10-25T20:09:57Z"
     }
   }
 }
