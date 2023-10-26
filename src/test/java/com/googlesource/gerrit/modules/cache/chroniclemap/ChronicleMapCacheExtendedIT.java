@@ -48,7 +48,7 @@ import org.junit.Test;
 import org.junit.runner.Description;
 
 @UseLocalDisk // Needed to have Gerrit with DropWizardMetricMaker enabled
-public class ChronicleMapCacheTest extends AbstractDaemonTest {
+public class ChronicleMapCacheExtendedIT extends AbstractDaemonTest {
   private static final DisabledMetricMaker WITHOUT_METRICS = new DisabledMetricMaker();
   @Inject MetricMaker metricMaker;
   @Inject MetricRegistry metricRegistry;
