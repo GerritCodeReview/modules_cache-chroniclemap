@@ -592,7 +592,7 @@ public class ChronicleMapCacheTest extends AbstractDaemonTest {
   @Test
   public void shouldSanitizeUnwantedCharsInMetricNames() throws Exception {
     String cacheName = "very+confusing.cache#name";
-    String sanitized = "very_confusing_cache_name";
+    String sanitized = "very_0x2B_confusing_0x2E_cache_0x23_name";
     String percentageFreeMetricName = "cache/chroniclemap/percentage_free_space_" + sanitized;
     String autoResizeMetricName = "cache/chroniclemap/remaining_autoresizes_" + sanitized;
     String maxAutoResizeMetricName = "cache/chroniclemap/max_autoresizes_" + sanitized;
