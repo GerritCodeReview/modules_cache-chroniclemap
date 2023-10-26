@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fcc73ca_55662f77",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-26T17:03:45Z",
+      "side": 1,
+      "message": "That is correct.",
+      "parentUuid": "f561f8e5_236f4677",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ae0aa79_7eb370cb",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-26T09:23:22Z",
       "side": 1,
       "message": "Introduce CacheNameSanitizer to:",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 36
+      },
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9acf2bc1_e2308edb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-26T17:03:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ae0aa79_7eb370cb",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87bbd308_9754e63c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-26T17:03:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6aad0bfe_00402588",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2e6e722_8cf917c2",
@@ -71,6 +131,24 @@
       "writtenOn": "2023-10-26T09:23:22Z",
       "side": 1,
       "message": "I think you are trying to explain the regex from L22 here, but that will actually match cacheNames that also include `/` and `_`, not just letters/digits and `-`.",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10b5e16d_664ee9ee",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheNameSanitizer.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-26T17:03:45Z",
+      "side": 1,
+      "message": "That is correct. I haven\u0027t kept description and REGEX up to date. Was a bit in a hurry when fix was finalized (lame excuse - I know 😊). Fixed now.",
+      "parentUuid": "f2e6e722_8cf917c2",
       "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +170,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cebaf0f6_d5a47a4f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheNameSanitizer.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-26T17:03:45Z",
+      "side": 1,
+      "message": "Correct. Removed as there is no need for that.",
+      "parentUuid": "5158acfb_3e335ff1",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c8b8e2f_2133fc01",
@@ -105,6 +201,24 @@
       "writtenOn": "2023-10-26T10:30:36Z",
       "side": 1,
       "message": "why this can\u0027t be a simple junit test? this is only checking input and output values, no need for using a \"local disk\" or be an integration test.\n\nThe build configuration already supports running `*Test.java`.",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7f657d2_fb60b915",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheNameSanitizerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-26T17:03:45Z",
+      "side": 1,
+      "message": "If one wants to call `MetricMaker.sanitizeMetricName` and receive sanitized value then:\n1. it has to be `AbstractDaemonTest`\n2. and also it has to be annotated with `@UseLocalDisk` as otherwise `TestMetricMaker` is used and nothing gets sanitized\n\nIt has nothing to do with having unit tests run supported or not 😊\n\nNow having said that I leaning towards using mock so that we could shave a few secs from the tests execution time (also keeping in mind that sanitization is actuall tested in any [ChronicleMapCacheTest.getMetric](https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/391154/1/src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheTest.java) call.",
+      "parentUuid": "0c8b8e2f_2133fc01",
       "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
