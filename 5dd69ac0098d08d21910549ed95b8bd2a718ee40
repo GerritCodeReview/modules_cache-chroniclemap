@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f561f8e5_236f4677",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-10-26T09:23:22Z",
+      "side": 1,
+      "message": "tbh i am struggling to understand the problem here, so I will try to summarize it and please feel free to correct me:\n\n1. MetricMaker.sanitizeMetricName is an algorithm which may modify metric names so that there is no collision\n2. The algorithm was changed in Gerrit some time ago.\n3. cache chronicle map was relying on that algorithm to sanitize its metric names\n4. following the change in the algorithm, some cache chronicle map metric names have changed, which results in dashboards being broken and tests failing, so we can\u0027t build the code in CI \n5. Your change attempts to preserve some old metric names by using (in the plugin) part of the old algorithm.\n6. Your change will allow tests to pass so we can build the code in the CI, and the dashboards will work.\n\nIs the above accurate?",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ae0aa79_7eb370cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-10-26T09:23:22Z",
+      "side": 1,
+      "message": "Introduce CacheNameSanitizer to:",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 36
+      },
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aad0bfe_00402588",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-10-26T09:23:22Z",
+      "side": 1,
+      "message": "nit: typo `cache_name-with-hyphens`",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e6e722_8cf917c2",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheNameSanitizer.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-10-26T09:23:22Z",
+      "side": 1,
+      "message": "I think you are trying to explain the regex from L22 here, but that will actually match cacheNames that also include `/` and `_`, not just letters/digits and `-`.",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5158acfb_3e335ff1",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/CacheNameSanitizer.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-10-26T09:23:22Z",
+      "side": 1,
+      "message": "\u003e replace `-` with `_`\n\nthis is not true, the logic doesn\u0027t replace anything in that case.",
+      "revId": "5dd69ac0098d08d21910549ed95b8bd2a718ee40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
