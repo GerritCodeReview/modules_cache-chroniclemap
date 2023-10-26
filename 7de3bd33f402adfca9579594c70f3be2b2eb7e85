@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eaf0ef9_8ab92639",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-26T21:38:33Z",
+      "side": 1,
+      "message": "We don\u0027t use RBE at the moment for plugins, but we may be using it in the future :-)",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 30
+      },
+      "revId": "7de3bd33f402adfca9579594c70f3be2b2eb7e85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ff094a_1ae938a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-26T21:38:33Z",
+      "side": 1,
+      "message": "Very 😎 Jacek, thanks for introducing it !",
+      "revId": "7de3bd33f402adfca9579594c70f3be2b2eb7e85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
