@@ -35,7 +35,7 @@ class SerializationMetricsForCache {
     final Timer0 serializeLatency;
 
     private Metrics(MetricMaker metricMaker, String cacheName) {
-      String sanitizedName = metricMaker.sanitizeMetricName(cacheName);
+      String sanitizedName = CacheNameSanitizer.sanitize(metricMaker, cacheName);
 
       deserializeLatency =
           metricMaker.newTimer(
