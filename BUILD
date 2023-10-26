@@ -58,6 +58,7 @@ junit_tests(
         "//java/com/google/gerrit/server/cache/h2",
         "//java/com/google/gerrit/server/cache/serialize",
         "//proto:cache_java_proto",
+        "@chronicle-bytes//jar",
     ],
 ) for f in glob(["src/test/java/**/*IT.java"])]
 
