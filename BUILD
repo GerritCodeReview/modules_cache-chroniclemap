@@ -27,11 +27,11 @@ gerrit_plugin(
         "@chronicle-threads//jar",
         "@chronicle-values//jar",
         "@chronicle-wire//jar",
+        "@commons-lang3//jar",
         "@dev-jna//jar",
         "@error-prone-annotations//jar",
         "@javapoet//jar",
         "@jna-platform//jar",
-        "@commons-lang3//jar",
     ],
 )
 
@@ -41,18 +41,17 @@ junit_tests(
         ["src/test/java/**/*Test.java"],
     ),
     visibility = ["//visibility:public"],
-    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    deps = [
         ":cache-chroniclemap__plugin",
-        "@chronicle-bytes//jar",
         ":chroniclemap-test-lib",
+        "@chronicle-bytes//jar",
     ],
 )
 
-acceptance_tests(
-    srcs = glob(["src/test/java/**/*IT.java"]),
-    group = "server_cache",
-    labels = ["server"],
-    vm_args = ["-Xmx4g"],
+[junit_tests(
+    name = f[:f.index(".")].replace("/", "_"),
+    srcs = [f],
+    tags = ["server"],
     deps = [
         ":cache-chroniclemap__plugin",
         ":chroniclemap-test-lib",
@@ -60,11 +59,12 @@ acceptance_tests(
         "//java/com/google/gerrit/server/cache/serialize",
         "//proto:cache_java_proto",
     ],
-)
+) for f in glob(["src/test/java/**/*IT.java"])]
 
 java_library(
     name = "chroniclemap-test-lib",
     testonly = True,
     srcs = ["src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java"],
-    deps = PLUGIN_DEPS,
+    exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS,
+    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS,
 )
