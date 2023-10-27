@@ -15,8 +15,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.isJava11;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.UseLocalDisk;
@@ -31,13 +29,10 @@ import org.junit.Test;
 public class ChronicleMapCacheConfigDefaultsIT extends AbstractDaemonTest {
   @Override
   public ChronicleMapCacheModule createModule() {
-    if (isJava11()) {
-      // CacheSerializers is accumulating cache names from different test executions in CI therefore
-      // it has to be cleared before this test
-      CacheSerializers.clear();
-      return new ChronicleMapCacheModule();
-    }
-    return null;
+    // CacheSerializers is accumulating cache names from different test executions in CI therefore
+    // it has to be cleared before this test
+    CacheSerializers.clear();
+    return new ChronicleMapCacheModule();
   }
 
   @Test
@@ -46,7 +41,6 @@ public class ChronicleMapCacheConfigDefaultsIT extends AbstractDaemonTest {
   @GerritConfig(name = "cache.change_notes.diskLimit", value = "1")
   @GerritConfig(name = "cache.external_ids_map.diskLimit", value = "1")
   public void shouldAllPersistentCachesHaveDefaultConfiguration() throws Exception {
-    assumeJava11();
     Set<String> allCaches = CacheSerializers.getSerializersNames();
     assertThat(Defaults.defaultMap.keySet()).containsExactlyElementsIn(allCaches);
   }

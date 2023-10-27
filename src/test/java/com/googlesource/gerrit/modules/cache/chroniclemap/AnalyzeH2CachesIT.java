@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 
 import com.google.common.base.Joiner;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -27,7 +26,6 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.Before;
 import org.junit.Test;
 
 @UseSsh
@@ -41,11 +39,6 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
   @Inject private SitePaths sitePaths;
 
   private String cmd = Joiner.on(" ").join("cache-chroniclemap", "analyze-h2-caches");
-
-  @Before
-  public void setup() {
-    assumeJava11();
-  }
 
   @Test
   public void shouldAnalyzeH2Cache() throws Exception {

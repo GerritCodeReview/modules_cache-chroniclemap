@@ -16,7 +16,6 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 import static org.apache.http.HttpHeaders.ACCEPT;
 import static org.eclipse.jgit.util.HttpSupport.TEXT_PLAIN;
 
@@ -26,7 +25,6 @@ import com.google.gerrit.acceptance.RestSession;
 import com.google.gerrit.acceptance.TestPlugin;
 import java.io.IOException;
 import org.apache.http.message.BasicHeader;
-import org.junit.Before;
 import org.junit.Test;
 
 @TestPlugin(
@@ -34,11 +32,6 @@ import org.junit.Test;
     httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
 public class MigrateH2CachesInMemoryIT extends LightweightPluginDaemonTest {
   private static final String MIGRATION_ENDPOINT = "/plugins/cache-chroniclemap/migrate";
-
-  @Before
-  public void setup() {
-    assumeJava11();
-  }
 
   @Test
   public void shouldReturnTexPlain() throws Exception {
