@@ -94,7 +94,7 @@ class CacheKeysIndex<T> {
     private final Counter0 persistFailures;
 
     private Metrics(MetricMaker metricMaker, String name) {
-      String sanitizedName = metricMaker.sanitizeMetricName(name);
+      String sanitizedName = CacheNameSanitizer.sanitize(metricMaker, name);
 
       indexSize =
           metricMaker.newCallbackMetric(
