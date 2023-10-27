@@ -65,7 +65,6 @@ acceptance_tests(
 java_library(
     name = "chroniclemap-test-lib",
     testonly = True,
-    srcs = ["src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java",
-            "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AssumeJava11.java"],
-    deps = PLUGIN_DEPS + [ "//lib:junit" ],
+    srcs = ["src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java"],
+    deps = PLUGIN_DEPS,
 )

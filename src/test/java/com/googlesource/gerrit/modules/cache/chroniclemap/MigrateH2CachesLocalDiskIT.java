@@ -16,7 +16,6 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowCapability;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2CacheCommand.H2_SUFFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_MAX_BLOAT_FACTOR;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.H2MigrationServlet.DEFAULT_SIZE_MULTIPLIER;
@@ -77,7 +76,6 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
 
   @Before
   public void setUp() {
-    assumeJava11();
     chronicleMapCacheConfigFactory =
         plugin.getHttpInjector().getInstance(ChronicleMapCacheConfig.Factory.class);
   }

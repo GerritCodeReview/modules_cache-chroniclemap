@@ -15,8 +15,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.isJava11;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.MAX_ENTRIES_MULTIPLIER;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.PERCENTAGE_SIZE_INCREASE_THRESHOLD;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
@@ -38,7 +36,6 @@ import com.google.gerrit.acceptance.config.GerritConfig;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.ModuleImpl;
 import com.google.gerrit.server.cache.CacheModule;
-import com.google.gerrit.server.cache.h2.H2CacheModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -52,7 +49,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
-import org.junit.Before;
 import org.junit.Test;
 
 @Sandboxed
@@ -101,12 +97,7 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
       persist(TEST_CACHE_NAME, String.class, String.class)
           .loader(TestCacheLoader.class)
           .version(TEST_CACHE_VERSION);
-
-      if (isJava11()) {
-        install(new ChronicleMapCacheModule());
-      } else {
-        install(new H2CacheModule());
-      }
+      install(new ChronicleMapCacheModule());
     }
   }
 
@@ -116,11 +107,6 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     public String load(String key) throws Exception {
       return key;
     }
-  }
-
-  @Before
-  public void setup() {
-    assumeJava11();
   }
 
   @Override

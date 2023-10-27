@@ -14,7 +14,6 @@
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.modules.cache.chroniclemap.AssumeJava11.assumeJava11;
 
 import com.google.gerrit.server.cache.serialize.ObjectIdCacheSerializer;
 import java.nio.ByteBuffer;
@@ -28,7 +27,6 @@ public class KeyWrapperMarshallerTest {
 
   @Before
   public void setup() {
-    assumeJava11();
     CacheSerializers.registerCacheKeySerializer(TEST_CACHE_NAME, ObjectIdCacheSerializer.INSTANCE);
   }
 
