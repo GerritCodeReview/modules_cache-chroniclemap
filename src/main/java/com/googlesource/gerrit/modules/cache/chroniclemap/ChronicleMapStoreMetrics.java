@@ -30,7 +30,7 @@ class ChronicleMapStoreMetrics {
 
   ChronicleMapStoreMetrics(String name, MetricMaker metricMaker) {
     this.name = name;
-    this.sanitizedName = metricMaker.sanitizeMetricName(name);
+    this.sanitizedName = CacheNameSanitizer.sanitize(metricMaker, name);
     this.metricMaker = metricMaker;
 
     this.storePutFailures =
