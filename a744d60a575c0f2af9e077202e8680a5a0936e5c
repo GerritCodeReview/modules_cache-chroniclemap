@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cf027dd8_db682144",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-27T06:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d74194a_5889e5e3",
+      "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7acbcc03_19143f74",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -100,6 +118,24 @@
       "side": 1,
       "message": "The plan is to fix broken CI on the earlier branches, merge it up and then re-apply the change with an extra bits that allow running tests under JDK 17.",
       "parentUuid": "1ba709d5_6d38aeb6",
+      "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edaba2bf_59df650f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-27T06:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "503fe638_bfff0028",
       "revId": "a744d60a575c0f2af9e077202e8680a5a0936e5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
