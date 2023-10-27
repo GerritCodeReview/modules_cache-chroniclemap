@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99fba347_66961f52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-27T05:11:38Z",
+      "side": 1,
+      "message": "Verified locally against `stable-3.7` and `stable-3.8` with:\n```\n$ bazel test --cache_test_results\u003dNO plugins/cache-chroniclemap/...\n...\n//plugins/cache-chroniclemap:cache-chroniclemap_tests                    PASSED in 2.8s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_AnalyzeH2CachesIT PASSED in 20.2s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_AutoAdjustCachesIT PASSED in 32.4s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_ChronicleMapCacheConfigDefaultsIT PASSED in 16.4s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_ChronicleMapCacheExtendedIT PASSED in 29.7s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_ChronicleMapCacheIT PASSED in 13.1s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_MigrateH2CachesInMemoryIT PASSED in 6.2s\n//plugins/cache-chroniclemap:src_test_java_com_googlesource_gerrit_modules_cache_chroniclemap_MigrateH2CachesLocalDiskIT PASSED in 78.7s\n```",
+      "revId": "6341d1f294cc69016911d5bb350321d54d449ed8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
