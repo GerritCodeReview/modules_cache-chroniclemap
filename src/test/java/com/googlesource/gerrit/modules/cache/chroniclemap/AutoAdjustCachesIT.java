@@ -134,13 +134,20 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   @Test
   @GerritConfig(name = "cache.test_cache.maxEntries", value = "10")
   @GerritConfig(name = "cache.test_cache.maxBloatFactor", value = "1")
-  public void shouldIncreaseCacheSizeWhenIsGettingFull() throws Exception {
+  public void shouldCorrectlyIncreaseCacheSizeWhenIsGettingFull() throws Exception {
     ChronicleMapCacheImpl<String, String> chronicleMapCache =
         (ChronicleMapCacheImpl<String, String>) testCache;
 
+    int elemsAdded = 0;
+    int totalKeySize = 0;
+    int totalValueSize = 0;
     while (chronicleMapCache.percentageUsedAutoResizes() < PERCENTAGE_SIZE_INCREASE_THRESHOLD) {
-      String aString = UUID.randomUUID().toString();
-      testCache.put(aString, aString);
+      String key = UUID.randomUUID().toString() + "someExtraValue";
+      String value = UUID.randomUUID().toString();
+      elemsAdded += 1;
+      totalKeySize += key.getBytes("UTF-8").length;
+      totalValueSize += value.getBytes("UTF-8").length;
+      testCache.put(key, value);
     }
 
     String tuneResult = adminSshSession.exec(SSH_CMD + " " + TEST_CACHE_NAME);
@@ -150,6 +157,10 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     assertThat(tunedConfig.getSubsections("cache")).contains(TEST_CACHE_NAME);
     assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "maxEntries", 0))
         .isEqualTo(chronicleMapCache.getConfig().getMaxEntries() * MAX_ENTRIES_MULTIPLIER);
+    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgValueSize", 0))
+        .isEqualTo(totalKeySize / elemsAdded);
+    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgKeySize", 0))
+        .isEqualTo(totalValueSize / elemsAdded);
   }
 
   @Test
