@@ -195,9 +195,10 @@ public class AutoAdjustCaches {
 
     int i = 1;
     for (Map.Entry<KeyWrapper<Object>, TimedValue<Object>> entry : store.entrySet()) {
-      kAvg = kAvg + (serializedKeyLength(cacheName, entry.getKey()) - kAvg) / i;
-      vAvg = vAvg + (serializedValueLength(cacheName, entry.getValue()) - vAvg) / i;
+      kAvg = kAvg + (serializedKeyLength(cacheName, entry.getKey())) / i;
+      vAvg = vAvg + (serializedValueLength(cacheName, entry.getValue())) / i;
       progressMonitor.update(1);
+      i += 1;
     }
     progressMonitor.endTask();
     return ImmutablePair.of(kAvg, vAvg);
