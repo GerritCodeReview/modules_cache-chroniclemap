@@ -15,6 +15,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.getCacheDir;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
@@ -185,29 +186,31 @@ public class AutoAdjustCaches {
       String cacheName,
       ConcurrentMap<KeyWrapper<Object>, TimedValue<Object>> store,
       ProgressMonitor progressMonitor) {
-    long kAvg = 0;
-    long vAvg = 0;
+    long kTotal = 0;
+    long vTotal = 0;
 
-    if (store.isEmpty()) return ImmutablePair.of(kAvg, vAvg);
+    if (store.isEmpty()) return ImmutablePair.of(kTotal, vTotal);
 
     progressMonitor.beginTask(
         String.format("[%s] calculate average key/value size", cacheName), store.size());
 
-    int i = 1;
     for (Map.Entry<KeyWrapper<Object>, TimedValue<Object>> entry : store.entrySet()) {
-      kAvg = kAvg + (serializedKeyLength(cacheName, entry.getKey()) - kAvg) / i;
-      vAvg = vAvg + (serializedValueLength(cacheName, entry.getValue()) - vAvg) / i;
+      kTotal += serializedKeyLength(cacheName, entry.getKey());
+      vTotal += serializedValueLength(cacheName, entry.getValue());
       progressMonitor.update(1);
     }
     progressMonitor.endTask();
-    return ImmutablePair.of(kAvg, vAvg);
+    long numCacheEntries = store.entrySet().size();
+    return ImmutablePair.of(kTotal / numCacheEntries, vTotal / numCacheEntries);
   }
 
-  private static int serializedKeyLength(String cacheName, KeyWrapper<Object> keyWrapper) {
+  @VisibleForTesting
+  static int serializedKeyLength(String cacheName, KeyWrapper<Object> keyWrapper) {
     return CacheSerializers.getKeySerializer(cacheName).serialize(keyWrapper.getValue()).length;
   }
 
-  private static int serializedValueLength(String cacheName, TimedValue<Object> timedValue) {
+  @VisibleForTesting
+  static int serializedValueLength(String cacheName, TimedValue<Object> timedValue) {
     return CacheSerializers.getValueSerializer(cacheName).serialize(timedValue.getValue()).length;
   }
 
