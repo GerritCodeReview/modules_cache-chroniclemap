@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bee8eaa7_5952d320",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-19T00:32:51Z",
+      "side": 1,
+      "message": "Post-merge -1: this should have been caught during reviews, my bad that I gave -2 without checking carefully all modifications between PS6 and PS8 😞\n\nI struggle to understand what type of differential average formula was applied.\n\nIf you wanted to avoid adding all elements\u0027 sizes risking an integer overflow, it should have been expressed as _Avg(A1 ... An) \u003d Sum(A1 ... An)/n \u003d Sum(A1/n ... An/n)_\n\n```suggestion\n    int i \u003d entry.size();\n    for (Map.Entry\u003cKeyWrapper\u003cObject\u003e, TimedValue\u003cObject\u003e\u003e entry : store.entrySet()) {\n      kAvg \u003d kAvg + (serializedKeyLength(cacheName, entry.getKey()) / i;\n      vAvg \u003d vAvg + (serializedValueLength(cacheName, entry.getValue()) / i;\n      progress.update(1);\n    }\n```\n\nAlso note that `kAvg` and `vAvg` needs to be double.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 5
+      },
+      "revId": "0dbf9be8da7214fd9068e84a7af3bc664a60733d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
