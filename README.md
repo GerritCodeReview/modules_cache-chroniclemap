@@ -3,6 +3,28 @@
 Non-blocking and super-fast on-disk cache libModule for [Gerrit Code Review](https://gerritcodereview.com)
 based on [ChronicleMap on-disk implementation](https://github.com/OpenHFT/Chronicle-Map).
 
+## Why yet another persistent cache backend?
+
+The default persistent cache backend in Gerrit is H2, which is good enough for
+most setups. When the size and cardinality of the data grows, the H2 storage may
+be too unreliable and subject to long waits for its internal reorganisation and
+auto-vacuum processing.
+
+The main points of improvements and design principles of the cache-chroniclemap backend are:
+- Not requiring an external service
+- Rely on the local filesystem, exactly as with H2
+- Allow smooth migration of H2 data into the cache-chroniclemap storage
+- Optimised for low-latency and concurrency
+
+The drawbacks of cache-chroniclemap is relying on a static file allocation, which requires
+planning and adjustments by the Gerrit administrator.
+
+Cache-chroniclemap provides both the persistent cache implementation and the associated
+tooling as SSH commands for:
+- Storage resize
+- Auto-tuning of the optimal key/value sizes from current data stored in the cache
+- LRU eviction
+
 ## How to build
 
 This libModule is built like a Gerrit in-tree plugin, using Bazelisk. See the
