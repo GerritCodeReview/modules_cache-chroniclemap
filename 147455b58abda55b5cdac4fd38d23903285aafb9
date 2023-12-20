@@ -113,6 +113,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84fe43b5_c488c17d",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-12-20T00:14:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "848596ea_0c01da9e",
+      "range": {
+        "startLine": 197,
+        "startChar": 24,
+        "endLine": 197,
+        "endChar": 25
+      },
+      "revId": "147455b58abda55b5cdac4fd38d23903285aafb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ad472e8_c932889a",
@@ -126,6 +150,30 @@
       "writtenOn": "2023-12-19T23:43:18Z",
       "side": 1,
       "message": "```suggestion\n      vTotal \u003d vTotal + serializedValueLength(cacheName, entry.getValue());\n```",
+      "range": {
+        "startLine": 198,
+        "startChar": 24,
+        "endLine": 198,
+        "endChar": 25
+      },
+      "revId": "147455b58abda55b5cdac4fd38d23903285aafb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7165c90c_dbbec6c3",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-12-20T00:14:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ad472e8_c932889a",
       "range": {
         "startLine": 198,
         "startChar": 24,
