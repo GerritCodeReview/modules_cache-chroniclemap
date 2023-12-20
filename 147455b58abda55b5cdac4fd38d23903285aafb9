@@ -205,6 +205,30 @@
       },
       "revId": "147455b58abda55b5cdac4fd38d23903285aafb9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfa0fd84_8e8c8e0d",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-12-20T00:32:47Z",
+      "side": 1,
+      "message": "That didn\u0027t seem to work, unsure why? So I made the methods simply static, let me know if it\u0027s ok.",
+      "parentUuid": "0119fb9e_4c7514b2",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 55
+      },
+      "revId": "147455b58abda55b5cdac4fd38d23903285aafb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
