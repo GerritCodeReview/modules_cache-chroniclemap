@@ -134,6 +134,29 @@
       },
       "revId": "147455b58abda55b5cdac4fd38d23903285aafb9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0119fb9e_4c7514b2",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-20T00:13:59Z",
+      "side": 1,
+      "message": "The sizes are calculated in a different way in the code:\n```\n  private static int serializedKeyLength(String cacheName, KeyWrapper\u003cObject\u003e keyWrapper) {\n    return CacheSerializers.getKeySerializer(cacheName).serialize(keyWrapper.getValue()).length;\n  }\n\n  private static int serializedValueLength(String cacheName, TimedValue\u003cObject\u003e timedValue) {\n    return CacheSerializers.getValueSerializer(cacheName).serialize(timedValue.getValue()).length;\n  }\n```\n\nI would recommend to expose those two static methods with `@VisibleForTesting` and reuse them in your tests.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 55
+      },
+      "revId": "147455b58abda55b5cdac4fd38d23903285aafb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
