@@ -22,6 +22,30 @@
       },
       "revId": "0dbf9be8da7214fd9068e84a7af3bc664a60733d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a0c427_cb4ac1a5",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-30T19:19:45Z",
+      "side": 1,
+      "message": "@luca.milanesio@gmail.com, I have already discussed this with @danielesassoli@gmail.com.\n\nAn excerpt of what I said in that conversation:\n\n*Tony* I think you have a good point! I found that the initial implementation for that avg calculation was more traditional (see AutoAdjustCaches.java [1])\n\nThe reason I changed it (as far as I can extract from the code review) is to calculate both averages in one pass.\nThat\u0027s when I changed the code to calculate a (running average instead)\nBut that part is just off, we shouldn\u0027t be subtracting the previous avg.\n\n---------\n\n\nSo yeah, I agree with you @luca.milanesio@gmail.com and @danielesassoli@gmail.com, this code is just buggy, thanks for spotting it and for fixing it.\n\n[1]https://gerrit-review.googlesource.com/c/modules/cache-chroniclemap/+/307833/6..8",
+      "parentUuid": "bee8eaa7_5952d320",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 5
+      },
+      "revId": "0dbf9be8da7214fd9068e84a7af3bc664a60733d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
