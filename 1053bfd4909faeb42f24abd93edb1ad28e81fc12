@@ -51,6 +51,24 @@
       "message": "Add empty line above.\n\n\n```suggestion\n\n  @VisibleForTesting\n```",
       "revId": "1053bfd4909faeb42f24abd93edb1ad28e81fc12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6dfdf5d_ba1d7e14",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T21:12:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59b4cba8_b44b6523",
+      "revId": "1053bfd4909faeb42f24abd93edb1ad28e81fc12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

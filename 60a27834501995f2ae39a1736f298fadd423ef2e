@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5d5c905_5465ac30",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T21:12:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "767f8991_8f56f536",
+      "range": {
+        "startLine": 162,
+        "startChar": 62,
+        "endLine": 162,
+        "endChar": 74
+      },
+      "revId": "60a27834501995f2ae39a1736f298fadd423ef2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d08c7097_3dffb005",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-05T20:29:16Z",
       "side": 1,
       "message": "Should be `avgValueSize`\n\n\n```suggestion\n    assertThat(tunedConfig.getLong(\"cache\", TEST_CACHE_NAME, \"avgValueSize\", 0))\n```",
+      "range": {
+        "startLine": 164,
+        "startChar": 62,
+        "endLine": 164,
+        "endChar": 72
+      },
+      "revId": "60a27834501995f2ae39a1736f298fadd423ef2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc5d073_91c8b7ef",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T21:12:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d08c7097_3dffb005",
       "range": {
         "startLine": 164,
         "startChar": 62,
