@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55298e91_2ee09998",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:57:41Z",
+      "side": 1,
+      "message": "Needs also a couple of Code-Style fixes.",
+      "revId": "42159d86060bcb04964bb56ecb05a1d961e857e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb8c5a03_b44b7312",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:57:41Z",
+      "side": 1,
+      "message": "Need reformatting.\n\n\n```suggestion\n            makeChronicleMapConfig(currCache.getConfig(), newMaxEntries, newKeySize, newValueSize);\n```",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "42159d86060bcb04964bb56ecb05a1d961e857e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f89806f3_48b1e837",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:57:41Z",
+      "side": 1,
+      "message": "Needs reformatting.\n\n\n```suggestion\n      assertThat(configResult.getLong(\"cache\", cache, \"avgValueSize\", 0))\n          .isEqualTo(wantedAvgValueSize);\n```",
+      "revId": "42159d86060bcb04964bb56ecb05a1d961e857e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
