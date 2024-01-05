@@ -58,6 +58,8 @@ public class AutoAdjustCaches {
 
   private boolean dryRun;
   private boolean adjustCachesOnDefaults;
+  private Optional<Long> optionalAvgKeySize = Optional.empty();
+  private Optional<Long> optionalAvgValueSize = Optional.empty();
   private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
 
@@ -96,8 +98,24 @@ public class AutoAdjustCaches {
     return optionalMaxEntries;
   }
 
+  public Optional<Long> getOptionalAvgKeySize() {
+    return optionalAvgKeySize;
+  }
+
+  public Optional<Long> getOptionalAvgValueSize() {
+    return optionalAvgValueSize;
+  }
+
   public void setOptionalMaxEntries(Optional<Long> maxEntries) {
     this.optionalMaxEntries = maxEntries;
+  }
+
+  public void setAvgKeySize(Optional<Long> avgKeySize) {
+    this.optionalAvgKeySize = avgKeySize;
+  }
+
+  public void setAvgValueSize(Optional<Long> avgValueSize) {
+    this.optionalAvgValueSize = avgValueSize;
   }
 
   public void addCacheNames(List<String> cacheNames) {
@@ -129,27 +147,29 @@ public class AutoAdjustCaches {
           continue;
         }
 
-        long averageKeySize = avgSizes.getKey();
-        long averageValueSize = avgSizes.getValue();
+        long newKeySize = getOptionalAvgKeySize()
+            .orElseGet(avgSizes::getKey);
+        long newValueSize = getOptionalAvgKeySize()
+            .orElseGet(avgSizes::getValue);
 
         ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
         long newMaxEntries = newMaxEntries(currCache);
 
-        if (currCacheConfig.getAverageKeySize() == averageKeySize
-            && currCacheConfig.getAverageValueSize() == averageValueSize
+        if (currCacheConfig.getAverageKeySize() == newKeySize
+            && currCacheConfig.getAverageValueSize() == newValueSize
             && currCacheConfig.getMaxEntries() == newMaxEntries) {
           continue;
         }
 
         ChronicleMapCacheConfig newChronicleMapCacheConfig =
             makeChronicleMapConfig(
-                currCache.getConfig(), newMaxEntries, averageKeySize, averageValueSize);
+                currCache.getConfig(), newMaxEntries, newKeySize, newValueSize);
 
         updateOutputConfig(
             outputChronicleMapConfig,
             cacheName,
-            averageKeySize,
-            averageValueSize,
+            newKeySize,
+            newValueSize,
             newMaxEntries,
             currCache.getConfig().getMaxBloatFactor());
 

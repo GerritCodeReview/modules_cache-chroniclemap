@@ -182,6 +182,38 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void shouldHonourAvgKeySizeParameter() throws Exception {
+    createChange();
+    Long wantedAvgKeySize = 50L;
+
+    String result =
+        adminSshSession.exec(String.format("%s --avg-key-size %s", SSH_CMD, wantedAvgKeySize));
+
+    adminSshSession.assertSuccess();
+    Config configResult = configResult(result, CONFIG_HEADER);
+
+    for (String cache : EXPECTED_CACHES) {
+      assertThat(configResult.getLong("cache", cache, "avgKeySize", 0)).isEqualTo(wantedAvgKeySize);
+    }
+  }
+
+  @Test
+  public void shouldHonourAvgValueSizeParameter() throws Exception {
+    createChange();
+    Long wantedAvgValueSize = 100L;
+
+    String result =
+        adminSshSession.exec(String.format("%s --avg-value-size %s", SSH_CMD, wantedAvgValueSize));
+
+    adminSshSession.assertSuccess();
+    Config configResult = configResult(result, CONFIG_HEADER);
+
+    for (String cache : EXPECTED_CACHES) {
+      assertThat(configResult.getLong("cache", cache, "avgValueSize", 0)).isEqualTo(wantedAvgValueSize);
+    }
+  }
+
+  @Test
   public void shouldCreateNewCacheFiles() throws Exception {
     createChange();
 
