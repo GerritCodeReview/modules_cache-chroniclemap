@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75882980_dc663d75",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T21:50:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f17fc63_67bbda9c",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 43
+      },
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "866f4bdd_e880877a",
@@ -82,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1946eb5f_747850e6",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T21:50:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "866f4bdd_e880877a",
+      "range": {
+        "startLine": 62,
+        "startChar": 19,
+        "endLine": 62,
+        "endChar": 20
+      },
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8b20878_cc4bd48b",
@@ -95,6 +143,30 @@
       "writtenOn": "2024-01-05T21:46:38Z",
       "side": 1,
       "message": "You have already used `-a` at L54\n\n\n```suggestion\n      aliases \u003d {\"-v\"},\n```",
+      "range": {
+        "startLine": 70,
+        "startChar": 18,
+        "endLine": 70,
+        "endChar": 20
+      },
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00052f1_73fc97bf",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T21:50:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8b20878_cc4bd48b",
       "range": {
         "startLine": 70,
         "startChar": 18,
