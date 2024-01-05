@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f17fc63_67bbda9c",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:16:53Z",
+      "side": 1,
+      "message": "If `optionalAvgKeySize.isPresent() \u0026\u0026 optionalAvgValueSize.isPresent()` there is no point in wasting computing resources in calculating the average sizes.\n\n\n```suggestion\n        long newKeySize;\n        long newValueSize;\n\n        if (optionalAvgKeySize.isPresent() \u0026\u0026 optionalAvgValueSize.isPresent()) {\n          newKeySize \u003d optionalAvgKeySize.get();\n          newValueSize \u003d optionalAvgValueSize.get();\n        } else {\n          ImmutablePair\u003cLong, Long\u003e avgSizes \u003d\n              averageSizes(cacheName, currCache.getStore(), progressMonitor);\n          if (!(avgSizes.getKey() \u003e 0) || !(avgSizes.getValue() \u003e 0)) {\n            logger.atWarning().log(\n                \"Cache [%s] has %s entries, but average of (key: %d, value: %d). Skipping.\",\n                cacheName, currCache.diskStats().size(), avgSizes.getKey(), avgSizes.getValue());\n            continue;\n          }\n\n          newKeySize \u003d getOptionalAvgKeySize().orElseGet(avgSizes::getKey);\n          newValueSize \u003d getOptionalAvgValueSize().orElseGet(avgSizes::getValue);\n        }\n```",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 43
+      },
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
