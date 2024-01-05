@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d0cdce9_c6afffb5",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T22:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cefc458_ed4dfcba",
+      "range": {
+        "startLine": 183,
+        "startChar": 77,
+        "endLine": 183,
+        "endChar": 78
+      },
+      "revId": "a253d502bb934e9dd72cd80c0beb14b48d09a401",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4f6061e_5d9a057d",
@@ -64,6 +88,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c847e1_1f3f1f79",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T22:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4f6061e_5d9a057d",
+      "range": {
+        "startLine": 186,
+        "startChar": 77,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "a253d502bb934e9dd72cd80c0beb14b48d09a401",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37088ccd_4197fcdd",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-01-05T22:21:17Z",
       "side": 1,
       "message": "nit: space at EOL\n\n\n```suggestion\n* `--avg-value-size` or `-v` (SSH), `?avg-value-sizes` or `?v` (REST-API)\n```",
+      "range": {
+        "startLine": 189,
+        "startChar": 73,
+        "endLine": 189,
+        "endChar": 74
+      },
+      "revId": "a253d502bb934e9dd72cd80c0beb14b48d09a401",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d7754ac_5312966f",
+        "filename": "src/main/resources/Documentation/tuning.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T22:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37088ccd_4197fcdd",
       "range": {
         "startLine": 189,
         "startChar": 73,
