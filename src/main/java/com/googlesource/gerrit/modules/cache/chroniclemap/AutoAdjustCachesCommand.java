@@ -57,6 +57,22 @@ public class AutoAdjustCachesCommand extends SshCommand {
     autoAdjustCachesEngine.setAdjustCachesOnDefaults(adjustCachesOnDefaults);
   }
 
+  @Option(
+      name = "--avg-key-size",
+      aliases = {"-a"},
+      usage = "Set avg key size.")
+  public void setAvgKeySize(boolean avgKeySize) {
+    autoAdjustCachesEngine.setAdjustCachesOnDefaults(avgKeySize);
+  }
+
+  @Option(
+      name = "--avg-value-size",
+      aliases = {"-a"},
+      usage = "Set avg value size")
+  public void setAvgValueSize(boolean avgValueSize) {
+    autoAdjustCachesEngine.setAdjustCachesOnDefaults(avgValueSize);
+  }
+
   @Argument(
       index = 0,
       required = false,
