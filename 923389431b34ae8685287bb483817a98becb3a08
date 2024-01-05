@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e726e750_6c0edaef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:46:38Z",
+      "side": 1,
+      "message": "Can you also amend the documentation 🙏?",
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9d5d818f_21380b00",
         "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
         "patchSetId": 2
@@ -37,6 +54,52 @@
         "startChar": 0,
         "endLine": 153,
         "endChar": 43
+      },
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "866f4bdd_e880877a",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:46:38Z",
+      "side": 1,
+      "message": "You have already used `-a` at L54\n\n\n```suggestion\n      aliases \u003d {\"-k\"},\n```",
+      "range": {
+        "startLine": 62,
+        "startChar": 19,
+        "endLine": 62,
+        "endChar": 20
+      },
+      "revId": "923389431b34ae8685287bb483817a98becb3a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b20878_cc4bd48b",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T21:46:38Z",
+      "side": 1,
+      "message": "You have already used `-a` at L54\n\n\n```suggestion\n      aliases \u003d {\"-v\"},\n```",
+      "range": {
+        "startLine": 70,
+        "startChar": 18,
+        "endLine": 70,
+        "endChar": 20
       },
       "revId": "923389431b34ae8685287bb483817a98becb3a08",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
