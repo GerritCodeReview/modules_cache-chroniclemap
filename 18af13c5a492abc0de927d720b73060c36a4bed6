@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab71a851_54fc0e04",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-05T22:28:48Z",
+      "side": 1,
+      "message": "Formatting issue\n\n\n```suggestion\n      assertThat(configResult.getLong(\"cache\", cache, \"avgValueSize\", 0))\n          .isEqualTo(wantedAvgValueSize);\n```",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 104
+      },
+      "revId": "18af13c5a492abc0de927d720b73060c36a4bed6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
