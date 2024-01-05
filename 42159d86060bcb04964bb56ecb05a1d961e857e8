@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06b5afc7_77414a9f",
+        "filename": "src/main/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCaches.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T22:15:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb8c5a03_b44b7312",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "42159d86060bcb04964bb56ecb05a1d961e857e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f89806f3_48b1e837",
@@ -54,6 +78,24 @@
       "writtenOn": "2024-01-05T21:57:41Z",
       "side": 1,
       "message": "Needs reformatting.\n\n\n```suggestion\n      assertThat(configResult.getLong(\"cache\", cache, \"avgValueSize\", 0))\n          .isEqualTo(wantedAvgValueSize);\n```",
+      "revId": "42159d86060bcb04964bb56ecb05a1d961e857e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fa8e233_aa34c99f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/AutoAdjustCachesIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2024-01-05T22:15:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f89806f3_48b1e837",
       "revId": "42159d86060bcb04964bb56ecb05a1d961e857e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
