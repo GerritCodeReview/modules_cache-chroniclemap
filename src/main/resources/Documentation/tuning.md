@@ -180,6 +180,18 @@ Note that this parameter will be used globally across all caches, so if you want
 to increase the size of a particular cache only you should be using this
 together with the `cache-name` parameter.
 
+* `--avg-key-size` or `-k` (SSH), `?avg-key-size` or `?k` (REST-API) optional
+  parameter
+
+It's possible to specify a pre-defined key size in case the user wants to set
+a different value from the one automatically calculated from the auto-adjust tool.
+
+* `--avg-value-size` or `-v` (SSH), `?avg-value-size` or `?v` (REST-API)
+  optional parameter
+
+It's possible to specify a pre-defined value size in case the user wants to set
+a different value from the one automatically calculated from the auto-adjust tool.
+
 * `--adjust-caches-on-defaults` or `-a` (SSH), `?adjust-caches-on-defaults` or `?a` (REST-API)
   optional parameter
 

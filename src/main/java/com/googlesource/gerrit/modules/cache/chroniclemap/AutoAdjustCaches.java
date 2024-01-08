@@ -15,6 +15,7 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheFactory.getCacheDir;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.Nullable;
@@ -57,6 +58,8 @@ public class AutoAdjustCaches {
 
   private boolean dryRun;
   private boolean adjustCachesOnDefaults;
+  private Optional<Long> optionalAvgKeySize = Optional.empty();
+  private Optional<Long> optionalAvgValueSize = Optional.empty();
   private Optional<Long> optionalMaxEntries = Optional.empty();
   private Set<String> cacheNames = new HashSet<>();
 
@@ -95,8 +98,24 @@ public class AutoAdjustCaches {
     return optionalMaxEntries;
   }
 
+  public Optional<Long> getOptionalAvgKeySize() {
+    return optionalAvgKeySize;
+  }
+
+  public Optional<Long> getOptionalAvgValueSize() {
+    return optionalAvgValueSize;
+  }
+
   public void setOptionalMaxEntries(Optional<Long> maxEntries) {
     this.optionalMaxEntries = maxEntries;
+  }
+
+  public void setAvgKeySize(Optional<Long> avgKeySize) {
+    this.optionalAvgKeySize = avgKeySize;
+  }
+
+  public void setAvgValueSize(Optional<Long> avgValueSize) {
+    this.optionalAvgValueSize = avgValueSize;
   }
 
   public void addCacheNames(List<String> cacheNames) {
@@ -119,36 +138,43 @@ public class AutoAdjustCaches {
       ChronicleMapCacheImpl<Object, Object> currCache = cache.getValue();
 
       {
-        ImmutablePair<Long, Long> avgSizes =
-            averageSizes(cacheName, currCache.getStore(), progressMonitor);
-        if (!(avgSizes.getKey() > 0) || !(avgSizes.getValue() > 0)) {
-          logger.atWarning().log(
-              "Cache [%s] has %s entries, but average of (key: %d, value: %d). Skipping.",
-              cacheName, currCache.diskStats().size(), avgSizes.getKey(), avgSizes.getValue());
-          continue;
-        }
+        long newKeySize;
+        long newValueSize;
 
-        long averageKeySize = avgSizes.getKey();
-        long averageValueSize = avgSizes.getValue();
+        if (optionalAvgKeySize.isPresent() && optionalAvgValueSize.isPresent()) {
+          newKeySize = optionalAvgKeySize.get();
+          newValueSize = optionalAvgValueSize.get();
+        } else {
+          ImmutablePair<Long, Long> avgSizes =
+              averageSizes(cacheName, currCache.getStore(), progressMonitor);
+          if (!(avgSizes.getKey() > 0) || !(avgSizes.getValue() > 0)) {
+            logger.atWarning().log(
+                "Cache [%s] has %s entries, but average of (key: %d, value: %d). Skipping.",
+                cacheName, currCache.diskStats().size(), avgSizes.getKey(), avgSizes.getValue());
+            continue;
+          }
+
+          newKeySize = getOptionalAvgKeySize().orElseGet(avgSizes::getKey);
+          newValueSize = getOptionalAvgValueSize().orElseGet(avgSizes::getValue);
+        }
 
         ChronicleMapCacheConfig currCacheConfig = currCache.getConfig();
         long newMaxEntries = newMaxEntries(currCache);
 
-        if (currCacheConfig.getAverageKeySize() == averageKeySize
-            && currCacheConfig.getAverageValueSize() == averageValueSize
+        if (currCacheConfig.getAverageKeySize() == newKeySize
+            && currCacheConfig.getAverageValueSize() == newValueSize
             && currCacheConfig.getMaxEntries() == newMaxEntries) {
           continue;
         }
 
         ChronicleMapCacheConfig newChronicleMapCacheConfig =
-            makeChronicleMapConfig(
-                currCache.getConfig(), newMaxEntries, averageKeySize, averageValueSize);
+            makeChronicleMapConfig(currCache.getConfig(), newMaxEntries, newKeySize, newValueSize);
 
         updateOutputConfig(
             outputChronicleMapConfig,
             cacheName,
-            averageKeySize,
-            averageValueSize,
+            newKeySize,
+            newValueSize,
             newMaxEntries,
             currCache.getConfig().getMaxBloatFactor());
 
@@ -185,29 +211,31 @@ public class AutoAdjustCaches {
       String cacheName,
       ConcurrentMap<KeyWrapper<Object>, TimedValue<Object>> store,
       ProgressMonitor progressMonitor) {
-    long kAvg = 0;
-    long vAvg = 0;
+    long kTotal = 0;
+    long vTotal = 0;
 
-    if (store.isEmpty()) return ImmutablePair.of(kAvg, vAvg);
+    if (store.isEmpty()) return ImmutablePair.of(kTotal, vTotal);
 
     progressMonitor.beginTask(
         String.format("[%s] calculate average key/value size", cacheName), store.size());
 
-    int i = 1;
     for (Map.Entry<KeyWrapper<Object>, TimedValue<Object>> entry : store.entrySet()) {
-      kAvg = kAvg + (serializedKeyLength(cacheName, entry.getKey()) - kAvg) / i;
-      vAvg = vAvg + (serializedValueLength(cacheName, entry.getValue()) - vAvg) / i;
+      kTotal += serializedKeyLength(cacheName, entry.getKey());
+      vTotal += serializedValueLength(cacheName, entry.getValue());
       progressMonitor.update(1);
     }
     progressMonitor.endTask();
-    return ImmutablePair.of(kAvg, vAvg);
+    long numCacheEntries = store.entrySet().size();
+    return ImmutablePair.of(kTotal / numCacheEntries, vTotal / numCacheEntries);
   }
 
-  private static int serializedKeyLength(String cacheName, KeyWrapper<Object> keyWrapper) {
+  @VisibleForTesting
+  static int serializedKeyLength(String cacheName, KeyWrapper<Object> keyWrapper) {
     return CacheSerializers.getKeySerializer(cacheName).serialize(keyWrapper.getValue()).length;
   }
 
-  private static int serializedValueLength(String cacheName, TimedValue<Object> timedValue) {
+  @VisibleForTesting
+  static int serializedValueLength(String cacheName, TimedValue<Object> timedValue) {
     return CacheSerializers.getValueSerializer(cacheName).serialize(timedValue.getValue()).length;
   }
 
