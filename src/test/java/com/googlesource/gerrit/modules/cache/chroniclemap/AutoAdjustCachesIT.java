@@ -17,6 +17,8 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.MAX_ENTRIES_MULTIPLIER;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.PERCENTAGE_SIZE_INCREASE_THRESHOLD;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.serializedKeyLength;
+import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCaches.serializedValueLength;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.CONFIG_HEADER;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.AutoAdjustCachesCommand.TUNED_INFIX;
 import static com.googlesource.gerrit.modules.cache.chroniclemap.ChronicleMapCacheConfig.Defaults.maxBloatFactorFor;
@@ -134,13 +136,20 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   @Test
   @GerritConfig(name = "cache.test_cache.maxEntries", value = "10")
   @GerritConfig(name = "cache.test_cache.maxBloatFactor", value = "1")
-  public void shouldIncreaseCacheSizeWhenIsGettingFull() throws Exception {
+  public void shouldCorrectlyIncreaseCacheSizeWhenIsGettingFull() throws Exception {
     ChronicleMapCacheImpl<String, String> chronicleMapCache =
         (ChronicleMapCacheImpl<String, String>) testCache;
 
+    long elemsAdded = 0;
+    long totalKeySize = 0;
+    long totalValueSize = 0;
     while (chronicleMapCache.percentageUsedAutoResizes() < PERCENTAGE_SIZE_INCREASE_THRESHOLD) {
-      String aString = UUID.randomUUID().toString();
-      testCache.put(aString, aString);
+      String key = UUID.randomUUID() + "someExtraValue";
+      String value = UUID.randomUUID().toString();
+      elemsAdded += 1;
+      totalKeySize += serializedKeyLength(TEST_CACHE_NAME, new KeyWrapper<>(key));
+      totalValueSize += serializedValueLength(TEST_CACHE_NAME, new TimedValue<>(value));
+      testCache.put(key, value);
     }
 
     String tuneResult = adminSshSession.exec(SSH_CMD + " " + TEST_CACHE_NAME);
@@ -150,6 +159,10 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
     assertThat(tunedConfig.getSubsections("cache")).contains(TEST_CACHE_NAME);
     assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "maxEntries", 0))
         .isEqualTo(chronicleMapCache.getConfig().getMaxEntries() * MAX_ENTRIES_MULTIPLIER);
+    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgKeySize", 0))
+        .isEqualTo(totalKeySize / elemsAdded);
+    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgValueSize", 0))
+        .isEqualTo(totalValueSize / elemsAdded);
   }
 
   @Test
@@ -165,6 +178,39 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
     for (String cache : EXPECTED_CACHES) {
       assertThat(configResult.getLong("cache", cache, "maxEntries", 0)).isEqualTo(wantedMaxEntries);
+    }
+  }
+
+  @Test
+  public void shouldHonourAvgKeySizeParameter() throws Exception {
+    createChange();
+    Long wantedAvgKeySize = 50L;
+
+    String result =
+        adminSshSession.exec(String.format("%s --avg-key-size %s", SSH_CMD, wantedAvgKeySize));
+
+    adminSshSession.assertSuccess();
+    Config configResult = configResult(result, CONFIG_HEADER);
+
+    for (String cache : EXPECTED_CACHES) {
+      assertThat(configResult.getLong("cache", cache, "avgKeySize", 0)).isEqualTo(wantedAvgKeySize);
+    }
+  }
+
+  @Test
+  public void shouldHonourAvgValueSizeParameter() throws Exception {
+    createChange();
+    Long wantedAvgValueSize = 100L;
+
+    String result =
+        adminSshSession.exec(String.format("%s --avg-value-size %s", SSH_CMD, wantedAvgValueSize));
+
+    adminSshSession.assertSuccess();
+    Config configResult = configResult(result, CONFIG_HEADER);
+
+    for (String cache : EXPECTED_CACHES) {
+      assertThat(configResult.getLong("cache", cache, "avgValueSize", 0))
+          .isEqualTo(wantedAvgValueSize);
     }
   }
 
