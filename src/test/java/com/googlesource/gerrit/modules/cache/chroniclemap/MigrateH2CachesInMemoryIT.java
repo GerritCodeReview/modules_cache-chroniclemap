@@ -59,12 +59,12 @@ public class MigrateH2CachesInMemoryIT extends LightweightPluginDaemonTest {
         .contains("Cannot run migration, cache directory is not configured");
   }
 
-  private RestResponse runMigration(RestSession restSession) throws IOException {
+  private RestResponse runMigration(RestSession restSession) throws Exception {
     return runMigrationWithAcceptHeader(restSession, TEXT_PLAIN);
   }
 
   private RestResponse runMigrationWithAcceptHeader(RestSession restSession, String acceptHeader)
-      throws IOException {
+      throws Exception {
     return restSession.putWithHeaders(MIGRATION_ENDPOINT, new BasicHeader(ACCEPT, acceptHeader));
   }
 }

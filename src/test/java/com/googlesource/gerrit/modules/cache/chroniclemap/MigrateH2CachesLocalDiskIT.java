@@ -272,7 +272,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
     return (H2CacheImpl<K, V>) findClassBoundWithName(LoadingCache.class, named);
   }
 
-  private RestResponse runMigration(int sizeMultiplier, int maxBloatFactor) throws IOException {
+  private RestResponse runMigration(int sizeMultiplier, int maxBloatFactor) throws Exception {
     return adminRestSession.put(
         String.format(
             "%s?%s=%d&%s=%d",
@@ -283,12 +283,12 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             sizeMultiplier));
   }
 
-  private RestResponse runMigration(RestSession restSession) throws IOException {
+  private RestResponse runMigration(RestSession restSession) throws Exception {
     return runMigrationWithAcceptHeader(restSession, TEXT_PLAIN);
   }
 
   private RestResponse runMigrationWithAcceptHeader(RestSession restSession, String acceptHeader)
-      throws IOException {
+      throws Exception {
     return restSession.putWithHeaders(MIGRATION_ENDPOINT, new BasicHeader(ACCEPT, acceptHeader));
   }
 
