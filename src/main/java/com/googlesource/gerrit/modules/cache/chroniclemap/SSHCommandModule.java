@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.googlesource.gerrit.modules.cache.chroniclemap;
 
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.sshd.PluginCommandModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -22,7 +23,8 @@ public class SSHCommandModule extends PluginCommandModule {
   private final Injector injector;
 
   @Inject
-  SSHCommandModule(Injector injector) {
+  SSHCommandModule(Injector injector, @PluginName String pluginName) {
+    super(pluginName);
     this.injector = injector;
   }
 
