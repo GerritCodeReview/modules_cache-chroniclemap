@@ -87,7 +87,10 @@ junit_tests(
 java_library(
     name = "chroniclemap-test-lib",
     testonly = True,
-    srcs = ["src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java"],
+    srcs = [
+        "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/LightweightPluginDaemonWithSshSessionsTest.java",
+        "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/TestPersistentCacheDef.java",
+    ],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS,
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS,
 )
