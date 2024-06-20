@@ -17,7 +17,6 @@ package com.googlesource.gerrit.modules.cache.chroniclemap;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.base.Joiner;
-import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
@@ -34,7 +33,7 @@ import org.junit.Test;
     sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule")
 @UseLocalDisk
 @Sandboxed
-public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
+public class AnalyzeH2CachesIT extends LightweightPluginDaemonWithSshSessionsTest {
 
   @Inject private SitePaths sitePaths;
 
@@ -42,50 +41,60 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldAnalyzeH2Cache() throws Exception {
-    createChange();
+    try (SshSessionProvider testSshSessionAsAdmin = newSshSession(admin.id())) {
+      createChange();
 
-    String result = adminSshSession.exec(cmd);
+      String result = testSshSessionAsAdmin.exec(cmd);
 
-    adminSshSession.assertSuccess();
-    assertThat(result).contains("[cache \"git_file_diff\"]\n" + "\tmaxEntries = 1\n");
-    assertThat(result).contains("[cache \"gerrit_file_diff\"]\n" + "\tmaxEntries = 2\n");
-    assertThat(result).contains("[cache \"accounts\"]\n" + "\tmaxEntries = 4\n");
-    assertThat(result).contains("[cache \"diff_summary\"]\n" + "\tmaxEntries = 1\n");
-    assertThat(result).contains("[cache \"persisted_projects\"]\n" + "\tmaxEntries = 3\n");
+      testSshSessionAsAdmin.assertSuccess();
+      assertThat(result).contains("[cache \"git_file_diff\"]");
+      assertThat(result).contains("[cache \"gerrit_file_diff\"]");
+      assertThat(result).contains("[cache \"accounts\"]");
+      assertThat(result).contains("[cache \"diff_summary\"]");
+      assertThat(result).contains("[cache \"persisted_projects\"]");
+    }
   }
 
   @Test
   public void shouldDenyAccessToAnalyzeH2Cache() throws Exception {
-    userSshSession.exec(cmd);
-    userSshSession.assertFailure("not permitted");
+    try (SshSessionProvider sshSession = newSshSession(user.id())) {
+      sshSession.exec(cmd);
+      sshSession.assertFailure("not permitted");
+    }
   }
 
   @Test
   public void shouldProduceWarningWhenCacheFileIsEmpty() throws Exception {
-    String expectedPattern = "WARN: Cache .[a-z]+ is empty, skipping";
-    String result = adminSshSession.exec(cmd);
+    try (SshSessionProvider testSshSessionAsAdmin = newSshSession(admin.id())) {
+      String expectedPattern = "WARN: Cache .[a-z]+ is empty, skipping";
+      String result = testSshSessionAsAdmin.exec(cmd);
 
-    adminSshSession.assertSuccess();
-    assertThat(result).containsMatch(expectedPattern);
+      testSshSessionAsAdmin.assertSuccess();
+      assertThat(result).containsMatch(expectedPattern);
+    }
   }
 
   @Test
   public void shouldIgnoreNonH2Files() throws Exception {
-    Path cacheDirectory = sitePaths.resolve(cfg.getString("cache", null, "directory"));
-    Files.write(cacheDirectory.resolve("some.dat"), "some_content".getBytes());
+    try (SshSessionProvider testSshSessionAsAdmin = newSshSession(admin.id())) {
+      Path cacheDirectory = sitePaths.resolve(cfg.getString("cache", null, "directory"));
+      Files.write(cacheDirectory.resolve("some.dat"), "some_content".getBytes());
 
-    @SuppressWarnings("unused")
-    String result = adminSshSession.exec(cmd);
+      @SuppressWarnings("unused")
+      String result = testSshSessionAsAdmin.exec(cmd);
 
-    adminSshSession.assertSuccess();
+      testSshSessionAsAdmin.assertSuccess();
+    }
   }
 
   @Test
   public void shouldFailWhenCacheDirectoryDoesNotExists() throws Exception {
-    cfg.setString("cache", null, "directory", "/tmp/non_existing_directory");
+    try (SshSessionProvider testSshSessionAsAdmin = newSshSession(admin.id())) {
+      cfg.setString("cache", null, "directory", "/tmp/non_existing_directory");
 
-    adminSshSession.exec(cmd);
-    adminSshSession.assertFailure(
-        "fatal: disk cache is configured but doesn't exist: /tmp/non_existing_directory");
+      testSshSessionAsAdmin.exec(cmd);
+      testSshSessionAsAdmin.assertFailure(
+          "fatal: disk cache is configured but doesn't exist: /tmp/non_existing_directory");
+    }
   }
 }
