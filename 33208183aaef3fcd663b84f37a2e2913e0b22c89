@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "717aa00d_620352f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-20T22:55:57Z",
+      "side": 1,
+      "message": "I am not so sure that\u0027s the culprit though: I\u0027ve found by bisecting that the change that broke the tests is I70c3b0a708, which is about revoking push permissions to the Gerrit admin.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 18
+      },
+      "revId": "33208183aaef3fcd663b84f37a2e2913e0b22c89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
