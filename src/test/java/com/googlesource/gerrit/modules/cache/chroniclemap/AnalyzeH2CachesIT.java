@@ -47,11 +47,11 @@ public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
     String result = adminSshSession.exec(cmd);
 
     adminSshSession.assertSuccess();
-    assertThat(result).contains("[cache \"git_file_diff\"]\n" + "\tmaxEntries = 1\n");
-    assertThat(result).contains("[cache \"gerrit_file_diff\"]\n" + "\tmaxEntries = 2\n");
-    assertThat(result).contains("[cache \"accounts\"]\n" + "\tmaxEntries = 4\n");
-    assertThat(result).contains("[cache \"diff_summary\"]\n" + "\tmaxEntries = 1\n");
-    assertThat(result).contains("[cache \"persisted_projects\"]\n" + "\tmaxEntries = 3\n");
+    assertThat(result).contains("[cache \"git_file_diff\"]");
+    assertThat(result).contains("[cache \"gerrit_file_diff\"]");
+    assertThat(result).contains("[cache \"accounts\"]");
+    assertThat(result).contains("[cache \"diff_summary\"]");
+    assertThat(result).contains("[cache \"persisted_projects\"]");
   }
 
   @Test

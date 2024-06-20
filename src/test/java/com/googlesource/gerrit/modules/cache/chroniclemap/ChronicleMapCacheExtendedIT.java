@@ -77,7 +77,7 @@ public class ChronicleMapCacheExtendedIT extends AbstractDaemonTest {
   @Override
   protected void beforeTest(Description description) throws Exception {
     super.beforeTest(description);
-    testCacheName += description.getMethodName();
+    testCacheName += System.nanoTime();
   }
 
   @Test
