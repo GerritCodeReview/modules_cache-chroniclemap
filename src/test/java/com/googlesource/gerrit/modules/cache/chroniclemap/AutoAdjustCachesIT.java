@@ -28,7 +28,6 @@ import com.google.common.base.Joiner;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
-import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
@@ -60,7 +59,7 @@ import org.junit.Test;
     name = "cache-chroniclemap",
     sshModule = "com.googlesource.gerrit.modules.cache.chroniclemap.SSHCommandModule",
     httpModule = "com.googlesource.gerrit.modules.cache.chroniclemap.HttpModule")
-public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
+public class AutoAdjustCachesIT extends LightweightPluginDaemonWithSshSessionsTest {
   private static final String SSH_CMD = "cache-chroniclemap auto-adjust-caches";
   private static final String REST_CMD = "/plugins/cache-chroniclemap/auto-adjust-caches";
   private static final String GROUPS_BYUUID_PERSISTED = "groups_byuuid_persisted";
@@ -118,18 +117,20 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldUseDefaultsWhenCachesAreNotConfigured() throws Exception {
-    createChange();
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
 
-    String result = adminSshSession.exec(SSH_CMD);
+      String result = sshSession.exec(SSH_CMD);
 
-    adminSshSession.assertSuccess();
-    Config configResult = configResult(result, CONFIG_HEADER);
+      sshSession.assertSuccess();
+      Config configResult = configResult(result, CONFIG_HEADER);
 
-    for (String cache : EXPECTED_CACHES) {
-      assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
-          .isEqualTo(maxEntriesFor(cache));
-      assertThat(configResult.getLong("cache", cache, "maxBloatFactor", 0))
-          .isEqualTo(maxBloatFactorFor(cache));
+      for (String cache : EXPECTED_CACHES) {
+        assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
+            .isEqualTo(maxEntriesFor(cache));
+        assertThat(configResult.getLong("cache", cache, "maxBloatFactor", 0))
+            .isEqualTo(maxBloatFactorFor(cache));
+      }
     }
   }
 
@@ -137,152 +138,174 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
   @GerritConfig(name = "cache.test_cache.maxEntries", value = "10")
   @GerritConfig(name = "cache.test_cache.maxBloatFactor", value = "1")
   public void shouldCorrectlyIncreaseCacheSizeWhenIsGettingFull() throws Exception {
-    ChronicleMapCacheImpl<String, String> chronicleMapCache =
-        (ChronicleMapCacheImpl<String, String>) testCache;
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
 
-    long elemsAdded = 0;
-    long totalKeySize = 0;
-    long totalValueSize = 0;
-    while (chronicleMapCache.percentageUsedAutoResizes() < PERCENTAGE_SIZE_INCREASE_THRESHOLD) {
-      String key = UUID.randomUUID() + "someExtraValue";
-      String value = UUID.randomUUID().toString();
-      elemsAdded += 1;
-      totalKeySize += serializedKeyLength(TEST_CACHE_NAME, new KeyWrapper<>(key));
-      totalValueSize += serializedValueLength(TEST_CACHE_NAME, new TimedValue<>(value));
-      testCache.put(key, value);
+      ChronicleMapCacheImpl<String, String> chronicleMapCache =
+          (ChronicleMapCacheImpl<String, String>) testCache;
+
+      long elemsAdded = 0;
+      long totalKeySize = 0;
+      long totalValueSize = 0;
+      while (chronicleMapCache.percentageUsedAutoResizes() < PERCENTAGE_SIZE_INCREASE_THRESHOLD) {
+        String key = UUID.randomUUID() + "someExtraValue";
+        String value = UUID.randomUUID().toString();
+        elemsAdded += 1;
+        totalKeySize += serializedKeyLength(TEST_CACHE_NAME, new KeyWrapper<>(key));
+        totalValueSize += serializedValueLength(TEST_CACHE_NAME, new TimedValue<>(value));
+        testCache.put(key, value);
+      }
+
+      String tuneResult = sshSession.exec(SSH_CMD + " " + TEST_CACHE_NAME);
+      sshSession.assertSuccess();
+
+      Config tunedConfig = configResult(tuneResult, CONFIG_HEADER);
+      assertThat(tunedConfig.getSubsections("cache")).contains(TEST_CACHE_NAME);
+      assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "maxEntries", 0))
+          .isEqualTo(chronicleMapCache.getConfig().getMaxEntries() * MAX_ENTRIES_MULTIPLIER);
+      assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgKeySize", 0))
+          .isEqualTo(totalKeySize / elemsAdded);
+      assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgValueSize", 0))
+          .isEqualTo(totalValueSize / elemsAdded);
     }
-
-    String tuneResult = adminSshSession.exec(SSH_CMD + " " + TEST_CACHE_NAME);
-    adminSshSession.assertSuccess();
-
-    Config tunedConfig = configResult(tuneResult, CONFIG_HEADER);
-    assertThat(tunedConfig.getSubsections("cache")).contains(TEST_CACHE_NAME);
-    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "maxEntries", 0))
-        .isEqualTo(chronicleMapCache.getConfig().getMaxEntries() * MAX_ENTRIES_MULTIPLIER);
-    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgKeySize", 0))
-        .isEqualTo(totalKeySize / elemsAdded);
-    assertThat(tunedConfig.getLong("cache", TEST_CACHE_NAME, "avgValueSize", 0))
-        .isEqualTo(totalValueSize / elemsAdded);
   }
 
   @Test
   public void shouldHonourMaxEntriesParameter() throws Exception {
-    createChange();
-    Long wantedMaxEntries = 100L;
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
+      Long wantedMaxEntries = 100L;
 
-    String result =
-        adminSshSession.exec(String.format("%s --max-entries %s", SSH_CMD, wantedMaxEntries));
+      String result =
+          sshSession.exec(String.format("%s --max-entries %s", SSH_CMD, wantedMaxEntries));
 
-    adminSshSession.assertSuccess();
-    Config configResult = configResult(result, CONFIG_HEADER);
+      sshSession.assertSuccess();
+      Config configResult = configResult(result, CONFIG_HEADER);
 
-    for (String cache : EXPECTED_CACHES) {
-      assertThat(configResult.getLong("cache", cache, "maxEntries", 0)).isEqualTo(wantedMaxEntries);
+      for (String cache : EXPECTED_CACHES) {
+        assertThat(configResult.getLong("cache", cache, "maxEntries", 0))
+            .isEqualTo(wantedMaxEntries);
+      }
     }
   }
 
   @Test
   public void shouldHonourAvgKeySizeParameter() throws Exception {
-    createChange();
-    Long wantedAvgKeySize = 50L;
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
+      Long wantedAvgKeySize = 50L;
 
-    String result =
-        adminSshSession.exec(String.format("%s --avg-key-size %s", SSH_CMD, wantedAvgKeySize));
+      String result =
+          sshSession.exec(String.format("%s --avg-key-size %s", SSH_CMD, wantedAvgKeySize));
 
-    adminSshSession.assertSuccess();
-    Config configResult = configResult(result, CONFIG_HEADER);
+      sshSession.assertSuccess();
+      Config configResult = configResult(result, CONFIG_HEADER);
 
-    for (String cache : EXPECTED_CACHES) {
-      assertThat(configResult.getLong("cache", cache, "avgKeySize", 0)).isEqualTo(wantedAvgKeySize);
+      for (String cache : EXPECTED_CACHES) {
+        assertThat(configResult.getLong("cache", cache, "avgKeySize", 0))
+            .isEqualTo(wantedAvgKeySize);
+      }
     }
   }
 
   @Test
   public void shouldHonourAvgValueSizeParameter() throws Exception {
-    createChange();
-    Long wantedAvgValueSize = 100L;
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
+      Long wantedAvgValueSize = 100L;
 
-    String result =
-        adminSshSession.exec(String.format("%s --avg-value-size %s", SSH_CMD, wantedAvgValueSize));
+      String result =
+          sshSession.exec(String.format("%s --avg-value-size %s", SSH_CMD, wantedAvgValueSize));
 
-    adminSshSession.assertSuccess();
-    Config configResult = configResult(result, CONFIG_HEADER);
+      sshSession.assertSuccess();
+      Config configResult = configResult(result, CONFIG_HEADER);
 
-    for (String cache : EXPECTED_CACHES) {
-      assertThat(configResult.getLong("cache", cache, "avgValueSize", 0))
-          .isEqualTo(wantedAvgValueSize);
+      for (String cache : EXPECTED_CACHES) {
+        assertThat(configResult.getLong("cache", cache, "avgValueSize", 0))
+            .isEqualTo(wantedAvgValueSize);
+      }
     }
   }
 
   @Test
   public void shouldCreateNewCacheFiles() throws Exception {
-    createChange();
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
 
-    adminSshSession.exec(SSH_CMD);
+      sshSession.exec(SSH_CMD);
 
-    adminSshSession.assertSuccess();
-    Set<String> tunedCaches =
-        tunedFileNamesSet(n -> n.matches(".*(" + String.join("|", EXPECTED_CACHES) + ").*"));
+      sshSession.assertSuccess();
+      Set<String> tunedCaches =
+          tunedFileNamesSet(n -> n.matches(".*(" + String.join("|", EXPECTED_CACHES) + ").*"));
 
-    assertThat(tunedCaches.size()).isEqualTo(EXPECTED_CACHES.size());
+      assertThat(tunedCaches.size()).isEqualTo(EXPECTED_CACHES.size());
+    }
   }
 
   @Test
   public void shouldCreateNewCacheFileForSingleGitFileDiffCache() throws Exception {
-    createChange();
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
 
-    adminSshSession.exec(SSH_CMD + " " + GIT_FILE_DIFF);
+      sshSession.exec(SSH_CMD + " " + GIT_FILE_DIFF);
 
-    adminSshSession.assertSuccess();
-    Set<String> tunedCaches =
-        tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*"));
+      sshSession.assertSuccess();
+      Set<String> tunedCaches =
+          tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*"));
 
-    assertThat(tunedCaches.size()).isEqualTo(1);
+      assertThat(tunedCaches.size()).isEqualTo(1);
+    }
   }
 
   @Test
   public void shouldCreateNewCacheFileForSingleGerritFileDiffCache() throws Exception {
-    createChange();
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      createChange();
 
-    adminSshSession.exec(SSH_CMD + " " + GERRIT_FILE_DIFF);
+      sshSession.exec(SSH_CMD + " " + GERRIT_FILE_DIFF);
 
-    adminSshSession.assertSuccess();
-    Set<String> tunedCaches =
-        tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*"));
+      sshSession.assertSuccess();
+      Set<String> tunedCaches =
+          tunedFileNamesSet(n -> n.matches(".*" + AutoAdjustCaches.TUNED_INFIX + ".*"));
 
-    assertThat(tunedCaches.size()).isEqualTo(1);
+      assertThat(tunedCaches.size()).isEqualTo(1);
+    }
   }
 
   @Test
   @GerritConfig(name = "cache.test_cache.avgKeySize", value = "207")
   @GerritConfig(name = "cache.test_cache.avgValueSize", value = "207")
   public void shouldNotRecreateTestCacheFileWhenAlreadyTuned() throws Exception {
-    testCache.get(TEST_CACHE_KEY_100_CHARS);
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      testCache.get(TEST_CACHE_KEY_100_CHARS);
 
-    String tuneResult =
-        adminSshSession.exec(
-            String.format(
-                "%s --max-entries %s",
-                SSH_CMD, ChronicleMapCacheConfig.Defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
-    adminSshSession.assertSuccess();
+      String tuneResult =
+          sshSession.exec(
+              String.format(
+                  "%s --max-entries %s",
+                  SSH_CMD,
+                  ChronicleMapCacheConfig.Defaults.maxEntriesFor(TEST_CACHE_KEY_100_CHARS)));
+      sshSession.assertSuccess();
 
-    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
-        .doesNotContain(TEST_CACHE_NAME);
-    assertThat(Joiner.on('\n').join(tunedFileNamesSet(MATCH_ALL)))
-        .doesNotContain(TEST_CACHE_FILENAME_TUNED);
+      assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+          .doesNotContain(TEST_CACHE_NAME);
+      assertThat(Joiner.on('\n').join(tunedFileNamesSet(MATCH_ALL)))
+          .doesNotContain(TEST_CACHE_FILENAME_TUNED);
+    }
   }
 
   @Test
   public void shouldCreateTestCacheTuned() throws Exception {
-    testCache.get(TEST_CACHE_KEY_100_CHARS);
-    String tuneResult = adminSshSession.exec(SSH_CMD);
-    adminSshSession.assertSuccess();
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      testCache.get(TEST_CACHE_KEY_100_CHARS);
+      String tuneResult = sshSession.exec(SSH_CMD);
+      sshSession.assertSuccess();
 
-    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
-        .contains(TEST_CACHE_NAME);
-    assertThat(
-            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
-        .isNotEmpty();
+      assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+          .contains(TEST_CACHE_NAME);
+      assertThat(
+              Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+          .isNotEmpty();
+    }
   }
 
   @Test
@@ -349,19 +372,21 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
 
   @Test
   public void shouldAdjustCachesOnDefaultsWhenSelected() throws Exception {
-    assertThat(
-            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
-        .isEmpty();
+    try (SshSessionProvider sshSession = newSshSession(admin.id())) {
+      assertThat(
+              Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+          .isEmpty();
 
-    testCache.get(TEST_CACHE_KEY_100_CHARS);
-    String tuneResult = adminSshSession.exec(SSH_CMD + " --adjust-caches-on-defaults");
-    adminSshSession.assertSuccess();
+      testCache.get(TEST_CACHE_KEY_100_CHARS);
+      String tuneResult = sshSession.exec(SSH_CMD + " --adjust-caches-on-defaults");
+      sshSession.assertSuccess();
 
-    assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
-        .contains(TEST_CACHE_NAME);
-    assertThat(
-            Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
-        .isNotEmpty();
+      assertThat(configResult(tuneResult, CONFIG_HEADER).getSubsections("cache"))
+          .contains(TEST_CACHE_NAME);
+      assertThat(
+              Joiner.on('\n').join(tunedFileNamesSet((n) -> n.contains(TEST_CACHE_FILENAME_TUNED))))
+          .isNotEmpty();
+    }
   }
 
   private Config configResult(String result, @Nullable String configHeader)
