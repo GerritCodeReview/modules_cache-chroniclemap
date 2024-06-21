@@ -16,6 +16,24 @@
       "message": "Since the intention is to sanitize the cache name, have you considered using the already available `CacheNameSanitizer.sanitize`?\n\nThe following works:\n\n```suggestion\n    testCacheName +\u003d CacheNameSanitizer.sanitize(metricMaker, description.getMethodName());\n```",
       "revId": "c15db0c4091c867c7dc1b03bd77fcde5b7f22d86",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a4e0941_3d157e9b",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-06-21T12:10:26Z",
+      "side": 1,
+      "message": "I wouldn\u0027t tie the all tests to that class and method: honestly we could just use a System.nanoTime() number just to have different cache names.\n\nThe purpose of the test is to make sure that ChronicleMap works, that should be tested and verified regardless of what is the sanitisation logic.",
+      "parentUuid": "d8568256_7369e89f",
+      "revId": "c15db0c4091c867c7dc1b03bd77fcde5b7f22d86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
