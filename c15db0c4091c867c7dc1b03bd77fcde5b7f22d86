@@ -34,6 +34,24 @@
       "parentUuid": "d8568256_7369e89f",
       "revId": "c15db0c4091c867c7dc1b03bd77fcde5b7f22d86",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efeec502_7e448c84",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-06-21T13:46:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8a4e0941_3d157e9b",
+      "revId": "c15db0c4091c867c7dc1b03bd77fcde5b7f22d86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
