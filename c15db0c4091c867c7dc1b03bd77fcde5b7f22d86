@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8568256_7369e89f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-06-21T11:52:48Z",
+      "side": 1,
+      "message": "Since the intention is to sanitize the cache name, have you considered using the already available `CacheNameSanitizer.sanitize`?\n\nThe following works:\n\n```suggestion\n    testCacheName +\u003d CacheNameSanitizer.sanitize(metricMaker, description.getMethodName());\n```",
+      "revId": "c15db0c4091c867c7dc1b03bd77fcde5b7f22d86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
