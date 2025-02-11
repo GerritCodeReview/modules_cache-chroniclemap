@@ -29,10 +29,11 @@ import org.h2.Driver;
 
 public class H2CacheCommand {
   protected static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  public static final String H2_SUFFIX = "h2.db";
+  public static final String H2_SUFFIX = "-v2.mv.db";
 
   public static String baseName(Path h2File) {
-    return FilenameUtils.removeExtension(FilenameUtils.getBaseName(h2File.toString()));
+    String filename = h2File.toString();
+    return FilenameUtils.getBaseName(filename.substring(0, filename.length() - H2_SUFFIX.length()));
   }
 
   protected static H2AggregateData getStats(Path h2File) throws Exception {
@@ -65,7 +66,7 @@ public class H2CacheCommand {
   protected static String jdbcUrl(Path h2FilePath) {
     final String normalized =
         FilenameUtils.removeExtension(FilenameUtils.removeExtension(h2FilePath.toString()));
-    return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE";
+    return "jdbc:h2:" + normalized + ";AUTO_SERVER=TRUE;DATABASE_TO_UPPER=false";
   }
 
   protected static Optional<Path> getCacheDir(Config gerritConfig, SitePaths site)
