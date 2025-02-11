@@ -31,10 +31,10 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.serialize.CacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
-import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -54,7 +54,6 @@ public class ChronicleMapCacheExtendedIT extends AbstractDaemonTest {
   @Inject MetricRegistry metricRegistry;
   @Inject MemoryCacheFactory memCacheFactory;
 
-  @Inject SitePaths sitePaths;
   private StoredConfig gerritConfig;
 
   private final String cacheDirectory = ".";
@@ -694,9 +693,11 @@ public class ChronicleMapCacheExtendedIT extends AbstractDaemonTest {
             expireAfterWrite != null ? expireAfterWrite : Duration.ZERO,
             refreshAfterWrite != null ? refreshAfterWrite : Duration.ZERO);
 
+    Path cacheDir = sitePaths.resolve(cfg.getString("cache", null, "directory"));
+
     ChronicleMapCacheFactory cacheFactory =
         new ChronicleMapCacheFactory(
-            memCacheFactory, new Config(), sitePaths, null, null, metricMaker);
+            memCacheFactory, new Config(), cacheDir, null, null, metricMaker);
 
     if (withLoader) {
       return (ChronicleMapCacheImpl<String, String>)
