@@ -17,6 +17,7 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        "//java/com/google/gerrit/server/cache/h2",
         "//lib:h2",
         "//lib/commons:io",
         "//proto:cache_java_proto",
