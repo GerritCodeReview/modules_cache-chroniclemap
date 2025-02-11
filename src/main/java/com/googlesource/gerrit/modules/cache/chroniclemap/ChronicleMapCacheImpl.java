@@ -313,7 +313,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
 
   private void evictColdEntries() {
     while (runningOutOfFreeSpace()
-        && keysIndex.removeAndConsumeLruKey(key -> store.remove(new KeyWrapper<>(key)))) ;
+        && keysIndex.removeAndConsumeLruKey(key -> store.remove(new KeyWrapper<>(key))))
+      ;
   }
 
   @SuppressWarnings("unchecked")

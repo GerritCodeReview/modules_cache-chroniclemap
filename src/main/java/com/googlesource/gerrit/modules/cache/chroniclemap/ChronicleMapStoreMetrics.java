@@ -79,7 +79,8 @@ class ChronicleMapStoreMetrics {
             store.maxAutoResizes(),
             new Description(
                 String.format(
-                    "The maximum number of times the %s cache can automatically expand its capacity",
+                    "The maximum number of times the %s cache can automatically expand its"
+                        + " capacity",
                     name))));
   }
 

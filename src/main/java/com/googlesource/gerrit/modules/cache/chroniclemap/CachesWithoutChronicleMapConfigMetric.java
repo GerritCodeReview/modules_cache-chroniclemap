@@ -40,7 +40,8 @@ class CachesWithoutChronicleMapConfigMetric {
         metricMaker.newCounter(
             metricName,
             new Description(
-                    "The number of caches that have no chronicle map configuration provided in 'gerrit.config' and use defaults.")
+                    "The number of caches that have no chronicle map configuration provided in"
+                        + " 'gerrit.config' and use defaults.")
                 .setUnit("caches"));
   }
 

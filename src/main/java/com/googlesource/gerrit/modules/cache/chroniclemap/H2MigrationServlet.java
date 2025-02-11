@@ -204,7 +204,8 @@ public class H2MigrationServlet extends HttpServlet {
           } else {
             if (hasPartialPersistentCacheConfiguration(in)) {
               logger.atWarning().log(
-                  "Existing configuration for cache %s found gerrit.config and will be ignored because incomplete",
+                  "Existing configuration for cache %s found gerrit.config and will be ignored"
+                      + " because incomplete",
                   in.name());
             }
             chronicleMapConfig =

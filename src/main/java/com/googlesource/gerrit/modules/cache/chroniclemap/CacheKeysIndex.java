@@ -158,7 +158,8 @@ class CacheKeysIndex<T> {
               "cache/chroniclemap/keys_index_restore_failures_" + sanitizedName,
               new Description(
                       String.format(
-                          "The number of errors caught when restore %s cache index from file operation was performed: ",
+                          "The number of errors caught when restore %s cache index from file"
+                              + " operation was performed: ",
                           name))
                   .setCumulative()
                   .setUnit("errors"));
@@ -168,7 +169,8 @@ class CacheKeysIndex<T> {
               "cache/chroniclemap/keys_index_persist_failures_" + sanitizedName,
               new Description(
                       String.format(
-                          "The number of errors caught when persist %s cache index to file operation was performed: ",
+                          "The number of errors caught when persist %s cache index to file"
+                              + " operation was performed: ",
                           name))
                   .setCumulative()
                   .setUnit("errors"));
