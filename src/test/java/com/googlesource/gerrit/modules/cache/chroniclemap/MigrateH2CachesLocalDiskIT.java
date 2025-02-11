@@ -320,7 +320,7 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
             cacheDirectory,
             persistentDef,
             H2CacheCommand.getStats(
-                cacheDirectory.resolve(String.format("%s.%s", cacheName, H2_SUFFIX))),
+                cacheDirectory.resolve(String.format("%s%s", cacheName, H2_SUFFIX))),
             DEFAULT_SIZE_MULTIPLIER,
             DEFAULT_MAX_BLOAT_FACTOR);
 
