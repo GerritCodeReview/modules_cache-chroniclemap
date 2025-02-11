@@ -18,12 +18,14 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.MemoryCacheFactory;
 import com.google.gerrit.server.cache.PersistentCacheBaseFactory;
 import com.google.gerrit.server.cache.PersistentCacheDef;
+import com.google.gerrit.server.cache.h2.CacheDir;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.logging.LoggingContextAwareExecutorService;
@@ -60,11 +62,11 @@ class ChronicleMapCacheFactory extends PersistentCacheBaseFactory implements Lif
   ChronicleMapCacheFactory(
       MemoryCacheFactory memCacheFactory,
       @GerritServerConfig Config cfg,
-      SitePaths site,
+      @Nullable @CacheDir Path cacheDir,
       ChronicleMapCacheConfig.Factory configFactory,
       DynamicMap<Cache<?, ?>> cacheMap,
       MetricMaker metricMaker) {
-    super(memCacheFactory, cfg, site);
+    super(memCacheFactory, cfg, cacheDir);
     this.configFactory = configFactory;
     this.metricMaker = metricMaker;
     this.caches = new LinkedList<>();
