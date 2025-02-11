@@ -280,7 +280,7 @@ public class H2MigrationServlet extends HttpServlet {
   }
 
   private Optional<Path> getH2CacheFile(Path cacheDir, String name) {
-    Path h2CacheFile = cacheDir.resolve(String.format("%s.%s", name, H2_SUFFIX));
+    Path h2CacheFile = cacheDir.resolve(String.format("%s%s", name, H2_SUFFIX));
     if (Files.exists(h2CacheFile)) {
       return Optional.of(h2CacheFile);
     }
