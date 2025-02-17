@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a02fbc_79c22a05",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-02-17T07:54:47Z",
+      "side": 1,
+      "message": "That is not correct - it just replaces it with path to cache dir and doesn\u0027t resolve it itself anymore therefore in order to use it one needs to resolve it (similarly to what is achieved through the `H2\u0027`s `@CacheDir` annotation).",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 26
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe1952fa_30c9557b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-02-17T07:54:47Z",
+      "side": 1,
+      "message": "A few nits, apart from that it LGTM",
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b033352e_d01f452a",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-02-17T07:54:47Z",
+      "side": 1,
+      "message": "should be removed",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 50
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "156b64e4_52f7a00b",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-02-17T07:54:47Z",
+      "side": 1,
+      "message": "no longer needed",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 49
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95afd6fb_886a0c7f",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-02-17T07:54:47Z",
+      "side": 1,
+      "message": "nit: no longer needed as `AbstractDaemonTest` exposes it on `master`",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 59,
+        "endChar": 30
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9ad1ef5_e3383ad4",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2025-02-17T07:54:47Z",
+      "side": 1,
+      "message": "using H2 specific annotation here feels itchy therefore we have two options:\n1. turn it to `ChronicleMapDir` annotation but that requires `ChronicleMapCacheModule` to be also installed which can be easily achieved with the following override (similarly to for instance `ChronicleMapCacheIT`):\n```\n  @Override\n  public ChronicleMapCacheModule createModule() {\n    return new ChronicleMapCacheModule();\n  }\n```\n\n2. turn it to `private Patch cacheDir;` and initiate it at the bottom of the `setUp` function with (similarly to what is done in for instance `AnalyzeH2CachesIT`):\n```\n  cacheDir \u003d sitePaths.resolve(cfg.getString(\"cache\", null, \"directory\"));\n```",
+      "range": {
+        "startLine": 60,
+        "startChar": 11,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
