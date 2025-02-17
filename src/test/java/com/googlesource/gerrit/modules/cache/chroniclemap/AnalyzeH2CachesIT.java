@@ -22,8 +22,6 @@ import com.google.gerrit.acceptance.Sandboxed;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
-import com.google.gerrit.server.config.SitePaths;
-import com.google.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.Test;
@@ -35,9 +33,6 @@ import org.junit.Test;
 @UseLocalDisk
 @Sandboxed
 public class AnalyzeH2CachesIT extends LightweightPluginDaemonTest {
-
-  @Inject private SitePaths sitePaths;
-
   private String cmd = Joiner.on(" ").join("cache-chroniclemap", "analyze-h2-caches");
 
   @Test
