@@ -137,12 +137,12 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
 
   @Override
   public TypeLiteral<String> keyType() {
-    return new TypeLiteral<String>() {};
+    return new TypeLiteral<>() {};
   }
 
   @Override
   public TypeLiteral<String> valueType() {
-    return new TypeLiteral<String>() {};
+    return new TypeLiteral<>() {};
   }
 
   @Override
@@ -172,7 +172,7 @@ public class TestPersistentCacheDef implements PersistentCacheDef<String, String
 
   @Override
   public CacheLoader<String, String> loader() {
-    return new CacheLoader<String, String>() {
+    return new CacheLoader<>() {
       @Override
       public String load(String s) {
         return loadedValue != null ? loadedValue : UUID.randomUUID().toString();
