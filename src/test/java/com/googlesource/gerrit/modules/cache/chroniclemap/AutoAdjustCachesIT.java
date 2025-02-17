@@ -38,7 +38,6 @@ import com.google.gerrit.acceptance.config.GerritConfig;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.ModuleImpl;
 import com.google.gerrit.server.cache.CacheModule;
-import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.File;
@@ -84,8 +83,6 @@ public class AutoAdjustCachesIT extends LightweightPluginDaemonTest {
           DIFF_SUMMARY,
           ACCOUNTS,
           PERSISTED_PROJECTS);
-
-  @Inject private SitePaths sitePaths;
 
   @Inject
   @Named(TEST_CACHE_NAME)

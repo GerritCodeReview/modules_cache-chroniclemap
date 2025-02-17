@@ -42,7 +42,6 @@ import com.google.gerrit.server.cache.h2.H2CacheImpl;
 import com.google.gerrit.server.cache.proto.Cache;
 import com.google.gerrit.server.cache.proto.Cache.ProjectCacheKeyProto.Builder;
 import com.google.gerrit.server.cache.serialize.ObjectIdConverter;
-import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.group.SystemGroupBackend;
 import com.google.inject.Binding;
 import com.google.inject.Inject;
@@ -70,7 +69,6 @@ public class MigrateH2CachesLocalDiskIT extends LightweightPluginDaemonTest {
   private String PERSISTED_PROJECTS_CACHE_NAME = "persisted_projects";
   private String MIGRATION_ENDPOINT = "/plugins/cache-chroniclemap/migrate";
 
-  @Inject private SitePaths sitePaths;
   @Inject private ProjectOperations projectOperations;
 
   private ChronicleMapCacheConfig.Factory chronicleMapCacheConfigFactory;
