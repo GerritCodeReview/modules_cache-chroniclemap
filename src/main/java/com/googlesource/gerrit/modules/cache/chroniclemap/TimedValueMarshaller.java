@@ -28,7 +28,7 @@ public class TimedValueMarshaller<V> extends SerializationMetricsForCache
         ReadResolvable<TimedValueMarshaller<V>> {
 
   private static final ThreadLocal<byte[]> staticBuffer =
-      new ThreadLocal<byte[]>() {
+      new ThreadLocal<>() {
         @Override
         protected byte[] initialValue() {
           return new byte[Long.BYTES + Integer.BYTES];

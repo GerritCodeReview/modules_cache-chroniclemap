@@ -141,7 +141,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.percentageFreeSpace(),
         config.getPersistIndexEvery());
 
-    return new ChronicleMapStore<K, V>(store, config, metricMaker) {
+    return new ChronicleMapStore<>(store, config, metricMaker) {
       @Override
       public void close() {
         super.close();

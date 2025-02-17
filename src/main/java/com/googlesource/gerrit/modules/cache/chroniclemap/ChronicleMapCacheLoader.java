@@ -164,7 +164,7 @@ class ChronicleMapCacheLoader<K, V> extends CacheLoader<K, TimedValue<V>> {
   }
 
   InMemoryCache<K, V> asInMemoryCacheBypass() {
-    return new InMemoryCache<K, V>() {
+    return new InMemoryCache<>() {
 
       @SuppressWarnings("unchecked")
       @Override
