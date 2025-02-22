@@ -111,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5e76040_c88a6d36",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-02-22T22:26:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "156b64e4_52f7a00b",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 49
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95afd6fb_886a0c7f",
@@ -124,6 +148,30 @@
       "writtenOn": "2025-02-17T07:54:47Z",
       "side": 1,
       "message": "nit: no longer needed as `AbstractDaemonTest` exposes it on `master`",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 59,
+        "endChar": 30
+      },
+      "revId": "1aac984dbd8c91cc2258b33bddd51d1e9730e494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f920295f_e0e43692",
+        "filename": "src/test/java/com/googlesource/gerrit/modules/cache/chroniclemap/ChronicleMapCacheExtendedIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-02-22T22:26:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95afd6fb_886a0c7f",
       "range": {
         "startLine": 59,
         "startChar": 2,
