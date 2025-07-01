@@ -38,6 +38,7 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
     implements PersistentCache {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private static final long DONT_TRACK_CACHE_INVALIDATIONS = 0L;
 
   private final ChronicleMapCacheConfig config;
   private final ChronicleMapStore<K, V> store;
@@ -353,7 +354,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.longSize(),
         config.getCacheFile().length(),
         hitCount.longValue(),
-        missCount.longValue());
+        missCount.longValue(),
+        DONT_TRACK_CACHE_INVALIDATIONS);
   }
 
   public CacheStats memStats() {
