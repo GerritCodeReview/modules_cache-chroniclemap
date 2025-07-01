@@ -353,7 +353,8 @@ public class ChronicleMapCacheImpl<K, V> extends AbstractLoadingCache<K, V>
         store.longSize(),
         config.getCacheFile().length(),
         hitCount.longValue(),
-        missCount.longValue());
+        missCount.longValue(),
+        0);
   }
 
   public CacheStats memStats() {
